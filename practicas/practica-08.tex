@@ -11,6 +11,8 @@
 \documentclass[11pt,a4paper]{amsart}
 \usepackage{xr-hyper}
 \newcounter{chapter}
+\usepackage{fancyhdr}
+\usepackage{geometry} \geometry{top=2cm,bottom=2.5cm,left=2.5cm,right=2.5cm}
 
 \usepackage{amssymb}
 \usepackage{hyperref}
@@ -19,7 +21,6 @@
 \usepackage{enumitem}
 
 % Fuzz -------------------------------------------------------------------
-\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
 % Line spacing -----------------------------------------------------------
 
 %%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
@@ -30,10 +31,6 @@
 \usepackage{tikz}
 \usetikzlibrary{babel}
 
-\setlength{\textwidth}{15.5cm} 
-\setlength{\textheight}{24cm}
-\setlength{\oddsidemargin}{0cm}
-\setlength{\evensidemargin}{0cm}
 
 
 \parskip 3pt
@@ -167,20 +164,29 @@
 %%
 
 
+\vfuzz7pt \hfuzz7pt
 \externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\encabezado}[1]{%
+\noindent \includegraphics[scale=2.1]{logo-dm-wide.png} \hskip 9.5cm
+\includegraphics[scale=0.08]{logo-exactas-uba.jpg}
+\smallskip
+\usefont{T1}{phv}{m}{n}
+\begin{center}{\Large\sc Teoría de Transporte Óptimo}\end{center}
+\bigskip
+\noindent{\sc #1}\\[-0.4cm]
+\hrule
+\normalfont}
 \newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
-\pagestyle{plain}
 
 \begin{document}
 \renewcommand{\thechapter}{8}
-\begin{center}
-{\large\sc Teoría de Transporte Óptimo}\\[2pt]
-{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
-{\LARGE\bf Práctica 8}\\[4pt]
-{\large Transporte óptimo en dimensión uno}
-\end{center}
+\encabezado{Práctica 8: Transporte óptimo en dimensión uno}
 \bigskip
-\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~8 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\pagestyle{fancy}
+\fancyhead[L]{{\footnotesize{\usefont{T1}{phv}{m}{n}{\sc Teoría de Transporte Óptimo}}}}
+\fancyhead[R]{\footnotesize \usefont{T1}{phv}{m}{n}{\sc Práctica 8}}
+\thispagestyle{plain}
+\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~8 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
 \medskip
 
 \cuadernolink{OT en dimensión uno}{03-ot-dimension-uno.ipynb}

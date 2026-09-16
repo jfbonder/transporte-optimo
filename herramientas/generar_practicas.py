@@ -39,18 +39,30 @@ for l in pre:
     if l.startswith('\\documentclass'):
         pre_out += ['\\documentclass[11pt,a4paper]{amsart}',
                     '\\usepackage{xr-hyper}',
-                    '\\newcounter{chapter}']
+                    '\\newcounter{chapter}',
+                    '\\usepackage{fancyhdr}',
+                    '\\usepackage{geometry} \\geometry{top=2cm,bottom=2.5cm,left=2.5cm,right=2.5cm}']
         continue
     if l.startswith('\\numberwithin{section}{chapter}') or l.startswith('\\numberwithin{figure}{chapter}'):
         continue
-    if l.startswith('\\setlength{\\textheight}'):
-        pre_out.append('\\setlength{\\textheight}{24cm}')
+    if l.startswith('\\setlength{') or l.startswith('\\hfuzz'):
         continue
     pre_out.append(l)
-pre_out += ['\\externaldocument[N-]{../notas/Notas-TO}',
+pre_out += ['\\vfuzz7pt \\hfuzz7pt',
+            '\\externaldocument[N-]{../notas/Notas-TO}',
+            # encabezado con logos, en el formato de las guias del curso
+            '\\newcommand{\\encabezado}[1]{%',
+            '\\noindent \\includegraphics[scale=2.1]{logo-dm-wide.png} \\hskip 9.5cm',
+            '\\includegraphics[scale=0.08]{logo-exactas-uba.jpg}',
+            '\\smallskip',
+            '\\usefont{T1}{phv}{m}{n}',
+            '\\begin{center}{\\Large\\sc Teoría de Transporte Óptimo}\\end{center}',
+            '\\bigskip',
+            '\\noindent{\\sc #1}\\\\[-0.4cm]',
+            '\\hrule',
+            '\\normalfont}',
             '\\newcommand{\\cuadernolink}[2]{\\noindent\\textbf{Cuaderno:} \\emph{#1} '
-            '(\\href{' + COLAB + '#2}{abrir en Colab}).\\par\\medskip}',
-            '\\pagestyle{plain}']
+            '(\\href{' + COLAB + '#2}{abrir en Colab}).\\par\\medskip}']
 PREAMBULO = '\n'.join(pre_out)
 
 # ---------------------------------------------------------------- capítulos
@@ -94,17 +106,16 @@ for num, titulo, i0, i1 in caps:
     # dentro de una guía "Ejercicio~\ref{...}" local ya da el número correcto
     es_ap = not num.isdigit()
     nombre = ('apendice-%s' % num) if es_ap else ('practica-%02d' % int(num))
-    encabezado_num = ('Ejercicios del Apéndice %s' % num) if es_ap else ('Práctica %s' % num)
+    encabezado_num = ('Apéndice %s' % num) if es_ap else ('Práctica %s' % num)
     partes = [PREAMBULO, '', '\\begin{document}',
               '\\renewcommand{\\thechapter}{%s}' % num,
-              '\\begin{center}',
-              '{\\large\\sc Teoría de Transporte Óptimo}\\\\[2pt]',
-              '{\\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\\\[10pt]',
-              '{\\LARGE\\bf %s}\\\\[4pt]' % encabezado_num,
-              '{\\large %s}' % titulo,
-              '\\end{center}',
+              '\\encabezado{%s: %s}' % (encabezado_num, titulo),
               '\\bigskip',
-              '\\noindent{\\small Los ejercicios son los de la sección de ejercicios del %s de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\\url{%s}).}' % (
+              '\\pagestyle{fancy}',
+              '\\fancyhead[L]{{\\footnotesize{\\usefont{T1}{phv}{m}{n}{\\sc Teoría de Transporte Óptimo}}}}',
+              '\\fancyhead[R]{\\footnotesize \\usefont{T1}{phv}{m}{n}{\\sc %s}}' % encabezado_num,
+              '\\thispagestyle{plain}',
+              '\\noindent{\\footnotesize Los ejercicios son los de la sección de ejercicios del %s de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\\url{%s}).}' % (
                   ('Apéndice~%s' % num) if es_ap else ('Capítulo~%s' % num), REPO),
               '\\medskip', '']
     if not es_ap and int(num) in CUADERNOS:

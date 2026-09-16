@@ -17,7 +17,7 @@ Generadas automáticamente desde `notas/Notas-TO.tex` con `herramientas/generar_
 | `practica-11.pdf` | Práctica 11 | La desigualdad de Brunn--Minkowski | 6 |
 | `practica-12.pdf` | Práctica 12 | Baricentros de Wasserstein | 13 |
 | `practica-13.pdf` | Práctica 13 | Transporte entrópico y el algoritmo de Sinkhorn | 12 |
-| `apendice-A.pdf` | Ejercicios del Apéndice A | Complementos de teoría de la medida}\label{ap.medida | 4 |
-| `apendice-B.pdf` | Ejercicios del Apéndice B | El teorema de Fenchel--Rockafellar | 5 |
-| `apendice-C.pdf` | Ejercicios del Apéndice C | Factorización polar de matrices inversibles | 3 |
-| `apendice-D.pdf` | Ejercicios del Apéndice D | Subdiferencial de funciones convexas | 4 |
+| `apendice-A.pdf` | Apéndice A | Complementos de teoría de la medida}\label{ap.medida | 4 |
+| `apendice-B.pdf` | Apéndice B | El teorema de Fenchel--Rockafellar | 5 |
+| `apendice-C.pdf` | Apéndice C | Factorización polar de matrices inversibles | 3 |
+| `apendice-D.pdf` | Apéndice D | Subdiferencial de funciones convexas | 4 |
