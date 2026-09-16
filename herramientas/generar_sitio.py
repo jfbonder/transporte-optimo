@@ -91,7 +91,7 @@ pagina = '''<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Teoría de Transporte Óptimo</title>
-<meta name="description" content="Notas de clase, guías de ejercicios y cuadernos de cómputo del curso de Teoría de Transporte Óptimo (FCEN-UBA).">
+<meta name="description" content="Teoría de Transporte Óptimo: curso optativo de la FCEN-UBA. Notas de clase, guías de ejercicios y cuadernos de cómputo.">
 <style>
   :root { --tinta:#1d1d1f; --gris:#5b5b60; --linea:#e3e3e6; --acento:#8b1e1e; --fondo:#fbfbf9; --tarjeta:#fff; }
   @media (prefers-color-scheme: dark) {
@@ -102,7 +102,8 @@ pagina = '''<!DOCTYPE html>
   header, main, footer { max-width:880px; margin:0 auto; padding:0 16px; }
   header { padding-top:56px; padding-bottom:24px; border-bottom:1px solid var(--linea); }
   h1 { font-size:2.2rem; margin:0 0 6px; font-weight:normal; letter-spacing:.01em; }
-  .sub { color:var(--gris); margin:0; }
+  .sub { color:var(--gris); margin:0 0 6px; }
+  .autor { font-family:system-ui, sans-serif; font-size:.9rem; }
   nav { margin-top:22px; font-family:system-ui, sans-serif; font-size:.95rem; }
   nav a { margin-right:18px; color:var(--acento); text-decoration:none; }
   h2 { font-weight:normal; font-size:1.5rem; margin:44px 0 14px; }
@@ -129,7 +130,8 @@ pagina = '''<!DOCTYPE html>
 <body>
 <header>
   <h1>Teoría de Transporte Óptimo</h1>
-  <p class="sub">Notas de clase, guías de ejercicios y cuadernos de cómputo · Julián Fernández Bonder · FCEN–UBA, 2do cuatrimestre 2026</p>
+  <p class="sub">Curso optativo para las licenciaturas en Matemática y en Ciencia de Datos y para el Doctorado en Matemática.<br>Departamento de Matemática, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.</p>
+  <p class="sub autor">Julián Fernández Bonder · 2do cuatrimestre 2026 · Notas de clase, guías de ejercicios y cuadernos de cómputo</p>
   <nav><a href="#notas">Notas</a><a href="#capitulos">Capítulos</a><a href="#cuadernos">Cuadernos</a><a href="#uso">Cómo usar el material</a><a href="%(repo)s">Repositorio</a></nav>
 </header>
 <main>
