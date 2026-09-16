@@ -166,7 +166,7 @@ pagina = '''<!DOCTYPE html>
 </main>
 <footer>
   <p>© 2026 Julián Fernández Bonder. Este material se distribuye bajo licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">CC BY-NC-SA 4.0</a>: se puede copiar, redistribuir y adaptar con atribución, sin fines comerciales y compartiendo bajo la misma licencia.</p>
-  <p>Instituto de Cálculo (FCEN–CONICET) y Departamento de Matemática (FCEN–UBA).</p>
+  <p>Instituto de Cálculo (IC–CONICET) y Departamento de Matemática (FCEN–UBA).</p>
 </footer>
 </body>
 </html>

@@ -1,7 +1,7 @@
 # Licencia
 
 **Teoría de Transporte Óptimo — notas de clase, guías de ejercicios y cuadernos de cómputo**
-© 2026 Julián Fernández Bonder (Instituto de Cálculo, FCEN–CONICET; Departamento de Matemática, FCEN–UBA).
+© 2026 Julián Fernández Bonder (Instituto de Cálculo, IC–CONICET; Departamento de Matemática, FCEN–UBA).
 
 Este material se distribuye bajo la licencia **Creative Commons Atribución–NoComercial–CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)**.
 
