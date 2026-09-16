@@ -364,8 +364,14 @@ Sean $\mu=\delta_0$, $\nu=\delta_1$ en $\R$ y $\nu_t=(1-t)\mu+t\nu$.
 $t\mapsto\nu_t$ tiene longitud infinita en $(\mathcal P_2,W_2)$, mientras que
 la geodésica $\mu_t=\delta_t$ tiene longitud $1$.
 \item Para $\mu,\nu\in\mathcal P_2(\R^d)$ cualesquiera, probar que
-$W_2^2(\nu_s,\nu_t)\le|t-s|\,W_2^2(\mu,\nu)$ y que, en general, la
-interpolación lineal tiene longitud infinita salvo que $\mu=\nu$.
+$W_2^2(\nu_s,\nu_t)\le|t-s|\,W_2^2(\mu,\nu)$: la interpolación lineal es
+siempre $\frac12$-Hölder. Probar que si $\mu$ y $\nu$ son discretas con
+soportes disjuntos, la longitud es infinita. ($\bigstar$) Mostrar en cambio
+que si $\mu=f\LL^d$ y $\nu=g\LL^d$ con $f,g$ suaves y positivas en un dominio
+acotado y regular, la longitud es finita: existe un campo $\xi$ con
+$\nabla\cdot(f\xi)=f-g$ y $\int|\xi|^2f<\infty$, y entonces
+$W_2(\nu_s,\nu_t)\le C|t-s|$ (comparar con la fórmula de Benamou--Brenier,
+\cite[Sec.~5.4]{Santambrogio}).
 \item Probar que $t\mapsto W_2^2(\nu_t,\mu)$ es convexa (es la restricción
 del funcional del Lema~\ref{N-lema.W2.convexo} a un segmento) y comparar con
 el Ejercicio~\ref{N-ejer.bar.no.convexa.geodesica}.
@@ -416,5 +422,8 @@ no tienen por qué coincidir (¿por qué?), pero el valor dual
 $\sum_ia_iu_i+\sum_jb_jv_j$ debe ser $W_1(\mu,\nu)$. ¿Es $v=-u$ sobre los
 puntos comunes a ambos soportes? ¿Por qué no necesariamente?
 \end{ejercicio}
+
+\bibliographystyle{plain}
+\bibliography{../notas/biblio}
 
 \end{document}

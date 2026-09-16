@@ -9,7 +9,7 @@ Material del curso *Teoría de Transporte Óptimo* (FCEN–UBA, 2do cuatrimestre
 | Carpeta | Qué hay |
 |---|---|
 | [`notas/`](notas/) | Las notas completas: [`Notas-TO.pdf`](notas/Notas-TO.pdf) y su fuente LaTeX (`Notas-TO.tex`, `biblio.bib`). |
-| [`practicas/`](practicas/) | Una guía de ejercicios por capítulo (`practica-NN.pdf`) y por apéndice (`apendice-X.pdf`). Se generan automáticamente a partir de las secciones de ejercicios de las notas, con la misma numeración. Ver [`practicas/INDICE.md`](practicas/INDICE.md). |
+| [`practicas/`](practicas/) | Una guía de ejercicios por capítulo (`practica-NN.pdf`) y por apéndice (`apendice-X.pdf`). Se generan automáticamente a partir de las secciones de ejercicios de las notas, con la misma numeración. Ver [`practicas/INDICE.md`](practicas/INDICE.md). Además, [`sugerencias.pdf`](practicas/sugerencias.pdf) reúne sugerencias para los ejercicios de todos los capítulos. |
 | [`cuadernos/`](cuadernos/) | Seis cuadernos de Python (Jupyter) que acompañan las notas, con la biblioteca [POT](https://pythonot.github.io/). Cada uno termina con los ejercicios computacionales del capítulo correspondiente. |
 | [`herramientas/`](herramientas/) | Los scripts que generan las guías y el sitio. |
 
@@ -34,14 +34,14 @@ La fuente única es `notas/Notas-TO.tex`. Las guías y el sitio se derivan de el
 
 ```
 make notas       # compila las notas (latexmk)
-make practicas   # regenera practicas/*.tex desde las notas y las compila
+make practicas   # regenera practicas/*.tex y sugerencias.tex desde las notas y los compila
 make sitio       # regenera index.html a partir del índice de las notas
 make             # todo lo anterior
 ```
 
 Requisitos: una distribución TeX Live completa (con `babel-spanish`, `amsart`, `xr-hyper`, `enumitem`, `mathtools`, `tikz`) y Python 3. Las guías toman la numeración de teoremas y ejercicios del archivo `notas/Notas-TO.aux`, de modo que hay que compilar las notas antes que las guías (el `Makefile` lo hace en el orden correcto).
 
-Los archivos `practicas/*.tex` **no se editan a mano**: cualquier cambio en un ejercicio va en las notas y se regenera.
+Los archivos `practicas/*.tex` **no se editan a mano**: cualquier cambio en un ejercicio va en las notas y se regenera. La excepción es `practicas/sugerencias-fuente.tex`, que sí se edita: contiene una entrada `\sug{etiqueta}{texto}` por ejercicio (la etiqueta es la del `\label` del ejercicio en las notas) y es la fuente de `sugerencias.pdf`.
 
 ## Correcciones y sugerencias
 

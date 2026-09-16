@@ -2,7 +2,7 @@
 #
 #   make            notas + guías + sitio
 #   make notas      compila notas/Notas-TO.pdf
-#   make practicas  regenera y compila las guías (requiere las notas compiladas)
+#   make practicas  regenera y compila las guías y sugerencias.pdf (requiere las notas compiladas)
 #   make sitio      regenera index.html
 #   make cuadernos  ejecuta los seis cuadernos (requiere jupyter y pot)
 #   make limpiar    borra los auxiliares de LaTeX
@@ -22,6 +22,7 @@ notas/Notas-TO.pdf: notas/Notas-TO.tex notas/biblio.bib
 practicas: notas/Notas-TO.pdf
 	@test -f notas/Notas-TO.aux || (cd notas && $(LATEXMK) Notas-TO.tex)
 	python3 herramientas/generar_practicas.py
+	python3 herramientas/generar_sugerencias.py
 	cd practicas && for f in *.tex; do $(LATEXMK) $$f; done
 
 sitio: notas/Notas-TO.pdf

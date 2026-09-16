@@ -10,7 +10,8 @@ notas/Notas-TO.aux, de modo que hay que compilar primero las notas.
 
 Uso:  python3 herramientas/generar_practicas.py
 """
-import re, pathlib, unicodedata
+import re, pathlib, unicodedata, sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 TEX = RAIZ / 'notas' / 'Notas-TO.tex'
@@ -28,42 +29,7 @@ CUADERNOS = {
     13: ('Transporte entrópico y Sinkhorn', '06-transporte-entropico-sinkhorn.ipynb'),
 }
 
-src = TEX.read_text(encoding='utf-8')
-L = src.split('\n')
-
-# ---------------------------------------------------------------- preámbulo
-i_doc = next(i for i, l in enumerate(L) if l.startswith('\\begin{document}'))
-pre = L[:i_doc]
-pre_out = []
-for l in pre:
-    if l.startswith('\\documentclass'):
-        pre_out += ['\\documentclass[11pt,a4paper]{amsart}',
-                    '\\usepackage{xr-hyper}',
-                    '\\newcounter{chapter}',
-                    '\\usepackage{fancyhdr}',
-                    '\\usepackage{geometry} \\geometry{top=2cm,bottom=2.5cm,left=2.5cm,right=2.5cm}']
-        continue
-    if l.startswith('\\numberwithin{section}{chapter}') or l.startswith('\\numberwithin{figure}{chapter}'):
-        continue
-    if l.startswith('\\setlength{') or l.startswith('\\hfuzz'):
-        continue
-    pre_out.append(l)
-pre_out += ['\\vfuzz7pt \\hfuzz7pt',
-            '\\externaldocument[N-]{../notas/Notas-TO}',
-            # encabezado con logos, en el formato de las guias del curso
-            '\\newcommand{\\encabezado}[1]{%',
-            '\\noindent \\includegraphics[scale=2.1]{logo-dm-wide.png} \\hskip 9.5cm',
-            '\\includegraphics[scale=0.08]{logo-exactas-uba.jpg}',
-            '\\smallskip',
-            '\\usefont{T1}{phv}{m}{n}',
-            '\\begin{center}{\\Large\\sc Teoría de Transporte Óptimo}\\end{center}',
-            '\\bigskip',
-            '\\noindent{\\sc #1}\\\\[-0.4cm]',
-            '\\hrule',
-            '\\normalfont}',
-            '\\newcommand{\\cuadernolink}[2]{\\noindent\\textbf{Cuaderno:} \\emph{#1} '
-            '(\\href{' + COLAB + '#2}{abrir en Colab}).\\par\\medskip}']
-PREAMBULO = '\n'.join(pre_out)
+from comun import src, L, PREAMBULO  # noqa: E402
 
 # ---------------------------------------------------------------- capítulos
 caps = []   # (numero o letra, titulo, inicio, fin)

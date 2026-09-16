@@ -141,6 +141,7 @@ pagina = '''<!DOCTYPE html>
     <div class="descarga">
       <a class="boton lleno" href="%(pdf)s">Notas completas (PDF, %(paginas)s páginas)</a>
       <a class="boton" href="%(repo)s/tree/main/practicas">Todas las guías</a>
+      <a class="boton" href="practicas/sugerencias.pdf">Sugerencias para los ejercicios</a>
       <a class="boton" href="%(repo)s/tree/main/notas">Fuentes LaTeX</a>
     </div>
   </section>
@@ -160,7 +161,7 @@ pagina = '''<!DOCTYPE html>
 
   <section id="uso">
     <h2>Cómo usar el material</h2>
-    <p>Para estudiar por cuenta propia, el orden natural es el de los capítulos: leer el capítulo, hacer la guía, y en los capítulos que lo tienen, trabajar el cuaderno. Las guías son exactamente las secciones de ejercicios de las notas, con la misma numeración, generadas desde el mismo archivo fuente; las referencias a teoremas y proposiciones remiten a las notas.</p>
+    <p>Para estudiar por cuenta propia, el orden natural es el de los capítulos: leer el capítulo, hacer la guía, y en los capítulos que lo tienen, trabajar el cuaderno. Las guías son exactamente las secciones de ejercicios de las notas, con la misma numeración, generadas desde el mismo archivo fuente; las referencias a teoremas y proposiciones remiten a las notas. El archivo de <a href="practicas/sugerencias.pdf">sugerencias</a> reúne, para los ejercicios de todos los capítulos, una idea o el resultado que conviene usar, sin resolverlos.</p>
     <p>Correcciones y sugerencias: abrir un <em>issue</em> o un <em>pull request</em> en el <a href="%(repo)s">repositorio</a>, o escribir a <code>jfbonder@dm.uba.ar</code>.</p>
   </section>
 </main>
