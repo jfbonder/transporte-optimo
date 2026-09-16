@@ -1,0 +1,364 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{2}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 2}\\[4pt]
+{\large Existencia de planes óptimos}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~2 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+\cuadernolink{Monge y Kantorovich}{01-monge-kantorovich.ipynb}
+
+
+\begin{ejercicio}[Convergencia débil: ejemplos]\label{ejer.debil.ejemplos}
+Decidir si las siguientes sucesiones convergen débilmente en $\mathcal P(\R)$
+y, en caso afirmativo, hallar el límite:
+\[
+\text{(a) }\delta_{1/n};\quad
+\text{(b) }\delta_n;\quad
+\text{(c) }\tfrac12\delta_0+\tfrac12\delta_{1/n};\quad
+\text{(d) }\LL^1\lfloor_{[0,1-1/n]}\cdot\tfrac{n}{n-1};\quad
+\text{(e) }n\,\LL^1\lfloor_{[0,1/n]};\quad
+\text{(f) }\tfrac1n\sum_{k=1}^n\delta_{k/n}.
+\]
+En (b), probar que ninguna subsucesión converge débilmente a una medida de
+probabilidad, y relacionarlo con la falta de ajuste (\emph{tightness}).
+\end{ejercicio}
+
+\begin{ejercicio}[Continuidad del push-forward]\label{ejer.pushforward.continuo}
+Sean $X$, $Y$ espacios métricos y $T\colon X\to Y$ continua.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que si $\mu_n\rightharpoonup\mu$ en $\mathcal P(X)$ entonces
+$T_\#\mu_n\rightharpoonup T_\#\mu$ en $\mathcal P(Y)$.
+\item Concluir que si $\mu_m=\frac1m\sum_{j=1}^m\delta_{x_j}$ converge
+débilmente a $\mu$ (por ejemplo, si los $x_j$ son muestras independientes de
+$\mu$, por la ley de los grandes números), entonces
+$\frac1m\sum_j\delta_{T(x_j)}\rightharpoonup T_\#\mu$: ``los mapas de
+transporte mandan muestras en muestras''.
+\item Mostrar con un ejemplo que (a) falla si $T$ es sólo medible.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Los mapas no son compactos]\label{ejer.mapas.no.compactos}
+\begin{enumerate}[label=(\alph*)]
+\item Construir una sucesión $f_n\colon[0,1]\to[0,1]$ tal que
+$(f_n)_\#\LL^1\lfloor_{[0,1]}=\LL^1\lfloor_{[0,1]}$ para todo $n$ y
+$f_n\rightharpoonup\frac12$ débilmente en $L^2(0,1)$, es decir,
+$\int f_n g\to\frac12\int g$ para toda $g\in L^2(0,1)$.
+\emph{Sugerencia:} funciones ``diente de sierra'' de período $1/n$.
+\item Sea $\pi_n=(\id,f_n)_\#\LL^1\lfloor_{[0,1]}$. Probar que
+$\pi_n\rightharpoonup\LL^1\lfloor_{[0,1]}\otimes\LL^1\lfloor_{[0,1]}$, que no
+está inducido por ningún mapa. Concluir que el conjunto de planes inducidos
+por mapas no es débilmente cerrado, y comentar por qué esto obstruye el
+método directo para el problema de Monge.
+\item ¿Es posible elegir las $f_n$ de clase $C^1$?
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La variación total no sirve]\label{ejer.variacion.total}
+La distancia de variación total en $\mathcal P(Z)$ es
+$\|\alpha-\beta\|_{TV}=\sup_{A}|\alpha(A)-\beta(A)|$. Sea
+$\mu=\LL^1\lfloor_{[0,1]}$ y $\pi_n=(\id,T_n)_\#\mu$ con
+$T_n(x)=x+\frac1n \pmod 1$. Probar que $\pi_n\in\Pi(\mu,\mu)$, que
+$\|\pi_n-\pi_m\|_{TV}=1$ para $n\ne m$, y concluir que $\Pi(\mu,\mu)$ no es
+compacto para la variación total, aunque sí lo es para la topología débil
+(Corolario~\ref{N-cor.Pi.compacto}). ¿A qué converge débilmente $\pi_n$?
+\end{ejercicio}
+
+\begin{ejercicio}[Regularización de Moreau--Yosida]\label{ejer.moreau.yosida}
+Sea $(X,d)$ un espacio métrico y $g\colon X\to\R\cup\{+\infty\}$ propia
+(no idénticamente $+\infty$) y acotada inferiormente. Para $k\ge0$ se define
+\[
+g_k(x)=\inf_{y\in X}\bigl\{g(y)+k\,d(x,y)\bigr\}.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $g_k$ es finita, $k$-Lipschitz, $g_k\le g$ y $g_k\ge\inf g$.
+\item Si además $g$ es semicontinua inferiormente, probar que $g_k(x)\nearrow g(x)$
+para todo $x$ cuando $k\to\infty$.
+\item Deducir que toda función semicontinua inferiormente y acotada
+inferiormente en un espacio métrico es límite puntual creciente de una
+sucesión de funciones Lipschitz y acotadas ($\min\{g_k,k\}$).
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Integrales de funciones semicontinuas]\label{ejer.sci.integral}
+Sea $X$ un espacio métrico, $f\colon X\to\R\cup\{+\infty\}$ semicontinua
+inferiormente y acotada inferiormente, y $\mu\in\mathcal P(X)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que
+$\int_Xf\,d\mu=\sup\bigl\{\int_Xg\,d\mu:\ g\in C_b(X),\ g\le f\bigr\}$.
+\emph{Sugerencia:} Ejercicio~\ref{ejer.moreau.yosida} y convergencia
+monótona.
+\item Deducir de (a) el Teorema~\ref{N-teo.K.sci}: si $\pi_n\rightharpoonup\pi$
+en $\mathcal P(X\times Y)$ y $c$ es semicontinua inferiormente y acotada
+inferiormente, entonces $\int c\,d\pi\le\liminf_n\int c\,d\pi_n$.
+\item Mostrar con un ejemplo que la semicontinuidad inferior del funcional
+de Kantorovich falla si $c$ es sólo medible y acotada.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Estabilidad de los planes óptimos]\label{ejer.estabilidad.costos}
+Sean $X$, $Y$ compactos, $\mu\in\mathcal P(X)$, $\nu\in\mathcal P(Y)$, y
+$c_n,c\colon X\times Y\to\R$ continuas con $c_n\to c$ uniformemente. Sea
+$\gamma_n$ un plan óptimo para $c_n$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que toda subsucesión de $(\gamma_n)$ tiene una subsucesión que
+converge débilmente a un plan $\gamma$ óptimo para $c$, y que
+$\min_{\Pi(\mu,\nu)}\int c_n\,d\gamma\to\min_{\Pi(\mu,\nu)}\int c\,d\gamma$.
+\item Aplicarlo a $c_\ve(x,y)=|x-y|^{1+\ve}$ y a
+$c_\ve(x,y)=\sqrt{\ve^2+|x-y|^2}$ con $\ve\to0$: los planes óptimos
+convergen, salvo subsucesión, a planes óptimos para $|x-y|$. Como para
+$|x-y|$ el plan óptimo no es único en general, estos límites
+\emph{seleccionan} planes óptimos particulares; ¿qué se puede decir del
+límite $\ve\to\infty$ en el segundo caso, una vez normalizado el costo?
+\item ($\bigstar$) Si $\mu$ y $\nu$ tienen soportes disjuntos y
+$\mu\ll\LL^d$, el límite en (b) es único y es el plan ``monótono a lo largo
+de rayos''; ver \cite[Sec.~3.1]{Santambrogio}.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[$\bigstar$ La convergencia débil es metrizable]\label{ejer.debil.metrizable}
+Sea $X$ un espacio métrico completo y separable. Probar que existe una
+métrica $d$ en $\mathcal P(X)$ tal que $\mu_n\rightharpoonup\mu$ si y sólo
+si $d(\mu_n,\mu)\to0$. \emph{Sugerencia:} tomar una sucesión
+$(g_k)\subset C_b(X)$ densa en un sentido adecuado (por ejemplo, densa en
+$\operatorname{Lip}_b(X)$ para la convergencia uniforme sobre compactos) y
+definir $d(\mu,\nu)=\sum_k2^{-k}\min\{1,|\int g_k\,d\mu-\int g_k\,d\nu|\}$;
+ver \cite[Sec.~5.1]{AGS2008}. Compárese con la métrica $W_p$ del
+Capítulo~\ref{N-cap.Wp}, que metriza la convergencia débil junto con la de
+los momentos.
+\end{ejercicio}
+
+\subsection*{Ejercicios computacionales}
+
+Los ejercicios siguientes se resuelven con el cuaderno \emph{Monge y
+Kantorovich}, que acompaña los Capítulos~\ref{N-cap.intro} y~\ref{N-cap.existencia}
+(véase el Apéndice~\ref{N-ap.cuadernos}); los enunciados figuran también al
+final del cuaderno. Las referencias a secciones son a las del cuaderno.
+
+\begin{ejercicio}[Asignación y Kantorovich]\label{ejc.MK.asignacion}
+Para $n$ puntos con masas uniformes, verificar que el solver exacto
+(\texttt{ot.emd}) devuelve siempre una matriz de permutación dividida por $n$
+y que su costo coincide con el del problema de asignación resuelto con la
+rutina de SciPy, como predice el teorema de Birkhoff
+(Ejercicio~\ref{N-ejer.biestocasticas}). Para masas genéricas, contar las
+entradas no nulas del plan óptimo y comprobar la cota $n+m-1$. Construir un
+ejemplo con $n=m=3$ en el que el plan óptimo tenga exactamente $5$ entradas no
+nulas, y otro en el que tenga menos.
+\end{ejercicio}
+
+\begin{ejercicio}[El segmento $\Pi(\mu,\nu)$]\label{ejc.MK.segmento}
+Para $\mu=\nu=\frac12(\delta_0+\delta_1)$ y los costos $c=|x-y|^2$,
+$c=\mathbf 1_{\{x\ne y\}}$ y $c=-|x-y|^2$, graficar el costo como función del
+parámetro $t$ que recorre el segmento $\Pi(\mu,\nu)$ e identificar todos los
+planes óptimos en cada caso. ¿Para qué costo son óptimos todos los planes?
+\end{ejercicio}
+
+\begin{ejercicio}[Birkhoff]\label{ejc.MK.birkhoff}
+Generar una matriz biestocástica $M$ como combinación convexa aleatoria de
+cinco matrices de permutación. Para un costo aleatorio $C$, comprobar que el
+plan óptimo del programa lineal es una permutación y que $\langle C,M\rangle$
+es estrictamente mayor que el óptimo (salvo coincidencias). Implementar la
+descomposición de Birkhoff: encontrar una permutación $\sigma$ con
+$M_{i\sigma(i)}>0$ para todo $i$ (resolver un problema de asignación con costo
+$-\log M$), restar $t\,M(\sigma)$ con $t=\min_iM_{i\sigma(i)}$ y repetir hasta
+llegar a cero. ¿Cuántas permutaciones aparecen?
+\end{ejercicio}
+
+\begin{ejercicio}[Costos cóncavos]\label{ejc.MK.concavos}
+Con las dos densidades superpuestas de la Sección~5 del cuaderno, calcular la
+masa que el plan óptimo de $|x-y|^p$ deja en la diagonal $\{y=x\}$ como
+función de $p\in(0,2]$ y graficarla. Explicar el salto en $p=1$ usando la
+Proposición~\ref{N-prop:convexo-no-estricto} y el
+Ejercicio~\ref{N-ejer.1D.concavo}.
+\end{ejercicio}
+
+\begin{ejercicio}[Convergencia débil de planes]\label{ejc.MK.debil}
+Con las funciones ``diente de sierra'' $f_n$ del
+Ejercicio~\ref{ejer.mapas.no.compactos}, verificar numéricamente que
+$\int_0^1\phi(x)\psi(f_n(x))\,dx\to\int_0^1\phi\int_0^1\psi$ para varias
+$\phi,\psi$ continuas (por ejemplo, polinomios y senos). Repetir con
+$f_n(x)=x+\frac1n \bmod 1$: ¿a qué plan convergen ahora los
+$\pi_n=(\id,f_n)_\#\LL^1\lfloor_{[0,1]}$? ¿Está inducido por un mapa?
+\end{ejercicio}
+
+\bibliographystyle{plain}
+\bibliography{../notas/biblio}
+
+\end{document}

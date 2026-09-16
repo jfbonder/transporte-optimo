@@ -1,0 +1,295 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{11}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 11}\\[4pt]
+{\large La desigualdad de Brunn--Minkowski}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~11 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+
+\begin{ejercicio}[Casos elementales]\label{ejer.BM.elementales}
+\begin{enumerate}[label=(\alph*)]
+\item Probar la desigualdad de Brunn--Minkowski directamente para $d=1$
+(intervalos y, en general, compactos de $\R$) y para cajas
+\[
+A=\prod_{i=1}^d[a_i,b_i],\qquad B=\prod_{i=1}^d[c_i,d_i]
+\]
+en $\R^d$ (usar la desigualdad entre las medias aritmética y geométrica).
+\item Probar que hay igualdad si $A$ y $B$ son homotéticos ($B=\lambda A+v$).
+\item Sea $A$ un cubo y $B$ un segmento no paralelo a ninguna cara de $A$.
+Calcular $|A+B|$ y comprobar que es estrictamente mayor que $|A|$ aunque
+$|B|=0$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La forma multiplicativa]\label{ejer.BM.multiplicativa}
+Probar que la desigualdad de Brunn--Minkowski es equivalente a su forma
+multiplicativa \emph{sin exponentes}:
+\[
+|(1-t)A+tB|\ge|A|^{1-t}|B|^{t}\qquad\text{para todo }t\in[0,1]
+\]
+(para $A$, $B$ compactos de medida positiva). \emph{Sugerencia:} para
+deducir la forma aditiva de la multiplicativa, aplicarla a
+$A'=|A|^{-1/d}A$, $B'=|B|^{-1/d}B$ y un $t$ bien elegido; para la
+recíproca, usar la desigualdad entre medias. Observar que la forma
+multiplicativa no depende de la dimensión, lo que es útil para demostrarla
+por inducción (desigualdad de Prékopa--Leindler).
+\end{ejercicio}
+
+\begin{ejercicio}[Una identidad de la matriz de cofactores]\label{ejer.BM.cofactores}
+Sea $u\in C^3(\Omega)$ y $M(x)=\operatorname{cof}(D^2u(x))$ la matriz de
+cofactores de su hessiano, de modo que $M\,D^2u=(\det D^2u)\,I$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\sum_i\partial_iM_{ij}=0$ para todo $j$ (cada columna de
+$M$ es un campo de divergencia nula). \emph{Sugerencia:} escribir
+$M_{ij}$ como un determinante de orden $d-1$ y usar la simetría de las
+derivadas terceras de $u$.
+\item Deducir la \emph{forma de divergencia} de la ecuación de
+Monge--Ampère: $\det D^2u=\frac1d\sum_{ij}\partial_i\bigl(M_{ij}\,\partial_ju\bigr)$.
+\item Usar (b) para dar otra demostración del Lema~\ref{N-lema.MA} en la
+forma integral: si $T=\nabla u$ es un difeomorfismo de $\Omega$ sobre
+$\Omega'$, entonces $\int_\Omega\det D^2u\,dx=|\Omega'|$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La desigualdad isoperimétrica]\label{ejer.BM.isoperimetrica}
+Sea $A\subset\R^d$ compacto con $|A|>0$ y sea
+$\operatorname{Per}(A)=\lim_{\ve\to0^+}\frac{|A+\ve\overline{B(0,1)}|-|A|}{\ve}$
+su contenido de Minkowski, que suponemos existe.
+\begin{enumerate}[label=(\alph*)]
+\item Deducir del Teorema~\ref{N-teo.BM} la desigualdad isoperimétrica
+\[
+\operatorname{Per}(A)\ge d\,\omega_d^{1/d}|A|^{(d-1)/d},
+\]
+completando los detalles de la Observación~\ref{N-obs.isoperimetrica}.
+\item Verificar que para bolas hay igualdad y que para un cubo de lado
+$\ell$ el contenido de Minkowski es $2d\,\ell^{d-1}$; comparar ambos
+miembros en ese caso.
+\item Para $d=2$, deducir la forma clásica $L^2\ge4\pi\,\text{Área}$ para
+dominios con borde $C^1$ (aceptando que el contenido de Minkowski coincide
+con la longitud del borde).
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Convexidad por desplazamiento de la entropía]\label{ejer.BM.entropia}
+Sean $\mu_0=\rho_0\LL^d$ y $\mu_1=\rho_1\LL^d$ con densidades continuas y
+positivas en abiertos acotados $\Omega_0$, $\Omega_1$, y supongamos que el
+mapa de Brenier $T=\nabla u$ entre ellas satisface la hipótesis (R) de la
+Sección~\ref{N-sec.BM.demo} ($u\in C^2$, $T$ difeomorfismo). Sea
+$\mu_t=(T_t)_\#\mu_0$ la interpolación de McCann, con densidad $\rho_t$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar la ecuación de Monge--Ampère
+$\rho_t(T_t(x))\det DT_t(x)=\rho_0(x)$.
+\item Probar que la \emph{entropía}
+$\mathcal H(\mu_t)=\int\rho_t\log\rho_t\,dx$ satisface
+\[
+\mathcal H(\mu_t)=\int\rho_0(x)\log\rho_0(x)\,dx-\int\rho_0(x)\log\det\bigl((1-t)I+tD^2u(x)\bigr)\,dx,
+\]
+y que $t\mapsto\log\det((1-t)I+tM)$ es cóncava para $M$ simétrica definida
+positiva. Concluir que $t\mapsto\mathcal H(\mu_t)$ es convexa.
+\item Probar, con el Lema~\ref{N-lema.det.concavo}, que $t\mapsto\int\rho_t^m\,dx$
+es convexa si $m>1$ y cóncava si $1-\frac1d\le m<1$ (de modo que
+$-\int\rho_t^m$ es convexa, como en la
+Observación~\ref{N-obs.desplazamiento.convexo}). \emph{Sugerencia:}
+$\int\rho_t^m=\int\rho_0^m\,(\det DT_t)^{1-m}$, y $(\det DT_t)^{1/d}$ es
+cóncava y positiva en $t$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[$\bigstar$ Una desigualdad de tipo Sobolev]\label{ejer.BM.sobolev}
+Sea $\Omega\subset\R^d$ convexo y acotado, $f\in W^{1,p}(\Omega)$, y
+$\mu,\nu\in\mathcal P(\Omega)$ con densidades acotadas por $C$ en $L^r$.
+Probar que si $\frac1p+\frac1q+\frac1{q'r}=1+\frac1r$, entonces
+\[
+\int_\Omega f\,d(\mu-\nu)\le C^{1/q'}\,\|\nabla f\|_{L^p(\Omega)}\,W_q(\mu,\nu).
+\]
+\emph{Esquema:} escribir $\int f\,d(\nu-\mu)=\int_0^1\!\!\int\nabla f(T_t(x))\cdot(T(x)-x)\,d\mu\,dt$
+con $T$ el mapa de Brenier y $T_t$ la interpolación; aplicar Hölder con
+exponentes $(p,q,\cdot)$, y controlar $\|\rho_t\|_{L^r}$ uniformemente en
+$t$ mediante la concavidad de $t\mapsto\det DT_t^{1/d}$
+(Lema~\ref{N-lema.det.concavo}), que da $\rho_t\le\max\{\|\rho_0\|_\infty,\|\rho_1\|_\infty\}$
+en el caso $r=\infty$ y la cota $L^r$ en general. Ver
+\cite[Sec.~5.5]{Santambrogio}.
+\end{ejercicio}
+
+\bibliographystyle{plain}
+\bibliography{../notas/biblio}
+
+\end{document}

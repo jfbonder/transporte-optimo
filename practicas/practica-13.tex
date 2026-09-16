@@ -1,0 +1,372 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{13}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 13}\\[4pt]
+{\large Transporte entrópico y el algoritmo de Sinkhorn}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~13 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+\cuadernolink{Transporte entrópico y Sinkhorn}{06-transporte-entropico-sinkhorn.ipynb}
+
+
+\begin{ejercicio}[Propiedades de la entropía relativa]\label{ejer.KL.propiedades}
+Sean $a\in\R^n$, $b\in\R^m$ con entradas positivas y $\pi\in\Pi(a,b)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\mathrm{KL}(\pi\,|\,a\otimes b)=\sum_{ij}\pi_{ij}\log\pi_{ij}-\sum_ia_i\log a_i-\sum_jb_j\log b_j$;
+es decir, sobre $\Pi(a,b)$ la entropía relativa difiere de la entropía
+negativa $\sum\pi_{ij}\log\pi_{ij}$ en una constante. Deducir que el
+regularizador de Peyré--Cuturi de la Observación~\ref{N-obs.notacion.peyre}
+produce el mismo minimizador $\pi^\ve$.
+\item (Desigualdad de Pinsker.) Probar que
+$\|\pi-a\otimes b\|_1^2\le2\,\mathrm{KL}(\pi\,|\,a\otimes b)$.
+\emph{Sugerencia:} reducirlo al caso de dos puntos (agrupar según el signo
+de $\pi_{ij}-a_ib_j$ y usar la convexidad de $\mathrm{KL}$) y estudiar la
+función $t\mapsto t\log\frac tp+(1-t)\log\frac{1-t}{1-p}-2(t-p)^2$.
+\item Deducir de (b) y de la Proposición~\ref{N-prop.eps.infinito} la
+velocidad $\|\pi^\ve-a\otimes b\|_1\le2\sqrt{\|C\|_\infty/\ve}$.
+\item Probar que la cota $\mathrm{KL}(\pi\,|\,a\otimes b)\le\log\frac1{\min_ia_i}$
+usada en el Teorema~\ref{N-teo.eps.cero} es óptima: para $a=b$ uniformes en
+$n$ puntos y $\pi$ una matriz de permutación dividida por $n$ hay igualdad.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[El valor entrópico como función de $\ve$]\label{ejer.OTeps.concavo}
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\ve\mapsto\mathrm{OT}_\ve(a,b)$ es no decreciente y cóncava
+en $(0,\infty)$ (es un ínfimo de funciones afines de $\ve$), y que
+\[
+\frac{d}{d\ve}\mathrm{OT}_\ve(a,b)=\mathrm{KL}(\pi^\ve\,|\,a\otimes b)
+\]
+donde sea derivable.
+\item Deducir que $\ve\mapsto\mathrm{KL}(\pi^\ve\,|\,a\otimes b)$ es no
+creciente y que $\ve\mapsto\langle C,\pi^\ve\rangle$ es no decreciente:
+al aumentar la regularización el plan se vuelve más ``desordenado'' y más
+caro.
+\item Probar que $\lim_{\ve\to\infty}\mathrm{OT}_\ve(a,b)=\langle C,a\otimes b\rangle$
+y que $\lim_{\ve\to0}\mathrm{OT}_\ve(a,b)=\mathrm{OT}(a,b)$, y que ambas
+convergencias son monótonas.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[El soft-min]\label{ejer.softmin}
+Con la notación de la Definición~\ref{N-def.softmin}:
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $(\varphi+s)^{c,\ve}=(\varphi)^{c,\ve}-s$ para $s\in\R$, y
+que $\varphi\le\tilde\varphi$ implica $(\varphi)^{c,\ve}\ge(\tilde\varphi)^{c,\ve}$.
+\item Probar que $\varphi\mapsto(\varphi)^{c,\ve}_j$ es cóncava y de clase
+$C^\infty$, y calcular su gradiente: es (menos) el vector de probabilidad
+$\bigl(a_ie^{(\varphi_i-c_{ij})/\ve}/\sum_ka_ke^{(\varphi_k-c_{kj})/\ve}\bigr)_i$,
+la $j$-ésima columna normalizada del plan. Comparar con la $c$-transformada
+$\varphi^c_j=\min_i\{c_{ij}-\varphi_i\}$, que no es diferenciable.
+\item Probar que $\varphi\mapsto(\varphi)^{c,\ve}$ es $1$-Lipschitz para la
+norma $\|\cdot\|_\infty$, y que para $\ve\to\infty$,
+$(\varphi)^{c,\ve}_j\to\sum_ia_i(c_{ij}-\varphi_i)$: el soft-min tiende al
+promedio.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Unicidad de los potenciales entrópicos]\label{ejer.potenciales.eps.unicidad}
+Sean $(\varphi,\psi)$ y $(\varphi',\psi')$ dos pares tales que
+$a_ib_je^{(\varphi_i+\psi_j-c_{ij})/\ve}$ y $a_ib_je^{(\varphi'_i+\psi'_j-c_{ij})/\ve}$
+son ambos planes de $\Pi(a,b)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que ambos planes coinciden (son el único minimizador
+$\pi^\ve$), y deducir que $\varphi_i+\psi_j=\varphi'_i+\psi'_j$ para todo
+$(i,j)$.
+\item Concluir que $(\varphi',\psi')=(\varphi+s,\psi-s)$ para algún $s\in\R$.
+Contrastar con el caso $\ve=0$ (Ejercicio~\ref{N-ejer.discreto.unicidad}), en
+el que los potenciales pueden no ser únicos: ¿qué propiedad del plan
+entrópico lo explica?
+\item Probar que si $a=b$ y $C$ es simétrica, entonces $\varphi^\ve=\psi^\ve$
+con la normalización adecuada, y que en ese caso una iteración de Sinkhorn
+puede escribirse con un solo potencial.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Los potenciales entrópicos convergen a potenciales de Kantorovich]\label{ejer.potenciales.eps.limite}
+Completar los detalles de la Observación~\ref{N-obs.potenciales.eps}.
+\begin{enumerate}[label=(\alph*)]
+\item Normalizando $\varphi^\ve_1=0$, probar que $(\varphi^\ve,\psi^\ve)$
+está acotado uniformemente para $\ve\in(0,1]$. \emph{Sugerencia:}
+$\psi^\ve=(\varphi^\ve)^{c,\ve}$ y el Lema~\ref{N-lema.softmin} dan
+$\|\psi^\ve-(\varphi^\ve)^c\|_\infty\le\ve\log\frac1{\min a_i}$; usar que
+las $c$-transformadas de funciones con $\varphi_1=0$ están acotadas.
+\item Probar que todo punto límite $(\varphi^0,\psi^0)$ satisface
+$\psi^0=(\varphi^0)^c$, $\varphi^0=(\psi^0)^{\bar c}$ y
+$\varphi^0_i+\psi^0_j=c_{ij}$ sobre el soporte de $\pi^0$, y concluir que es
+un par óptimo del problema dual de Kantorovich.
+\item ¿Converge toda la familia $(\varphi^\ve,\psi^\ve)$, o sólo
+subsucesiones? Discutirlo en el ejemplo del
+Ejercicio~\ref{N-ejer.discreto.3x3}, donde los potenciales de Kantorovich
+forman un segmento: ¿a qué punto del segmento converge el límite entrópico?
+(La respuesta es delicada; ver \cite{Cominetti1994}.)
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Sinkhorn en un paso]\label{ejer.sinkhorn.un.paso}
+\begin{enumerate}[label=(\alph*)]
+\item Probar que si $C$ es de la forma $c_{ij}=f_i+g_j$ entonces
+$\pi^\ve=a\otimes b$ para todo $\ve$, y el algoritmo de Sinkhorn converge en
+una iteración.
+\item Recíprocamente, probar que si $\pi^\ve=a\otimes b$ para algún
+$\ve>0$, entonces $C$ es de la forma (a). Deducir que $\pi^\ve$ tiene rango
+uno si y sólo si $C$ es de la forma (a).
+\item Sea $n=m=2$. Escribir explícitamente $\pi^\ve$ en función de $a$, $b$,
+$C$ y $\ve$ (el problema se reduce a una ecuación escalar) y verificar a
+mano los límites $\ve\to0$ y $\ve\to\infty$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Baricentros entrópicos]\label{ejer.bar.entropico}
+\begin{enumerate}[label=(\alph*)]
+\item Probar que si alguna $b^k$ tiene todas sus entradas positivas, entonces
+$a\mapsto\mathrm{OT}_\ve(a,b^k)$ es estrictamente convexa en $\Sigma_n$ y el
+baricentro entrópico es único. \emph{Sugerencia:} la función
+$(a,\pi)\mapsto\langle C,\pi\rangle+\ve\mathrm{KL}(\pi\,|\,a\otimes b^k)$ es
+estrictamente convexa en $\pi$ y el minimizador depende continuamente de
+$a$; estudiar la igualdad en la desigualdad de convexidad.
+\item Interpretar el paso 3 del algoritmo de la
+Sección~\ref{N-sec.baricentros.entropicos} como una \emph{proyección de
+Bregman}: dados los planes $\pi^1,\dots,\pi^N$ (con primeras marginales
+$m^k=\pi^k\mathbf 1$ distintas), probar que el problema
+\[
+\min\Bigl\{\sum_k\lambda_k\,\mathrm{KL}(\tilde\pi^k\,|\,\pi^k):\ \tilde\pi^k\mathbf 1=a\ \text{para todo }k,\ a\in\Sigma_n\Bigr\}
+\]
+tiene solución $\tilde\pi^k=\operatorname{diag}(a/m^k)\,\pi^k$ con
+$a\propto\prod_k(m^k)^{\lambda_k}$ (media geométrica ponderada), que es la
+actualización del algoritmo. ¿Por qué no aparece la media aritmética?
+\item En el ejemplo de no unicidad del Capítulo~\ref{N-cap.baricentros}
+($\mu_1$ con átomos en $(\pm1,0)$, $\mu_2$ con átomos en $(0,\pm1)$, sobre
+una grilla que contenga los cuatro candidatos $(\pm\frac12,\pm\frac12)$),
+probar que el baricentro entrópico es único para todo $\ve>0$ y simétrico
+respecto de los dos ejes, y describir su límite cuando $\ve\to0$.
+\end{enumerate}
+\end{ejercicio}
+
+\subsection*{Ejercicios computacionales}
+
+Los ejercicios siguientes se resuelven con el cuaderno \emph{Transporte
+entrópico y Sinkhorn} (véase el Apéndice~\ref{N-ap.cuadernos}); los enunciados
+figuran también al final del cuaderno. Las referencias a secciones son a las
+del cuaderno.
+
+\begin{ejercicio}[Convergencia de valores]\label{ejc.eps.valores}
+Graficar $\ve\mapsto\mathrm{OT}_\ve(a,b)-\mathrm{OT}(a,b)$ en escala
+logarítmica en ambos ejes para el ejemplo de la Sección~1 del cuaderno y
+estimar el orden de convergencia. ¿Es $O(\ve)$, como garantiza el
+Teorema~\ref{N-teo.eps.cero}, o mejor? Comparar la constante observada con
+$\log(1/\min_ia_i)$.
+\end{ejercicio}
+
+\begin{ejercicio}[Sinkhorn y la mejora de potenciales]\label{ejc.eps.mejora}
+Implementar la mejora de potenciales $\varphi\mapsto\varphi^{c\bar c}$ de la
+Proposición~\ref{N-prop:mejora-potenciales}, sin regularización, y compararla
+con la iteración de Sinkhorn para $\ve$ pequeño partiendo del mismo $\varphi$.
+¿Converge la versión no regularizada? ¿Y la regularizada?
+\end{ejercicio}
+
+\begin{ejercicio}[Costo de cada iteración]\label{ejc.eps.costo}
+Medir el tiempo de una iteración de Sinkhorn para $n=m=500,1000,2000,4000$ y
+verificar el crecimiento $O(nm)$. Comparar con el tiempo del solver exacto
+(\texttt{ot.emd}) para los mismos tamaños.
+\end{ejercicio}
+
+\begin{ejercicio}[Un baricentro con $\ve\to0$]\label{ejc.eps.baricentro}
+En el ejemplo de la Sección~5.1 del cuaderno, calcular el baricentro
+entrópico de la Proposición~\ref{N-prop.baricentro.entropico} para
+$\ve\in\{0{,}5,\,0{,}2,\,0{,}1,\,0{,}05,\,0{,}02,\,0{,}01,\,0{,}005\}$ y
+graficar la distancia $W_2$ entre el baricentro entrópico y el exacto en
+función de $\ve$, en escala logarítmica en ambos ejes. ¿Cuántas iteraciones
+hacen falta en cada caso?
+\end{ejercicio}
+
+\begin{ejercicio}[Unicidad del baricentro entrópico]\label{ejc.eps.unicidad}
+Verificar numéricamente que el baricentro entrópico del ejemplo de no
+unicidad del Ejemplo~\ref{N-ej.bar.diracs} ($\mu_1$ con átomos en $(\pm1,0)$,
+$\mu_2$ con átomos en $(0,\pm1)$, sobre una grilla que contenga los cuatro
+candidatos) es \emph{único} y simétrico: la entropía rompe la degeneración
+eligiendo la combinación más ``repartida''. Comparar con el
+Ejercicio~\ref{ejer.bar.entropico}.
+\end{ejercicio}
+
+\bibliographystyle{plain}
+\bibliography{../notas/biblio}
+
+\end{document}

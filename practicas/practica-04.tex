@@ -1,0 +1,265 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{4}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 4}\\[4pt]
+{\large Dualidad}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~4 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+
+\begin{ejercicio}[Desigualdades ``casi en todo punto'' y planes]\label{ejer.ctp.planes}
+Sean $\pi\in\Pi(\mu,\nu)$ y $c$, $\phi$, $\psi$ funciones medibles.
+\begin{enumerate}[label=(\alph*)]
+\item Supongamos que existen $N\subset X$ y $M\subset Y$ con
+$\mu(N)=\nu(M)=0$ tales que $\phi(x)+\psi(y)\le c(x,y)$ para todo $x\notin N$
+y todo $y\notin M$. Probar que $\phi(x)+\psi(y)\le c(x,y)$ para
+$\pi$-casi todo $(x,y)$.
+\item Mostrar que la conclusión es \emph{falsa} si sólo se supone que la
+desigualdad vale $(\mu\otimes\nu)$-c.t.p.: tomar $X=Y=[0,1]$,
+$\mu=\nu=\LL^1$, $c=\I_{\{x\ne y\}}$, $\phi=\psi=\tfrac12$ y
+$\pi=(\id,\id)_\#\mu$.
+\item Explicar por qué (b) obliga a definir la clase admisible
+$\mathcal A_c$ con la desigualdad en \emph{todo} punto, y qué fallaría en la
+dualidad débil (Proposición~\ref{N-prop.dualidad.debil}) con una definición
+``c.t.p.''.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Dualidad a mano]\label{ejer.dualidad.a.mano}
+Sean $\mu=\LL^1\lfloor_{[0,1]}$ y $\nu=\LL^1\lfloor_{[1,2]}$.
+\begin{enumerate}[label=(\alph*)]
+\item Para $c(x,y)=|x-y|$, probar que $(\varphi,\psi)=(-x,y)$ es admisible
+y que el plan $\pi=(\id,T)_\#\mu$ con $T(x)=x+1$ tiene costo igual a
+$\D(\varphi,\psi)$. Concluir que ambos son óptimos y que el costo óptimo es
+$1$. ¿Hay otros planes óptimos?
+\item Para $c(x,y)=|x-y|^2$, hallar un par admisible $(\varphi,\psi)$ que
+sature en el gráfico de $T$ (buscar $\psi$ afín) y concluir que $T$ es
+óptimo también para el costo cuadrático. ¿Es único el plan óptimo en este
+caso?
+\item Interpretar $\varphi$ y $\psi$ en términos del problema del
+transportista (precios de carga y descarga) de este capítulo. Observar que
+en (a) \emph{todo} plan de $\Pi(\mu,\nu)$ es óptimo; explicar por qué.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Funciones semicontinuas y medidas signadas]\label{ejer.sci.signadas}
+Sea $X$ un espacio métrico compacto y $f\colon X\to\R\cup\{+\infty\}$
+semicontinua inferiormente y acotada inferiormente. Para una medida de
+Borel signada finita $\mu$ probar que
+\[
+\sup\Bigl\{\int_Xg\,d\mu:\ g\in C_b(X),\ g\le f\Bigr\}
+=\begin{cases}\displaystyle\int_Xf\,d\mu,&\text{si }\mu\ge0,\\[1ex]
++\infty,&\text{en otro caso.}\end{cases}
+\]
+\emph{Sugerencia:} para la primera alternativa usar el
+Ejercicio~\ref{N-ejer.sci.integral}; para la segunda, la descomposición de
+Hahn de $\mu$ y funciones continuas que aproximen a
+$-k\,\I_{A}$ sobre un conjunto $A$ con $\mu(A)<0$. Este cálculo es el que
+identifica la transformada de Legendre--Fenchel de la restricción
+$\varphi\oplus\psi\le c$ en la demostración del Teorema~\ref{N-teo.dualidad}.
+\end{ejercicio}
+
+\begin{ejercicio}[$\bigstar$ Dualidad para costos semicontinuos inferiores]\label{ejer.dualidad.sci}
+En la Sección~\ref{N-sec.demo.dualidad} se demuestra el Teorema~\ref{N-teo.dualidad}
+para $X$, $Y$ compactos y $c$ continua. Extenderlo a $c\colon X\times Y\to[0,+\infty]$
+semicontinua inferiormente, con $X$, $Y$ compactos, siguiendo estos pasos.
+\begin{enumerate}[label=(\alph*)]
+\item Por el Ejercicio~\ref{N-ejer.moreau.yosida}, existen $c_k\in C(X\times Y)$
+con $c_k\nearrow c$. Sean $\pi_k$ planes óptimos para $c_k$. Probar que toda
+subsucesión de $(\pi_k)$ tiene una subsucesión convergente a un plan $\pi$ y
+que, para todo $k_0$ fijo,
+$\int c_{k_0}\,d\pi\le\lim_k\min_{\Pi}\int c_k\,d\gamma$. Deducir, con
+convergencia monótona, que $\int c\,d\pi\le\lim_k\min_\Pi\int c_k\,d\gamma$,
+y por lo tanto que $\min_\Pi\int c_k\,d\gamma\nearrow\min_\Pi\int c\,d\gamma$.
+\item Probar que $\mathcal A_{c_k}\subset\mathcal A_c$ y concluir
+\[
+\sup_{\mathcal A_c}\D\ \ge\ \sup_k\sup_{\mathcal A_{c_k}}\D
+=\sup_k\min_\Pi\int c_k\,d\gamma=\min_\Pi\int c\,d\gamma\ \ge\ \sup_{\mathcal A_c}\D,
+\]
+donde la última desigualdad es la dualidad débil.
+\item ¿Qué cambia si $X$, $Y$ son sólo completos y separables? Consultar
+\cite[Thm.~1.3]{Villani2003} o \cite[Thm.~1.39]{Santambrogio}.
+\end{enumerate}
+\end{ejercicio}
+
+\bibliographystyle{plain}
+\bibliography{../notas/biblio}
+
+\end{document}

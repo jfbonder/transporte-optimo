@@ -1,0 +1,274 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{3}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 3}\\[4pt]
+{\large Un breve repaso de dualidad en Programación Lineal}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~3 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+
+\begin{ejercicio}[Duales de distintas formas]\label{ejer.PL.formas}
+\begin{enumerate}[label=(\alph*)]
+\item Escribir el problema dual de $\min\{c^Tx:\ Ax\ge b,\ x\ge0\}$ y el de
+$\min\{c^Tx:\ Ax=b\}$ (sin restricción de signo), reduciéndolos primero a la
+forma estándar $\min\{c^Tx:Ax=b,\,x\ge0\}$ mediante variables de holgura y
+la descomposición $x=x^+-x^-$.
+\item Probar que el dual del dual es el primal.
+\item Dar un ejemplo en $\R$ (una variable) en el que el primal no sea
+factible y el dual no sea acotado, y otro en el que ninguno de los dos sea
+factible. ¿Contradicen estos ejemplos el teorema de dualidad fuerte?
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Holgura complementaria]\label{ejer.PL.holgura}
+Sean $x$ factible para el primal $\min\{c^Tx:Ax=b,\,x\ge0\}$ e $y$ factible
+para su dual $\max\{b^Ty:A^Ty\le c\}$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $c^Tx-b^Ty=x^T(c-A^Ty)$ y que ambos son óptimos si y sólo
+si $x_j\,(c-A^Ty)_j=0$ para todo $j$.
+\item Traducirlo al problema de transporte discreto de la
+Sección~\ref{N-kant.discreto}: $\pi$ y $(\varphi,\psi)$ factibles son ambos
+óptimos si y sólo si
+\[
+\pi_{ij}>0\ \Longrightarrow\ \varphi_i+\psi_j=c_{ij}.
+\]
+Ésta es la versión discreta de la \emph{condición de saturación} que
+reaparecerá en los Capítulos~\ref{N-cap.dual.discreto} y~\ref{N-cap.dual}.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Un problema $2\times2$ a mano]\label{ejer.PL.2x2}
+Sean $a=(0{,}4,\ 0{,}6)$, $b=(0{,}5,\ 0{,}5)$ y
+$c=\bigl(\begin{smallmatrix}1&3\\2&1\end{smallmatrix}\bigr)$.
+\begin{enumerate}[label=(\alph*)]
+\item Describir $\Pi(a,b)$ como un segmento (tiene un solo grado de
+libertad) y hallar el plan óptimo y el costo óptimo.
+\item Resolver el problema dual y verificar la dualidad fuerte y la holgura
+complementaria del Ejercicio~\ref{ejer.PL.holgura}.
+\item Probar que el par óptimo $(\varphi,\psi)$ es único salvo la
+transformación $(\varphi+s,\psi-s)$, $s\in\R$, e interpretar esta
+invariancia.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Vértices del politopo de transporte]\label{ejer.PL.vertices}
+Sean $a\in\R^N$, $b\in\R^M$ con entradas positivas y
+$\sum a_i=\sum b_j=1$, y $\Pi(a,b)$ el politopo de planes discretos.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\Pi(a,b)$ es un politopo compacto y convexo de dimensión
+$(N-1)(M-1)$.
+\item Probar que todo punto extremal $\pi$ de $\Pi(a,b)$ tiene a lo sumo
+$N+M-1$ entradas positivas. \emph{Sugerencia:} el grafo bipartito con
+aristas $\{(i,j):\pi_{ij}>0\}$ no puede contener ciclos (si los contiene,
+perturbar como en el Ejercicio~\ref{N-ejer.biestocasticas}), y un bosque con
+$N+M$ vértices tiene a lo sumo $N+M-1$ aristas.
+\item Deducir que el problema de transporte discreto siempre admite un plan
+óptimo con a lo sumo $N+M-1$ entradas positivas. (Esta cota se usa en el
+Capítulo~\ref{N-cap.Sinkhorn} para contrastar con el plan entrópico, que
+tiene todas sus entradas positivas.)
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[El problema de asignación]\label{ejer.PL.asignacion}
+Sean $N=M$ y $a=b=\frac1N(1,\dots,1)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar, usando que un programa lineal alcanza su mínimo en un vértice
+y el teorema de Birkhoff (Ejercicio~\ref{N-ejer.biestocasticas}), que
+\[
+\min_{\pi\in\Pi(a,b)}\sum_{ij}c_{ij}\pi_{ij}
+=\frac1N\min_{\sigma\in S_N}\sum_ic_{i\sigma(i)}.
+\]
+Es decir: para pesos uniformes, el problema de Kantorovich discreto coincide
+con el problema de Monge (una asignación óptima), aunque el primero tiene
+$N^2$ variables continuas y el segundo $N!$ candidatos.
+\item Escribir el dual del problema de asignación y probar que una
+permutación $\sigma$ es óptima si y sólo si existen $\varphi,\psi\in\R^N$
+con $\varphi_i+\psi_j\le c_{ij}$ para todo $i,j$ y
+$\varphi_i+\psi_{\sigma(i)}=c_{i\sigma(i)}$ para todo $i$. Interpretar
+$\varphi_i$ y $\psi_j$ como precios (problema de asignación de
+Koopmans--Beckmann).
+\item Para $c_{ij}=|x_i-y_j|^2$ con $x_1<\dots<x_N$ e $y_1<\dots<y_N$ en
+$\R$, probar directamente que $\sigma=\id$ es óptima (intercambiar dos
+asignaciones cruzadas no aumenta el costo). Éste es el germen del
+Capítulo~\ref{N-cap.1D}.
+\end{enumerate}
+\end{ejercicio}
+
+\end{document}

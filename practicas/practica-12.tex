@@ -1,0 +1,358 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{12}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 12}\\[4pt]
+{\large Baricentros de Wasserstein}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~12 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+\cuadernolink{Baricentros de Wasserstein}{05-baricentros-wasserstein.ipynb}
+
+
+\begin{ejercicio}[Traslaciones y escala]\label{ejer.bar.traslaciones}
+Sean $(\mu_i,\lambda_i)_{i=1}^N$ con $\mu_i\in\mathcal P_2(\R^d)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que si $T(x)=Ax+b$ es afín con $A$ lineal e invertible y
+$\mu$ tiene media $m_\mu$, entonces $T_\#\mu$ tiene media $Am_\mu+b$.
+\item Probar que si $\bar\mu$ es un baricentro de $(\mu_i,\lambda_i)$ y
+$v_i\in\R^d$, entonces $\tau_{\bar v\#}\bar\mu$ con $\bar v=\sum\lambda_iv_i$
+es un baricentro de $(\tau_{v_i\#}\mu_i,\lambda_i)$, y que
+$\mathcal F$ cambia en $\sum_i\lambda_i|v_i-\bar v|^2$. \emph{Sugerencia:}
+Lema~\ref{N-lema.W2.media}.
+\item Deducir que la media de todo baricentro es $\sum\lambda_im_{\mu_i}$ y
+que para calcular baricentros se puede suponer que todas las $\mu_i$ están
+centradas. Probar también que $D_{\lambda\#}\bar\mu$ es baricentro de
+$(D_{\lambda\#}\mu_i,\lambda_i)$ para la dilatación $D_\lambda$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Dos medidas: el valor mínimo]\label{ejer.bar.dos.valor}
+Sean $\mu_1,\mu_2\in\mathcal P_2(\R^d)$ y $t\in(0,1)$. Probar que
+\[
+\min_{\nu}\ (1-t)W_2^2(\mu_1,\nu)+tW_2^2(\nu,\mu_2)=t(1-t)\,W_2^2(\mu_1,\mu_2),
+\]
+y que el mínimo se alcanza en el punto $\mu_t$ de la geodésica
+(Proposición~\ref{N-prop.bar.dos}). \emph{Sugerencia:} para la desigualdad
+$\ge$, escribir $W_2(\mu_1,\mu_2)\le W_2(\mu_1,\nu)+W_2(\nu,\mu_2)$ y
+minimizar $(1-t)a^2+tb^2$ sujeto a $a+b=W_2(\mu_1,\mu_2)$.
+\end{ejercicio}
+
+\begin{ejercicio}[Existencia para el problema multimarginal]\label{ejer.bar.multimarginal.existencia}
+Completar la demostración del Teorema~\ref{N-teo.bar.multimarginal}:
+probar que $\Pi(\mu_1,\dots,\mu_N)$ es no vacío, ajustado y débilmente
+cerrado en $\mathcal P((\R^d)^N)$, y que el funcional $\gamma\mapsto\int c\,d\gamma$
+es semicontinuo inferiormente, de modo que el mínimo se alcanza (repetir el
+argumento del Teorema~\ref{N-teo.existencia.planes}).
+\end{ejercicio}
+
+\begin{ejercicio}[Pegado de $N$ planes]\label{ejer.pegado.N}
+Sean $\mu,\mu_1,\dots,\mu_N\in\mathcal P(\R^d)$ y $\pi_i\in\Pi(\mu,\mu_i)$.
+Desintegrando $\pi_i=\pi_i^y\otimes\mu$ (Teorema~\ref{N-teo.desintegracion}),
+se define $\widetilde\gamma=\bigl(\bigotimes_{i=1}^N\pi_i^y\bigr)\otimes\mu$,
+es decir
+\[
+\int\Phi\,d\widetilde\gamma
+=\int_{\R^d}\Bigl(\int_{(\R^d)^N}\Phi(y,x_1,\dots,x_N)\,d\pi_1^y(x_1)\cdots d\pi_N^y(x_N)\Bigr)d\mu(y).
+\]
+Probar que $\widetilde\gamma$ es una medida de probabilidad bien definida
+(medibilidad en $y$ del integrando) y que $(\pp_0,\pp_i)_\#\widetilde\gamma=\pi_i$
+para todo $i$, siguiendo la demostración del Lema~\ref{N-lema.pegado}. Deducir
+que $\gamma=(\pp_1,\dots,\pp_N)_\#\widetilde\gamma\in\Pi(\mu_1,\dots,\mu_N)$.
+\end{ejercicio}
+
+\begin{ejercicio}[Detalles de la Proposición~\ref{N-prop.bar.1D}]\label{ejer.bar.pseudoinversa}
+Sea $G=\sum_i\lambda_iF_{\mu_i}^{[-1]}$ con $\mu_i\in\mathcal P_2(\R)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que cada $F_{\mu_i}^{[-1]}$, y por lo tanto $G$, es no
+decreciente y continua por la izquierda en $(0,1)$
+(Ejercicio~\ref{N-ejer.pseudoinversa}).
+\item Sea $\bar\mu=G_\#\LL^1\lfloor_{(0,1)}$. Probar que
+$F_{\bar\mu}^{[-1]}=G$ y que $\bar\mu\in\mathcal P_2(\R)$.
+\item Deducir que el baricentro de $N$ gaussianas unidimensionales
+$N(m_i,\sigma_i^2)$ es la gaussiana $N\bigl(\sum\lambda_im_i,(\sum\lambda_i\sigma_i)^2\bigr)$,
+y que el baricentro de $N$ medidas uniformes en intervalos es uniforme en
+un intervalo.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Gaussianas con covarianzas que conmutan]\label{ejer.bar.gauss.conmutan}
+Sean $\mu_i=N(0,\Sigma_i)$ con $\Sigma_i$ definidas positivas que conmutan
+dos a dos (por ejemplo, todas diagonales).
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\bar\Sigma=\bigl(\sum_i\lambda_i\Sigma_i^{1/2}\bigr)^2$
+resuelve la ecuación de punto fijo \eqref{N-eq:bar.gauss.puntofijo}.
+\item Verificar directamente el criterio de la
+Proposición~\ref{N-prop.bar.criterio}: los mapas $T_i(x)=\Sigma_i^{1/2}\bar\Sigma^{-1/2}x$
+son gradientes de funciones convexas, transportan $N(0,\bar\Sigma)$ en
+$\mu_i$ y satisfacen $\sum\lambda_iT_i=\id$.
+\item Comparar con el Ejercicio~\ref{ejer.bar.pseudoinversa}(c): el caso
+unidimensional es el caso $d=1$ de este ejercicio.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[El criterio multimarginal]\label{ejer.bar.criterio.multimarginal}
+Sea $\mu\in\mathcal P_2(\R^d)$ en las hipótesis de la
+Proposición~\ref{N-prop.bar.criterio}: $T_i=\nabla u_i$ con $(T_i)_\#\mu=\mu_i$
+y $\sum_i\lambda_iT_i=\id$. Sea $\gamma=(T_1,\dots,T_N)_\#\mu\in\mathcal P((\R^d)^N)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\gamma\in\Pi(\mu_1,\dots,\mu_N)$ y que $A_\#\gamma=\mu$,
+donde $A(x_1,\dots,x_N)=\sum\lambda_ix_i$.
+\item Probar que $\int c\,d\gamma=\mathcal F(\mu)$ para el costo $c$ de
+\eqref{N-eq:varianza.N}, y deducir del Teorema~\ref{N-teo.bar.multimarginal}
+que $\gamma$ es un plan multimarginal óptimo.
+\item Comparar con el Ejercicio~\ref{N-ejer.multimarginal.criterio}: allí el
+plan óptimo estaba concentrado en un hiperplano $\{\sum x_i=v\}$; aquí, en
+el gráfico de $x\mapsto(T_1(x),\dots,T_N(x))$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Cuantización y baricentros de Diracs]\label{ejer.bar.cuantizacion}
+\begin{enumerate}[label=(\alph*)]
+\item Probar directamente (sin usar el Teorema~\ref{N-teo.bar.unicidad}) que
+el baricentro de masas de Dirac $\delta_{x_i}$ es único y es
+$\delta_{\bar x}$, $\bar x=\sum\lambda_ix_i$.
+\item Sea $\mu\in\mathcal P_2(\R^d)$ y $\nu=\sum_{k=1}^Nb_k\delta_{y_k}$. Probar
+que $W_2^2(\mu,\nu)\ge\sum_kb_k\,\operatorname{Var}(\mu|_{k})$ donde
+$\mu|_k$ es la restricción normalizada de $\mu$ a la celda que el plan
+óptimo envía a $y_k$, con igualdad si y sólo si cada $y_k$ es el baricentro
+de su celda. Deducir la condición de optimalidad del
+Ejercicio~\ref{N-ejer.Wp.distancia.conjunto}(c).
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[$W_2^2(\mu,\cdot)$ no es convexo a lo largo de geodésicas]\label{ejer.bar.no.convexa.geodesica}
+Sean $\mu=\frac12(\delta_{(-1,0)}+\delta_{(1,0)})$,
+$\nu_0=\frac12(\delta_{(-1,1)}+\delta_{(1,-1)})$ y
+$\nu_1=\frac12(\delta_{(1,1)}+\delta_{(-1,-1)})$ en $\R^2$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\nu_t=\frac12(\delta_{(-1+2t,1)}+\delta_{(1-2t,-1)})$ es una
+geodésica de $W_2$ entre $\nu_0$ y $\nu_1$ (¿es la única?).
+\item Calcular $W_2^2(\mu,\nu_t)=1+4\min\{t^2,(1-t)^2\}$ y concluir que
+$t\mapsto W_2^2(\mu,\nu_t)$ no es convexa: vale $1$ en los extremos y $2$ en
+$t=\frac12$.
+\item Comparar con el Lema~\ref{N-lema.W2.convexo} (convexidad a lo largo de
+interpolaciones lineales) y con el Ejercicio~\ref{N-ejer.Wp.lineal}. Este
+ejemplo muestra que la unicidad del baricentro no puede probarse por un
+argumento de convexidad geodésica.
+\end{enumerate}
+\end{ejercicio}
+
+\subsection*{Ejercicios computacionales}
+
+Los ejercicios siguientes se resuelven con el cuaderno \emph{Baricentros de
+Wasserstein} (véase el Apéndice~\ref{N-ap.cuadernos}); los enunciados figuran
+también al final del cuaderno. Las referencias a secciones son a las del
+cuaderno.
+
+\begin{ejercicio}[Rigidez en dimensión uno]\label{ejc.bar.1D}
+Para $N$ medidas empíricas en $\R$ con $n$ átomos cada una, mostrar que el
+plan multimarginal óptimo del Teorema~\ref{N-teo.bar.multimarginal} es el
+comonótono (empareja los $k$-ésimos datos ordenados de cada medida) y que
+$B_\#\gamma^*$ es exactamente el promedio de cuantiles de la
+Proposición~\ref{N-prop.bar.1D}. Verificarlo resolviendo el programa lineal
+multimarginal para $n$ chico.
+\end{ejercicio}
+
+\begin{ejercicio}[Traslaciones]\label{ejc.bar.traslaciones}
+Probar que si se traslada cada $\mu_i$ por un vector $v_i$, el baricentro se
+traslada por $\bar v=\sum_i\lambda_iv_i$ y el valor mínimo de $\mathcal F$
+cambia en $\sum_i\lambda_i|v_i-\bar v|^2$ (cf.\
+Ejercicio~\ref{ejer.bar.traslaciones}). Deducir que para calcular baricentros
+basta centrar todas las medidas, y verificarlo numéricamente.
+\end{ejercicio}
+
+\begin{ejercicio}[Convexidad del funcional]\label{ejc.bar.convexidad}
+Elegir dos medidas $\nu_0,\nu_1$ (por ejemplo, dos de las gaussianas de la
+Sección~3 del cuaderno) y graficar $s\mapsto\mathcal F((1-s)\nu_0+s\nu_1)$ y
+$s\mapsto\mathcal F(\nu_s)$, donde $\nu_s$ es la geodésica de $W_2$ entre
+ellas. La primera es convexa por el Lema~\ref{N-lema.W2.convexo}. ¿Lo es la
+segunda? Comparar con el Ejercicio~\ref{ejer.bar.no.convexa.geodesica}.
+\end{ejercicio}
+
+\begin{ejercicio}[Baricentros de formas]\label{ejc.bar.formas}
+Discretizar dos o tres figuras planas (un disco, un cuadrado, un triángulo)
+como medidas uniformes sobre una grilla y calcular su baricentro resolviendo
+el programa lineal del Teorema~\ref{N-teo.bar.multimarginal}
+(\texttt{ot.lp.barycenter}). Observar cómo crece el tamaño del problema con
+la grilla; en el Capítulo~\ref{N-cap.Sinkhorn} se ve la versión entrópica, que
+escala mucho mejor.
+\end{ejercicio}
+
+\end{document}

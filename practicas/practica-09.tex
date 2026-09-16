@@ -1,0 +1,335 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{9}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 9}\\[4pt]
+{\large El teorema de factorización polar de Brenier}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~9 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+
+\begin{ejercicio}[Traslaciones, dilataciones y gradientes]\label{ejer.Brenier.basicos}
+Sea $\mu\in\mathcal P_2(\R^d)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que la traslación $T(x)=x+v$ es el mapa óptimo entre $\mu$ y
+$T_\#\mu$, y que la dilatación $T(x)=\lambda x$ lo es si y sólo si
+$\lambda>0$ o $\mu$ es una masa de Dirac. Más generalmente, $T(x)=Ax+b$ con
+$A$ simétrica definida positiva es óptimo entre $\mu$ y $T_\#\mu$.
+\item Probar que la reflexión $R(x)=-x$ es óptima entre $\mu$ y $R_\#\mu$ si
+y sólo si $\mu$ es una masa de Dirac. \emph{Sugerencia:} el soporte de un
+plan óptimo para el costo cuadrático es $c$-cíclicamente monótono; escribir
+la condición para dos puntos $(x,-x)$, $(x',-x')$.
+\item Si $u$ es convexa y $C^1$ con $\nabla u_\#\mu=\nu$, probar que
+$\nabla\bar u$ es el mapa óptimo de $\nu$ a $\mu$ cuando $\bar u\in C^1$, y
+que $\nabla\bar u\circ\nabla u=\id$ $\mu$-c.t.p. (Apéndice~\ref{N-ap.subdiferencial}).
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[El problema de maximización]\label{ejer.Brenier.maximo}
+Sean $\mu,\nu\in\mathcal P(\R^d)$ con soporte compacto y $\mu\ll\LL^d$.
+Probar que el problema
+\[
+\max\Bigl\{\int|x-T(x)|^2\,d\mu:\ T_\#\mu=\nu\Bigr\}
+\]
+admite solución, que es única y que toda solución es el gradiente de una
+función \emph{cóncava}. \emph{Sugerencia:} maximizar $\int|x-y|^2d\pi$
+equivale a minimizar $\int x\cdot y\,d\pi$, o bien a minimizar el costo
+cuadrático entre $\mu$ y $R_\#\nu$ con $R(y)=-y$.
+\end{ejercicio}
+
+\begin{ejercicio}[Un mapa radial]\label{ejer.Brenier.radial}
+Sean $\mu=\frac1\pi\I_{B(0,1)}\LL^2$ y $\nu=\frac1{8\pi}(4-|y|^2)\I_{B(0,2)}\LL^2$
+en $\R^2$.
+\begin{enumerate}[label=(\alph*)]
+\item Buscar el mapa óptimo para el costo cuadrático en la forma radial
+$T(x)=\phi(|x|)\frac{x}{|x|}$: imponer $\mu(B(0,r))=\nu(B(0,\phi(r)))$ y
+resolver para $\phi$ (se obtiene $\phi(r)=2\sqrt{1-\sqrt{1-r^2}}$).
+\item Probar que $T=\nabla u$ con $u(x)=\int_0^{|x|}\phi(s)\,ds$ convexa, y
+concluir con el Corolario~\ref{N-cor.criterio.Brenier} que $T$ es óptimo.
+\item Generalizar: si $\mu$ y $\nu$ son radiales en $\R^d$ y $\mu\ll\LL^d$,
+el mapa óptimo es radial y está dado por el transporte monótono entre las
+leyes de $|x|$ bajo $\mu$ y $\nu$ (Capítulo~\ref{N-cap.1D}).
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Imágenes afines de una medida invariante por rotaciones]\label{ejer.Brenier.afines}
+Sea $\rho\in\mathcal P_2(\R^d)$ con $R_\#\rho=\rho$ para toda matriz
+ortogonal $R$ (por ejemplo, una gaussiana isótropa o la uniforme en una
+bola). Sean $A$, $B$ simétricas definidas positivas, $a,b\in\R^d$,
+$L_A(x)=Ax+a$, $L_B(x)=Bx+b$, y $\mu=(L_A)_\#\rho$, $\nu=(L_B)_\#\rho$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $L_B\circ L_A^{-1}$ transporta $\mu$ en $\nu$ pero en
+general \emph{no} es óptimo (¿cuándo lo es?).
+\item Hallar el mapa óptimo. \emph{Sugerencia:} buscar $T(x)=b+M(x-a)$ con
+$M$ simétrica definida positiva tal que $(MA)_\#\rho=B_\#\rho$; usar la
+invariancia de $\rho$ y la factorización polar (Apéndice~\ref{N-ap.FP}) para
+reducirlo a $MAQ=B$ con $Q$ ortogonal, y resolver
+$M=A^{-1}(AB^2A)^{1/2}A^{-1}$.
+\item Comparar con la Observación~\ref{N-obs.gaussianas.generales}
+($\Sigma_0=A^2$, $\Sigma_1=B^2$).
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Una reflexión que no es óptima]\label{ejer.Brenier.reflexion}
+Sea $\mu\in\mathcal P_2(\R^d)$ y sea $S$ la reflexión
+$S(x_1,\dots,x_d)=(x_1,\dots,x_{d-1},-x_d)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que si $S$ es óptimo entre $\mu$ y $S_\#\mu$ para el costo
+cuadrático, entonces $\mu$ está concentrada en el gráfico
+$\{x_d=f(x_1,\dots,x_{d-1})\}$ de una función $1$-Lipschitz $f$.
+\emph{Sugerencia:} la $c$-monotonía cíclica de dos puntos del soporte da
+$|x_d-x_d'|\le|\hat x-\hat x'|$ con $\hat x=(x_1,\dots,x_{d-1})$.
+\item Deducir que $S$ no puede ser óptimo si $\mu\ll\LL^d$ (un gráfico
+Lipschitz tiene medida de Lebesgue nula).
+\item Dar un ejemplo de $\mu$, no Dirac, para el cual $S$ sí es óptimo.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Knott--Smith y un ejemplo de no unicidad]\label{ejer.Brenier.KnottSmith}
+\begin{enumerate}[label=(\alph*)]
+\item (Criterio de Knott--Smith.) Sean $\mu,\nu\in\mathcal P_2(\R^d)$,
+$\pi\in\Pi(\mu,\nu)$ y $u\colon\R^d\to\R$ convexa, con $\bar u$ finita
+sobre $\sop\nu$ y tal que
+\[
+u(x)+\bar u(y)=x\cdot y\qquad\text{para $\pi$-casi todo }(x,y).
+\]
+Probar que $\pi$ es óptimo para el costo
+cuadrático. (Es la versión ``con planes'' del
+Corolario~\ref{N-cor.criterio.Brenier}; la desigualdad de Fenchel--Young da
+la admisibilidad.)
+\item Sean $\mu=\frac12(\delta_{(-1,-1)}+\delta_{(1,1)})$ y
+$\nu=\frac12(\delta_{(-1,1)}+\delta_{(1,-1)})$ en $\R^2$, y
+$u(x)=|x_1-x_2|$. Calcular $\bar u$ (vale $0$ en el segmento
+$\{t(1,-1):|t|\le1\}$ y $+\infty$ fuera) y verificar que \emph{los dos}
+planes extremales de $\Pi(\mu,\nu)$ saturan la igualdad de (a) (de hecho,
+$x\cdot y=0$ para los cuatro pares posibles). Concluir que ambos son
+óptimos, que todo $\Pi(\mu,\nu)$ es óptimo, y que la hipótesis
+$\mu\ll\LL^d$ del Teorema~\ref{N-teo.Brenier} no puede suprimirse.
+\item Comparar con el ejemplo de no unicidad de baricentros de la
+Sección~\ref{N-sec.bar.unicidad}.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La convexidad como condición de segundo orden]\label{ejer.Brenier.segunda.variacion}
+Sea $\Omega\subset\R^d$ un dominio suave, $f$ una densidad suave y positiva
+en $\Omega$, y $T=\nabla u$ un mapa suave con $T_\#(f\,dx)=\nu$. Sea $v$ un
+campo suave con $\nabla\cdot(fv)=0$ en $\Omega$ y $v\cdot n=0$ en
+$\partial\Omega$, $Y_t$ su flujo y $T_t=T\circ Y_t$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $(Y_t)_\#(f\,dx)=f\,dx$ para todo $t$ (usar la ecuación de
+continuidad $\partial_t\rho_t+\nabla\cdot(\rho_tv)=0$ para $\rho_t=(Y_t)_\#(f\,dx)$
+y la unicidad de su solución), y por lo tanto $(T_t)_\#(f\,dx)=\nu$: los
+$T_t$ son competidores admisibles en el problema de Monge.
+\item Sea $j(t)=\int_\Omega|T_t(x)-x|^2f(x)\,dx$. Usando (a) para escribir
+\[
+j(t)=\text{cte}-2\int_\Omega\langle\nabla u(y),Y_{-t}(y)\rangle f(y)\,dy,
+\]
+probar que $j'(0)=0$ y que
+\[
+j''(0)=-2\int_\Omega\bigl\langle\nabla u,\,(Dv)\,v\bigr\rangle f\,dy
+=2\int_\Omega\bigl\langle D^2u(y)\,v(y),v(y)\bigr\rangle f(y)\,dy ,
+\]
+donde la segunda igualdad sale de integrar $\nabla(\nabla u\cdot v)\cdot v\,f$
+usando $\nabla\cdot(fv)=0$.
+\item Deducir que si $u$ es convexa entonces $j''(0)\ge0$ para todo campo
+admisible: la convexidad del potencial de Brenier es la condición de
+segundo orden del problema de Monge. ($\bigstar$) Recíprocamente, probar que
+si $D^2u(x_0)$ tiene un autovalor negativo, existe un campo admisible $v$,
+concentrado cerca de $x_0$, con $j''(0)<0$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[$\bigstar$ Costos cóncavos de la distancia]\label{ejer.Brenier.arctan}
+Sea $c(x,y)=\arctan|x-y|$ en $\R^d$ y sean $\mu,\nu\in\mathcal P(\R^d)$ con
+soportes compactos y disjuntos, $\mu\ll\LL^d$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que las $c$-transformadas son Lipschitz y describir su módulo
+de continuidad.
+\item Probar que existe un único plan óptimo y que está inducido por un
+mapa $T$; expresarlo en términos del gradiente de un potencial de
+Kantorovich $\varphi$, como en el Teorema~\ref{N-teo.Gangbo.McCann}.
+\item ¿Dónde se usa que los soportes son disjuntos? Ver
+\cite[Sec.~3.3.2]{Santambrogio}.
+\end{enumerate}
+\end{ejercicio}
+
+\bibliographystyle{plain}
+\bibliography{../notas/biblio}
+
+\end{document}

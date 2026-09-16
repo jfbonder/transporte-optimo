@@ -1,0 +1,254 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{D}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Ejercicios del Apéndice D}\\[4pt]
+{\large Subdiferencial de funciones convexas}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Apéndice~D de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+
+\begin{ejercicio}[Un ejemplo completo]\label{ejer.subdif.ejemplo}
+Sea $u(x)=|x|$ en $\R$. Calcular $\partial u(x)$ para todo $x$, la
+transformada de Legendre $\bar u$ y $\partial\bar u(y)$ para todo $y$ del
+dominio de $\bar u$, y verificar en este ejemplo la
+Proposición~\ref{N-prop.subdiferencial.legendre} y la relación
+$y\in\partial u(x)\iff x\in\partial\bar u(y)$. Repetir para $u(x)=\max\{x^2,2|x|\}$ (que tiene tres puntos de no
+diferenciabilidad) y para $u(x)=|x|+x^2$ (que aparece en el
+Capítulo~\ref{N-cap.1D}).
+\end{ejercicio}
+
+\begin{ejercicio}[Subdiferencial y conjugación]\label{ejer.subdif.conjugacion}
+Sea $u\colon\R^d\to\R$ convexa.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $y\in\partial u(x)$ implica $x\in\partial\bar u(y)$
+(Proposición~\ref{N-prop.subdiferencial.legendre} y $\bar{\bar u}=u$,
+Ejercicio~\ref{N-ejer.FR.biconjugada}).
+\item Probar la recíproca: si $x\in\partial\bar u(y)$ entonces
+$y\in\partial u(x)$. ¿Dónde se usa que $u$ es convexa y semicontinua
+inferiormente?
+\item Deducir que $\partial\bar u=(\partial u)^{-1}$ como
+\emph{grafos}: $\{(y,x):x\in\partial\bar u(y)\}=\{(y,x):y\in\partial u(x)\}$.
+En el caso del Teorema~\ref{N-teo.Brenier}, interpretar esto como
+``$\nabla\bar u$ es el mapa óptimo inverso''.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Monotonía y monotonía cíclica]\label{ejer.subdif.monotono}
+\begin{enumerate}[label=(\alph*)]
+\item Probar que el grafo $\Gamma=\{(x,y):y\in\partial u(x)\}$ de una función
+convexa es \emph{cíclicamente monótono}: para toda familia finita
+$(x_1,y_1),\dots,(x_k,y_k)\in\Gamma$ y toda permutación $\sigma$,
+$\sum_iy_i\cdot x_i\ge\sum_iy_i\cdot x_{\sigma(i)}$. Compararlo con la
+$c$-monotonía cíclica del Capítulo~\ref{N-cap.1D} para $c(x,y)=|x-y|^2$.
+\item (Rockafellar.) Recíprocamente, probar que si $\Gamma\subset\R^d\times\R^d$
+es cíclicamente monótono, existe $u$ convexa con $\Gamma\subset\{(x,y):y\in\partial u(x)\}$.
+\emph{Sugerencia:} fijar $(x_0,y_0)\in\Gamma$ y definir
+\[
+u(x)=\sup\bigl\{y_k\cdot(x-x_k)+y_{k-1}\cdot(x_k-x_{k-1})+\dots+y_0\cdot(x_1-x_0)\bigr\},
+\]
+donde el supremo es sobre todas las cadenas finitas $(x_1,y_1),\dots,(x_k,y_k)$
+en $\Gamma$; la monotonía cíclica garantiza $u(x_0)=0$ (finita).
+\item Deducir que el soporte de un plan óptimo para el costo cuadrático está
+contenido en el grafo del subdiferencial de una función convexa, sin usar
+potenciales de Kantorovich. (Éste es el camino original de Brenier y de
+Knott--Smith.)
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Diferenciabilidad]\label{ejer.subdif.diferenciabilidad}
+Sea $u\colon\R^d\to\R$ convexa.
+\begin{enumerate}[label=(\alph*)]
+\item Probar la recíproca de la Proposición~\ref{N-prop.subdiferencial.gradiente}:
+si $\partial u(x)=\{y\}$ es un único punto, entonces $u$ es diferenciable en
+$x$ con $\nabla u(x)=y$. \emph{Sugerencia:} si no, existen $h_k\to0$ con
+$\frac{u(x+h_k)-u(x)-y\cdot h_k}{|h_k|}\ge\delta>0$; tomar
+$y_k\in\partial u(x+h_k)$, usar la cota local de Lipschitz para extraer
+una subsucesión convergente $y_k\to y'$ y probar $y'\in\partial u(x)$,
+$y'\ne y$.
+\item Dar un ejemplo de $f\colon\R\to\R$ continua, \emph{no} convexa, con
+$\partial f(0)$ (definido por la misma desigualdad) reducido a un punto pero
+$f$ no derivable en $0$.
+\item Deducir del Teorema~\ref{N-teo.Rademacher} y de (a) que el conjunto de
+puntos donde una función convexa tiene subdiferencial no unitario tiene
+medida de Lebesgue cero, y dar un ejemplo en el que ese conjunto sea denso.
+\end{enumerate}
+\end{ejercicio}
+
+\end{document}

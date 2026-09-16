@@ -1,0 +1,283 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{7}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 7}\\[4pt]
+{\large Algunas interpretaciones y extensiones}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~7 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+
+\begin{ejercicio}[Acoplamientos y covarianza]\label{ejer.acoplamiento.covarianza}
+Sean $\mu,\nu\in\mathcal P_2(\R)$ con medias $m_\mu,m_\nu$ y varianzas
+$\sigma_\mu^2,\sigma_\nu^2$, y sea $(X,Y)$ un vector aleatorio con ley
+$\pi\in\Pi(\mu,\nu)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que
+$\E|X-Y|^2=(m_\mu-m_\nu)^2+\sigma_\mu^2+\sigma_\nu^2-2\operatorname{Cov}(X,Y)$,
+de modo que minimizar el costo cuadrático equivale a maximizar la
+covarianza (o la correlación) del acoplamiento.
+\item Probar la cota de Cauchy--Schwarz
+$\operatorname{Cov}(X,Y)\le\sigma_\mu\sigma_\nu$ y deducir que
+\[
+\min_{\pi\in\Pi(\mu,\nu)}\E|X-Y|^2\ge(m_\mu-m_\nu)^2+(\sigma_\mu-\sigma_\nu)^2 .
+\]
+\item Probar que hay igualdad en (b) si y sólo si $Y=aX+b$ casi seguramente
+con $a>0$; por lo tanto la cota de (b) se alcanza si y sólo si $\nu$ es la
+imagen de $\mu$ por una afinidad creciente (por ejemplo, si ambas son
+gaussianas). En el Capítulo~\ref{N-cap.1D} se identifica el acoplamiento que
+realiza el mínimo en general.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Cotas de Fréchet--Hoeffding]\label{ejer.frechet.hoeffding}
+Sean $\mu,\nu\in\mathcal P(\R)$ con funciones de distribución $F_\mu$, $F_\nu$,
+y $\pi\in\Pi(\mu,\nu)$ con función de distribución conjunta
+$H(x,y)=\pi((-\infty,x]\times(-\infty,y])$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que
+$\max\{F_\mu(x)+F_\nu(y)-1,\,0\}\le H(x,y)\le\min\{F_\mu(x),F_\nu(y)\}$
+para todo $(x,y)$.
+\item Probar que ambas cotas son funciones de distribución de elementos de
+$\Pi(\mu,\nu)$. (La cota superior es el plan comonótono del
+Capítulo~\ref{N-cap.1D}; la inferior, el ``antimonótono''.)
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Matching estable: un ejemplo]\label{ejer.matching.ejemplo}
+Dos trabajadores $\{x_1,x_2\}$ y dos empresas $\{y_1,y_2\}$ generan, al
+emparejarse, el excedente $U(x_i,y_j)=u_{ij}$ con
+$u=\bigl(\begin{smallmatrix}4&3\\3&1\end{smallmatrix}\bigr)$. Todos los
+agentes tienen el mismo peso.
+\begin{enumerate}[label=(\alph*)]
+\item Hallar el matching que maximiza el excedente total y compararlo con
+el matching ``codicioso'' que asigna primero el par de mayor excedente.
+\item Hallar un sistema de precios $(\varphi,\psi)$ (salarios y beneficios)
+con $\varphi_i+\psi_j\ge u_{ij}$ para todo par y con igualdad en los pares
+emparejados. Verificar que es un equilibrio: ningún par no emparejado puede
+repartirse su excedente de modo que ambos mejoren.
+\item Describir todos los sistemas de precios de equilibrio y observar que
+forman un segmento, aunque el matching óptimo sea único. ¿Quién se apropia
+del excedente en cada extremo del segmento?
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Un criterio de optimalidad multimarginal]\label{ejer.multimarginal.criterio}
+Sean $\mu_1,\dots,\mu_N\in\mathcal P(\R^d)$ con soporte compacto y
+$\gamma\in\Pi(\mu_1,\dots,\mu_N)$ un plan multimarginal concentrado en el
+conjunto $\{(x_1,\dots,x_N):\ x_1+\dots+x_N=v\}$ para algún $v\in\R^d$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que necesariamente $v=\sum_i\int x\,d\mu_i$.
+\item Probar que $\gamma$ es óptimo para todo costo de la forma
+$c(x_1,\dots,x_N)=h(x_1+\dots+x_N)$ con $h\colon\R^d\to\R$ convexa.
+\emph{Sugerencia:} desigualdad de Jensen.
+\item Probar que $\gamma$ es óptimo para el costo
+$c(x_1,\dots,x_N)=-\sum_{i\ne j}|x_i-x_j|^2$. \emph{Sugerencia:} expandir
+los cuadrados y observar que $\sum_i|x_i|^2$ tiene integral fija sobre
+$\Pi(\mu_1,\dots,\mu_N)$, de modo que el problema equivale a (b) con
+$h(z)=|z|^2$.
+\item ¿Existe siempre un plan como $\gamma$? Estudiar el caso $N=2$,
+$\mu_1=\mu_2=\frac12(\delta_0+\delta_1)$, y el caso $N=2$ con $\mu_1$
+uniforme en $[0,1]$ y $\mu_2=\delta_0$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Discretización y estabilidad]\label{ejer.discretizacion.estabilidad}
+Sean $X$, $Y$ compactos, $c\in C(X\times Y)$, y $\mu_n\rightharpoonup\mu$,
+$\nu_n\rightharpoonup\nu$.
+\begin{enumerate}[label=(\alph*)]
+\item Dado $\gamma\in\Pi(\mu,\nu)$, probar que existen
+$\gamma_n\in\Pi(\mu_n,\nu_n)$ con $\gamma_n\rightharpoonup\gamma$.
+\emph{Sugerencia:} sean $\alpha_n\in\Pi(\mu_n,\mu)$ y $\beta_n\in\Pi(\nu,\nu_n)$
+planes óptimos para el costo $d(x,x')^2$ (o cualquier costo continuo que
+se anule exactamente en la diagonal); pegar $\alpha_n$, $\gamma$ y $\beta_n$
+con el Lema~\ref{N-lema.pegado} y proyectar sobre las coordenadas
+extremas. Probar que $\int d(x,x')^2\,d\alpha_n\to0$ y usarlo para pasar al límite.
+\item Deducir que $\mathcal T_c(\mu_n,\nu_n)\to\mathcal T_c(\mu,\nu)$, donde
+$\mathcal T_c$ denota el costo óptimo, y más generalmente que
+$\mathcal T_{c_n}(\mu_n,\nu_n)\to\mathcal T_c(\mu,\nu)$ si $c_n\to c$
+uniformemente.
+\item Concluir que si $\mu_n$, $\nu_n$ son discretizaciones (por ejemplo,
+medidas empíricas) de $\mu$, $\nu$, el costo óptimo discreto calculado por
+programación lineal converge al costo óptimo continuo, y que los planes
+discretos óptimos convergen, salvo subsucesión, a planes óptimos continuos.
+\end{enumerate}
+\end{ejercicio}
+
+\end{document}

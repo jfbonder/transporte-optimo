@@ -1,0 +1,351 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{1}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 1}\\[4pt]
+{\large Introducción}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~1 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+
+\begin{ejercicio}[Push-forward]\label{ejer.pushforward}
+Sea $(X,\Sigma,\mu)$ un espacio de medida, $Y$ un conjunto y $T\colon X\to Y$
+una aplicación.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\Sigma'=\{B\subset Y: T^{-1}(B)\in\Sigma\}$ es la mayor
+$\sigma$-álgebra en $Y$ que hace medible a $T$, y que
+$\nu(B)=\mu(T^{-1}(B))$ define una medida en $(Y,\Sigma')$. Si $\mu$ es de
+probabilidad, $\nu=T_\#\mu$ también lo es.
+\item Si $S\colon Y\to Z$ es medible, $(S\circ T)_\#\mu=S_\#(T_\#\mu)$.
+Deducir que si $T$ es biyectiva y bimedible, $\nu=T_\#\mu$ si y sólo si
+$\mu=(T^{-1})_\#\nu$.
+\item Si $\mu=\sum_{i\ge1}m_i\delta_{x_i}$, escribir $T_\#\mu$ como una medida
+de soporte numerable.
+\item Dar un ejemplo de $\mu\in\mathcal P(X)$, $\nu\in\mathcal P(Y)$ y
+$T\colon X\to Y$ medible tales que $\mu(\{x\})=\nu(\{T(x)\})$ para todo $x\in X$
+pero $\nu\ne T_\#\mu$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Caracterización integral del push-forward]\label{ejer.pushforward.integral}
+Sean $X$, $Y$ espacios métricos, $\mu\in\mathcal P(X)$ y $T\colon X\to Y$
+medible. Probar que $T_\#\mu=\nu$ si y sólo si
+\[
+\int_X\phi(T(x))\,d\mu(x)=\int_Y\phi(y)\,d\nu(y)
+\qquad\text{para toda }\phi\in L^1(\nu).
+\]
+\emph{Sugerencia:} empezar con $\phi=\I_B$, pasar a funciones simples, luego
+a funciones no negativas por convergencia monótona, y finalmente a $L^1(\nu)$.
+\end{ejercicio}
+
+\begin{ejercicio}[Ejemplos de push-forward]\label{ejer.pushforward.ejemplos}
+Calcular las siguientes medidas imagen, decidir si son absolutamente
+continuas respecto de la medida de Lebesgue y, en ese caso, hallar su densidad.
+\begin{enumerate}[label=(\alph*)]
+\item $T(x)=2x+1$; $T_\#\delta_0$, $T_\#\bigl(\tfrac12\delta_0+\tfrac12\delta_1\bigr)$,
+$T_\#\bigl(\LL^1\lfloor_{[0,1]}\bigr)$.
+\item $T(x)=x^2$; $T_\#\bigl(\LL^1\lfloor_{[0,1]}\bigr)$ y
+$T_\#\bigl(\tfrac12\LL^1\lfloor_{[-1,1]}\bigr)$.
+\item $T(x)=x-\lfloor x\rfloor$ (parte fraccionaria); $T_\#\bigl(\tfrac12\LL^1\lfloor_{[0,2]}\bigr)$
+y $T_\#\bigl(\LL^1\lfloor_{[0,3/2]}\cdot\tfrac23\bigr)$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Cambio de variables: contraejemplos]\label{ejer.cambio.variables}
+La Proposición~\ref{N-prop.cambio.variables} da la fórmula
+$f(x)=g(T(x))\,|\det DT(x)|$ para $T$ de clase $C^1$ y biyectiva.
+\begin{enumerate}[label=(\alph*)]
+\item Verificar que la fórmula falla para $T(x)=x^2$ con
+$\mu=\frac12\LL^1\lfloor_{[-1,1]}$ (comparar con el
+Ejercicio~\ref{ejer.pushforward.ejemplos}) y para la ``carpa''
+$T(x)=\min\{2x,2-2x\}$ con $\mu=\LL^1\lfloor_{[0,1]}$, e identificar en cada
+caso qué hipótesis no se cumple.
+\item Probar la versión para $T$ de clase $C^1$ localmente inyectiva pero
+no biyectiva: si $T_\#(f\,dx)=g\,dy$ entonces
+$g(y)=\sum_{x\in T^{-1}(y)}f(x)/|\det DT(x)|$.
+\item Probar que si $T\colon[0,1]\to[0,1]$ es continua, estrictamente
+creciente y $T_\#\LL^1\lfloor_{[0,1]}=\LL^1\lfloor_{[0,1]}$, entonces $T=\id$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Soporte del push-forward]\label{ejer.soporte.pushforward}
+Sea $\mu\in\mathcal P(X)$ con $X$ métrico y $T\colon X\to Y$ continua.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\sop(T_\#\mu)\subset\overline{T(\sop\mu)}$, con igualdad si
+$\sop\mu$ es compacto.
+\item Dar un ejemplo en el que $T(\sop\mu)$ no sea cerrado y la inclusión
+$\sop(T_\#\mu)\subset T(\sop\mu)$ sea falsa.
+\item Determinar el soporte de $\LL^1\lfloor_{(0,1)}$, de
+$\LL^1\lfloor_{e^{-x}\I_{[0,\infty)}}$ y de $\LL^1\lfloor_{[0,1]\setminus\Q}$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Planes inducidos por mapas]\label{ejer.plan.inducido}
+Sean $\mu\in\mathcal P(X)$, $\nu\in\mathcal P(Y)$ y $T\colon X\to Y$ medible
+con $T_\#\mu=\nu$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\pi=(\id,T)_\#\mu$ satisface $\pi(A\times Y)=\mu(A)$ y
+$\pi(X\times B)=\nu(B)$, es decir, $\pi\in\Pi(\mu,\nu)$.
+\item Probar que $\Pi(\mu,\nu)\ne\emptyset$ para cualesquiera $\mu,\nu$,
+aunque no exista ningún $T$ con $T_\#\mu=\nu$.
+\item Probar que $\pi\in\Pi(\mu,\nu)$ está inducido por un mapa si y sólo si
+$\pi$ está concentrado en el gráfico de una función medible $T\colon X\to Y$,
+es decir, $\pi(\{(x,T(x)):x\in X\})=1$. (Compárese con el
+Lema~\ref{N-lema.grafico}.)
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Un plan que no proviene de un mapa]\label{ejer.plan.no.mapa}
+Sean $\mu=\nu=\frac12\delta_0+\frac12\delta_1$ y
+\[
+\pi=\tfrac14\bigl(\delta_{(0,0)}+\delta_{(0,1)}+\delta_{(1,0)}+\delta_{(1,1)}\bigr).
+\]
+Verificar que $\pi\in\Pi(\mu,\nu)$ y que no existe $T$ con
+$\pi=(\id,T)_\#\mu$. Describir todos los elementos de $\Pi(\mu,\nu)$ y
+decidir cuáles provienen de un mapa.
+\end{ejercicio}
+
+\begin{ejercicio}[El conjunto de mapas de transporte no es convexo]\label{ejer.mapas.no.convexo}
+Sean $\mu=\LL^1\lfloor_{[0,1]}$, $\nu=\LL^1\lfloor_{[1/4,5/4]}$,
+\[
+T_0(x)=x+\tfrac14,
+\qquad
+T_1(x)=\begin{cases}x+1,&x\in[0,\tfrac14),\\ x,&x\in[\tfrac14,1].\end{cases}
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $(T_i)_\#\mu=\nu$ y que $\int|T_i(x)-x|\,d\mu=\tfrac14$
+para $i=0,1$.
+\item Probar que para todo $\alpha\in(0,1)$, $(1-\alpha)T_0+\alpha T_1$ no
+transporta $\mu$ en $\nu$. Concluir que
+$\mathcal T(\mu,\nu)=\{T:T_\#\mu=\nu\}$ no es convexo.
+\item Probar en cambio que $\Pi(\mu,\nu)$ es convexo y que el funcional de
+Kantorovich $\pi\mapsto\int c\,d\pi$ es afín sobre $\Pi(\mu,\nu)$. Éste es
+uno de los motivos de la relajación de Kantorovich.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Caracterización de los planes por integrales]\label{ejer.planes.integrales}
+Sean $\mu\in\mathcal P(X)$, $\nu\in\mathcal P(Y)$ y $\pi\in\mathcal P(X\times Y)$.
+Probar que $\pi\in\Pi(\mu,\nu)$ si y sólo si
+\[
+\int_{X\times Y}\bigl(\phi(x)+\psi(y)\bigr)\,d\pi(x,y)
+=\int_X\phi\,d\mu+\int_Y\psi\,d\nu
+\qquad\text{para todo }(\phi,\psi)\in L^1(\mu)\times L^1(\nu),
+\]
+verificando en particular que, para $\pi\in\Pi(\mu,\nu)$, la función
+$\phi(x)+\psi(y)$ pertenece a $L^1(\pi)$.
+\end{ejercicio}
+
+\begin{ejercicio}[Mínimos de funcionales lineales y puntos extremales]\label{ejer.krein.milman}
+Sea $E$ un espacio de Banach, $K\subset E$ compacto y convexo, y
+$\ell\in E^*$. Se dice que $x\in K$ es \emph{extremal} si
+$x\in[x_1,x_2]$ con $x_1,x_2\in K$ implica $x=x_1$ o $x=x_2$; denotamos
+$\Ec(K)$ al conjunto de puntos extremales. El teorema de Krein--Milman
+afirma que $K=\overline{\operatorname{co}}\,\Ec(K)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que existe $x\in K$ con $\ell(x)=\min_K\ell$.
+\item Probar que el conjunto de minimizadores es compacto, convexo y
+\emph{extremal} en $K$ (si un segmento de $K$ tiene su punto medio en él,
+todo el segmento está en él). Deducir, usando Krein--Milman, que existe un
+minimizador $x_0\in\Ec(K)$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Matrices biestocásticas]\label{ejer.biestocasticas}
+Sea $\B_n$ el conjunto de matrices $\pi\in\R^{n\times n}$ con entradas no
+negativas cuyas filas y columnas suman $1$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que
+$\B_2=\bigl\{\bigl(\begin{smallmatrix}t&1-t\\1-t&t\end{smallmatrix}\bigr):t\in[0,1]\bigr\}$
+y hallar sus puntos extremales.
+\item Probar que $\B_n$ es compacto y convexo, y que toda matriz de
+permutación $\pi^\sigma_{ij}=\delta_{j\sigma(i)}$ es un punto extremal.
+\item Probar que si $\pi\in\B_n$ tiene una entrada $\pi_{i_0j_0}\in(0,1)$,
+entonces $\pi$ no es extremal. \emph{Sugerencia:} construir una sucesión
+$\pi_{i_0j_1},\pi_{i_1j_1},\pi_{i_1j_2},\dots$ de entradas en $(0,1)$,
+alternando filas y columnas, hasta cerrar un ciclo; perturbar las entradas
+del ciclo en $\pm\ve$ alternadamente y escribir $\pi$ como punto medio de dos
+elementos distintos de $\B_n$.
+\item Concluir el teorema de Birkhoff--von Neumann: $\Ec(\B_n)$ es el
+conjunto de matrices de permutación y toda matriz biestocástica es
+combinación convexa de matrices de permutación.
+\end{enumerate}
+\end{ejercicio}
+
+\end{document}

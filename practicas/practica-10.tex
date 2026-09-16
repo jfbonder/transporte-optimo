@@ -1,0 +1,414 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{10}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 10}\\[4pt]
+{\large Distancias de Wasserstein}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~10 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+\cuadernolink{Distancias de Wasserstein}{04-distancias-wasserstein.ipynb}
+
+
+\begin{ejercicio}[Momentos]\label{ejer.Wp.momentos}
+Decidir a qué espacios $\mathcal P_p(\R)$ pertenecen las medidas
+$\delta_2$, $\frac14\delta_{-2}+\frac34\delta_2$, $\LL^1\lfloor_{[0,1]}$,
+$e^{-x}\LL^1\lfloor_{[0,\infty)}$, $\frac{1}{\pi(1+x^2)}\LL^1$ y
+$\sum_{n\ge1}\frac{6}{\pi^2n^2}\delta_n$, y calcular $W_p(\mu,\delta_0)$
+cuando sea finito. Probar que $\mathcal P_p(\R^d)\subsetneq\mathcal P_q(\R^d)$
+para $q<p$.
+\end{ejercicio}
+
+\begin{ejercicio}[Escala, traslaciones y medias]\label{ejer.Wp.escala}
+Sean $\mu,\nu\in\mathcal P_p(\R^d)$, $p\ge1$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $W_p(D_{\lambda\#}\mu,D_{\lambda\#}\nu)=\lambda\,W_p(\mu,\nu)$
+para la dilatación $D_\lambda(x)=\lambda x$, $\lambda>0$, y que $W_p$ es
+invariante por traslaciones simultáneas y por isometrías de $\R^d$.
+\item Probar que $W_p(\mu,\nu)\ge|m_\mu-m_\nu|$, donde $m$ denota la media.
+\emph{Sugerencia:} Jensen.
+\item Deducir que si $\nu=\tau_{v\#}\mu$ es una traslación de $\mu$,
+entonces $W_p(\mu,\nu)=|v|$ para todo $p\ge1$, y la traslación es un mapa
+óptimo. Comparar con el Lema~\ref{N-lema.W2.media}: para $p=2$ hay una
+descomposición exacta, ¿vale algo análogo para $p\ne2$?
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Masa que se escapa]\label{ejer.Wp.escape}
+Sea $\mu_n=(1-\frac1n)\delta_0+\frac1n\delta_{a_n}$ con $a_n\to+\infty$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\mu_n\rightharpoonup\delta_0$ para toda elección de
+$a_n$, y que $W_p(\mu_n,\delta_0)^p=\frac1na_n^p$.
+\item Elegir $a_n$ de modo que $W_q(\mu_n,\delta_0)\to0$ pero
+$W_p(\mu_n,\delta_0)\to+\infty$, para $1\le q<p$ dados. Interpretar en
+términos del Teorema~\ref{N-teo.Wp.convergencia}: ¿qué momento deja de
+converger?
+\item Probar que $\mathcal P_p(\R^d)$ con la topología de $W_p$ \emph{no} es
+localmente compacto: la bola $\{W_p(\mu,\delta_0)\le1\}$ no es compacta.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Convergencia contra funciones Lipschitz]\label{ejer.Wp.lipschitz}
+Sean $\mu_n,\mu\in\mathcal P_1(\R^d)$ tales que
+$\int\varphi\,d\mu_n\to\int\varphi\,d\mu$ para toda $\varphi$ $1$-Lipschitz.
+Probar que $\mu_n\rightharpoonup\mu$ (convergencia contra $C_b$).
+\emph{Sugerencia:} aproximar $g\in C_b$ uniformemente sobre compactos por
+funciones Lipschitz acotadas (Ejercicio~\ref{N-ejer.moreau.yosida}), y usar
+que la familia $\{\mu_n\}$ es ajustada: la función $\varphi(x)=|x|$ es
+$1$-Lipschitz, así que $\int|x|\,d\mu_n$ está acotado.
+¿Es cierta la recíproca? (Comparar con el Ejercicio~\ref{ejer.Wp.escape}.)
+\end{ejercicio}
+
+\begin{ejercicio}[La fórmula del área vía Kantorovich--Rubinstein]\label{ejer.KR.area}
+Sean $\mu,\nu\in\mathcal P_1(\R)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que para toda $\varphi$ $1$-Lipschitz con soporte compacto,
+$\int\varphi\,d(\mu-\nu)=-\int_\R\varphi'(x)\bigl(F_\mu(x)-F_\nu(x)\bigr)\,dx$
+(integrar por partes, o usar Fubini), y deducir
+$W_1(\mu,\nu)\le\int_\R|F_\mu-F_\nu|\,dx$ a partir del
+Teorema~\ref{N-teo.KR}.
+\item Probar la igualdad $W_1(\mu,\nu)=\int_\R|F_\mu-F_\nu|\,dx$ tomando
+$\varphi$ con $\varphi'=-\operatorname{sgn}(F_\mu-F_\nu)$, primero para
+medidas con soporte compacto y luego en general por aproximación. Comparar
+con la Proposición~\ref{N-prop:formula-costo}.
+\item Probar que para $p>1$, $W_p^p(\mu,\nu)\ne\int_\R|F_\mu-F_\nu|^p\,dx$ en
+general (el área entre las pseudoinversas y el área entre las distribuciones
+coinciden, pero las integrales de las potencias no). Dar un ejemplo.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Transporte en el rectángulo]\label{ejer.KR.rectangulo}
+Sea $\Omega=[0,3]\times[0,2]$ y sean $\mu_0=\rho_0\LL^2$, $\mu_1=\rho_1\LL^2$
+con
+\[
+\rho_0=\begin{cases}\tfrac29,&x\le1\text{ o }(1<x<2,\ y\le1),\\[2pt]
+\tfrac19,&x\ge2\text{ o }(1<x<2,\ y>1),\end{cases}
+\qquad
+\rho_1=\begin{cases}\tfrac29,&x\ge2\text{ o }(1<x<2,\ y\le1),\\[2pt]
+\tfrac19,&x\le1\text{ o }(1<x<2,\ y>1).\end{cases}
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Representar gráficamente $\rho_0$ y $\rho_1$ y verificar que son
+densidades de probabilidad.
+\item Probar que $u(x,y)=-x$ es $1$-Lipschitz y que
+$\int u\,d(\mu_0-\mu_1)=\tfrac49$. Deducir $W_1(\mu_0,\mu_1)\ge\tfrac49$.
+\item Para cada $y$ fijo, comparar las funciones de distribución de
+$\rho_0(\cdot,y)$ y $\rho_1(\cdot,y)$ y probar, usando el
+Ejercicio~\ref{N-ejer.1D.dominancia}, que existe un plan que mueve la masa
+sólo hacia la derecha a lo largo de rectas horizontales. Probar que ese
+plan satura $u(x)-u(x')=|x-x'|$ en su soporte y concluir que es óptimo y que
+$W_1(\mu_0,\mu_1)=\tfrac49$.
+\item ¿Es único el plan óptimo? ¿Es único el potencial de Kantorovich?
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Del disco a una densidad radial, con costo $|x-y|$]\label{ejer.KR.radial}
+Sean $\mu$ y $\nu$ las medidas del Ejercicio~\ref{N-ejer.Brenier.radial} y
+$c(x,y)=|x-y|$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $u(x)=-|x|$ es $1$-Lipschitz y que $u(x)-u(y)=|x-y|$ si y
+sólo si $y=tx$ con $t\ge1$ (mismo rayo, más lejos del origen).
+\item Deducir que el mapa radial $T$ del Ejercicio~\ref{N-ejer.Brenier.radial}
+es también óptimo para $c(x,y)=|x-y|$, y que
+$W_1(\mu,\nu)=\int(|T(x)|-|x|)\,d\mu=\int|y|\,d\nu-\int|x|\,d\mu$.
+\item Probar que, a diferencia del caso cuadrático, el plan óptimo no es
+único: cualquier plan que mueva la masa a lo largo de rayos alejándola del
+origen es óptimo.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La distancia SNCF]\label{ejer.KR.SNCF}
+Sea $X$ un conjunto y $P\colon X\to(0,\infty)$ acotada. Se define
+$d(x,y)=0$ si $x=y$ y $d(x,y)=P(x)+P(y)$ si $x\ne y$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $d$ es una distancia en $X$ (todo viaje pasa por un nodo
+central: así funciona una red ferroviaria centralizada en París, de donde
+el nombre, por la \emph{Société Nationale des Chemins de fer Français}).
+\item Probar que para $\mu,\nu\in\mathcal P(X)$,
+\[
+\min_{\Pi(\mu,\nu)}\int d\,d\pi=\int_XP\,d|\mu-\nu|.
+\]
+\emph{Sugerencia:} la masa común $\mu\wedge\nu$ conviene dejarla quieta; el
+resto paga $P$ al salir y $P$ al llegar. Para la cota inferior usar el
+Ejercicio~\ref{N-ejer.ctransf.distancia} con $\varphi=P$ sobre un conjunto
+donde se concentra $(\mu-\nu)^+$ y $\varphi=-P$ en su complemento; verificar
+que $\varphi$ es $1$-Lipschitz para $d$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Distancia a un conjunto]\label{ejer.Wp.distancia.conjunto}
+Sea $\Omega\subset\R^d$ compacto, $\Sigma\subset\Omega$ cerrado y
+$\mu=f\LL^d\in\mathcal P(\Omega)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que
+$\int_\Omega d(x,\Sigma)\,d\mu(x)=\min\{W_1(\mu,\nu):\ \nu\in\mathcal P(\Sigma)\}$,
+y que el mínimo se alcanza en $\nu=(p_\Sigma)_\#\mu$ para cualquier
+selección medible $p_\Sigma$ de la proyección sobre $\Sigma$.
+\item Probar el análogo con $d(x,\Sigma)^p$ y $W_p^p$, $p>1$.
+\item Si $\Sigma$ es finito, $\#\Sigma=N$, se obtiene el problema de
+\emph{cuantización óptima}
+\[
+\min\{W_p^p(\mu,\nu):\ \#\sop\nu\le N\}=\min_{\#\Sigma\le N}\int_\Omega d(x,\Sigma)^p\,d\mu .
+\]
+Para $p=2$, probar que en un $\Sigma=\{x_1,\dots,x_N\}$ óptimo cada $x_i$ es
+el baricentro de su celda de Voronoi $V_i=\{x:|x-x_i|\le|x-x_j|\ \forall j\}$
+respecto de $\mu$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La distancia $W_\infty$]\label{ejer.Winfty}
+Para $\mu,\nu$ con soporte compacto se define
+\[
+W_\infty(\mu,\nu)=\inf_{\pi\in\Pi(\mu,\nu)}\ \pi\text{-}\operatorname{ess\,sup}|x-y|.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Probar que el ínfimo se alcanza y que $W_\infty$ es una distancia.
+\item Probar que $W_p(\mu,\nu)\nearrow W_\infty(\mu,\nu)$ cuando
+$p\to\infty$.
+\item Probar que si $p_n\to\infty$ y $\gamma_n$ es óptimo para $|x-y|^{p_n}$,
+entonces, salvo subsucesión, $\gamma_n\rightharpoonup\gamma$ con $\gamma$
+óptimo para $W_\infty$. \emph{Sugerencia:} semicontinuidad inferior de
+$\pi\mapsto\pi$-$\operatorname{ess\,sup}|x-y|$ respecto de la convergencia
+débil.
+\item Probar que $d_H(\sop\mu,\sop\nu)\le W_\infty(\mu,\nu)$, donde $d_H$ es
+la distancia de Hausdorff, y dar un ejemplo con desigualdad estricta.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La interpolación lineal no es geodésica]\label{ejer.Wp.lineal}
+Sean $\mu=\delta_0$, $\nu=\delta_1$ en $\R$ y $\nu_t=(1-t)\mu+t\nu$.
+\begin{enumerate}[label=(\alph*)]
+\item Calcular $W_2(\nu_s,\nu_t)=\sqrt{|t-s|}$ y deducir que la curva
+$t\mapsto\nu_t$ tiene longitud infinita en $(\mathcal P_2,W_2)$, mientras que
+la geodésica $\mu_t=\delta_t$ tiene longitud $1$.
+\item Para $\mu,\nu\in\mathcal P_2(\R^d)$ cualesquiera, probar que
+$W_2^2(\nu_s,\nu_t)\le|t-s|\,W_2^2(\mu,\nu)$ y que, en general, la
+interpolación lineal tiene longitud infinita salvo que $\mu=\nu$.
+\item Probar que $t\mapsto W_2^2(\nu_t,\mu)$ es convexa (es la restricción
+del funcional del Lema~\ref{N-lema.W2.convexo} a un segmento) y comparar con
+el Ejercicio~\ref{N-ejer.bar.no.convexa.geodesica}.
+\end{enumerate}
+\end{ejercicio}
+
+\subsection*{Ejercicios computacionales}
+
+Los ejercicios siguientes se resuelven con el cuaderno \emph{Distancias de
+Wasserstein} (véase el Apéndice~\ref{N-ap.cuadernos}); los enunciados figuran
+también al final del cuaderno. Las referencias a secciones son a las del
+cuaderno.
+
+\begin{ejercicio}[Escala]\label{ejc.Wp.escala}
+Probar numéricamente, y luego a mano, que
+$W_p(\lambda_\#\mu,\lambda_\#\nu)=\lambda\,W_p(\mu,\nu)$ para la dilatación
+$x\mapsto\lambda x$, $\lambda>0$, y que $W_p$ es invariante por traslaciones
+simultáneas de ambas medidas (Ejercicio~\ref{ejer.Wp.escala}).
+\end{ejercicio}
+
+\begin{ejercicio}[Traslaciones]\label{ejc.Wp.traslaciones}
+Para $\nu=(\tau_v)_\#\mu$, con $\tau_v(x)=x+v$, se tiene $W_p(\mu,\nu)\le|v|$.
+Probar que para $p=2$ hay siempre igualdad y verificarlo numéricamente con
+medidas discretas. (\emph{Sugerencia:} probar primero la descomposición
+$W_2^2(\mu,\nu)=|m_\mu-m_\nu|^2+W_2^2(\tilde\mu,\tilde\nu)$, donde $m_\mu$
+denota la media de $\mu$ y $\tilde\mu$, $\tilde\nu$ las medidas centradas.)
+\end{ejercicio}
+
+\begin{ejercicio}[La interpolación lineal tiene longitud infinita]\label{ejc.Wp.lineal}
+Para $\mu=\delta_0$ y $\nu=\delta_1$ en $\R$, mostrar que
+$W_2\bigl((1-s)\mu+s\nu,(1-t)\mu+t\nu\bigr)=\sqrt{|t-s|}$ y deducir que la
+curva $t\mapsto(1-t)\mu+t\nu$ tiene longitud infinita en $(\mathcal P_2(\R),W_2)$.
+Comparar con la Sección~5.1 del cuaderno y con el
+Ejercicio~\ref{ejer.Wp.lineal}.
+\end{ejercicio}
+
+\begin{ejercicio}[Un tercer exponente]\label{ejc.Wp.exponente}
+Extender la construcción de la Sección~4 del cuaderno para exhibir, para cada
+par $1\le q<p$, una sucesión $\mu_n$ con $W_q(\mu_n,\delta_0)\to0$ pero
+$W_p(\mu_n,\delta_0)\to\infty$ (cf.\ Ejercicio~\ref{ejer.Wp.escape}).
+\end{ejercicio}
+
+\begin{ejercicio}[Kantorovich--Rubinstein con el solver exacto]\label{ejc.Wp.KR}
+El solver exacto devuelve también potenciales duales
+(\texttt{ot.emd(a, b, M, log=True)}). Comparar los potenciales $(u,v)$ así
+obtenidos con la función $1$-Lipschitz $\varphi$ de la Sección~6 del cuaderno:
+no tienen por qué coincidir (¿por qué?), pero el valor dual
+$\sum_ia_iu_i+\sum_jb_jv_j$ debe ser $W_1(\mu,\nu)$. ¿Es $v=-u$ sobre los
+puntos comunes a ambos soportes? ¿Por qué no necesariamente?
+\end{ejercicio}
+
+\end{document}

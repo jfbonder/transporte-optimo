@@ -1,0 +1,317 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{6}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Práctica 6}\\[4pt]
+{\large Potenciales de Kantorovich}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Capítulo~6 de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+\cuadernolink{Dualidad}{02-dualidad.ipynb}
+
+
+\begin{ejercicio}[Propiedades de la $c$-transformada]\label{ejer.ctransf.propiedades}
+Sea $c\colon X\times Y\to\R$ acotada y sea $\chi\colon X\to\R$ acotada.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\chi^{c\bar c}\ge\chi$ y que $\chi^{c\bar cc}=\chi^c$.
+Deducir que la operación $\chi\mapsto\chi^{c\bar c}$ es idempotente.
+\item Decimos que $\varphi\colon X\to\R$ es \emph{$c$-cóncava} si
+$\varphi=\zeta^{\bar c}$ para alguna $\zeta\colon Y\to\R\cup\{-\infty\}$.
+Probar que $\varphi$ es $c$-cóncava si y sólo si $\varphi=\varphi^{c\bar c}$.
+\item Probar que $(\chi+s)^c=\chi^c-s$ para $s\in\R$, y que
+$\chi\le\tilde\chi$ implica $\chi^c\ge\tilde\chi^c$.
+\item Probar que el ínfimo puntual de una familia de funciones
+$c$-cóncavas es $c$-cóncava (o idénticamente $-\infty$).
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Equicontinuidad del ínfimo]\label{ejer.equicontinuidad.inf}
+Sea $(X,d)$ un espacio métrico, $A$ un conjunto y $\mathcal F$ una familia de
+funciones $f\colon X\times A\to\R$ tal que
+$\{f(\cdot,\alpha):f\in\mathcal F,\ \alpha\in A\}$ es equicontinua (con un
+módulo de continuidad $\omega$ común). Probar que la familia
+$\{x\mapsto\inf_{\alpha\in A}f(x,\alpha):f\in\mathcal F\}$ es equicontinua
+con el mismo módulo $\omega$, siempre que los ínfimos sean finitos. Explicar
+en qué punto de la demostración del Teorema~\ref{N-teo.existencia.potenciales}
+se usa este hecho (Lema~\ref{N-lema.ctranf.lip}).
+\end{ejercicio}
+
+\begin{ejercicio}[Costos que son distancias]\label{ejer.ctransf.distancia}
+Sea $X=Y$ y $c=d$ una distancia en $X$ (acotada, para simplificar).
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\varphi\colon X\to\R$ es $c$-cóncava si y sólo si es
+$1$-Lipschitz respecto de $d$, y que en ese caso $\varphi^c=-\varphi$.
+\item Deducir que, para este costo, el problema dual se escribe
+\[
+\sup\Bigl\{\int\varphi\,d(\mu-\nu):\ \varphi\ \text{$1$-Lipschitz}\Bigr\}.
+\]
+(Éste es el contenido del Lema~\ref{N-lema.KR.ctransformada} y del
+Teorema~\ref{N-teo.KR} para $d(x,y)=|x-y|$.)
+\item Aplicarlo a $c(x,y)=|x-y|^\alpha$ en $\R^d$ con $0<\alpha<1$: probar
+que es una distancia y que
+\[
+\min_{\Pi(\mu,\nu)}\int|x-y|^\alpha\,d\pi
+=\sup\Bigl\{\int u\,d(\mu-\nu):\ [u]_{0,\alpha}\le1\Bigr\},
+\qquad
+[u]_{0,\alpha}=\sup_{x\ne y}\frac{|u(x)-u(y)|}{|x-y|^\alpha},
+\]
+para $\mu,\nu$ con soporte compacto.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[$c$-transformadas para el costo cuadrático]\label{ejer.ctransf.cuadratico}
+Sea $c(x,y)=|x-y|^2$ en $\R^d$.
+\begin{enumerate}[label=(\alph*)]
+\item Para $\chi(x)=\lambda|x|^2$, calcular $\chi^c$ y mostrar que es finita
+si y sólo si $\lambda<1$; en ese caso $\chi^c(y)=-\frac{\lambda}{1-\lambda}|y|^2$.
+\item Para $\chi(x)=a\cdot x+b$, calcular $\chi^c$ y $\chi^{c\bar c}$.
+\item Probar que $\varphi$ es $c$-cóncava si y sólo si $u(x)=|x|^2-\varphi(x)$
+es convexa y semicontinua inferiormente, y expresar $\varphi^c$ en términos
+de la transformada de Legendre $\bar u$ (Sección~\ref{N-sec.costo.cuadratico}).
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La mejora de potenciales converge en el caso discreto]\label{ejer.mejora.discreta}
+En el problema discreto (Capítulo~\ref{N-cap.dual.discreto}), la
+Proposición~\ref{N-prop:mejora-potenciales} dice que $(\varphi,\psi)\mapsto
+(\varphi^{c\bar c},\varphi^c)$ no empeora el funcional dual.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que, partiendo de cualquier $\varphi\in\R^N$, la iteración
+$\varphi\mapsto\varphi^{c\bar c}$ se detiene en un paso: $\varphi^{c\bar c}$
+ya es $c$-cóncava (Ejercicio~\ref{ejer.ctransf.propiedades}).
+\item Mostrar con el ejemplo del Ejercicio~\ref{N-ejer.PL.2x2} que un par
+$(\varphi^{c\bar c},\varphi^c)$ no tiene por qué ser óptimo: la mejora de
+potenciales produce pares admisibles ``ajustados'' pero no resuelve el
+problema dual. (En el Capítulo~\ref{N-cap.Sinkhorn} se verá que la versión
+\emph{suavizada} de esta iteración sí converge al óptimo del problema
+regularizado.)
+\end{enumerate}
+\end{ejercicio}
+
+\subsection*{Ejercicios computacionales}
+
+Los ejercicios siguientes se resuelven con el cuaderno \emph{Dualidad}, que
+acompaña los Capítulos~\ref{N-cap.PL} a~\ref{N-cap.dual} (véase el
+Apéndice~\ref{N-ap.cuadernos}); los enunciados figuran también al final del
+cuaderno. Las referencias a secciones son a las del cuaderno.
+
+\begin{ejercicio}[El $2\times2$ y su degeneración]\label{ejc.dual.2x2}
+En el ejemplo $2\times2$ de la Sección~8 del cuaderno, reemplazar
+$c_{12}=3$ por un parámetro $s$ y calcular el plan óptimo para $s\in[0,4]$.
+Hallar el valor de $s$ en el que cambia el vértice óptimo y verificar que allí
+todo el segmento $\Pi(a,b)$ es óptimo y los potenciales pierden unicidad (más
+allá de la constante aditiva).
+\end{ejercicio}
+
+\begin{ejercicio}[Potenciales únicos y grafo conexo]\label{ejc.dual.conexo}
+En el ejemplo $3\times3$ del Ejercicio~\ref{N-ejer.discreto.3x3} (Sección~9
+del cuaderno), modificar las masas $a$ manteniendo $b$ hasta que el grafo de
+soporte $G_\pi$ del plan óptimo sea conexo, y verificar que entonces $\psi_3$
+queda determinado ($t_{\min}=t_{\max}$). Formular la conjetura general y
+compararla con el Ejercicio~\ref{N-ejer.discreto.unicidad}.
+\end{ejercicio}
+
+\begin{ejercicio}[Holgura complementaria y saturación espuria]\label{ejc.dual.holgura}
+En el ejemplo aleatorio de la Sección~1 del cuaderno, contar los pares $(i,j)$
+con $\pi_{ij}>0$ y los pares con holgura $c_{ij}-\varphi_i-\psi_j<10^{-9}$; el
+segundo conjunto contiene al primero (Ejercicio~\ref{N-ejer.PL.holgura}).
+Repetir para $50$ instancias aleatorias y estimar con qué frecuencia hay
+saturación sin masa. ¿Qué ocurre si los puntos $x_i$, $y_j$ se toman en una
+grilla regular en lugar de al azar?
+\end{ejercicio}
+
+\begin{ejercicio}[Mejora de potenciales]\label{ejc.dual.mejora}
+Para $100$ vectores $\varphi$ aleatorios, calcular la fracción de la brecha
+dual $\mathcal D^*-\mathcal D(\varphi,\varphi^c)$ que cierra un paso de mejora
+$\varphi\mapsto\varphi^{c\bar c}$ (Proposición~\ref{N-prop:mejora-potenciales})
+y graficar su histograma. ¿Hay algún $\varphi$ inicial para el cual un solo
+paso alcance el óptimo? (\emph{Sugerencia:} partir de un potencial óptimo
+perturbado.) Comparar con el Ejercicio~\ref{ejer.mejora.discreta}.
+\end{ejercicio}
+
+\begin{ejercicio}[Costo $0$--$1$]\label{ejc.dual.01}
+Verificar la fórmula $\min_{\Pi(a,b)}\langle C,\pi\rangle=\frac12\|a-b\|_1$
+del Ejercicio~\ref{N-ejer.discreto.01} para $200$ pares $(a,b)$ aleatorios
+sobre los mismos puntos. Tomar después soportes \emph{distintos} para $\mu$ y
+$\nu$ (ningún $x_i$ coincide con un $y_j$) y observar que el costo óptimo es
+siempre $1$: explicar por qué y qué relación tiene con la variación total de
+$\mu-\nu$.
+\end{ejercicio}
+
+\end{document}

@@ -1,0 +1,244 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{B}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Ejercicios del Apéndice B}\\[4pt]
+{\large El teorema de Fenchel--Rockafellar}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Apéndice~B de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+
+\begin{ejercicio}[Supremos de funciones convexas y semicontinuas]\label{ejer.FR.sup}
+Sea $E$ un espacio normado y $\{f_\alpha\}_{\alpha\in A}$ una familia de
+funciones $E\to\R\cup\{+\infty\}$. Probar que si todas las $f_\alpha$ son
+convexas, $f=\sup_\alpha f_\alpha$ es convexa, y que si todas son
+semicontinuas inferiormente, $f$ lo es. Deducir que la transformada de
+Legendre--Fenchel $F^*$ de cualquier función $F$ es convexa y semicontinua
+inferiormente (para la topología débil-$*$ de $E^*$, y en particular para la
+de la norma).
+\end{ejercicio}
+
+\begin{ejercicio}[Ejemplos de transformadas]\label{ejer.FR.ejemplos}
+Calcular la transformada de Legendre--Fenchel de las siguientes funciones
+de $\R$ en $\R\cup\{+\infty\}$:
+\begin{enumerate}[label=(\alph*)]
+\item $f_p(x)=\frac{x^p}{p}$ para $x\ge0$ y $+\infty$ para $x<0$, con $p>1$
+(se obtiene $f_{p'}$ con $\frac1p+\frac1{p'}=1$, restringida a $y\ge0$);
+\item $f_\infty(x)=0$ si $x\in[0,1]$, $+\infty$ en otro caso; interpretar el
+resultado como límite $p\to\infty$ de (a);
+\item $f(x)=|x|$, $f(x)=e^x$, $f(x)=-\log x$ ($x>0$), $f(x)=x\log x$ ($x\ge0$).
+\end{enumerate}
+Verificar en cada caso que $f^{**}=f$.
+\end{ejercicio}
+
+\begin{ejercicio}[Mínimos locales y globales]\label{ejer.FR.minimo}
+Sea $C\subset E$ convexo y $f\colon C\to\R\cup\{+\infty\}$ convexa y propia.
+Probar que todo mínimo local de $f$ es global, y que el conjunto de
+minimizadores es convexo. Dar un ejemplo de una función convexa en $\R^2$
+con infinitos minimizadores, y otro sin minimizadores pero con ínfimo finito.
+\end{ejercicio}
+
+\begin{ejercicio}[Biconjugada]\label{ejer.FR.biconjugada}
+Sea $F\colon E\to\R\cup\{+\infty\}$ propia.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $F^{**}\le F$ y que $F^{**}$ es la mayor función convexa
+y semicontinua inferiormente que está por debajo de $F$.
+\item Probar que si $F$ es convexa, semicontinua inferiormente y propia,
+entonces $F^{**}=F$. \emph{Sugerencia:} si $F^{**}(x_0)<F(x_0)$, separar el
+punto $(x_0,F^{**}(x_0))$ del epigrafo de $F$ (cerrado y convexo en
+$E\times\R$) mediante Hahn--Banach, como en la demostración del
+Teorema~\ref{N-teo.FR}.
+\item Calcular $F^{**}$ para $F(x)=\min\{|x-1|,|x+1|\}$ en $\R$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[El caso de dimensión finita]\label{ejer.FR.dimension.finita}
+Sea $K\subset\R^n$ convexo cerrado no vacío y $\chi_K$ su función indicatriz
+($0$ en $K$, $+\infty$ fuera).
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\chi_K^*(y)=\sup_{x\in K}x\cdot y$ es la \emph{función
+soporte} de $K$, y que $K=\{x:\ x\cdot y\le\chi_K^*(y)\ \forall y\}$.
+\item Aplicar el Teorema~\ref{N-teo.FR} con $F=\chi_K$ y $G(x)=c\cdot x$
+para reobtener la dualidad de programación lineal del
+Capítulo~\ref{N-cap.PL} (con $K=\{x\ge0:\ Ax=b\}$), identificando qué
+hipótesis del teorema corresponde a la factibilidad del primal.
+\end{enumerate}
+\end{ejercicio}
+
+\end{document}

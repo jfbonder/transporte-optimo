@@ -1,0 +1,255 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTAS TEORIA DE TRANSPORTE OPTIMO
+%
+% Contains ?? figures. 
+% File started: ??
+% First circulated version: ??
+% Last version:
+% Last modification: -
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper]{amsart}
+\usepackage{xr-hyper}
+\newcounter{chapter}
+
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% Fuzz -------------------------------------------------------------------
+\hfuzz2pt % Don't bother to report over-full boxes if over-edge is < 2pt
+% Line spacing -----------------------------------------------------------
+
+%%%%%%%%%fin pegada%%%%%%%%%%%%%%%%%%5
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+
+\setlength{\textwidth}{15.5cm} 
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+
+\parskip 3pt
+
+%%
+%% OPERADORES
+%%
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\def\div{\operatorname {\mathrm{div}}}
+\def\Dom{\operatorname {\mathrm{Dom}}}
+\def\argmin{\operatorname {\mathrm{arg\, min}}}
+\def\argmax{\operatorname {\mathrm{arg\, max}}}
+\def\gen{\operatorname {\mathrm{gen}}}
+\def\Im{\operatorname {\mathrm{Im}}}
+\def\Nu{\operatorname {\mathrm{Nu}}}
+\def\sop{\operatorname {\mathrm{sop}}}
+\def\diam{\operatorname {\mathrm{diam}}}
+\def\dist{\operatorname {\mathrm{dist}}}
+\def\var{\operatorname {\mathrm{Var}}}
+\def\codim{\operatorname {\mathrm{codim}}}
+\def\pint{\operatorname {--\!\!\!\!\!\int\!\!\!\!\!--}}
+
+%%
+%% EPSILON
+%%
+\newcommand{\ve}{\varepsilon}
+
+%%
+%% LETRAS MATHBB
+%%
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\V}{{\mathbb V}}
+\renewcommand{\P}{{\mathbb P}}
+\newcommand{\II}{{\mathbb I}}
+\newcommand{\OO}{{\mathbb O}}
+\newcommand{\Sb}{{\mathbb S}}
+\newcommand{\Tb}{{\mathbb T}}
+
+%%
+%% LETRAS CALIFGRAFICAS
+%%
+\newcommand{\F}{{\mathcal F}}
+\newcommand{\Hc}{{\mathcal H}}
+\newcommand{\Tc}{{\mathcal T}}
+\newcommand{\Ec}{{\mathcal E}}
+\newcommand{\Vc}{{\mathcal V}}
+\newcommand{\A}{{\mathcal A}}
+\newcommand{\J}{{\mathcal J}}
+\newcommand{\G}{{\mathcal G}}
+\newcommand{\U}{{\mathcal U}}
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\Sw}{{\mathcal S}}
+\newcommand{\D}{{\mathcal D}}
+\newcommand{\M}{{\mathcal M}}
+\newcommand{\LL}{{\mathcal L}}
+
+%%
+%% LETRAS MATHBF
+%%
+\newcommand{\ab}{{\mathbf a}}
+\newcommand{\bb}{{\mathbf b}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\ee}{{\mathbf e}}
+\newcommand{\ff}{{\mathbf f}}
+\newcommand{\gb}{{\mathbf g}}
+\newcommand{\hh}{{\mathbf h}}
+\newcommand{\n}{{\mathbf n}}
+\newcommand{\mm}{{\mathbf m}}
+\newcommand{\pp}{{\mathbf p}}
+\newcommand{\qq}{{\mathbf q}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\tb}{{\mathbf t}}
+\newcommand{\uu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\yy}{{\mathbf y}}
+\newcommand{\zz}{{\mathbf z}}
+\newcommand{\I}{{\mathbf 1}}
+\newcommand{\Pb}{{\mathbf P}}
+\newcommand{\XX}{{\mathbf X}}
+\newcommand{\YY}{{\mathbf Y}}
+
+%%
+%% LETRAS MATHFRAK
+%%
+
+\newcommand{\Gk}{{\mathfrak G}}
+
+
+%%
+%% TEOREMAS
+%%
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lema}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem{cor}[teo]{Corolario}
+
+%%
+%% REMARK
+%%
+\theoremstyle{remark}
+\newtheorem{obs}[teo]{Observación}
+
+%%
+%% DEFINICION
+%%
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definición}
+\newtheorem{ejem}[teo]{Ejemplo}
+\newtheorem{ejer}[teo]{Ejercicio}
+\newtheorem{nota}[teo]{Notación}
+\newtheorem{ejercicio}{Ejercicio}[chapter]
+
+
+%%
+%% NUMERACION
+%%
+\numberwithin{subsection}{section}
+\numberwithin{equation}{section}
+
+%%
+%% TITULO
+%%
+
+
+\externaldocument[N-]{../notas/Notas-TO}
+\newcommand{\cuadernolink}[2]{\noindent\textbf{Cuaderno:} \emph{#1} (\href{https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/#2}{abrir en Colab}).\par\medskip}
+\pagestyle{plain}
+
+\begin{document}
+\renewcommand{\thechapter}{A}
+\begin{center}
+{\large\sc Teoría de Transporte Óptimo}\\[2pt]
+{\small 2do cuatrimestre 2026 --- Julián Fernández Bonder}\\[10pt]
+{\LARGE\bf Ejercicios del Apéndice A}\\[4pt]
+{\large Complementos de teoría de la medida}\label{ap.medida}
+\end{center}
+\bigskip
+\noindent{\small Los ejercicios son los de la sección de ejercicios del Apéndice~A de las notas del curso, con la misma numeración. Las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\medskip
+
+
+\begin{ejercicio}[Desintegraciones explícitas]\label{ejer.desint.ejemplos}
+Hallar la desintegración $\{\pi_x\}$ respecto de la primera marginal de las
+siguientes medidas en $\R^2$, y verificar la fórmula \eqref{N-eq:desint.int}
+en cada caso:
+\begin{enumerate}[label=(\alph*)]
+\item $\pi=\mu\otimes\nu$ (producto);
+\item $\pi=2\,\LL^2\lfloor_{\{0<y<x<1\}}$ (uniforme en un triángulo);
+\item $\pi=(\id,T)_\#\LL^1\lfloor_{[0,1]}$ con $T(x)=x^2$;
+\item $\pi=\frac12(\id,T_1)_\#\mu+\frac12(\id,T_2)_\#\mu$ con
+$\mu=\LL^1\lfloor_{[0,1]}$, $T_1(x)=x$, $T_2(x)=1-x$ (un plan que no es un
+mapa: ¿cuánto vale $\pi_x$?).
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Independencia y planes inducidos]\label{ejer.desint.independencia}
+Sea $\pi\in\Pi(\mu,\nu)$ con desintegración $\{\pi_x\}$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $\pi=\mu\otimes\nu$ si y sólo si $\pi_x=\nu$ para
+$\mu$-c.t.p.\ $x$.
+\item Probar que $\pi$ está inducido por un mapa si y sólo si $\pi_x$ es una
+masa de Dirac para $\mu$-c.t.p.\ $x$ (Proposición~\ref{N-prop.desint.mapa}), y
+que en ese caso el mapa es $T(x)=\int y\,d\pi_x(y)$ (cuando $\nu$ tiene
+primer momento finito).
+\item Para $\pi\in\Pi(\mu,\nu)$ arbitrario con $\nu\in\mathcal P_2(\R^d)$,
+sea $T(x)=\int y\,d\pi_x(y)$ el \emph{baricentro condicional}. Probar que
+$\int|x-y|^2d\pi\ge\int|x-T(x)|^2d\mu$, con igualdad si y sólo si $\pi$ está
+inducido por $T$. Concluir que si $T_\#\mu=\nu$, el plan $(\id,T)_\#\mu$ es
+mejor que $\pi$: ``promediar el destino no aumenta el costo cuadrático''.
+¿Por qué esto no demuestra que los planes óptimos son mapas?
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Asociatividad del pegado]\label{ejer.pegado.asociativo}
+Sean $\pi_{12}\in\Pi(\mu_1,\mu_2)$, $\pi_{23}\in\Pi(\mu_2,\mu_3)$ y
+$\pi_{34}\in\Pi(\mu_3,\mu_4)$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que pegar primero $\pi_{12}$ con $\pi_{23}$ y el resultado con
+$\pi_{34}$ (a lo largo de la tercera coordenada) da la misma medida en
+$X_1\times X_2\times X_3\times X_4$ que pegar primero $\pi_{23}$ con
+$\pi_{34}$ y luego con $\pi_{12}$.
+\item Deducir la desigualdad triangular ``iterada''
+\[
+W_p(\mu_1,\mu_4)\le W_p(\mu_1,\mu_2)+W_p(\mu_2,\mu_3)+W_p(\mu_3,\mu_4)
+\]
+directamente a partir de un plan pegado, sin usar dos veces el
+Teorema~\ref{N-teo.Wp.distancia}.
+\item Probar que si los tres planes están inducidos por mapas $T_1,T_2,T_3$,
+la medida pegada es $(\id,T_1,T_2\circ T_1,T_3\circ T_2\circ T_1)_\#\mu_1$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Desintegración y transporte condicional]\label{ejer.desint.condicional}
+Sean $\mu,\nu\in\mathcal P(\R^2)$ con marginales sobre la primera coordenada
+$\mu^1$, $\nu^1$ y desintegraciones $\mu=\mu_x\otimes\mu^1$, $\nu=\nu_x\otimes\nu^1$.
+\begin{enumerate}[label=(\alph*)]
+\item (``Knothe--Rosenblatt''.) Supongamos $\mu^1$ y todas las $\mu_x$ sin
+átomos. Sea $T^1$ el mapa monótono de $\mu^1$ a $\nu^1$ y, para cada $x$,
+$T^2_x$ el mapa monótono de $\mu_x$ a $\nu_{T^1(x)}$. Probar que
+$T(x,y)=(T^1(x),T^2_x(y))$ transporta $\mu$ en $\nu$. (Es el
+\emph{reordenamiento de Knothe--Rosenblatt}; no es óptimo para el costo
+cuadrático, pero es explícito y triangular.)
+\item Probar que $W_2^2(\mu,\nu)\le W_2^2(\mu^1,\nu^1)+\int W_2^2(\mu_x,\nu_{T^1(x)})\,d\mu^1(x)$
+y que, en general, la desigualdad es estricta.
+\item Probar que si $\mu=\mu^1\otimes\alpha$ y $\nu=\nu^1\otimes\beta$ son
+productos, entonces $W_2^2(\mu,\nu)=W_2^2(\mu^1,\nu^1)+W_2^2(\alpha,\beta)$.
+\end{enumerate}
+\end{ejercicio}
+
+\end{document}
