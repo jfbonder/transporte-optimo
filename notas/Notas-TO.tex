@@ -356,17 +356,58 @@ autor, y agradeceré que me los señalen.
 \chapter{Introducción}\label{cap.intro}
 
 
-Estas notas fueron elaboradas como una guía para el dictado del curso y no pretenden ser un texto original ni autosuficiente. Su objetivo es servir de apoyo durante las clases, presentando las definiciones, resultados y ejemplos que se desarrollarán en ellas.
+El problema del transporte óptimo admite dos formulaciones clásicas, y la
+distancia entre ellas organiza buena parte de la teoría. La primera es la de
+Monge: llevar una distribución de masa sobre otra mediante una aplicación que
+asigna a cada punto de origen un único destino, de modo que el costo total del
+traslado sea mínimo. La segunda es la de Kantorovich: en lugar de una
+aplicación, un plan de transporte, que permite repartir la masa que hay en un
+punto entre varios destinos. Este capítulo introduce ambas y explica por qué la
+segunda es la formulación con la que se puede trabajar.
 
-La exposición es necesariamente incompleta y, en muchos casos, se omiten demostraciones, comentarios y desarrollos que se discutirán en clase. Por este motivo, estas notas deben entenderse como un complemento y no como un reemplazo de la bibliografía del curso.
+La Sección~\ref{sec.monge} presenta el problema de Monge tal como él lo planteó
+en 1781, primero en el caso discreto de depósitos y pozos con cantidades
+finitas de material y después en el caso continuo, con densidades, y discute
+qué funciones de costo son razonables y cuáles son las que aparecen en la
+práctica.
 
-La organización y buena parte de la exposición siguen principalmente los libros de Villani \cite{Villani2003}, Santambrogio \cite{Santambrogio} y de Panaretos y Zemel \cite{PanaretosZemel}, que constituyen las referencias fundamentales para el desarrollo del curso.
+La Sección~\ref{sec.monge.medidas} traduce las dos versiones a un lenguaje
+común, el de las medidas de probabilidad, en el que la condición de que la
+aplicación $T$ transporte la masa de $\mu$ sobre la de $\nu$ se escribe
+$T_\#\mu=\nu$ mediante la medida imagen. Esa traducción deja a la vista las dos
+dificultades del problema de Monge. Por un lado, puede no haber ninguna
+aplicación admisible: si $\mu$ es una delta y $\nu$ tiene dos átomos, no hay
+manera de partir la masa. Por otro, aun cuando las haya, la restricción
+$T_\#\mu=\nu$ es no lineal en $T$ y el conjunto de aplicaciones admisibles no es
+convexo, de modo que el método directo del cálculo de variaciones no se puede
+aplicar: una sucesión minimizante no tiene por qué converger a una aplicación
+admisible.
 
-Para una presentación más detallada de los distintos temas, así como para consultar la bibliografía recomendada, se invita al lector a visitar el Campus Virtual de la materia:
-\begin{center}
-\url{https://campus.exactas.uba.ar/course/view.php?id=1228}.
-\end{center}
-\section{El problema de Monge}
+La Sección~\ref{sec.kantorovich} introduce la relajación que propuso
+Kantorovich en la década de 1940. Un plan de transporte es una medida $\pi$
+sobre el producto $X\times Y$ cuyas marginales son $\mu$ y $\nu$; el conjunto
+$\Pi(\mu,\nu)$ de todos ellos nunca es vacío, porque contiene a
+$\mu\otimes\nu$, es convexo, y el costo es lineal en $\pi$. Cada aplicación
+admisible induce un plan concentrado en su gráfico, así que el problema de
+Kantorovich es efectivamente una relajación del de Monge. El precio a pagar es
+que el mínimo de Kantorovich no siempre proviene de una aplicación; decidir
+cuándo sí lo hace es el contenido del teorema de Brenier
+(Capítulo~\ref{cap.Brenier}).
+
+La Sección~\ref{sec.interp.prob} reinterpreta los planes en términos
+probabilísticos, como acoplamientos de variables aleatorias con distribuciones
+dadas, que es el punto de vista natural cuando el transporte óptimo se usa en
+estadística.
+
+La Sección~\ref{sec.intro.discreto} vuelve al caso discreto, donde el problema
+de Kantorovich es un problema de programación lineal en dimensión finita. El
+teorema de Birkhoff--von Neumann identifica los puntos extremales del conjunto
+de matrices biestocásticas con las permutaciones y permite deducir que, cuando
+las dos medidas son sumas de la misma cantidad de deltas con pesos iguales, el
+problema de Monge sí tiene solución. Este caso se retoma en los
+Capítulos~\ref{cap.PL} y~\ref{cap.dual.discreto}.
+
+\section{El problema de Monge}\label{sec.monge}
 
 En 1781, Gaspard Monge estudió el problema de los desmontes y terraplenes: dada una región de la que debe extraerse cierta cantidad de tierra y otra que debe rellenarse con el mismo volumen, ¿cómo organizar el transporte minimizando el costo total?
 
@@ -472,7 +513,7 @@ que conduce a las distancias de Wasserstein \(W_p\), que estudiaremos más adela
 \end{enumerate}
 
 
-\section{El problema de Monge en espacios de medida}
+\section{El problema de Monge en espacios de medida}\label{sec.monge.medidas}
 
 La formulación de la sección anterior distingue entre el caso discreto y el
 continuo. Ambos pueden tratarse dentro de un mismo marco utilizando la noción
@@ -627,7 +668,7 @@ c(x,y)=d(x,y)^p,
 \]
 que generaliza los costos $c(x,y)=|x-y|^p$ considerados en $\R^d$.
 
-\section{La relajación de Kantorovich}
+\section{La relajación de Kantorovich}\label{sec.kantorovich}
 
 El problema de Monge \eqref{PM} presenta importantes dificultades analíticas.
 
@@ -1214,7 +1255,7 @@ $x$ tiene asociado un único destino $T(x)$.
 %\]
 %es decir, la distribución condicional está concentrada en un único punto.
 
-\section{El caso discreto}
+\section{El caso discreto}\label{sec.intro.discreto}
 
 En esta sección estudiaremos el problema de transporte óptimo cuando las medidas involucradas son discretas y asignan la misma masa a un número finito de puntos. Aunque se trata de un caso particular, resulta especialmente importante por varios motivos. En primer lugar, permite visualizar de manera muy concreta la diferencia entre los problemas de Monge y Kantorovich. Además, constituye un ejemplo elemental de programación lineal y servirá como motivación para la teoría de dualidad que desarrollaremos en el capítulo siguiente.
 
@@ -9778,7 +9819,9 @@ mezcla $\sum_i\lambda_i\mu_i$, promedia las densidades punto a punto y no
 respeta la geometría: la mezcla de dos gaussianas alejadas es bimodal, mientras
 que el baricentro de Wasserstein es una gaussiana intermedia. Esta diferencia
 es la razón por la que los baricentros de Wasserstein se usan en estadística
-(para promediar histogramas, imágenes o formas) y en aprendizaje automático.
+(para promediar histogramas, imágenes o formas) y en aprendizaje automático;
+una presentación del tema desde el punto de vista estadístico es la de
+Panaretos y Zemel~\cite{PanaretosZemel}.
 
 En este capítulo definimos los baricentros, probamos su existencia en
 $\mathcal P_2(\R^d)$, discutimos su unicidad, los conectamos con el problema
