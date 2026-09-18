@@ -35,7 +35,7 @@ from comun import src, L, PREAMBULO  # noqa: E402
 caps = []   # (numero o letra, titulo, inicio, fin)
 i_app = next(i for i, l in enumerate(L) if l.startswith('\\appendix'))
 i_bib = next(i for i, l in enumerate(L) if l.startswith('\\bibliographystyle'))
-idx = [i for i, l in enumerate(L) if l.startswith('\\chapter')]
+idx = [i for i, l in enumerate(L) if l.startswith('\\chapter{')]   # sin los \chapter* (prefacio)
 n_cap = 0; n_app = 0
 for k, i in enumerate(idx):
     fin = idx[k + 1] if k + 1 < len(idx) else i_bib

@@ -9,3 +9,5 @@
 *.synctex.gz
 .ipynb_checkpoints/
 .DS_Store
+__pycache__/
+*(jfbonder@gmail.com)*

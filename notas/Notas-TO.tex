@@ -220,6 +220,133 @@ Buenos Aires, Argentina.
 
 \vfill
 
+\cleardoublepage
+\chapter*{Prefacio}
+{\renewcommand{\thefigure}{P.\arabic{figure}}%
+
+Estas notas fueron escritas durante el dictado de la materia \emph{Teoría de
+Transporte Óptimo}, curso optativo para las Licenciaturas en Matemática y en
+Ciencia de Datos y para el Doctorado en Matemática de la Facultad de Ciencias
+Exactas y Naturales de la Universidad de Buenos Aires, en el segundo
+cuatrimestre de 2026. Nacieron como apuntes de clase que se fueron publicando
+capítulo a capítulo a medida que avanzaba el curso, y conservan ese carácter:
+son notas de un curso de un cuatrimestre, no un tratado, y su versión actual
+es todavía preliminar. Las correcciones y sugerencias son bienvenidas.
+
+\subsection*{De qué trata el tema}
+
+El problema del transporte óptimo tiene un origen concreto. Supongamos que se
+tiene una pila de material, digamos arena, y un agujero que se quiere llenar
+con ese material; mover la arena cuesta un esfuerzo que depende de dónde se la
+toma y de dónde se la deposita. ¿Cómo realizar el transporte a costo mínimo?
+Modelando la pila y el agujero como medidas de probabilidad $\mu$ y $\nu$, y
+el esfuerzo como una función de costo $c(x,y)$ (Figura~\ref{fig.prefacio.monge}),
+la pregunta se convierte en un problema variacional que Gaspard Monge planteó
+en 1781 y que Leonid Kantorovich reformuló en la década de 1940, dando lugar a
+la dualidad que hoy lleva su nombre. A partir del trabajo de Yann Brenier en
+1987, la teoría experimentó un desarrollo extraordinario y se convirtió en un
+punto de encuentro entre el análisis, la geometría, la probabilidad, las
+ecuaciones en derivadas parciales y la optimización.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{fig-monge-arena.jpg}
+\caption{El problema original de Monge: transportar una distribución de masa
+$\mu$ sobre $X$ hacia otra distribución $\nu$ sobre $Y$, minimizando el costo
+total de transporte.}
+\label{fig.prefacio.monge}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.3\textwidth}\centering
+\includegraphics[height=3.6cm]{retrato-monge.jpg}\\[3pt]
+{\small Gaspard Monge (1746--1818)\\ El problema del transporte (1781)}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.3\textwidth}\centering
+\includegraphics[height=3.6cm]{retrato-kantorovich.jpg}\\[3pt]
+{\small Leonid Kantorovich (1912--1986)\\ Premio Nobel de Economía (1975)}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.3\textwidth}\centering
+\includegraphics[height=3.6cm]{retrato-brenier.jpg}\\[3pt]
+{\small Yann Brenier (1957--)\\ Teorema de factorización polar (1987)}
+\end{minipage}
+\caption{Tres nombres en la historia del transporte óptimo.}
+\label{fig.prefacio.retratos}
+\end{figure}
+
+En las últimas dos décadas, además, el transporte óptimo pasó a ocupar un
+lugar central en estadística, ciencia de datos y aprendizaje automático: la
+distancia de Wasserstein se convirtió en una herramienta fundamental para
+comparar distribuciones de probabilidad y aparece en problemas de inferencia
+estadística, procesamiento de imágenes, visión por computadora, aprendizaje
+profundo y modelos generativos (Figura~\ref{fig.prefacio.aplicaciones}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{fig-aplicaciones.jpg}
+\caption{Algunas aplicaciones contemporáneas del transporte óptimo y de la
+distancia de Wasserstein.}
+\label{fig.prefacio.aplicaciones}
+\end{figure}
+
+\subsection*{Contenido y organización}
+
+El objetivo del curso es presentar los fundamentos matemáticos de la teoría
+moderna del transporte óptimo, con énfasis en sus aspectos analíticos y
+geométricos, y una mirada a los aspectos computacionales. La primera parte
+(Capítulos~\ref{cap.intro} a~\ref{cap.Brenier}) recorre el problema de Monge
+y la relajación de Kantorovich, la existencia de planes óptimos, la dualidad
+y los potenciales de Kantorovich, el caso unidimensional y el teorema de
+factorización polar de Brenier. La segunda parte (Capítulos~\ref{cap.Wp}
+a~\ref{cap.Sinkhorn}) estudia las distancias de Wasserstein y la geometría
+del espacio de medidas de probabilidad, con una aplicación a la desigualdad
+de Brunn--Minkowski, los baricentros de Wasserstein y la regularización
+entrópica con el algoritmo de Sinkhorn. Cinco apéndices reúnen el material
+auxiliar: complementos de teoría de la medida, el teorema de
+Fenchel--Rockafellar, la factorización polar de matrices, el subdiferencial
+de funciones convexas y una guía de los cuadernos de cómputo.
+
+Se asume familiaridad con el análisis real y con los rudimentos de la teoría
+de la medida, que se repasan en el Apéndice~\ref{ap.medida}. Cada capítulo
+termina con una sección de ejercicios; en seis de ellos hay además ejercicios
+computacionales, que se resuelven con cuadernos de Python que acompañan las
+notas. El curso siguió principalmente los textos de Villani~\cite{Villani2003}
+y Santambrogio~\cite{Santambrogio}; para los aspectos computacionales, el de
+Peyré y Cuturi~\cite{PeyreCuturi2019}.
+
+\subsection*{El material del curso}
+
+Todo el material está sistematizado en el sitio del curso,
+\begin{center}
+\url{https://jfbonder.github.io/transporte-optimo/}
+\end{center}
+donde se encuentran estas notas, las guías de ejercicios de cada capítulo
+(que son exactamente las secciones de ejercicios de las notas, con la misma
+numeración), un archivo de sugerencias para los ejercicios y los seis
+cuadernos de Python, que pueden abrirse directamente en Google Colab. El
+sitio y las fuentes de todo el material están en un repositorio público,
+donde también pueden reportarse erratas.
+
+\subsection*{Sobre la redacción}
+
+En la confección de estas notas se utilizaron herramientas de inteligencia
+artificial. La selección de los temas, el orden de la exposición, las
+decisiones sobre qué demostrar y qué remitir a la bibliografía, y la revisión
+final de cada capítulo son del autor; una parte sustancial de la redacción,
+de las demostraciones detalladas, de los ejercicios y de los cuadernos de
+cómputo fue producida en diálogo con asistentes de IA, a partir de
+indicaciones del autor y sujeta a su revisión. Este modo de trabajo hizo
+posible escribir, en un cuatrimestre, un material más completo del que
+hubiera sido posible de otro modo; también obliga a una advertencia: la
+responsabilidad por los errores que hayan quedado es exclusivamente del
+autor, y agradeceré que me los señalen.
+
+\bigskip
+\noindent Buenos Aires, septiembre de 2026.
+\hfill Julián Fernández Bonder
+}
+\cleardoublepage
 \tableofcontents 
 
 

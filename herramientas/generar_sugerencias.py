@@ -19,7 +19,7 @@ i_app = next(i for i, l in enumerate(L) if l.startswith('\\appendix'))
 caps = []  # (num, titulo, linea)
 n_cap = 0; n_app = 0
 for i, l in enumerate(L):
-    if l.startswith('\\chapter'):
+    if l.startswith('\\chapter{'):   # sin los \chapter* (prefacio)
         if i < i_app:
             n_cap += 1; num = str(n_cap)
         else:
