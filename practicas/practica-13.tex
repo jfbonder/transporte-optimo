@@ -214,6 +214,7 @@ $n$ puntos y $\pi$ una matriz de permutación dividida por $n$ hay igualdad.
 \end{ejercicio}
 
 \begin{ejercicio}[El valor entrópico como función de $\ve$]\label{ejer.OTeps.concavo}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar que $\ve\mapsto\mathrm{OT}_\ve(a,b)$ es no decreciente y cóncava
 en $(0,\infty)$ (es un ínfimo de funciones afines de $\ve$), y que
@@ -287,6 +288,7 @@ forman un segmento: ¿a qué punto del segmento converge el límite entrópico?
 \end{ejercicio}
 
 \begin{ejercicio}[Sinkhorn en un paso]\label{ejer.sinkhorn.un.paso}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar que si $C$ es de la forma $c_{ij}=f_i+g_j$ entonces
 $\pi^\ve=a\otimes b$ para todo $\ve$, y el algoritmo de Sinkhorn converge en
@@ -301,6 +303,7 @@ mano los límites $\ve\to0$ y $\ve\to\infty$.
 \end{ejercicio}
 
 \begin{ejercicio}[Baricentros entrópicos]\label{ejer.bar.entropico}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar que si alguna $b^k$ tiene todas sus entradas positivas, entonces
 $a\mapsto\mathrm{OT}_\ve(a,b^k)$ es estrictamente convexa en $\Sigma_n$ y el
@@ -357,8 +360,10 @@ verificar el crecimiento $O(nm)$. Comparar con el tiempo del solver exacto
 \begin{ejercicio}[Un baricentro con $\ve\to0$]\label{ejc.eps.baricentro}
 En el ejemplo de la Sección~5.1 del cuaderno, calcular el baricentro
 entrópico de la Proposición~\ref{N-prop.baricentro.entropico} para
-$\ve\in\{0{,}5,\,0{,}2,\,0{,}1,\,0{,}05,\,0{,}02,\,0{,}01,\,0{,}005\}$ y
-graficar la distancia $W_2$ entre el baricentro entrópico y el exacto en
+\[
+\ve\in\{0{,}5,\;0{,}2,\;0{,}1,\;0{,}05,\;0{,}02,\;0{,}01,\;0{,}005\}
+\]
+y graficar la distancia $W_2$ entre el baricentro entrópico y el exacto en
 función de $\ve$, en escala logarítmica en ambos ejes. ¿Cuántas iteraciones
 hacen falta en cada caso?
 \end{ejercicio}

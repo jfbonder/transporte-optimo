@@ -1896,13 +1896,11 @@ y, para cada \(n\),
 \]
 Por lo tanto, para todo \(m\),
 \[
-\liminf_{n\to\infty}
-\int_{X\times Y} c(x,y)\,d\pi_n(x,y)
-\ge
-\liminf_{n\to\infty}
-\int_{X\times Y} c_m(x,y)\,d\pi_n(x,y)
-=
-\int_{X\times Y} c_m(x,y)\,d\pi(x,y).
+\begin{aligned}
+\liminf_{n\to\infty}\int_{X\times Y} c(x,y)\,d\pi_n(x,y)
+&\ge\liminf_{n\to\infty}\int_{X\times Y} c_m(x,y)\,d\pi_n(x,y)\\
+&=\int_{X\times Y} c_m(x,y)\,d\pi(x,y).
+\end{aligned}
 \]
 Finalmente, haciendo \(m\to\infty\) y aplicando nuevamente el teorema de convergencia monótona, obtenemos
 \[
@@ -2281,11 +2279,13 @@ Sea $\varphi\in C_b(X)$. La función $(x,y)\mapsto\varphi(x)$ pertenece a
 $C_b(X\times Y)$, de modo que, por la convergencia débil y la definición de
 medida imagen,
 \[
+\begin{aligned}
 \int_X\varphi\,d(\pp_1)_\#\pi
-=\int_{X\times Y}\varphi(x)\,d\pi(x,y)
-=\lim_{n\to\infty}\int_{X\times Y}\varphi(x)\,d\pi_n(x,y)
-=\lim_{n\to\infty}\int_X\varphi\,d\mu
+&=\int_{X\times Y}\varphi(x)\,d\pi(x,y)
+=\lim_{n\to\infty}\int_{X\times Y}\varphi(x)\,d\pi_n(x,y)\\
+&=\lim_{n\to\infty}\int_X\varphi\,d\mu
 =\int_X\varphi\,d\mu.
+\end{aligned}
 \]
 Como esto vale para toda $\varphi\in C_b(X)$, el Lema~\ref{lem.medidas} da
 $(\pp_1)_\#\pi=\mu$. Análogamente, $(\pp_2)_\#\pi=\nu$.
@@ -2347,12 +2347,14 @@ lo que implica que \(\pi^*\) es un plan de transporte óptimo.
 Decidir si las siguientes sucesiones convergen débilmente en $\mathcal P(\R)$
 y, en caso afirmativo, hallar el límite:
 \[
-\text{(a) }\delta_{1/n};\quad
+\begin{aligned}
+&\text{(a) }\delta_{1/n};\quad
 \text{(b) }\delta_n;\quad
-\text{(c) }\tfrac12\delta_0+\tfrac12\delta_{1/n};\quad
-\text{(d) }\LL^1\lfloor_{[0,1-1/n]}\cdot\tfrac{n}{n-1};\quad
+\text{(c) }\tfrac12\delta_0+\tfrac12\delta_{1/n};\\[2pt]
+&\text{(d) }\LL^1\lfloor_{[0,1-1/n]}\cdot\tfrac{n}{n-1};\quad
 \text{(e) }n\,\LL^1\lfloor_{[0,1/n]};\quad
 \text{(f) }\tfrac1n\sum_{k=1}^n\delta_{k/n}.
+\end{aligned}
 \]
 En (b), probar que ninguna subsucesión converge débilmente a una medida de
 probabilidad, y relacionarlo con la falta de ajuste (\emph{tightness}).
@@ -2373,6 +2375,7 @@ transporte mandan muestras en muestras''.
 \end{ejercicio}
 
 \begin{ejercicio}[Los mapas no son compactos]\label{ejer.mapas.no.compactos}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Construir una sucesión $f_n\colon[0,1]\to[0,1]$ tal que
 $(f_n)_\#\LL^1\lfloor_{[0,1]}=\LL^1\lfloor_{[0,1]}$ para todo $n$ y
@@ -2885,6 +2888,7 @@ partida y de llegada, y la restricción dual involucrará la función de costo.
 \section*{Ejercicios}
 
 \begin{ejercicio}[Duales de distintas formas]\label{ejer.PL.formas}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Escribir el problema dual de $\min\{c^Tx:\ Ax\ge b,\ x\ge0\}$ y el de
 $\min\{c^Tx:\ Ax=b\}$ (sin restricción de signo), reduciéndolos primero a la
@@ -6824,10 +6828,12 @@ Por la Proposición~\ref{prop:push-uniforme}, $\mu=(F_\mu^{[-1]})_\#\lambda$.
 Usando la regla de composición de medidas imagen,
 $(S\circ R)_\#\lambda=S_\#(R_\#\lambda)$, resulta
 \[
+\begin{aligned}
 (\id,T_\text{mon})_\#\mu
-=(\id,T_\text{mon})_\#\bigl((F_\mu^{[-1]})_\#\lambda\bigr)
-=\bigl((\id,T_\text{mon})\circ F_\mu^{[-1]}\bigr)_\#\lambda
-=\bigl(F_\mu^{[-1]},\;F_\nu^{[-1]}\circ F_\mu\circ F_\mu^{[-1]}\bigr)_\#\lambda .
+&=(\id,T_\text{mon})_\#\bigl((F_\mu^{[-1]})_\#\lambda\bigr)
+=\bigl((\id,T_\text{mon})\circ F_\mu^{[-1]}\bigr)_\#\lambda\\
+&=\bigl(F_\mu^{[-1]},\;F_\nu^{[-1]}\circ F_\mu\circ F_\mu^{[-1]}\bigr)_\#\lambda .
+\end{aligned}
 \]
 Por el Paso 1, $F_\nu^{[-1]}\circ F_\mu\circ F_\mu^{[-1]}=F_\nu^{[-1]}$ en
 $(0,1)$, y por lo tanto
@@ -6962,8 +6968,12 @@ que es $\gamma$-nulo). Existen entonces
 es decir, $x\le a<x'$ e $y>b\ge y'$. Pero entonces $x<x'$ e $y>y'$, lo que contradice
 la hipótesis de monotonicidad del soporte.
 
-Por lo tanto $\min\{F_\mu(a)-\gamma(A),\,F_\nu(b)-\gamma(A)\}=0$, es decir,
-$\gamma(A)=\min\{F_\mu(a),F_\nu(b)\}$, que es \eqref{eq:rectangulo}.
+Por lo tanto
+\[
+\min\{F_\mu(a)-\gamma(A),\,F_\nu(b)-\gamma(A)\}=0,
+\]
+es decir, $\gamma(A)=\min\{F_\mu(a),F_\nu(b)\}$, que es
+\eqref{eq:rectangulo}.
 
 Resta ver que $\gamma_{mon}$ satisface la misma identidad. Por definición y
 por \eqref{eq:pseudo},
@@ -7242,12 +7252,12 @@ concentrado en ese producto, de modo que
 \]
 Reordenando la desigualdad anterior,
 \[
+\begin{aligned}
 \int h(y-x)\,d\gamma_{mon}
-\le
-\int h(y-x)\,d\pi
-+\varepsilon\Bigl(\int(y-x)^2\,d\pi-\int(y-x)^2\,d\gamma_{mon}\Bigr)
-\le
-\int h(y-x)\,d\pi+\varepsilon M.
+&\le\int h(y-x)\,d\pi
++\varepsilon\Bigl(\int(y-x)^2\,d\pi-\int(y-x)^2\,d\gamma_{mon}\Bigr)\\
+&\le\int h(y-x)\,d\pi+\varepsilon M.
+\end{aligned}
 \]
 Haciendo $\varepsilon\to0^+$ obtenemos
 \[
@@ -7395,6 +7405,7 @@ general de costos cóncavos.)
 \end{ejercicio}
 
 \begin{ejercicio}[Densidades sin soporte pleno]\label{ejer.1D.boreliano}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Construir un boreliano $A\subset[0,1]$ tal que
 $0<\LL^1(I\cap A)<\LL^1(I)$ para todo intervalo abierto $I\subset[0,1]$.
@@ -8208,7 +8219,9 @@ $M=A^{-1}(AB^2A)^{1/2}A^{-1}$.
 
 \begin{ejercicio}[Una reflexión que no es óptima]\label{ejer.Brenier.reflexion}
 Sea $\mu\in\mathcal P_2(\R^d)$ y sea $S$ la reflexión
-$S(x_1,\dots,x_d)=(x_1,\dots,x_{d-1},-x_d)$.
+\[
+S(x_1,\dots,x_d)=(x_1,\dots,x_{d-1},-x_d).
+\]
 \begin{enumerate}[label=(\alph*)]
 \item Probar que si $S$ es óptimo entre $\mu$ y $S_\#\mu$ para el costo
 cuadrático, entonces $\mu$ está concentrada en el gráfico
@@ -8222,6 +8235,7 @@ Lipschitz tiene medida de Lebesgue nula).
 \end{ejercicio}
 
 \begin{ejercicio}[Knott--Smith y un ejemplo de no unicidad]\label{ejer.Brenier.KnottSmith}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item (Criterio de Knott--Smith.) Sean $\mu,\nu\in\mathcal P_2(\R^d)$,
 $\pi\in\Pi(\mu,\nu)$ y $u\colon\R^d\to\R$ convexa, con $\bar u$ finita
@@ -8400,10 +8414,12 @@ W_2^2(\mu,\nu)=|m_\mu-m_\nu|^2+W_2^2(\widetilde\mu,\widetilde\nu).
 Para todo $\pi\in\Pi(\mu,\nu)$, escribiendo
 $x-y=(x-m_\mu)-(y-m_\nu)+(m_\mu-m_\nu)$ y desarrollando el cuadrado,
 \[
+\begin{aligned}
 \int|x-y|^2\,d\pi
-=\int\bigl|(x-m_\mu)-(y-m_\nu)\bigr|^2\,d\pi
-+|m_\mu-m_\nu|^2
-+2\,(m_\mu-m_\nu)\cdot\int\bigl((x-m_\mu)-(y-m_\nu)\bigr)\,d\pi,
+={}&\int\bigl|(x-m_\mu)-(y-m_\nu)\bigr|^2\,d\pi
++|m_\mu-m_\nu|^2\\
+&+2\,(m_\mu-m_\nu)\cdot\int\bigl((x-m_\mu)-(y-m_\nu)\bigr)\,d\pi,
+\end{aligned}
 \]
 y la última integral es nula porque las marginales de $\pi$ son $\mu$ y $\nu$.
 Además, la aplicación $\pi\mapsto(x-m_\mu,y-m_\nu)_\#\pi$ es una biyección
@@ -9326,9 +9342,12 @@ cuaderno.
 
 \begin{ejercicio}[Escala]\label{ejc.Wp.escala}
 Probar numéricamente, y luego a mano, que
-$W_p(\lambda_\#\mu,\lambda_\#\nu)=\lambda\,W_p(\mu,\nu)$ para la dilatación
-$x\mapsto\lambda x$, $\lambda>0$, y que $W_p$ es invariante por traslaciones
-simultáneas de ambas medidas (Ejercicio~\ref{ejer.Wp.escala}).
+\[
+W_p(\lambda_\#\mu,\lambda_\#\nu)=\lambda\,W_p(\mu,\nu)
+\]
+para la dilatación $x\mapsto\lambda x$, $\lambda>0$, y que $W_p$ es invariante
+por traslaciones simultáneas de ambas medidas
+(Ejercicio~\ref{ejer.Wp.escala}).
 \end{ejercicio}
 
 \begin{ejercicio}[Traslaciones]\label{ejc.Wp.traslaciones}
@@ -9696,6 +9715,7 @@ espacio de Wasserstein, que queda fuera del alcance de estas notas; véase
 \section*{Ejercicios}
 
 \begin{ejercicio}[Casos elementales]\label{ejer.BM.elementales}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar la desigualdad de Brunn--Minkowski directamente para $d=1$
 (intervalos y, en general, compactos de $\R$) y para cajas
@@ -9733,7 +9753,10 @@ $M$ es un campo de divergencia nula). \emph{Sugerencia:} escribir
 $M_{ij}$ como un determinante de orden $d-1$ y usar la simetría de las
 derivadas terceras de $u$.
 \item Deducir la \emph{forma de divergencia} de la ecuación de
-Monge--Ampère: $\det D^2u=\frac1d\sum_{ij}\partial_i\bigl(M_{ij}\,\partial_ju\bigr)$.
+Monge--Ampère,
+\[
+\det D^2u=\frac1d\sum_{ij}\partial_i\bigl(M_{ij}\,\partial_ju\bigr).
+\]
 \item Usar (b) para dar otra demostración del Lema~\ref{lema.MA} en la
 forma integral: si $T=\nabla u$ es un difeomorfismo de $\Omega$ sobre
 $\Omega'$, entonces $\int_\Omega\det D^2u\,dx=|\Omega'|$.
@@ -9945,9 +9968,11 @@ sucesión minimizante, de modo que $\mathcal F(\nu_n)\le C$ para todo $n$.
 \textbf{Momentos acotados.} Como $\lambda_1W_2^2(\nu_n,\mu_1)\le\mathcal F(\nu_n)\le C$,
 por \eqref{eq:Wp.momento} y la desigualdad triangular,
 \[
+\begin{aligned}
 \Bigl(\int|x|^2\,d\nu_n\Bigr)^{1/2}=W_2(\nu_n,\delta_0)
-\le W_2(\nu_n,\mu_1)+W_2(\mu_1,\delta_0)
-\le\sqrt{C/\lambda_1}+\Bigl(\int|x|^2\,d\mu_1\Bigr)^{1/2}\eqqcolon M,
+&\le W_2(\nu_n,\mu_1)+W_2(\mu_1,\delta_0)\\
+&\le\sqrt{C/\lambda_1}+\Bigl(\int|x|^2\,d\mu_1\Bigr)^{1/2}\eqqcolon M,
+\end{aligned}
 \]
 con $M$ independiente de $n$.
 
@@ -10317,9 +10342,12 @@ $\mathcal P_2(\R)$ por~\cite[Proposition~2.17]{Santambrogio}— y la identidad
 de la varianza \eqref{eq:varianza} aplicada en cada $s\in(0,1)$ a los puntos
 $G_i(s)$,
 \[
+\begin{aligned}
 \mathcal F(\mu)
-=\int_0^1\sum_i\lambda_i\bigl|H(s)-G_i(s)\bigr|^2\,ds
-=\int_0^1\bigl|H(s)-G(s)\bigr|^2\,ds+\int_0^1\sum_i\lambda_i\bigl|G(s)-G_i(s)\bigr|^2\,ds.
+&=\int_0^1\sum_i\lambda_i\bigl|H(s)-G_i(s)\bigr|^2\,ds\\
+&=\int_0^1\bigl|H(s)-G(s)\bigr|^2\,ds
++\int_0^1\sum_i\lambda_i\bigl|G(s)-G_i(s)\bigr|^2\,ds.
+\end{aligned}
 \]
 El segundo término no depende de $\mu$, y vale $\mathcal F(\bar\mu)$ (pues para
 $\mu=\bar\mu$ el primer término se anula). Luego
@@ -10516,6 +10544,7 @@ el gráfico de $x\mapsto(T_1(x),\dots,T_N(x))$.
 \end{ejercicio}
 
 \begin{ejercicio}[Cuantización y baricentros de Diracs]\label{ejer.bar.cuantizacion}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar directamente (sin usar el Teorema~\ref{teo.bar.unicidad}) que
 el baricentro de masas de Dirac $\delta_{x_i}$ es único y es
@@ -11298,9 +11327,13 @@ $\{p\ge0,\,q\ge0\}$ (con los valores $+\infty$ si $q=0<p$ y $0$ si $p=0$; en
 efecto, es continua donde $q>0$ y la desigualdad $p\log(p/q)\ge p-q$, que
 sigue de $\log x\ge1-1/x$, da el límite inferior correcto en $q=0$),
 \[
-\mathrm{OT}_\varepsilon(a,b)\le\langle C,\pi\rangle+\varepsilon\mathrm{KL}(\pi\,|\,a\otimes b)
-\le\liminf_\ell\bigl(\langle C,\pi^\ell\rangle+\varepsilon\mathrm{KL}(\pi^\ell\,|\,a^\ell\otimes b)\bigr)
+\begin{aligned}
+\mathrm{OT}_\varepsilon(a,b)
+&\le\langle C,\pi\rangle+\varepsilon\mathrm{KL}(\pi\,|\,a\otimes b)\\
+&\le\liminf_\ell\bigl(\langle C,\pi^\ell\rangle
++\varepsilon\mathrm{KL}(\pi^\ell\,|\,a^\ell\otimes b)\bigr)
 =\liminf_\ell\mathrm{OT}_\varepsilon(a^\ell,b),
+\end{aligned}
 \]
 que es la semicontinuidad buscada.
 \end{proof}
@@ -11392,6 +11425,7 @@ $n$ puntos y $\pi$ una matriz de permutación dividida por $n$ hay igualdad.
 \end{ejercicio}
 
 \begin{ejercicio}[El valor entrópico como función de $\ve$]\label{ejer.OTeps.concavo}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar que $\ve\mapsto\mathrm{OT}_\ve(a,b)$ es no decreciente y cóncava
 en $(0,\infty)$ (es un ínfimo de funciones afines de $\ve$), y que
@@ -11465,6 +11499,7 @@ forman un segmento: ¿a qué punto del segmento converge el límite entrópico?
 \end{ejercicio}
 
 \begin{ejercicio}[Sinkhorn en un paso]\label{ejer.sinkhorn.un.paso}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar que si $C$ es de la forma $c_{ij}=f_i+g_j$ entonces
 $\pi^\ve=a\otimes b$ para todo $\ve$, y el algoritmo de Sinkhorn converge en
@@ -11479,6 +11514,7 @@ mano los límites $\ve\to0$ y $\ve\to\infty$.
 \end{ejercicio}
 
 \begin{ejercicio}[Baricentros entrópicos]\label{ejer.bar.entropico}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar que si alguna $b^k$ tiene todas sus entradas positivas, entonces
 $a\mapsto\mathrm{OT}_\ve(a,b^k)$ es estrictamente convexa en $\Sigma_n$ y el
@@ -11535,8 +11571,10 @@ verificar el crecimiento $O(nm)$. Comparar con el tiempo del solver exacto
 \begin{ejercicio}[Un baricentro con $\ve\to0$]\label{ejc.eps.baricentro}
 En el ejemplo de la Sección~5.1 del cuaderno, calcular el baricentro
 entrópico de la Proposición~\ref{prop.baricentro.entropico} para
-$\ve\in\{0{,}5,\,0{,}2,\,0{,}1,\,0{,}05,\,0{,}02,\,0{,}01,\,0{,}005\}$ y
-graficar la distancia $W_2$ entre el baricentro entrópico y el exacto en
+\[
+\ve\in\{0{,}5,\;0{,}2,\;0{,}1,\;0{,}05,\;0{,}02,\;0{,}01,\;0{,}005\}
+\]
+y graficar la distancia $W_2$ entre el baricentro entrópico y el exacto en
 función de $\ve$, en escala logarítmica en ambos ejes. ¿Cuántas iteraciones
 hacen falta en cada caso?
 \end{ejercicio}
@@ -12559,7 +12597,7 @@ de la norma).
 \end{ejercicio}
 
 \begin{ejercicio}[Ejemplos de transformadas]\label{ejer.FR.ejemplos}
-Calcular la transformada de Legendre--Fenchel de las siguientes funciones
+Calcular la transformada de Legen\-dre--Fenchel de las siguientes funciones
 de $\R$ en $\R\cup\{+\infty\}$:
 \begin{enumerate}[label=(\alph*)]
 \item $f_p(x)=\frac{x^p}{p}$ para $x\ge0$ y $+\infty$ para $x<0$, con $p>1$
@@ -12752,6 +12790,7 @@ factorización puede no quedar determinada de manera única.
 \section*{Ejercicios}
 
 \begin{ejercicio}[Factorizaciones polares explícitas]\label{ejer.FP.ejemplos}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Calcular la factorización polar $A=SU$ de
 $A=\bigl(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\bigr)$ y de una
@@ -12778,6 +12817,7 @@ $A$ tiene rango $d-1$.
 \end{ejercicio}
 
 \begin{ejercicio}[Raíz cuadrada y monotonía]\label{ejer.FP.raiz}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar que la raíz cuadrada $M\mapsto M^{1/2}$ es continua en el cono
 de las matrices simétricas semidefinidas positivas.
@@ -13144,6 +13184,7 @@ En el caso del Teorema~\ref{teo.Brenier}, interpretar esto como
 \end{ejercicio}
 
 \begin{ejercicio}[Monotonía y monotonía cíclica]\label{ejer.subdif.monotono}
+\leavevmode
 \begin{enumerate}[label=(\alph*)]
 \item Probar que el grafo $\Gamma=\{(x,y):y\in\partial u(x)\}$ de una función
 convexa es \emph{cíclicamente monótono}: para toda familia finita
