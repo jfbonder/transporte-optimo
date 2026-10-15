@@ -1,3 +1,4 @@
+# auxiliares de LaTeX (los PDF sí se versionan)
 *.aux
 *.log
 *.out
@@ -7,6 +8,10 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.synctex(busy)
+# jupyter
 .ipynb_checkpoints/
-.DS_Store
+# Python
 __pycache__/
+# sistema
+.DS_Store
