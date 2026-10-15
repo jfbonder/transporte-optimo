@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[12pt, a4paper]{amsbook}
@@ -236,15 +232,16 @@ es todavía preliminar. Las correcciones y sugerencias son bienvenidas.
 \subsection*{De qué trata el tema}
 
 El problema del transporte óptimo tiene un origen concreto. Supongamos que se
-tiene una pila de material, digamos arena, y un agujero que se quiere llenar
-con ese material; mover la arena cuesta un esfuerzo que depende de dónde se la
-toma y de dónde se la deposita. ¿Cómo realizar el transporte a costo mínimo?
-Modelando la pila y el agujero como medidas de probabilidad $\mu$ y $\nu$, y
+tiene un depósito de tierra y un pozo que se quiere llenar con ella; mover la
+tierra cuesta un esfuerzo que depende de dónde se la toma y de dónde se la
+deposita. ¿Cómo realizar el transporte a costo mínimo?
+Modelando el depósito y el pozo como medidas de probabilidad $\mu$ y $\nu$, y
 el esfuerzo como una función de costo $c(x,y)$ (Figura~\ref{fig.prefacio.monge}),
 la pregunta se convierte en un problema variacional que Gaspard Monge planteó
 en 1781 y que Leonid Kantorovich reformuló en la década de 1940, dando lugar a
-la dualidad que hoy lleva su nombre. A partir del trabajo de Yann Brenier en
-1987, la teoría experimentó un desarrollo extraordinario y se convirtió en un
+la dualidad que hoy lleva su nombre. A partir del trabajo de Yann Brenier
+sobre la factorización polar, anunciado en 1987~\cite{Brenier1987} y
+publicado en detalle en 1991~\cite{Brenier1991}, la teoría experimentó un desarrollo extraordinario y se convirtió en un
 punto de encuentro entre el análisis, la geometría, la probabilidad, las
 ecuaciones en derivadas parciales y la optimización.
 
@@ -313,7 +310,27 @@ termina con una sección de ejercicios; en seis de ellos hay además ejercicios
 computacionales, que se resuelven con cuadernos de Python que acompañan las
 notas. El curso siguió principalmente los textos de Villani~\cite{Villani2003}
 y Santambrogio~\cite{Santambrogio}; para los aspectos computacionales, el de
-Peyré y Cuturi~\cite{PeyreCuturi2019}.
+Peyré y Cuturi~\cite{PeyreCuturi2019}. Los ejercicios marcados con
+($\bigstar$) son de mayor dificultad o exceden el programa del curso; pueden
+omitirse en una primera lectura.
+
+\subsection*{Convenciones}
+
+Salvo indicación en contrario, los espacios $X$, $Y$ son \emph{espacios
+polacos}, es decir, espacios métricos completos y separables (por ejemplo,
+$\R^d$ o un subconjunto cerrado de $\R^d$), y todas las medidas son
+borelianas. Un \emph{acoplamiento} de dos variables aleatorias, o de dos
+medidas $\mu$ y $\nu$, es una medida en el producto con marginales $\mu$ y
+$\nu$; en el lenguaje de estas notas, un plan de transporte
+(Sección~\ref{sec.interp.prob}). Para dos medidas finitas $\mu$, $\nu$,
+$\mu\wedge\nu$ denota la mayor medida que está por debajo de ambas
+(si $\mu=f\lambda$ y $\nu=g\lambda$, es $\min\{f,g\}\lambda$), y
+$(\mu-\nu)^\pm$ son las partes positiva y negativa de la medida signada
+$\mu-\nu$; así, $\mu=\mu\wedge\nu+(\mu-\nu)^+$. Para $p\ge1$,
+$\mathcal P_p(\R^d)$ es el conjunto de medidas de probabilidad con momento de
+orden $p$ finito, $\int|x|^p\,d\mu<\infty$ (Definición~\ref{def.Pp}); lo
+usamos en algunos ejercicios anteriores al Capítulo~\ref{cap.Brenier}, donde
+se lo introduce formalmente.
 
 \subsection*{El material del curso}
 
@@ -357,13 +374,14 @@ autor, y agradeceré que me los señalen.
 
 
 El problema del transporte óptimo admite dos formulaciones clásicas, y la
-distancia entre ellas organiza buena parte de la teoría. La primera es la de
+paso de una a otra organiza buena parte de la teoría, que gira en torno a la
+pregunta de cuándo la segunda recupera a la primera. La primera es la de
 Monge: llevar una distribución de masa sobre otra mediante una aplicación que
 asigna a cada punto de origen un único destino, de modo que el costo total del
 traslado sea mínimo. La segunda es la de Kantorovich: en lugar de una
 aplicación, un plan de transporte, que permite repartir la masa que hay en un
 punto entre varios destinos. Este capítulo introduce ambas y explica por qué la
-segunda es la formulación con la que se puede trabajar.
+segunda es la formulación que admite un tratamiento riguroso.
 
 La Sección~\ref{sec.monge} presenta el problema de Monge tal como él lo planteó
 en 1781, primero en el caso discreto de depósitos y pozos con cantidades
@@ -670,7 +688,7 @@ que generaliza los costos $c(x,y)=|x-y|^p$ considerados en $\R^d$.
 
 \section{La relajación de Kantorovich}\label{sec.kantorovich}
 
-El problema de Monge \eqref{PM} presenta importantes dificultades analíticas.
+El problema de Monge \eqref{PM} presenta tres dificultades analíticas importantes.
 
 En primer lugar, la condición de conservación de la masa impuesta sobre la aplicación \(T\) es muy restrictiva, por lo que el conjunto de aplicaciones admisibles puede ser vacío. En consecuencia, el problema puede no tener solución.
 
@@ -703,15 +721,17 @@ d\mu=\rho_0(x)\,dx,
 \qquad
 d\nu=\rho_1(y)\,dy,
 \]
-y \(T\) es suficientemente regular, dicha condición equivale a la ecuación
+y \(T\) es suficientemente regular, dicha condición implica la ecuación
 \[
 \rho_1(T(x))\,|\det DT(x)|
 =
 \rho_0(x),
 \]
-que ya es una ecuación no lineal para \(T\). En efecto
+que ya es una ecuación no lineal para \(T\). Precisamos esta afirmación
+en la siguiente proposición.
 \begin{prop}\label{prop.cambio.variables}
-Supongamos que $\mu=\rho_0\,dx$, $\nu=\rho_1\,dx$ y que
+Sea $\Omega\subset\R^d$ abierto. Supongamos que $\mu=\rho_0\,dx$,
+$\nu=\rho_1\,dx$ son medidas en $\Omega$ y que
 $T:\Omega\to\Omega$ es un difeomorfismo de clase $C^1$ que satisface
 $T_{\#}\mu=\nu$.
 
@@ -813,7 +833,7 @@ presentación detallada de estos resultados remitimos al libro de
 Evans y Gariepy~\cite{EvansGariepy}.
 \end{obs}
 
-Más aún, incluso cuando el conjunto de aplicaciones admisibles no es vacío, presenta serias dificultades analíticas: en general no es cerrado para topologías razonables sobre las aplicaciones, de modo que extraer límites de sucesiones minimizantes no es inmediato. Estas obstrucciones hacen que el método directo del cálculo de variaciones no sea directamente aplicable al problema de Monge.
+Volvamos a la lista de dificultades del problema de Monge. La tercera es que, incluso cuando el conjunto de aplicaciones admisibles no es vacío, presenta serias dificultades analíticas: en general no es cerrado para topologías razonables sobre las aplicaciones, de modo que extraer límites de sucesiones minimizantes no es inmediato. Estas obstrucciones hacen que el método directo del cálculo de variaciones no sea directamente aplicable al problema de Monge.
 
 Estas dificultades motivaron a Leonid Kantorovich a proponer una relajación del problema de Monge. La idea fundamental consiste en abandonar la búsqueda de una aplicación de transporte. En lugar de imponer que toda la masa situada en un punto \(x\in X\) deba enviarse a un único punto de destino, se permite dividir esa masa entre distintos puntos de llegada.
 
@@ -929,7 +949,7 @@ y además
 
 Por lo tanto, toda aplicación admisible para el problema de Monge induce un plan admisible para el problema de Kantorovich con el mismo costo.
 
-El problema de Kantorovich \eqref{PK} presenta ventajas fundamentales respecto del problema de Monge \eqref{PM}.
+El problema de Kantorovich \eqref{PK} presenta ventajas importantes respecto del problema de Monge \eqref{PM}.
 
 En primer lugar, el conjunto de planes admisibles nunca es vacío. En efecto, siempre contiene a la medida producto
 \[
@@ -1257,7 +1277,7 @@ $x$ tiene asociado un único destino $T(x)$.
 
 \section{El caso discreto}\label{sec.intro.discreto}
 
-En esta sección estudiaremos el problema de transporte óptimo cuando las medidas involucradas son discretas y asignan la misma masa a un número finito de puntos. Aunque se trata de un caso particular, resulta especialmente importante por varios motivos. En primer lugar, permite visualizar de manera muy concreta la diferencia entre los problemas de Monge y Kantorovich. Además, constituye un ejemplo elemental de programación lineal y servirá como motivación para la teoría de dualidad que desarrollaremos en el capítulo siguiente.
+En esta sección estudiaremos el problema de transporte óptimo cuando las medidas involucradas son discretas y asignan la misma masa a un número finito de puntos. Aunque se trata de un caso particular, resulta especialmente importante por varios motivos. En primer lugar, permite visualizar de manera muy concreta la diferencia entre los problemas de Monge y Kantorovich. Además, constituye un ejemplo elemental de programación lineal y servirá como motivación para la teoría de dualidad que desarrollaremos en los Capítulos~\ref{cap.PL} a~\ref{cap.dual.discreto}.
 
 Supongamos entonces que
 \[
@@ -1355,7 +1375,7 @@ M(\sigma)_{ij}
 \]
 que representa el plan de transporte inducido por el mapa correspondiente. Las matrices \(nM(\sigma)\) se denominan \emph{matrices de permutación}.
 
-La relación entre los problemas de Monge y Kantorovich en este contexto está dada por el siguiente resultado fundamental.
+La relación entre los problemas de Monge y Kantorovich en este contexto está dada por el siguiente resultado.
 
 \begin{teo}[Birkhoff]
 Los puntos extremos del conjunto \(\mathcal B_n\) son precisamente las matrices de permutación.
@@ -1407,7 +1427,7 @@ $T_\#\bigl(\LL^1\lfloor_{[0,1]}\bigr)$.
 \item $T(x)=x^2$; $T_\#\bigl(\LL^1\lfloor_{[0,1]}\bigr)$ y
 $T_\#\bigl(\tfrac12\LL^1\lfloor_{[-1,1]}\bigr)$.
 \item $T(x)=x-\lfloor x\rfloor$ (parte fraccionaria); $T_\#\bigl(\tfrac12\LL^1\lfloor_{[0,2]}\bigr)$
-y $T_\#\bigl(\LL^1\lfloor_{[0,3/2]}\cdot\tfrac23\bigr)$.
+y $T_\#\bigl(\tfrac23\LL^1\lfloor_{[0,3/2]}\bigr)$.
 \end{enumerate}
 \end{ejercicio}
 
@@ -1417,7 +1437,7 @@ $f(x)=g(T(x))\,|\det DT(x)|$ para $T$ de clase $C^1$ y biyectiva.
 \begin{enumerate}[label=(\alph*)]
 \item Verificar que la fórmula falla para $T(x)=x^2$ con
 $\mu=\frac12\LL^1\lfloor_{[-1,1]}$ (comparar con el
-Ejercicio~\ref{ejer.pushforward.ejemplos}) y para la ``carpa''
+Ejercicio~\ref{ejer.pushforward.ejemplos}) y para la «carpa»
 $T(x)=\min\{2x,2-2x\}$ con $\mu=\LL^1\lfloor_{[0,1]}$, e identificar en cada
 caso qué hipótesis no se cumple.
 \item Probar la versión para $T$ de clase $C^1$ localmente inyectiva pero
@@ -1429,14 +1449,14 @@ creciente y $T_\#\LL^1\lfloor_{[0,1]}=\LL^1\lfloor_{[0,1]}$, entonces $T=\id$.
 \end{ejercicio}
 
 \begin{ejercicio}[Soporte del push-forward]\label{ejer.soporte.pushforward}
-Sea $\mu\in\mathcal P(X)$ con $X$ métrico y $T\colon X\to Y$ continua.
+Sea $\mu\in\mathcal P(X)$ con $X$ métrico separable (de modo que
+$\mu(\sop\mu)=1$) y $T\colon X\to Y$ continua.
 \begin{enumerate}[label=(\alph*)]
-\item Probar que $\sop(T_\#\mu)\subset\overline{T(\sop\mu)}$, con igualdad si
-$\sop\mu$ es compacto.
+\item Probar que $\sop(T_\#\mu)=\overline{T(\sop\mu)}$.
 \item Dar un ejemplo en el que $T(\sop\mu)$ no sea cerrado y la inclusión
 $\sop(T_\#\mu)\subset T(\sop\mu)$ sea falsa.
 \item Determinar el soporte de $\LL^1\lfloor_{(0,1)}$, de
-$\LL^1\lfloor_{e^{-x}\I_{[0,\infty)}}$ y de $\LL^1\lfloor_{[0,1]\setminus\Q}$.
+$e^{-x}\LL^1\lfloor_{[0,\infty)}$ y de $\LL^1\lfloor_{[0,1]\setminus\Q}$.
 \end{enumerate}
 \end{ejercicio}
 
@@ -1599,7 +1619,7 @@ F(x)=\inf_{y\in X}F(y).
 Por lo tanto, \(x\) es un minimizador de \(F\).
 \end{proof}
 
-En nuestro contexto, el espacio \(X\) será el conjunto \(\Pi(\mu,\nu)\) de planes de transporte. Consideraremos el funcional de Kantorovich
+En nuestro contexto, el papel del espacio abstracto \(X\) del teorema anterior (que no debe confundirse con el espacio de partida \(X\) del problema de transporte) lo cumplirá el conjunto \(\Pi(\mu,\nu)\) de planes de transporte. Consideraremos el funcional de Kantorovich
 \[
 \mathcal K\colon\Pi(\mu,\nu)\to\mathbb R\cup\{+\infty\},
 \]
@@ -1609,7 +1629,7 @@ definido por
 \int_{X\times Y} c(x,y)\,d\pi(x,y).
 \end{equation}
 
-Por lo tanto, para demostrar la existencia de planes óptimos bastará establecer que las sucesiones minimizantes de planes de transporte son precompactas para una topología adecuada y que el funcional \(\mathcal K\) es semicontinuo inferior respecto de dicha topología.
+Por lo tanto, para demostrar la existencia de planes óptimos bastará establecer que las sucesiones minimizantes de planes de transporte son relativamente compactas (tienen subsucesiones convergentes) para una topología adecuada y que el funcional \(\mathcal K\) es semicontinuo inferior respecto de dicha topología.
 
 
 \section{La topología débil}
@@ -1635,7 +1655,7 @@ para toda función continua y acotada
 \)
 \end{defi}
 
-Veamos algunos ejemplos
+Veamos algunos ejemplos.
 \begin{ejem}
 Supongamos que
 \(
@@ -1643,7 +1663,7 @@ d\mu_n=f_n\,dx,
 \
 d\mu=f\,dx,
 \)
-donde \(f_n,f\in L^1(\Omega)\) y
+donde \(\Omega\subset\mathbb R^d\) es abierto, \(f_n,f\in L^1(\Omega)\) y
 \[
 f_n\longrightarrow f
 \quad\text{en }L^1(\Omega).
@@ -1769,10 +1789,11 @@ es relativamente compacto para la topología débil de \(\mathcal P(X\times Y)\)
 \end{cor}
 
 \begin{proof}
-Para simplificar la demostración, suponemos además que \(X\) e \(Y\) son localmente compactos. La demostración completa sin esta hipótesis sigue exactamente el mismo argumento, reemplazando el uso directo de la compacidad local por el resultado de ajuste de medidas de probabilidad en espacios métricos completos separables, que está garantizado por \cite[Theorem~1.3]{Billingsley}.
-
 Basta demostrar que \(\Pi(\mu,\nu)\) es una familia ajustada. Sea
-\(\varepsilon>0\). Como \(\mu\) y \(\nu\) son medidas de probabilidad, existen compactos
+\(\varepsilon>0\). Por el teorema de Ulam \cite[Theorem~1.3]{Billingsley},
+toda medida de probabilidad boreliana en un espacio métrico completo y
+separable es ajustada (es decir, la familia formada por esa única medida es
+ajustada). Aplicándolo a \(\mu\) y a \(\nu\), existen compactos
 \[
 K_X\subset X,
 \qquad
@@ -1784,7 +1805,6 @@ tales que
 \qquad
 \nu(K_Y)\ge1-\frac{\varepsilon}{2}.
 \]
-Es decir, $\mu$ y $\nu$ son ajustadas. En el caso general \cite[Theorem~1.3]{Billingsley} garantiza que las medidas de probabilidad \(\mu\) y \(\nu\) son ajustadas sin asumir la compacidad local, a partir de lo cual la demostración continúa exactamente del mismo modo.
 
 Como el producto de compactos es compacto, el conjunto
 \[
@@ -1923,7 +1943,7 @@ c\colon X\times Y\longrightarrow[0,+\infty]
 \]
 es semicontinua inferior. Esta hipótesis resulta ser suficiente para
 garantizar la semicontinuidad inferior del funcional de Kantorovich. La
-herramienta fundamental será el siguiente resultado de aproximación de
+herramienta principal será el siguiente resultado de aproximación de
 funciones semicontinuas inferiores por funciones continuas.
 
 \begin{lema}[Aproximación de funciones semicontinuas inferiores]
@@ -1931,7 +1951,8 @@ Sea \(X\) un espacio métrico y sea
 \(
 f\colon X\longrightarrow[0,+\infty]
 \)
-una función semicontinua inferior. Entonces existe una sucesión de funciones
+una función semicontinua inferior, no idénticamente igual a \(+\infty\) (si
+\(f\equiv+\infty\) basta tomar \(f_k\equiv k\)). Entonces existe una sucesión de funciones
 \(
 f_k\colon X\longrightarrow[0,+\infty)
 \)
@@ -1970,6 +1991,9 @@ f_k(x)
 f(z)+k\,d(x,z)
 \bigr\}.
 \]
+Como existe \(z_0\) con \(f(z_0)<+\infty\), se tiene
+\(0\le f_k(x)\le f(z_0)+k\,d(x,z_0)<+\infty\), de modo que \(f_k\) toma
+valores en \([0,+\infty)\).
 
 Veamos primero que \(f_k\) es \(k\)-Lipschitz. Sean \(x,x'\in X\).
 Para todo \(z\in X\),
@@ -2180,7 +2204,7 @@ Es decir,
 \leq
 \liminf_{n\to\infty}\mathcal K(\pi_n),
 \]
-como queríamos demostrar
+como queríamos demostrar.
 \end{proof}
 
 
@@ -2260,8 +2284,11 @@ Por lo tanto,
 \]
 para todo abierto $G\subset X$.
 
-Como las medidas de Borel coinciden sobre todos los abiertos, se concluye
-que
+Como los abiertos forman una familia cerrada por intersecciones finitas
+(un $\pi$-sistema) que genera la $\sigma$-álgebra de Borel, el teorema
+$\pi$--$\lambda$ de Dynkin implica que dos medidas de probabilidad que
+coinciden sobre todos los abiertos coinciden sobre todos los borelianos. Se
+concluye que
 \(
 \mu=\nu
 \)
@@ -2351,7 +2378,7 @@ y, en caso afirmativo, hallar el límite:
 &\text{(a) }\delta_{1/n};\quad
 \text{(b) }\delta_n;\quad
 \text{(c) }\tfrac12\delta_0+\tfrac12\delta_{1/n};\\[2pt]
-&\text{(d) }\LL^1\lfloor_{[0,1-1/n]}\cdot\tfrac{n}{n-1};\quad
+&\text{(d) }\tfrac{n}{n-1}\LL^1\lfloor_{[0,1-1/n]};\quad
 \text{(e) }n\,\LL^1\lfloor_{[0,1/n]};\quad
 \text{(f) }\tfrac1n\sum_{k=1}^n\delta_{k/n}.
 \end{aligned}
@@ -2368,8 +2395,8 @@ $T_\#\mu_n\rightharpoonup T_\#\mu$ en $\mathcal P(Y)$.
 \item Concluir que si $\mu_m=\frac1m\sum_{j=1}^m\delta_{x_j}$ converge
 débilmente a $\mu$ (por ejemplo, si los $x_j$ son muestras independientes de
 $\mu$, por la ley de los grandes números), entonces
-$\frac1m\sum_j\delta_{T(x_j)}\rightharpoonup T_\#\mu$: ``los mapas de
-transporte mandan muestras en muestras''.
+$\frac1m\sum_j\delta_{T(x_j)}\rightharpoonup T_\#\mu$: «los mapas de
+transporte mandan muestras en muestras».
 \item Mostrar con un ejemplo que (a) falla si $T$ es solo medible.
 \end{enumerate}
 \end{ejercicio}
@@ -2381,13 +2408,16 @@ transporte mandan muestras en muestras''.
 $(f_n)_\#\LL^1\lfloor_{[0,1]}=\LL^1\lfloor_{[0,1]}$ para todo $n$ y
 $f_n\rightharpoonup\frac12$ débilmente en $L^2(0,1)$, es decir,
 $\int f_n g\to\frac12\int g$ para toda $g\in L^2(0,1)$.
-\emph{Sugerencia:} funciones ``diente de sierra'' de período $1/n$.
+\emph{Sugerencia:} funciones «diente de sierra» de período $1/n$.
 \item Sea $\pi_n=(\id,f_n)_\#\LL^1\lfloor_{[0,1]}$. Probar que
 $\pi_n\rightharpoonup\LL^1\lfloor_{[0,1]}\otimes\LL^1\lfloor_{[0,1]}$, que no
 está inducido por ningún mapa. Concluir que el conjunto de planes inducidos
 por mapas no es débilmente cerrado, y comentar por qué esto obstruye el
 método directo para el problema de Monge.
-\item ¿Es posible elegir las $f_n$ de clase $C^1$?
+\item Probar que si $f\colon[0,1]\to[0,1]$ es de clase $C^1$ y
+$f_\#\LL^1\lfloor_{[0,1]}=\LL^1\lfloor_{[0,1]}$, entonces $f(x)=x$ o
+$f(x)=1-x$. Deducir que en (a) no es posible elegir las $f_n$ de clase $C^1$
+(aunque sí lipschitzianas).
 \end{enumerate}
 \end{ejercicio}
 
@@ -2448,8 +2478,8 @@ $|x-y|$ el plan óptimo no es único en general, estos límites
 \emph{seleccionan} planes óptimos particulares; ¿qué se puede decir del
 límite $\ve\to\infty$ en el segundo caso, una vez normalizado el costo?
 \item ($\bigstar$) Si $\mu$ y $\nu$ tienen soportes disjuntos y
-$\mu\ll\LL^d$, el límite en (b) es único y es el plan ``monótono a lo largo
-de rayos''; ver \cite[Sec.~3.1]{Santambrogio}.
+$\mu\ll\LL^d$, el límite en (b) es único y es el plan «monótono a lo largo
+de rayos»; ver \cite[Sec.~3.1]{Santambrogio}.
 \end{enumerate}
 \end{ejercicio}
 
@@ -2473,7 +2503,7 @@ Kantorovich}, que acompaña los Capítulos~\ref{cap.intro} y~\ref{cap.existencia
 final del cuaderno. Las referencias a secciones son a las del cuaderno.
 
 \begin{ejercicio}[Asignación y Kantorovich]\label{ejc.MK.asignacion}
-Para $n$ puntos con masas uniformes, verificar que el solver exacto
+Para $n$ puntos con masas uniformes, verificar que el método exacto
 (\texttt{ot.emd}) devuelve siempre una matriz de permutación dividida por $n$
 y que su costo coincide con el del problema de asignación resuelto con la
 rutina de SciPy, como predice el teorema de Birkhoff
@@ -2510,7 +2540,7 @@ Ejercicio~\ref{ejer.1D.concavo}.
 \end{ejercicio}
 
 \begin{ejercicio}[Convergencia débil de planes]\label{ejc.MK.debil}
-Con las funciones ``diente de sierra'' $f_n$ del
+Con las funciones «diente de sierra» $f_n$ del
 Ejercicio~\ref{ejer.mapas.no.compactos}, verificar numéricamente que
 $\int_0^1\phi(x)\psi(f_n(x))\,dx\to\int_0^1\phi\int_0^1\psi$ para varias
 $\phi,\psi$ continuas (por ejemplo, polinomios y senos). Repetir con
@@ -2580,7 +2610,7 @@ del problema primal.
 \section{Dualidad débil y dualidad fuerte}
 
 La relación entre los problemas primal y dual no se limita a la forma en que
-se construyen. Una de las propiedades fundamentales de la dualidad es que
+se construyen. Una de las propiedades básicas de la dualidad es que
 toda solución factible del problema dual proporciona una cota para cualquier
 solución factible del problema primal.
 
@@ -2630,9 +2660,9 @@ Este resultado se conoce como \emph{dualidad débil}.
 
 La importancia de la dualidad de programación lineal se debe, en particular,
 a que bajo hipótesis adecuadas esta desigualdad se convierte en una
-igualdad. El resultado fundamental es el siguiente.
+igualdad. El resultado central es el siguiente.
 
-\begin{teo}[Dualidad fuerte en programación lineal]
+\begin{teo}[Dualidad fuerte en programación lineal]\label{teo.PL.dualidad.fuerte}
 Si el problema primal admite una solución óptima finita, entonces el problema
 dual también admite una solución óptima y los valores óptimos coinciden.
 Es decir,
@@ -2652,7 +2682,7 @@ dual permite obtener cotas para el valor óptimo del problema primal. La
 dualidad fuerte afirma que, al resolver el problema dual, estas cotas pueden
 llegar a ser exactas.
 
-Esta relación será fundamental en el problema de transporte óptimo. En
+Esta relación será clave en el problema de transporte óptimo. En
 particular, veremos que el problema de Kantorovich discreto es un problema
 de programación lineal, por lo que su formulación dual y la igualdad entre
 los valores óptimos se obtienen directamente de estos resultados.
@@ -2755,7 +2785,9 @@ esta reducción puede resultar computacionalmente significativa.
 \section{Vuelta al problema de Kantorovich: el caso discreto}\label{kant.discreto}
 
 Veamos ahora cómo se aplica la discusión anterior al problema de transporte
-óptimo cuando las medidas son discretas. Sean
+óptimo cuando las medidas son discretas. Recordemos el planteo del
+Capítulo~\ref{cap.intro} (aquí con $N$ y $M$ puntos
+de origen y destino, respectivamente). Sean
 \[
 \mu=\sum_{i=1}^N a_i\delta_{x_i},
 \qquad
@@ -2808,7 +2840,7 @@ de programación lineal:
 \end{aligned}
 \]
 
-Por lo tanto, el problema de Kantorovich discreto es, literalmente, un
+Por lo tanto, el problema de Kantorovich discreto es exactamente un
 problema de programación lineal. Podemos aplicar entonces la construcción
 del problema dual que vimos anteriormente.
 
@@ -2966,8 +2998,9 @@ $N^2$ variables continuas y el segundo $N!$ candidatos.
 permutación $\sigma$ es óptima si y solo si existen $\varphi,\psi\in\R^N$
 con $\varphi_i+\psi_j\le c_{ij}$ para todo $i,j$ y
 $\varphi_i+\psi_{\sigma(i)}=c_{i\sigma(i)}$ para todo $i$. Interpretar
-$\varphi_i$ y $\psi_j$ como precios (problema de asignación de
-Koopmans--Beckmann).
+$\varphi_i$ y $\psi_j$ como precios que sostienen la asignación óptima (en
+el sentido del trabajo de Koopmans y Beckmann de 1957; no confundir con el
+\emph{problema cuadrático} de asignación, que también lleva su nombre).
 \item Para $c_{ij}=|x_i-y_j|^2$ con $x_1<\dots<x_N$ e $y_1<\dots<y_N$ en
 $\R$, probar directamente que $\sigma=\id$ es óptima (intercambiar dos
 asignaciones cruzadas no aumenta el costo). Este es el germen del
@@ -3075,7 +3108,7 @@ En consecuencia,
 
 Para trabajar con la formulación dual del problema de transporte será útil
 introducir una notación para la clase de pares de funciones que satisfacen
-la restricción fundamental
+la restricción básica
 \[
 \varphi(x)+\psi(y)\leq c(x,y).
 \]
@@ -3117,7 +3150,7 @@ plan $\pi\in\Pi(\mu,\nu)$ es
 \int_{X\times Y}c(x,y)\,d\pi(x,y).
 \]
 
-El siguiente resultado establece la relación fundamental entre ambos
+El siguiente resultado establece la relación básica entre ambos
 funcionales.
 
 \begin{teo}[Dualidad de Kantorovich]\label{teo.dualidad}
@@ -3231,11 +3264,9 @@ entonces $\pi^*$ es necesariamente un plan óptimo y $(\varphi^*,\psi^*)$ es un
 par óptimo para el problema dual. En este sentido, las funciones duales
 proporcionan un certificado de optimalidad.
 
-Cuando el supremo en el problema dual es alcanzado por un par
-$(\varphi^*,\psi^*)$, diremos que $\varphi^*$ y $\psi^*$ son
-\emph{potenciales de Kantorovich}. Es decir, un par de potenciales de
-Kantorovich es un par admisible que alcanza el valor óptimo del problema
-dual:
+\begin{defi}[Potenciales de Kantorovich]\label{def.potenciales}
+Un par admisible $(\varphi^*,\psi^*)\in\mathcal A_c$ que alcanza el supremo
+del problema dual,
 \[
 \int_X\varphi^*\,d\mu
 +
@@ -3246,11 +3277,14 @@ dual:
 \int_X\varphi\,d\mu
 +
 \int_Y\psi\,d\nu
-\right\}.
+\right\},
 \]
+se llama un par de \emph{potenciales de Kantorovich} (o par óptimo para el
+problema dual).
+\end{defi}
 
-La existencia de potenciales de Kantorovich no está, en general,
-garantizada únicamente por el teorema de dualidad. En el caso discreto,
+El teorema de dualidad, por sí solo, no garantiza la existencia de
+potenciales de Kantorovich. En el caso discreto,
 sin embargo, como veremos más adelante (cf. Capítulo \ref{cap.dual.discreto}), su existencia se sigue de la
 teoría de programación lineal. En el caso general, el problema de la
 existencia de potenciales de Kantorovich será estudiado en el Capítulo \ref{cap.dual}.
@@ -3563,22 +3597,9 @@ transporte.
 
 La demostración formal presentada en la sección anterior no es exclusiva del
 problema de transporte óptimo. En realidad, constituye una manifestación de un
-fenómeno mucho más general: la dualidad en programación lineal. El siguiente
-ejercicio propone recuperar la conocida relación de dualidad en dimensión finita
-mediante un argumento análogo al utilizado anteriormente.
-
-\begin{ejer}
-Sea $A\in M_{m\times n}(\mathbb{R})$, $b\in\mathbb{R}^m$ y
-$c\in\mathbb{R}^n$. Demostrar, utilizando un principio minimax, que
-\[
-\sup_{\substack{x\in\mathbb{R}^n\\Ax\le b}}
-c\cdot x
-=
-\inf_{\substack{y\in\mathbb{R}^m\\
-y\ge0,\;A^Ty=c}}
-b\cdot y.
-\]
-\end{ejer}
+fenómeno mucho más general: la dualidad en programación lineal. El
+Ejercicio~\ref{ejer.PL.minimax} propone leer la dualidad de programación
+lineal del Capítulo~\ref{cap.PL} como un principio minimax, igual que aquí.
 
 La analogía entre este resultado y la dualidad de Kantorovich no es casual.
 De hecho, Kantorovich es considerado uno de los fundadores de la programación
@@ -3719,8 +3740,9 @@ Debe verificarse que $\Xi$ está bien definida. En efecto, si
 \widetilde\varphi(x)+\widetilde\psi(y),
 \]
 
-para todo $(x,y)$, entonces necesariamente existe una constante
-$s\in\mathbb R$ tal que
+para todo $(x,y)$, entonces existe una constante $s\in\mathbb R$ tal que
+(basta fijar $y=y_0$ para obtener
+$\widetilde\varphi-\varphi=\psi(y_0)-\widetilde\psi(y_0)=:s$)
 \[
 \widetilde\varphi=\varphi+s,
 \qquad
@@ -3756,7 +3778,7 @@ Por consiguiente,
 \Bigr).
 \]
 
-Nuestro objetivo es calcular explícitamente los transformados de
+Nuestro objetivo es calcular explícitamente las transformadas de
 Legendre--Fenchel de los funcionales $\Theta$ y $\Xi$.
 
 Comencemos con $\Theta$.
@@ -3768,7 +3790,7 @@ Sea $\pi\in M(X\times Y)$. Entonces
 \sup_{u\in C(X\times Y)}
 \left\{
 -\int_{X\times Y}u\,d\pi
-\,;\,
+:\ 
 u\ge -c
 \right\}.
 \]
@@ -3779,7 +3801,7 @@ Equivalentemente,
 \sup_{u\in C(X\times Y)}
 \left\{
 \int_{X\times Y}u\,d\pi
-\,;\,
+:\ 
 u\le c
 \right\}.
 \]
@@ -3859,7 +3881,7 @@ Resumiendo,
 \end{cases}
 \]
 
-Calculemos ahora el transformado de Legendre--Fenchel de $\Xi$.
+Calculemos ahora la transformada de Legendre--Fenchel de $\Xi$.
 
 Por definición,
 \[
@@ -3946,7 +3968,7 @@ Por lo tanto,
 \end{cases}
 \]
 
-Sustituyendo las expresiones obtenidas para los transformados de
+Sustituyendo las expresiones obtenidas para las transformadas de
 Legendre--Fenchel en el teorema de Fenchel--Rockafellar obtenemos
 \[
 \inf_{u\in E}
@@ -4048,7 +4070,7 @@ Finalmente, multiplicando ambos miembros por $-1$ concluimos que
 \int_{X\times Y}
 c(x,y)\,d\pi(x,y)
 =
-\max_{\substack{
+\sup_{\substack{
 \varphi\in C(X),\;
 \psi\in C(Y)\\
 \varphi(x)+\psi(y)\le c(x,y)
@@ -4059,11 +4081,16 @@ c(x,y)\,d\pi(x,y)
 \int_Y\psi\,d\nu
 \right\},
 \]
-es decir, el mínimo del problema de Kantorovich coincide con el máximo del
-funcional dual sobre pares de funciones \emph{continuas} admisibles.
+es decir, el mínimo del problema de Kantorovich coincide con el supremo del
+funcional dual sobre pares de funciones \emph{continuas} admisibles. Notemos
+que el teorema de Fenchel--Rockafellar garantiza que se alcanza el óptimo del
+lado de las medidas (de ahí el mínimo sobre $\Pi(\mu,\nu)$), pero no dice
+nada sobre si el supremo del lado de las funciones se alcanza: esa es la
+cuestión de la existencia de potenciales de Kantorovich, que se resuelve en
+el Capítulo~\ref{cap.dual}.
 
 Para concluir, observemos que $C(X)\times C(Y)\cap\mathcal A_c\subset\mathcal A_c$,
-de modo que $\sup_{\mathcal A_c}\D$ es mayor o igual que el máximo anterior;
+de modo que $\sup_{\mathcal A_c}\D$ es mayor o igual que el supremo anterior;
 y que, por la dualidad débil, $\sup_{\mathcal A_c}\D\le\min_{\Pi(\mu,\nu)}\mathcal K_c$.
 Por lo tanto los tres valores coinciden, lo que prueba simultáneamente la
 igualdad $\inf\mathcal K_c=\sup_{\mathcal A_c}\D$ y que el supremo no cambia
@@ -4079,12 +4106,14 @@ $(\varphi^*,\psi^*)$ es un par óptimo para el problema dual. Entonces
 \varphi^*(x)+\psi^*(y)=c(x,y)
 \qquad \pi^*\text{-c.t.p.}
 \]
-Es decir, el soporte de un plan óptimo está, salvo un conjunto de
-$\pi^*$-medida nula, contenido en el conjunto de saturación
+Es decir, $\pi^*$ está concentrado en el conjunto donde se satura la
+restricción dual,
 \[
 \bigl\{(x,y)\in X\times Y:\,
-\varphi^*(x)+\psi^*(y)=c(x,y)\bigr\}.
+\varphi^*(x)+\psi^*(y)=c(x,y)\bigr\},
 \]
+que en el Capítulo~\ref{cap.dual} llamaremos \emph{conjunto de saturación}
+(Definición~\ref{def.saturacion}).
 \end{cor}
 
 \begin{proof}
@@ -4117,14 +4146,14 @@ Por lo tanto,
 Como el integrando es no negativo, debe ser nulo $\pi^*$-c.t.p., lo que da la conclusión.
 \end{proof}
 
-Esta condición de saturación es fundamental para comprender la estructura de los
+Esta condición de saturación es la clave para comprender la estructura de los
 planes óptimos y el papel de los potenciales de Kantorovich; la utilizaremos
 sistemáticamente a partir del Capítulo~\ref{cap.dual}.
 
 
 \section*{Ejercicios}
 
-\begin{ejercicio}[Desigualdades ``casi en todo punto'' y planes]\label{ejer.ctp.planes}
+\begin{ejercicio}[Desigualdades «casi en todo punto» y planes]\label{ejer.ctp.planes}
 Sean $\pi\in\Pi(\mu,\nu)$ y $c$, $\phi$, $\psi$ funciones medibles.
 \begin{enumerate}[label=(\alph*)]
 \item Supongamos que existen $N\subset X$ y $M\subset Y$ con
@@ -4138,7 +4167,7 @@ $\pi=(\id,\id)_\#\mu$.
 \item Explicar por qué (b) obliga a definir la clase admisible
 $\mathcal A_c$ con la desigualdad en \emph{todo} punto, y qué fallaría en la
 dualidad débil (Proposición~\ref{prop.dualidad.debil}) con una definición
-``c.t.p.''.
+«c.t.p.».
 \end{enumerate}
 \end{ejercicio}
 
@@ -4196,6 +4225,37 @@ y por lo tanto que $\min_\Pi\int c_k\,d\gamma\nearrow\min_\Pi\int c\,d\gamma$.
 donde la última desigualdad es la dualidad débil.
 \item ¿Qué cambia si $X$, $Y$ son solo completos y separables? Consultar
 \cite[Thm.~1.3]{Villani2003} o \cite[Thm.~1.39]{Santambrogio}.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La dualidad de programación lineal como principio minimax]\label{ejer.PL.minimax}
+Sean $A\in\R^{m\times n}$, $b\in\R^m$ y $c\in\R^n$, y consideremos el par de
+problemas
+\[
+\text{(P)}\quad\sup\{c^Tx:\ x\in\R^n,\ Ax\le b\},
+\qquad
+\text{(D)}\quad\inf\{b^Ty:\ y\in\R^m,\ y\ge0,\ A^Ty=c\}.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Sea $L(x,y)=c^Tx+y^T(b-Ax)$ para $x\in\R^n$, $y\ge0$. Probar que
+$\inf_{y\ge0}L(x,y)$ vale $c^Tx$ si $Ax\le b$ y $-\infty$ en otro caso, y que
+$\sup_xL(x,y)$ vale $b^Ty$ si $A^Ty=c$ y $+\infty$ en otro caso. Deducir que
+$\text{(P)}=\sup_x\inf_{y\ge0}L$ y $\text{(D)}=\inf_{y\ge0}\sup_xL$, y la
+dualidad débil $\text{(P)}\le\text{(D)}$.
+\item Supongamos que \emph{ambos} problemas son factibles. Probar que
+$\text{(P)}=\text{(D)}$ y que ambos valores se alcanzan, es decir, que vale el
+principio minimax
+\[
+\max_x\min_{y\ge0}L=\min_{y\ge0}\max_xL.
+\]
+\emph{Sugerencia:} escribir (D) en la forma estándar del
+Capítulo~\ref{cap.PL}, comprobar que su dual es (P) (con $x=x^+-x^-$ si hace
+falta) y aplicar el Teorema~\ref{teo.PL.dualidad.fuerte}; para ver que (D)
+tiene solución óptima, usar que un programa lineal factible y acotado
+alcanza su ínfimo.
+\item Mostrar que sin la hipótesis de factibilidad la igualdad puede fallar:
+con $m=n=1$, $A=0$, $b=-1$ y $c=1$, se tiene $\text{(P)}=-\infty$ y
+$\text{(D)}=+\infty$.
 \end{enumerate}
 \end{ejercicio}
 
@@ -4260,7 +4320,7 @@ el problema de Kantorovich consiste en
 \end{aligned}
 \]
 
-Como vimos en la sección \ref{kant.discreto}, se trata de un problema de programación lineal.
+Como vimos en la Sección~\ref{kant.discreto}, se trata de un problema de programación lineal.
 Su problema dual es
 \[
 \begin{aligned}
@@ -4275,8 +4335,9 @@ i=1,\ldots,N,\quad j=1,\ldots,M.
 \end{aligned}
 \]
 
-Los valores $\varphi_i^*$ y $\psi_j^*$ que maximizan el problema dual
-son los potenciales de Kantorovich en el caso discreto.
+Recordemos (Definición~\ref{def.potenciales}) que los valores
+$\varphi_i^*$ y $\psi_j^*$ que maximizan el problema dual son los
+potenciales de Kantorovich, aquí en el caso discreto.
 
 Podemos interpretar estos valores como los valores de dos funciones
 $\varphi^*$ y $\psi^*$ definidas sobre los soportes de las medidas:
@@ -4292,9 +4353,6 @@ solo importan a través de sus valores en los puntos
 \qquad
 \{y_1,\ldots,y_M\}=\sop(\nu).
 \]
-En otras palabras, en el caso discreto los potenciales quedan
-completamente determinados por sus valores sobre los puntos del soporte
-de las medidas.
 
 
 \section{Existencia de potenciales óptimos}
@@ -4383,7 +4441,9 @@ Por lo tanto, necesariamente
 \]
 para todo $i,j$.
 
-Esta es precisamente la condición de complementariedad de holguras.
+Esta es precisamente la condición de holgura complementaria de la programación
+lineal (Ejercicio~\ref{ejer.PL.holgura}); en el lenguaje del transporte la
+llamamos \emph{condición de saturación}.
 
 \subsection{El soporte de un plan óptimo}
 
@@ -4425,31 +4485,24 @@ pero que
 \[
 \pi_{ij}^*=0.
 \]
-La condición de complementariedad afirma solamente que todo lugar donde
-$\pi^*$ transporta masa debe corresponder a una restricción dual activa.
+La condición de saturación afirma solamente que todo lugar donde
+$\pi^*$ transporta masa debe corresponder a una restricción dual saturada.
 
 Así, una solución óptima del problema dual permite identificar un conjunto
 de pares de puntos que contiene el soporte de un plan óptimo. Las
 restricciones marginales determinan luego cómo puede distribuirse la masa
 sobre dicho conjunto.
 
-En particular,
-\[
-\pi_{ij}^*>0
-\quad\Longrightarrow\quad
-\varphi_i^*+\psi_j^*=c_{ij}.
-\]
-
-En el caso general, la afirmación correspondiente será que un plan óptimo
-está concentrado, en el sentido de medida, sobre el conjunto donde la
+En el caso general, la afirmación correspondiente es el
+Corolario~\ref{cor:saturacion}: un plan óptimo está concentrado, en el sentido de medida, sobre el conjunto donde la
 desigualdad dual se satura:
 \[
 \varphi^*(x)+\psi^*(y)=c(x,y).
 \]
 
 Esta relación entre los potenciales de Kantorovich y el soporte de los
-planes óptimos será fundamental para comprender la estructura del
-transporte óptimo en el caso general.
+planes óptimos es la clave para comprender la estructura del
+transporte óptimo en el caso general (Sección~\ref{sec.soporte.planes}).
 
 
 \section*{Ejercicios}
@@ -4458,7 +4511,7 @@ transporte óptimo en el caso general.
 Sean $x_i=y_i=i-1$ para $i=1,2,3$, $a=(\tfrac12,\tfrac14,\tfrac14)$,
 $b=(\tfrac14,\tfrac14,\tfrac12)$ y $c_{ij}=|x_i-y_j|^2$.
 \begin{enumerate}[label=(\alph*)]
-\item Hallar un plan óptimo $\pi$ y el costo óptimo. (Conviene ``llenar''
+\item Hallar un plan óptimo $\pi$ y el costo óptimo. (Conviene «llenar»
 la matriz de arriba a la izquierda hacia abajo a la derecha; en el
 Capítulo~\ref{cap.1D} se verá por qué esto es óptimo.)
 \item Escribir las condiciones de saturación $\varphi_i+\psi_j=c_{ij}$ en el
@@ -4543,7 +4596,7 @@ el problema dual.
 
 El objetivo de este capítulo es introducir una transformación natural,
 denominada \emph{\(c\)-transformada}, que permitirá reformular el problema dual
-en términos de un único potencial y, bajo las hipótesis adecuadas, obtener la existencia de potenciales óptimos. Introduciremos así la noción de \emph{potencial de Kantorovich}, extendiendo la noción vista en el caso discreto, que desempeña un papel fundamental en la teoría del transporte óptimo.
+en términos de un único potencial y, bajo las hipótesis adecuadas, obtener la existencia de potenciales óptimos. Estudiaremos así los potenciales de Kantorovich (Definición~\ref{def.potenciales}) más allá del caso discreto del capítulo anterior; su existencia es una pieza central de la teoría del transporte óptimo.
 
 
 \section{La \(c\)-transformada}
@@ -4654,7 +4707,7 @@ $c$-transformada hereda ese mismo módulo de continuidad en dicha variable.
 Este hecho será útil más adelante para obtener regularidad de los potenciales
 de Kantorovich.
 
-\begin{prop}
+\begin{prop}\label{prop.ctransf.modulo}
 Supongamos que $X$ e $Y$ son espacios métricos y que
 \(
 c\colon X\times Y\longrightarrow\R
@@ -4751,20 +4804,23 @@ por construcción, las que aparecen naturalmente al reemplazar uno de los
 potenciales de un par admisible por el potencial que lo mejora. Esto motiva
 la siguiente definición.
 
-\begin{defi}
+\begin{defi}\label{def.cconcava}
 Una función $\chi\colon X\to\R\cup\{-\infty\}$ se dice
 \emph{$c$-cóncava} si existe una función
-$\zeta\colon Y\to\R\cup\{-\infty\}$ tal que
+$\zeta\colon Y\to\R\cup\{-\infty\}$, no idénticamente igual a $-\infty$, tal que
 \[
 \chi=\zeta^{\bar c}.
 \]
 
 Análogamente, una función $\zeta\colon Y\to\R\cup\{-\infty\}$ se dice
 \emph{$\bar c$-cóncava} si existe una función
-$\chi\colon X\to\R\cup\{-\infty\}$ tal que
+$\chi\colon X\to\R\cup\{-\infty\}$, no idénticamente igual a $-\infty$, tal que
 \[
 \zeta=\chi^c.
 \]
+(La condición de no ser idénticamente $-\infty$ evita el caso trivial
+$\zeta\equiv-\infty$, para el cual $\zeta^{\bar c}\equiv+\infty$ no toma
+valores en $\R\cup\{-\infty\}$.)
 \end{defi}
 
 La importancia de la \(c\)-transformada se pone de manifiesto en el siguiente
@@ -4985,9 +5041,9 @@ normalización, el teorema de Ascoli--Arzelà proporciona la compacidad
 necesaria para extraer una subsucesión convergente de una sucesión
 maximizante.
 
-
-Esta propiedad será de utilidad en la demostración del teorema principal
-de la sección, donde necesitaremos pasar al límite en una sucesión de
+La equicontinuidad de las $c$-transformadas es el contenido del lema
+siguiente; la usaremos en la demostración del teorema principal de la
+sección, donde necesitaremos pasar al límite en una sucesión de
 $c$-transformadas.
 
 \begin{lema}\label{lema.ctranf.lip}
@@ -5122,7 +5178,7 @@ En consecuencia, podemos suponer que
 \]
 para todo \(n\). En particular, todas las funciones
 \(\varphi_n\) y \(\psi_n\) poseen el mismo módulo de continuidad que el costo
-\(c\).
+\(c\) (Proposición~\ref{prop.ctransf.modulo}).
 
 Podemos además normalizar las funciones suponiendo
 \[
@@ -5249,17 +5305,17 @@ $\bar c$-cóncava.
 \end{proof}
 
 
-\section{Soporte de los planes óptimos}
+\section{Soporte de los planes óptimos}\label{sec.soporte.planes}
 
 Una vez establecida la existencia de potenciales de Kantorovich, podemos
-estudiar su relación con los planes óptimos. El resultado fundamental es que
-un plan óptimo solo puede transportar masa a través de puntos donde se
-satura la restricción del problema dual.
+estudiar su relación con los planes óptimos. Recordemos
+(Corolario~\ref{cor:saturacion}) que un plan óptimo solo puede transportar
+masa a través de puntos donde se satura la restricción del problema dual.
+Para reformular este hecho y precisarlo en el caso compacto, introducimos el
+siguiente conjunto.
 
-Para formular este resultado, introducimos el siguiente conjunto.
-
-\begin{defi}
-Sean $(\varphi,\psi)$ un par admisible para el problema dual. Definimos el
+\begin{defi}\label{def.saturacion}
+Sea $(\varphi,\psi)$ un par admisible para el problema dual. Definimos el
 \emph{conjunto de saturación} asociado a $(\varphi,\psi)$ como
 \[
 \Gamma_{\varphi,\psi}
@@ -5271,17 +5327,14 @@ Sean $(\varphi,\psi)$ un par admisible para el problema dual. Definimos el
 \]
 \end{defi}
 
-El siguiente resultado establece que, si un plan y un par de potenciales
-son óptimos para los problemas primal y dual, respectivamente, entonces el
-plan está concentrado en el conjunto de saturación.
+El siguiente resultado reformula el Corolario~\ref{cor:saturacion} en estos
+términos: si un plan y un par de potenciales son óptimos para los problemas
+primal y dual, respectivamente, entonces el plan está concentrado en el
+conjunto de saturación; en el caso compacto y continuo, además, su soporte
+está contenido en él.
 
  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% FIGURA 2 -- Capítulo 6, Sección "Soporte de los planes óptimos".
-%% Insertar inmediatamente después de la Definición del conjunto de
-%% saturación \Gamma_{\varphi,\psi} y antes de la Proposición prop.soporte.
-%% Referenciar con \ref{fig.saturacion}.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[scale=1.05]
@@ -5343,70 +5396,12 @@ $\psi^*$ son continuas, entonces
 \end{prop}
 
 \begin{proof}
-Por la admisibilidad del par $(\varphi^*,\psi^*)$,
-\[
-\varphi^*(x)+\psi^*(y)\leq c(x,y)
-\]
-para todo $(x,y)\in X\times Y$. Por lo tanto, la función
-\[
-c(x,y)-\varphi^*(x)-\psi^*(y)
-\]
-es no negativa.
+La primera afirmación es el Corolario~\ref{cor:saturacion}: la función
+$c(x,y)-\varphi^*(x)-\psi^*(y)$ es no negativa por la admisibilidad del par,
+y su integral respecto de $\pi^*$ es nula por la dualidad, de modo que se
+anula $\pi^*$-c.t.p.; equivalentemente, $\pi^*(\Gamma_{\varphi^*,\psi^*})=1$.
 
-Como $\pi^*$ y $(\varphi^*,\psi^*)$ son óptimos y, por el teorema de
-dualidad de Kantorovich,
-\[
-\int_{X\times Y}c\,d\pi^*
-=
-\int_X\varphi^*\,d\mu
-+
-\int_Y\psi^*\,d\nu,
-\]
-obtenemos
-\[
-\begin{aligned}
-0
-&=
-\int_{X\times Y}c(x,y)\,d\pi^*(x,y)
--
-\int_X\varphi^*\,d\mu
--
-\int_Y\psi^*\,d\nu.
-\end{aligned}
-\]
-Como $\pi^*$ tiene marginales $\mu$ y $\nu$, podemos escribir
-\[
-\int_X\varphi^*\,d\mu
-+
-\int_Y\psi^*\,d\nu
-=
-\int_{X\times Y}
-\bigl(\varphi^*(x)+\psi^*(y)\bigr)
-\,d\pi^*(x,y).
-\]
-En consecuencia,
-\[
-0
-=
-\int_{X\times Y}
-\bigl(
-c(x,y)-\varphi^*(x)-\psi^*(y)
-\bigr)
-\,d\pi^*(x,y).
-\]
-Como el integrando es no negativo, debe ser nulo
-$\pi^*$-c.t.p. Por lo tanto,
-\[
-\varphi^*(x)+\psi^*(y)=c(x,y)
-\qquad
-\pi^*\text{-c.t.p.}
-\]
-y, equivalentemente,
-\[
-\pi^*(\Gamma_{\varphi^*,\psi^*})=1.
-\]
-
-Finalmente, supongamos que $X$ e $Y$ son compactos y que $c$, $\varphi^*$ y
+Supongamos ahora que $X$ e $Y$ son compactos y que $c$, $\varphi^*$ y
 $\psi^*$ son continuas (recordemos que el teorema de existencia de potenciales
 provee, en el caso compacto, un par óptimo continuo). Entonces la función
 \[
@@ -5577,11 +5572,18 @@ x\cdot y-u(x)
 \]
 \end{defi}
 
-Recordemos algunas propiedades básicas de esta transformación.
+Es el caso $E=\R^d$ (identificando $E^*$ con $\R^d$ mediante el producto
+escalar) de la transformada de Legendre--Fenchel que usamos en la
+Sección~\ref{sec.demo.dualidad} y que se estudia en el
+Apéndice~\ref{ap.FR}; en este contexto escribimos $\bar u$ en lugar de $u^*$.
+Veamos algunas propiedades básicas de esta transformación.
 
 \begin{prop}
-Sea $u\colon\mathbb R^d\to\mathbb R\cup\{+\infty\}$. Entonces $\bar u$ es
-convexa. Además, si $u$ es convexa y semicontinua inferiormente, entonces
+Sea $u\colon\mathbb R^d\to\mathbb R\cup\{+\infty\}$ propia, es decir, no
+idénticamente $+\infty$. Entonces $\bar u$ es convexa y toma valores en
+$\mathbb R\cup\{+\infty\}$ (si $u\equiv+\infty$, en cambio,
+$\bar u\equiv-\infty$). Además, si $u$ es convexa, semicontinua inferiormente
+y propia, entonces
 \[
 \bar{\bar u}=u.
 \]
@@ -5675,11 +5677,11 @@ v=\bar u.
 
 De manera completamente análoga, como $\varphi=\psi^{\bar c}$, obtenemos
 \[
-u=v^*.
+u=\bar v.
 \]
 En particular,
 \[
-u=v^*,
+u=\bar v,
 \qquad
 v=\bar u.
 \]
@@ -5699,13 +5701,7 @@ u(x)+\bar u(y)=x\cdot y
 \qquad \pi^*\text{-c.t.p.}
 \]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% FIGURA 3 -- Capítulo 6, Sección "El costo cuadrático y la transformada de
-%% Legendre". Insertar justo después del párrafo que concluye
-%%     u(x) + \bar u(y) = x\cdot y   \pi^*-c.t.p.
-%% y antes de "Supongamos ahora, además, que u es de clase C^1".
-%% Referenciar con \ref{fig.legendre}.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[scale=1.1, declare function={u(\z)=0.35*\z*\z+0.4;}]
@@ -5734,8 +5730,8 @@ u(x)+\bar u(y)=x\cdot y
 \end{tikzpicture}
 \caption{Interpretación geométrica de la transformada de Legendre en
 dimensión uno. Para una pendiente $y$ fija, $\bar u(y)=\sup_z\{z\cdot y-u(z)\}$
-es el menor desplazamiento vertical que hay que dar a la recta $z\mapsto z\cdot y$
-para que quede por encima del gráfico de $u$: la recta
+es el menor desplazamiento hacia abajo que hay que dar a la recta
+$z\mapsto z\cdot y$ para que quede por debajo del gráfico de $u$: la recta
 $z\mapsto z\cdot y-\bar u(y)$ (en rojo) es la \emph{recta soporte} de pendiente
 $y$. La igualdad $u(x)+\bar u(y)=x\cdot y$ dice exactamente que esa recta toca
 al gráfico de $u$ en el punto $x$. Cuando $u$ es diferenciable en $x$ hay una
@@ -5842,9 +5838,9 @@ Sea $c\colon X\times Y\to\R$ acotada y sea $\chi\colon X\to\R$ acotada.
 \begin{enumerate}[label=(\alph*)]
 \item Probar que $\chi^{c\bar c}\ge\chi$ y que $\chi^{c\bar cc}=\chi^c$.
 Deducir que la operación $\chi\mapsto\chi^{c\bar c}$ es idempotente.
-\item Decimos que $\varphi\colon X\to\R$ es \emph{$c$-cóncava} si
-$\varphi=\zeta^{\bar c}$ para alguna $\zeta\colon Y\to\R\cup\{-\infty\}$.
-Probar que $\varphi$ es $c$-cóncava si y solo si $\varphi=\varphi^{c\bar c}$.
+\item Recordemos (Definición~\ref{def.cconcava}) que $\varphi\colon X\to\R$
+es $c$-cóncava si $\varphi=\zeta^{\bar c}$ para alguna
+$\zeta\colon Y\to\R\cup\{-\infty\}$ no idénticamente $-\infty$. Probar que $\varphi$ es $c$-cóncava si y solo si $\varphi=\varphi^{c\bar c}$.
 \item Probar que $(\chi+s)^c=\chi^c-s$ para $s\in\R$, y que
 $\chi\le\tilde\chi$ implica $\chi^c\ge\tilde\chi^c$.
 \item Probar que el ínfimo puntual de una familia de funciones
@@ -5860,7 +5856,7 @@ módulo de continuidad $\omega$ común). Probar que la familia
 $\{x\mapsto\inf_{\alpha\in A}f(x,\alpha):f\in\mathcal F\}$ es equicontinua
 con el mismo módulo $\omega$, siempre que los ínfimos sean finitos. Explicar
 en qué punto de la demostración del Teorema~\ref{teo.existencia.potenciales}
-se usa este hecho (Lema~\ref{lema.ctranf.lip}).
+se usa este hecho (Proposición~\ref{prop.ctransf.modulo}).
 \end{ejercicio}
 
 \begin{ejercicio}[Costos que son distancias]\label{ejer.ctransf.distancia}
@@ -5892,13 +5888,15 @@ Sea $c(x,y)=|x-y|^2$ en $\R^d$.
 \item Para $\chi(x)=\lambda|x|^2$, calcular $\chi^c$ y mostrar que es finita
 si y solo si $\lambda<1$; en ese caso $\chi^c(y)=-\frac{\lambda}{1-\lambda}|y|^2$.
 \item Para $\chi(x)=a\cdot x+b$, calcular $\chi^c$ y $\chi^{c\bar c}$.
-\item Probar que $\varphi$ es $c$-cóncava si y solo si $u(x)=|x|^2-\varphi(x)$
-es convexa y semicontinua inferiormente, y expresar $\varphi^c$ en términos
-de la transformada de Legendre $\bar u$ (Sección~\ref{sec.costo.cuadratico}).
+\item Probar que $\varphi$ es $c$-cóncava si y solo si
+$u(x)=\frac12\bigl(|x|^2-\varphi(x)\bigr)$ es convexa y semicontinua
+inferiormente (la normalización de la Sección~\ref{sec.costo.cuadratico}), y
+probar que $\varphi^c(y)=|y|^2-2\bar u(y)$, donde $\bar u$ es la
+transformada de Legendre de $u$.
 \end{enumerate}
 \end{ejercicio}
 
-\begin{ejercicio}[La mejora de potenciales converge en el caso discreto]\label{ejer.mejora.discreta}
+\begin{ejercicio}[La mejora de potenciales se estaciona en el caso discreto]\label{ejer.mejora.discreta}
 En el problema discreto (Capítulo~\ref{cap.dual.discreto}), la
 Proposición~\ref{prop:mejora-potenciales} dice que $(\varphi,\psi)\mapsto
 (\varphi^{c\bar c},\varphi^c)$ no empeora el funcional dual.
@@ -5908,7 +5906,7 @@ $\varphi\mapsto\varphi^{c\bar c}$ se detiene en un paso: $\varphi^{c\bar c}$
 ya es $c$-cóncava (Ejercicio~\ref{ejer.ctransf.propiedades}).
 \item Mostrar con el ejemplo del Ejercicio~\ref{ejer.PL.2x2} que un par
 $(\varphi^{c\bar c},\varphi^c)$ no tiene por qué ser óptimo: la mejora de
-potenciales produce pares admisibles ``ajustados'' pero no resuelve el
+potenciales produce pares admisibles «ajustados» pero no resuelve el
 problema dual. (En el Capítulo~\ref{cap.Sinkhorn} se verá que la versión
 \emph{suavizada} de esta iteración sí converge al óptimo del problema
 regularizado.)
@@ -5924,7 +5922,7 @@ cuaderno. Las referencias a secciones son a las del cuaderno.
 
 \begin{ejercicio}[El $2\times2$ y su degeneración]\label{ejc.dual.2x2}
 En el ejemplo $2\times2$ de la Sección~8 del cuaderno, reemplazar
-$c_{12}=3$ por un parámetro $s$ y calcular el plan óptimo para $s\in[0,4]$.
+$c_{11}=1$ por un parámetro $s$ y calcular el plan óptimo para $s\in[0,6]$.
 Hallar el valor de $s$ en el que cambia el vértice óptimo y verificar que allí
 todo el segmento $\Pi(a,b)$ es óptimo y los potenciales pierden unicidad (más
 allá de la constante aditiva).
@@ -5948,7 +5946,9 @@ grilla regular en lugar de al azar?
 \end{ejercicio}
 
 \begin{ejercicio}[Mejora de potenciales]\label{ejc.dual.mejora}
-Para $100$ vectores $\varphi$ aleatorios, calcular la fracción de la brecha
+Sea $\mathcal D^*=\max\mathcal D$ el valor óptimo del problema dual discreto
+(que coincide con el costo óptimo). Para $100$ vectores $\varphi$ aleatorios,
+calcular la fracción de la brecha
 dual $\mathcal D^*-\mathcal D(\varphi,\varphi^c)$ que cierra un paso de mejora
 $\varphi\mapsto\varphi^{c\bar c}$ (Proposición~\ref{prop:mejora-potenciales})
 y graficar su histograma. ¿Hay algún $\varphi$ inicial para el cual un solo
@@ -6055,7 +6055,7 @@ es útil considerar el caso particular de aplicaciones lineales. En este
 contexto aparece una descomposición clásica que proporciona una motivación
 geométrica para los resultados de Brenier que veremos en el Capítulo \ref{cap.Brenier}.
 
-Por el Teorema~\ref{teo.FP.lineal}, toda matriz invertible
+Por el Teorema~\ref{teo.FP.lineal} (Apéndice~\ref{ap.FP}), toda matriz inversible
 $A\in\mathbb{R}^{d\times d}$ admite una factorización polar $A=SU$, donde
 $S$ es simétrica definida positiva y $U$ es ortogonal. Una aplicación lineal
 $x\mapsto Ax$ puede escribirse entonces como $Ax = S(Ux)$: primero se aplica
@@ -6074,7 +6074,7 @@ directamente con el transporte óptimo. Recordemos el producto escalar de
 matrices $A:R=\operatorname{Tr}(AR^T)$. Tenemos el siguiente resultado.
 
 \begin{prop}\label{prop:U-max}
-Sea $A\in\mathbb{R}^{d\times d}$ invertible con factorización polar $A=SU$.
+Sea $A\in\mathbb{R}^{d\times d}$ inversible con factorización polar $A=SU$.
 Entonces
 \[
 A:U=\max_{\substack{R\in\mathbb{R}^{d\times d}\\RR^T=I}}A:R.
@@ -6124,10 +6124,10 @@ de función convexa. En el caso general, esta intuición conduce a la llamada
 \emph{factorización polar de Brenier}, que estudiaremos en el Capítulo \ref{cap.Brenier} una vez que hayamos
 desarrollado las herramientas necesarias.
 
-\section{Interpretación económica: problemas de matching}
+\section{Interpretación económica: emparejamientos y precios}
 
 El problema de transporte óptimo admite una interpretación natural en términos
-de \emph{matching} entre dos poblaciones. En este contexto, un plan
+de \emph{emparejamientos} (\emph{matching}) entre dos poblaciones. En este contexto, un plan
 $\pi\in\Pi(\mu,\nu)$ no representa el movimiento de masa sino una regla de
 asociación: la cantidad $\pi(A\times B)$ indica la fracción de agentes de
 tipo $x\in A$ emparejados con agentes de tipo $y\in B$. Si $U(x,y)$ denota
@@ -6136,7 +6136,12 @@ matching socialmente óptimo resuelve
 \[
 \max_{\pi\in\Pi(\mu,\nu)}\int U(x,y)\,d\pi(x,y),
 \]
-que es precisamente un problema de transporte óptimo con costo $c = -U$.
+que es precisamente un problema de transporte óptimo con costo $c = -U$
+(maximizar $\int U\,d\pi$ equivale a minimizar $\int(-U)\,d\pi$). Por este
+cambio de signo, en lo que sigue la restricción dual aparece invertida,
+$U\le\varphi+\psi$: es la restricción $\tilde\varphi+\tilde\psi\le c$ del
+problema dual para $c=-U$, escrita en términos de
+$\varphi=-\tilde\varphi$ y $\psi=-\tilde\psi$.
 
 Una noción central en este contexto es la de \emph{matching estable}: un
 matching $\pi$ es estable si ningún par de agentes prefiere separarse de sus
@@ -6156,6 +6161,7 @@ y $\psi(y)$ pueden interpretarse como la parte del excedente total que captura
 cada agente. Estas son precisamente las condiciones de optimalidad del
 problema de transporte y su dual con costo $c=-U$, lo que establece la
 equivalencia entre matching estable y transporte óptimo.
+
 Los mismos potenciales admiten además una interpretación como precios de
 mercado. Supongamos que $x$ representa un tipo de bien e $y$ un tipo de
 consumidor, y que $U(x,y)$ es la utilidad bruta que obtiene el consumidor $y$
@@ -6176,7 +6182,7 @@ En ambas interpretaciones, la estructura matemática del transporte óptimo
 —una desigualdad global y una igualdad sobre el soporte del plan óptimo—
 adquiere un significado económico preciso y natural.
 
-\section{Transporte multimarginal}
+\section{Transporte multimarginal}\label{sec.multimarginal}
 
 Una generalización natural del problema de Kantorovich consiste en considerar
 simultáneamente más de dos marginales. Sean $X_1,\ldots,X_N$ espacios
@@ -6217,12 +6223,16 @@ que mide la suma de las distancias cuadráticas entre todos los pares de
 puntos. El problema multimarginal busca entonces una distribución conjunta de
 $N$ variables con marginales prescritas que minimice esta interacción total.
 Este ejemplo está estrechamente relacionado con los \emph{baricentros de
-Wasserstein} \cite{Santambrogio}, que estudiaremos más adelante: en ese
+Wasserstein} \cite{Santambrogio}, que estudiaremos en el
+Capítulo~\ref{cap.baricentros}: como
+$\sum_{i<j}|x_i-x_j|^2=N\sum_i|x_i-\bar x|^2$ con
+$\bar x=\frac1N\sum_ix_i$, es (salvo el factor $N^2$) el costo de la
+Sección~\ref{sec.bar.multimarginal} con pesos $\lambda_i=\frac1N$. En ese
 contexto el problema multimarginal describe la distribución conjunta óptima
 de $N$ variables que realizan simultáneamente el transporte hacia un punto
 de equilibrio común.
 
-La extensión de dos a $N$ marginales conserva así la estructura fundamental
+La extensión de dos a $N$ marginales conserva así la estructura esencial
 del problema de Kantorovich: se busca una medida conjunta con marginales
 prescritas, el problema tiene una formulación dual en términos de potenciales,
 y las condiciones de optimalidad relacionan el soporte del plan óptimo con la
@@ -6252,7 +6262,7 @@ Cuando se discretizan $\mu$ y $\nu$ en medidas empíricas
 con $a_i,b_j>0$ y $\sum a_i=\sum b_j=1$, el plan óptimo discreto
 $\pi_{n,m}$ existe y puede calcularse por programación lineal. Pero
 $\pi_{n,m}$ depende de la muestra particular $(x_1,\ldots,x_n)$ y
-$(y_1,\ldots,y_m)$ que se haya tomado — es una variable aleatoria, no
+$(y_1,\ldots,y_m)$ que se haya tomado: es una variable aleatoria, no
 un objeto determinista asociado a $\mu$ y $\nu$. Para entender qué
 propiedad de $\mu$ y $\nu$ está estimando $\pi_{n,m}$, y en qué
 sentido $\pi_{n,m}$ converge cuando $n,m\to\infty$, es necesario saber
@@ -6265,8 +6275,8 @@ procedimiento ad hoc sin garantías de consistencia.
 \emph{La estructura del objeto continuo guía la aproximación discreta.}
 Aun cuando el tamaño de la muestra está fijo, la teoría continua revela
 propiedades del plan óptimo que no son visibles en el caso discreto. Por
-ejemplo, el teorema de Brenier — que estudiaremos en el
-Capítulo~\ref{cap.Brenier} — garantiza que cuando $\mu$ es absolutamente
+ejemplo, el teorema de Brenier —que estudiaremos en el
+Capítulo~\ref{cap.Brenier}— garantiza que cuando $\mu$ es absolutamente
 continua, el plan óptimo para el costo cuadrático está concentrado en el
 gráfico de un mapa $T=\nabla u$. En el caso discreto, el plan óptimo
 en general no tiene esa forma: varios puntos $x_i$ pueden enviar masa a
@@ -6317,7 +6327,7 @@ $\max\{F_\mu(x)+F_\nu(y)-1,\,0\}\le H(x,y)\le\min\{F_\mu(x),F_\nu(y)\}$
 para todo $(x,y)$.
 \item Probar que ambas cotas son funciones de distribución de elementos de
 $\Pi(\mu,\nu)$. (La cota superior es el plan comonótono del
-Capítulo~\ref{cap.1D}; la inferior, el ``antimonótono''.)
+Capítulo~\ref{cap.1D}; la inferior, el «antimonótono».)
 \end{enumerate}
 \end{ejercicio}
 
@@ -6328,7 +6338,7 @@ $u=\bigl(\begin{smallmatrix}4&3\\3&1\end{smallmatrix}\bigr)$. Todos los
 agentes tienen el mismo peso.
 \begin{enumerate}[label=(\alph*)]
 \item Hallar el matching que maximiza el excedente total y compararlo con
-el matching ``codicioso'' que asigna primero el par de mayor excedente.
+el matching «codicioso» que asigna primero el par de mayor excedente.
 \item Hallar un sistema de precios $(\varphi,\psi)$ (salarios y beneficios)
 con $\varphi_i+\psi_j\ge u_{ij}$ para todo par y con igualdad en los pares
 emparejados. Verificar que es un equilibrio: ningún par no emparejado puede
@@ -6370,9 +6380,9 @@ planes óptimos para el costo $d(x,x')^2$ (o cualquier costo continuo que
 se anule exactamente en la diagonal); pegar $\alpha_n$, $\gamma$ y $\beta_n$
 con el Lema~\ref{lema.pegado} y proyectar sobre las coordenadas
 extremas. Probar que $\int d(x,x')^2\,d\alpha_n\to0$ y usarlo para pasar al límite.
-\item Deducir que $\mathcal T_c(\mu_n,\nu_n)\to\mathcal T_c(\mu,\nu)$, donde
-$\mathcal T_c$ denota el costo óptimo, y más generalmente que
-$\mathcal T_{c_n}(\mu_n,\nu_n)\to\mathcal T_c(\mu,\nu)$ si $c_n\to c$
+\item Deducir que $\mathrm{OT}_c(\mu_n,\nu_n)\to\mathrm{OT}_c(\mu,\nu)$, donde
+$\mathrm{OT}_c$ denota el costo óptimo, y más generalmente que
+$\mathrm{OT}_{c_n}(\mu_n,\nu_n)\to\mathrm{OT}_c(\mu,\nu)$ si $c_n\to c$
 uniformemente.
 \item Concluir que si $\mu_n$, $\nu_n$ son discretizaciones (por ejemplo,
 medidas empíricas) de $\mu$, $\nu$, el costo óptimo discreto calculado por
@@ -6390,7 +6400,7 @@ en dimensión superior, el mismo mapa resulta óptimo para toda una familia de c
 convexos simultáneamente.
 
 En este capítulo desarrollamos la teoría del transporte óptimo en $\R$. Comenzamos
-introduciendo las herramientas fundamentales: la función de distribución acumulada y
+introduciendo las herramientas básicas: la función de distribución acumulada y
 su pseudoinversa. A partir de ellas construimos el \emph{mapa de transporte monótono},
 que resulta ser el mapa óptimo para costos convexos. La herramienta clave para probar
 la optimalidad es la noción de \emph{$c$-monotonicidad cíclica}, que presentamos en
@@ -6398,7 +6408,7 @@ la tercera sección y que reaparecerá de manera central en el estudio del caso 
 
 \section{Función de distribución y pseudoinversa}
 
-Empecemos con una definición que nos será de gran utilidad.
+Empecemos por la herramienta básica de todo el capítulo.
 \begin{defi}[Función de distribución acumulada]
 Dada una medida de probabilidad $\mu\in\mathcal P(\R)$, su \emph{función de
 distribución acumulada} (FDA) es la función $F_\mu\colon\R\to[0,1]$ definida por
@@ -6429,10 +6439,12 @@ determina $\mu$ sobre los intervalos de la forma $(-\infty,x]$, que generan la
 $\sigma$-álgebra de Borel de $\R$.
 \end{obs}
 
-Cuando $\mu$ no tiene átomos, $F_\mu$ es continua y estrictamente creciente en el
-soporte de $\mu$, por lo que admite una inversa bien definida. En el caso general,
+Cuando $\mu$ no tiene átomos y su soporte es un intervalo (acotado o no),
+$F_\mu$ es continua y estrictamente creciente en ese intervalo, por lo que
+admite allí una inversa bien definida. En el caso general,
 sin embargo, $F_\mu$ puede ser constante en intervalos (cuando $\mu$ no carga esa
-región) o tener saltos (en los átomos de $\mu$), de modo que la inversa usual no
+región; por ejemplo, entre dos componentes de un soporte disconexo) o tener
+saltos (en los átomos de $\mu$), de modo que la inversa usual no
 existe. Para subsanar esto se introduce la \emph{pseudoinversa}.
 
 \begin{defi}[Pseudoinversa]
@@ -6448,7 +6460,7 @@ que cubren los casos más habituales: medida absolutamente continua, medida disc
 y medida mixta.
 
 \begin{ejem}[Medida uniforme]\label{ejem:fda-uniforme}
-Sea $\mu=\mathcal L^1|_{[0,2]}/2$ la medida uniforme en $[0,2]$. Su FDA es
+Sea $\mu=\tfrac12\mathcal L^1|_{[0,2]}$ la medida uniforme en $[0,2]$. Su FDA es
 \[
 F_\mu(x)
 =
@@ -6602,15 +6614,17 @@ Su pseudoinversa es
 F_\mu^{[-1]}(t)
 =
 \begin{cases}
-2t, & t\in\bigl(0,\tfrac{1}{2}\bigr),\\
-2, & t\in\bigl[\tfrac{1}{2},1\bigr).
+2t, & t\in\bigl(0,\tfrac{1}{2}\bigr],\\
+2, & t\in\bigl(\tfrac{1}{2},1\bigr).
 \end{cases}
 \]
-Obsérvese que el tramo plano de $F_\mu$ en $[1,2)$ da lugar a un salto en
-$F_\mu^{[-1]}$ en $t=1/2$: la pseudoinversa salta de
-$\lim_{t\to(1/2)^-}F_\mu^{[-1]}(t)=1$ a $F_\mu^{[-1]}(1/2)=2$.
+(Nótese que $F_\mu^{[-1]}(1/2)=\inf\{x:F_\mu(x)\ge1/2\}=1$, pues
+$F_\mu(1)=1/2$.) Obsérvese que el tramo plano de $F_\mu$ en $[1,2)$ da lugar
+a un salto en $F_\mu^{[-1]}$ en $t=1/2$: la pseudoinversa salta de
+$F_\mu^{[-1]}(1/2)=1$ a $\lim_{t\to(1/2)^+}F_\mu^{[-1]}(t)=2$, y es continua
+por la izquierda, como toda pseudoinversa.
 Recíprocamente, el salto de $F_\mu$ en $x=2$ da lugar a un tramo plano de
-$F_\mu^{[-1]}$ en $[1/2,1)$.
+$F_\mu^{[-1]}$ en $(1/2,1)$.
 
 \begin{center}
 \begin{tikzpicture}[scale=1.1]
@@ -6644,8 +6658,8 @@ $F_\mu^{[-1]}$ en $[1/2,1)$.
     }
     \draw[thick,red] (0,0) -- (0.5,1);
     \draw[thick,red] (0.5,2) -- (1,2);
-    \filldraw[red] (0.5,2) circle (1.5pt);
-    \draw[red,fill=white] (0.5,1) circle (1.5pt);
+    \filldraw[red] (0.5,1) circle (1.5pt);
+    \draw[red,fill=white] (0.5,2) circle (1.5pt);
     \node[below] at (0.6,-0.5) {$F_\mu^{[-1]}$};
   \end{scope}
 \end{tikzpicture}
@@ -6660,7 +6674,7 @@ $t\in(0,1)$ (pues $F(x)\to1$ cuando $x\to+\infty$) y acotado por abajo (pues
 $F(x)\to0$ cuando $x\to-\infty$), así que el ínfimo es finito. La continuidad
 por la derecha de $F$ garantiza además que el ínfimo es un mínimo.
 
-La pseudoinversa satisface la siguiente relación fundamental, que utilizaremos
+La pseudoinversa satisface la siguiente relación, que utilizaremos
 repetidamente:
 \begin{equation}\label{eq:pseudo}
 F^{[-1]}(t)\le x
@@ -6692,7 +6706,7 @@ que es precisamente la FDA de $\mu$ evaluada en $x$. Como la FDA caracteriza
 a la medida, concluimos que $(F_\mu^{[-1]})_\#\,\mathcal L^1|_{(0,1)}=\mu$.
 \end{proof}
 
-El siguiente lema es fundamental para la construcción del mapa monótono.
+El siguiente lema es la clave de la construcción del mapa monótono.
 
 \begin{lema}\label{lema:push-lebesgue}
 Si $\mu\in\mathcal P(\R)$ no tiene átomos, entonces
@@ -6725,8 +6739,13 @@ $(T_\text{mon})_\#\mu=\nu$, y es único $\mu$-c.t.p.
 
 Dicho mapa está dado explícitamente por
 \[
-T_\text{mon}(x)=F_\nu^{[-1]}(F_\mu(x)).
+T_\text{mon}(x)=F_\nu^{[-1]}(F_\mu(x)),
 \]
+fórmula que tiene sentido en el conjunto $\{x:\ 0<F_\mu(x)<1\}$, que tiene
+$\mu$-medida plena. Fuera de él (un conjunto $\mu$-nulo, unión de a lo sumo
+dos semirrectas) se puede definir $T_\text{mon}$ de cualquier modo que
+preserve la monotonía; por ejemplo, si $\nu$ tiene soporte compacto, como
+$\min\sop\nu$ en $\{F_\mu=0\}$ y $\max\sop\nu$ en $\{F_\mu=1\}$.
 \end{teo}
 \begin{proof}
 \textbf{Existencia.} Definamos $T_\text{mon}(x)=F_\nu^{[-1]}(F_\mu(x))$.
@@ -6793,8 +6812,8 @@ es la medida
 \end{defi}
 
 Que $\gamma_{mon}\in\Pi(\mu,\nu)$ se sigue de la Proposición~\ref{prop:push-uniforme}.
-Cuando $\mu$ no tiene átomos, el plan comonótono está inducido por el mapa monótono:
-$\gamma_{mon}=(\id,T_\text{mon})_\#\mu$. En efecto, tenemos,
+Cuando $\mu$ no tiene átomos, el plan comonótono está inducido por el mapa
+monótono:
 \begin{prop}\label{prop:comonotono-mapa}
 Si $\mu$ no tiene átomos, el plan comonótono está inducido por el mapa
 monótono del Teorema~\ref{teo:mapa-monotono}:
@@ -6852,8 +6871,8 @@ $F_\mu(F_\mu^{[-1]}(t))>t$ para todo $t$ en el interior del salto: la
 composición $F_\mu\circ F_\mu^{[-1]}$ «aplasta» todo ese intervalo de valores
 de $t$ en el único valor $F_\mu(x_0)$, y con ello $T_\text{mon}$ enviaría toda
 la masa de $x_0$ a un solo punto, mientras que $\gamma_{mon}$ la reparte.
-Es exactamente el fenómeno del ejemplo de la Sección~3b del cuaderno de
-cómputo.
+Es exactamente el fenómeno del ejemplo de la Sección~4 del cuaderno
+\emph{OT en dimensión uno} (Apéndice~\ref{ap.cuadernos}).
 \end{obs}
 
 El plan comonótono puede caracterizarse por una propiedad de monotonicidad de su
@@ -6868,12 +6887,7 @@ y\le y'.
 Entonces $\gamma=\gamma_{mon}$.
 \end{prop}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% FIGURA 5 -- Capítulo 8, Sección "El mapa de transporte monótono".
-%% Insertar inmediatamente después del enunciado de la
-%% Proposición prop:soporte-monotono y antes de su demostración.
-%% Referenciar con \ref{fig.soporte.monotono}.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[scale=1.0]
@@ -7056,10 +7070,14 @@ $\gamma^*$-c.t.p.\ pero no necesariamente en todo punto del soporte, y el argume
 anterior se cae.
 
 El teorema es cierto en total generalidad —para $\mu,\nu\in\mathcal P(\R)$
-arbitrarias y $c$ continua— pero su demostración en ese caso no puede apoyarse en la
+arbitrarias y $c$ continua (y no negativa), siempre que el costo óptimo sea
+finito— pero su demostración en ese caso no puede apoyarse en la
 dualidad: se razona directamente, construyendo a partir de una violación de la
 $c$-monotonicidad cíclica un plan competidor de costo estrictamente menor. Véase
-\cite[Theorem~1.38]{Santambrogio}.
+\cite[Theorem~1.38]{Santambrogio}. La hipótesis de costo finito es necesaria:
+si $\int c\,d\gamma=+\infty$ para todo $\gamma\in\Pi(\mu,\nu)$, todo plan es
+óptimo, en particular $\mu\otimes\nu$, cuyo soporte $\sop\mu\times\sop\nu$ no
+es en general $c$-cíclicamente monótono.
 \end{obs}
 
 \begin{obs}
@@ -7070,7 +7088,9 @@ Este resultado, más delicado, no lo demostraremos aquí; puede consultarse en
 \end{obs}
 
 En dimensión uno, la $c$-monotonicidad cíclica tiene una consecuencia especialmente
-concreta. Cuando el costo satisface la \emph{condición de twist}
+concreta. Cuando el costo satisface la \emph{condición de twist} (en la
+versión unidimensional; la versión en $\R^d$ aparece en la
+Sección~\ref{sec.Gangbo.McCann})
 \[
 \frac{\partial^2 c}{\partial x\,\partial y}(x,y)<0
 \quad
@@ -7387,7 +7407,7 @@ $\gamma_{anti}$.
 \end{enumerate}
 \end{ejercicio}
 
-\begin{ejercicio}[Costos cóncavos: el plan monótono no es óptimo]\label{ejer.1D.concavo}
+\begin{ejercicio}[Costos cóncavos: el plan comonótono no es óptimo]\label{ejer.1D.concavo}
 Sea $c(x,y)=|x-y|^{1/2}$, $\mu=\frac12(\delta_0+\delta_1)$ y
 $\nu=\frac12(\delta_1+\delta_2)$.
 \begin{enumerate}[label=(\alph*)]
@@ -7409,7 +7429,7 @@ general de costos cóncavos.)
 \begin{enumerate}[label=(\alph*)]
 \item Construir un boreliano $A\subset[0,1]$ tal que
 $0<\LL^1(I\cap A)<\LL^1(I)$ para todo intervalo abierto $I\subset[0,1]$.
-\emph{Sugerencia:} unión numerable de conjuntos ``de Cantor gordos''
+\emph{Sugerencia:} unión numerable de conjuntos «de Cantor gordos»
 centrados en los racionales, con medidas que sumen menos que $1$.
 \item Sea $\mu=\LL^1\lfloor_A/\LL^1(A)$. Probar que $F_\mu$ es continua y
 estrictamente creciente en $[0,1]$, de modo que $T_\text{mon}\colon\mu\to\LL^1\lfloor_{[0,1]}$
@@ -7439,7 +7459,7 @@ Los ejercicios siguientes se resuelven con el cuaderno \emph{OT en dimensión
 uno} (véase el Apéndice~\ref{ap.cuadernos}); los enunciados figuran también al
 final del cuaderno. Las referencias a secciones son a las del cuaderno.
 
-\begin{ejercicio}[Mapas monótonos explícitos]\label{ejc.1D.explicitos}
+\begin{ejercicio}[Mapas monótonos explícitos: cálculo numérico]\label{ejc.1D.explicitos}
 Calcular numéricamente $T_{\mathrm{mon}}$ para $\mu=\LL^1\lfloor_{[0,1]}$ y
 $\nu$ exponencial, para $\mu$ uniforme y $\nu=\frac13\delta_0+\frac23\delta_1$,
 y para $\mu=\frac12(\delta_0+\delta_1)$ y $\nu$ uniforme, y comparar con las
@@ -7447,7 +7467,7 @@ fórmulas del Ejercicio~\ref{ejer.1D.explicitos}. En el último caso, verificar
 que el plan comonótono \emph{no} está inducido por un mapa y describirlo.
 \end{ejercicio}
 
-\begin{ejercicio}[Dominancia estocástica]\label{ejc.1D.dominancia}
+\begin{ejercicio}[Dominancia estocástica: cálculo numérico]\label{ejc.1D.dominancia}
 Para pares $(\mu,\nu)$ de muestras, verificar numéricamente la equivalencia
 entre $F_\mu\ge F_\nu$ y $T_{\mathrm{mon}}\ge\id$ del
 Ejercicio~\ref{ejer.1D.dominancia}: graficar ambas condiciones para
@@ -7455,7 +7475,7 @@ $\mu=N(0,1)$ y $\nu=N(m,\sigma^2)$ con varios $(m,\sigma)$, y hallar la región
 del plano $(m,\sigma)$ donde valen.
 \end{ejercicio}
 
-\begin{ejercicio}[Cotas de Fréchet--Hoeffding]\label{ejc.1D.frechet}
+\begin{ejercicio}[Cotas de Fréchet--Hoeffding: cálculo numérico]\label{ejc.1D.frechet}
 Para $\mu$, $\nu$ discretas con $n$ átomos, calcular la función de
 distribución conjunta $H(x,y)=\pi((-\infty,x]\times(-\infty,y])$ de varios
 planes (el comonótono, el antimonótono, el producto y planes aleatorios) y
@@ -7463,10 +7483,10 @@ verificar las cotas $\max\{F_\mu+F_\nu-1,0\}\le H\le\min\{F_\mu,F_\nu\}$ del
 Ejercicio~\ref{ejer.frechet.hoeffding}, con igualdad para los planes extremos.
 \end{ejercicio}
 
-\begin{ejercicio}[Costos cóncavos]\label{ejc.1D.concavos}
+\begin{ejercicio}[Costos cóncavos: cálculo numérico]\label{ejc.1D.concavos}
 Con $\mu=\frac12(\delta_0+\delta_1)$ y $\nu=\frac12(\delta_1+\delta_2)$,
 calcular el plan óptimo de $|x-y|^p$ para $p\in\{0{,}25,\,0{,}5,\,1,\,2\}$ y
-determinar para qué $p$ deja de ser óptimo el plan monótono. Repetir con dos
+determinar para qué $p$ deja de ser óptimo el plan comonótono. Repetir con dos
 densidades continuas que se superpongan y medir la masa que el plan óptimo
 deja en la diagonal como función de $p$ (Ejercicio~\ref{ejer.1D.concavo}).
 \end{ejercicio}
@@ -7522,12 +7542,13 @@ el gradiente de una función convexa.
 \section{El teorema de Brenier}\label{sec.Brenier}
 %──────────────────────────────────────────────────────────────────────────────
 
-En esta sección demostraremos el teorema de Brenier. Por razones de
-simplicidad haremos la demostración bajo la hipótesis adicional de que el
-potencial convexo $u$ es de clase $C^1$; como veremos, en ese caso el
-argumento es completamente elemental y contiene ya todas las ideas esenciales.
-Al final de la sección discutiremos qué hay que modificar para tratar el caso
-general.
+En esta sección demostraremos el teorema de Brenier. Para que las ideas
+esenciales queden a la vista, presentamos primero el argumento suponiendo que
+el potencial convexo $u$ es de clase $C^1$; en ese caso es completamente
+elemental. La Observación~\ref{obs.Brenier.general} completa luego la
+demostración en el caso general, usando las herramientas sobre funciones
+convexas reunidas en el Apéndice~\ref{ap.subdiferencial}: solo hay que
+modificar los Pasos 2 y 3.
 
 Trabajaremos con medidas de soporte compacto, que es el marco en el que
 demostramos la existencia de potenciales de Kantorovich en el
@@ -7553,7 +7574,8 @@ $\mathcal P_p(\R^d)$ para todo $p\geq1$.
 
 El siguiente lema es el paso técnico que nos faltaba: nos permite pasar de
 saber que un plan \emph{vive en el gráfico} de un mapa a saber que está
-\emph{inducido} por ese mapa. Es un resultado puramente teórico-medida, que no
+\emph{inducido} por ese mapa (compárese con el
+Ejercicio~\ref{ejer.plan.inducido}). Es un resultado puramente de teoría de la medida, que no
 usa nada de la teoría de transporte óptimo.
 
 \begin{lema}\label{lema.grafico}
@@ -7636,11 +7658,14 @@ que es lo que queríamos ver.
 
 Ya estamos en condiciones de enunciar y demostrar el resultado principal.
 
-\begin{teo}[Brenier, 1991]\label{teo.Brenier}
+\begin{teo}[Brenier~\cite{Brenier1987,Brenier1991}]\label{teo.Brenier}
 Sean $\mu,\nu\in\mathcal P(\R^d)$ medidas con soporte compacto y supongamos
 que $\mu\ll\mathcal L^d$. Entonces:
 \begin{enumerate}
-\item Existe una función convexa $u\colon\R^d\to\R$ tal que el mapa
+\item Existe una función convexa $u\colon\R^d\to\R$ (finita en todo $\R^d$,
+y por lo tanto diferenciable en $\mathcal L^d$-casi todo punto y, como
+$\mu\ll\mathcal L^d$, en $\mu$-casi todo punto; Corolario~\ref{cor.convexa.ctp})
+tal que el mapa boreliano
 $T=\nabla u$, definido $\mu$-c.t.p., verifica $T_\#\mu=\nu$ y resuelve el
 problema de Monge:
 \[
@@ -7656,11 +7681,12 @@ $S=T$ $\mu$-c.t.p.
 \end{teo}
 
 \begin{proof}
-Demostraremos el resultado bajo la hipótesis simplificadora de que
-$u\in C^1(\R^d)$. El caso general requiere reemplazar el gradiente por el
-subdiferencial de $u$ y usar el teorema de Rademacher; las herramientas
-necesarias están reunidas en el Apéndice~\ref{ap.subdiferencial}, y el
-argumento se completa en la Observación~\ref{obs.Brenier.general}.
+En los Pasos 2 y 3 supondremos que el potencial $u$ construido en el Paso 1
+es de clase $C^1$. En el caso general esos dos pasos se reemplazan por el
+argumento de la Observación~\ref{obs.Brenier.general}, que reemplaza el
+gradiente por el subdiferencial de $u$ y usa el teorema de Rademacher
+(Apéndice~\ref{ap.subdiferencial}); los Pasos 1 y 4 a 6 no usan esa
+hipótesis. Ambas partes juntas constituyen la demostración completa.
 
 \medskip
 \textbf{Paso 1: existencia de plan y potenciales óptimos.}
@@ -7672,13 +7698,29 @@ Kantorovich del Capítulo~\ref{cap.dual} existe un par óptimo
 $(\varphi,\psi)$ para el problema dual, con $\psi=\varphi^c$ y
 $\varphi=\psi^{\bar c}$.
 
+Los potenciales están definidos, en principio, solo en $X$ y en $Y$. Pero
+como $\varphi=\psi^{\bar c}$, la fórmula
+\[
+\varphi(x)=\min_{y\in Y}\bigl\{|x-y|^2-\psi(y)\bigr\}
+\]
+tiene sentido para todo $x\in\R^d$ (el mínimo existe porque $Y$ es compacto
+y $\psi$ es continua), y usamos esta extensión de $\varphi$ a $\R^d$; con ella
+sigue valiendo $\varphi(x)+\psi(y)\le|x-y|^2$ para todo $x\in\R^d$, $y\in Y$.
 Definimos, como en la Sección~\ref{sec.costo.cuadratico},
 \[
-u(x)=\frac{|x|^2-\varphi(x)}{2},
+u(x)=\frac{|x|^2-\varphi(x)}{2},\quad x\in\R^d,
 \qquad
-v(y)=\frac{|y|^2-\psi(y)}{2}.
+v(y)=\frac{|y|^2-\psi(y)}{2},\quad y\in Y.
 \]
-Allí vimos que $u$ y $v$ son convexas y que $v=\bar u$, $u=\bar v$.
+Desarrollando el cuadrado,
+\[
+u(x)=\max_{y\in Y}\bigl\{x\cdot y-v(y)\bigr\},
+\]
+de modo que $u$ es un máximo de funciones afines indexado por el compacto $Y$:
+es una función convexa, finita en todo $\R^d$ (y Lipschitz, con constante
+$\max_{y\in Y}|y|$). Esta es la función $u\colon\R^d\to\R$ del enunciado.
+Como en la Sección~\ref{sec.costo.cuadratico}, la desigualdad
+$x\cdot y\le u(x)+v(y)$ da $\bar u\le v$ en $Y$.
 
 \medskip
 \textbf{Paso 2: el plan óptimo vive en el gráfico de $\nabla u$.}
@@ -7689,8 +7731,10 @@ en el conjunto de saturación asociado a $(\varphi,\psi)$, es decir
 \qquad
 \pi^*\text{-c.t.p.}
 \]
-Como vimos en la Sección~\ref{sec.costo.cuadratico}, en términos de $u$ y
-$\bar u$ esto equivale a
+En términos de $u$ y $v$ esto se escribe $u(x)+v(y)=x\cdot y$ para
+$\pi^*$-c.t.p.\ $(x,y)$ (y $\pi^*$ está concentrado en $X\times Y$). Como
+$x\cdot y\le u(x)+\bar u(y)\le u(x)+v(y)$ por la desigualdad de
+Fenchel--Young y por $\bar u\le v$, resulta
 \[
 u(x)+\bar u(y)=x\cdot y
 \qquad
@@ -7762,8 +7806,8 @@ es decir, $S=T$ $\mu$-c.t.p.
 \begin{obs}\label{obs.C1.sin.ac}
 Es instructivo observar \emph{dónde} se usó la hipótesis $\mu\ll\mathcal L^d$
 en la demostración anterior: en ningún lado. Bajo la hipótesis $u\in C^1$ el
-argumento cierra sin necesidad de continuidad absoluta. Esto no es una
-casualidad ni un descuido: como veremos en la
+argumento cierra sin necesidad de continuidad absoluta. La explicación es
+que, como veremos en la
 Observación~\ref{obs.ac.necesaria}, la hipótesis $u\in C^1$ es
 \emph{incompatible} con los ejemplos en los que el teorema falla. La
 continuidad absoluta de $\mu$ es precisamente lo que permite reemplazar la
@@ -7771,8 +7815,8 @@ hipótesis de regularidad $u\in C^1$ en el caso general.
 \end{obs}
 
 \begin{obs}[El caso general]\label{obs.Brenier.general}
-Sin la hipótesis $u\in C^1$, la demostración se modifica en un único punto: el
-Paso 2. La condición de saturación
+Sin la hipótesis $u\in C^1$, la demostración se modifica en el Paso 2 y en la
+justificación, en el Paso 3, de que $T$ es boreliano. La condición de saturación
 \[
 u(x)+\bar u(y)=x\cdot y
 \]
@@ -7796,7 +7840,7 @@ $\partial u(x)=\{\nabla u(x)\}$, y $\nabla u$ es boreliana en $D$.
 Como $\mu\ll\mathcal L^d$, se tiene $\mu(\R^d\setminus D)=0$. Por lo tanto,
 para $\mu$-c.t.p.\ $x$ la única elección posible es $y=\nabla u(x)$, y se
 recupera $\pi^*(\Gamma_{\nabla u})=1$ con $T=\nabla u$ definido en $D$ y
-boreliano. El Lema~\ref{lema.grafico} sigue siendo aplicable y los Pasos 3 a
+boreliano. El Lema~\ref{lema.grafico} sigue siendo aplicable y los Pasos 4 a
 6 no se modifican.
 \end{obs}
 
@@ -7845,53 +7889,73 @@ función convexa y que transporta $\mu$ en $\nu$. Lo usaremos repetidamente en
 las secciones siguientes.
 
 \begin{cor}[Criterio de optimalidad de Brenier]\label{cor.criterio.Brenier}
-Sean $\mu,\nu\in\mathcal P_2(\R^d)$ y sea $u\colon\R^d\to\R$ convexa y de clase
-$C^1$. Si $T=\nabla u$ verifica $T_\#\mu=\nu$, entonces $T$ es el mapa de
-transporte óptimo entre $\mu$ y $\nu$ para el costo cuadrático, y
-$\pi=(\id,T)_\#\mu$ es un plan óptimo.
+Sean $\mu,\nu\in\mathcal P_2(\R^d)$ y sea $u\colon\R^d\to\R$ convexa (finita
+en todo $\R^d$) y diferenciable en $\mu$-casi todo punto; por ejemplo, $u$ de
+clase $C^1$, o $u$ convexa cualquiera si $\mu\ll\mathcal L^d$
+(Corolario~\ref{cor.convexa.ctp}). Si $T=\nabla u$ verifica $T_\#\mu=\nu$,
+entonces $T$ es el mapa de transporte óptimo entre $\mu$ y $\nu$ para el
+costo cuadrático, y $\pi=(\id,T)_\#\mu$ es un plan óptimo.
 \end{cor}
 
 \begin{proof}
-Definimos
-\[
-\varphi(x)=|x|^2-2u(x),
-\qquad
-\psi(y)=|y|^2-2\bar u(y).
-\]
-La desigualdad de Fenchel--Young,
-\[
-x\cdot y\leq u(x)+\bar u(y)
+\textbf{Paso 1: integrabilidad.} Por la desigualdad de Fenchel--Young,
+\begin{equation}\label{eq:FY.criterio}
+x\cdot y\le u(x)+\bar u(y)
 \qquad\text{para todo }x,y\in\R^d,
-\]
-que es consecuencia inmediata de la definición de la transformada de Legendre,
-equivale a
-\[
-\varphi(x)+\psi(y)\leq|x-y|^2
-\qquad\text{para todo }x,y\in\R^d,
-\]
-de modo que el par $(\varphi,\psi)$ es admisible para el problema dual.
+\end{equation}
+y, en los puntos $x$ donde $u$ es diferenciable, vale la igualdad
+\begin{equation}\label{eq:FY.igualdad.criterio}
+u(x)+\bar u(\nabla u(x))=x\cdot\nabla u(x)
+\end{equation}
+(Sección~\ref{sec.costo.cuadratico} en el caso $C^1$; en general,
+Proposiciones~\ref{prop.subdiferencial.legendre}
+y~\ref{prop.subdiferencial.gradiente}). Veamos que $u\in L^1(\mu)$ y
+$\bar u\in L^1(\nu)$. Por un lado, tomando $p\in\partial u(0)$
+(Proposición~\ref{prop.subdiferencial.novacio}), $u(x)\ge u(0)+p\cdot x$, y
+tomando $x=0$ en la definición de $\bar u$, $\bar u\ge-u(0)$; así $u$ y
+$\bar u\circ T$ están acotadas inferiormente por funciones de $L^1(\mu)$
+(pues $\mu\in\mathcal P_2(\R^d)\subset\mathcal P_1(\R^d)$). Por otro lado, la
+suma $u+\bar u\circ T$ es, por \eqref{eq:FY.igualdad.criterio}, igual
+$\mu$-c.t.p.\ a $x\cdot T(x)$, que pertenece a $L^1(\mu)$ porque
+$|x\cdot T(x)|\le\frac12(|x|^2+|T(x)|^2)$ y
+$\int|T|^2\,d\mu=\int|y|^2\,d\nu<\infty$. Dos funciones acotadas
+inferiormente por funciones integrables cuya suma es integrable son ambas
+integrables; luego $u\in L^1(\mu)$ y $\bar u\circ T\in L^1(\mu)$, es decir,
+$\bar u\in L^1(\nu)$ (en particular, $\bar u<+\infty$ $\nu$-c.t.p.).
 
-Por otra parte, en la Sección~\ref{sec.costo.cuadratico} vimos que, para $u$
-convexa y $C^1$, vale la identidad
+\medskip
+\textbf{Paso 2: optimalidad.} Sea $\gamma\in\Pi(\mu,\nu)$ cualquiera. Como
+$|x-y|^2=|x|^2+|y|^2-2x\cdot y$ y $x\cdot y\in L^1(\gamma)$, integrando
+\eqref{eq:FY.criterio} respecto de $\gamma$,
 \[
-\bar u(\nabla u(x))=x\cdot\nabla u(x)-u(x),
+\int|x-y|^2\,d\gamma
+\ge\int|x|^2\,d\mu+\int|y|^2\,d\nu-2\Bigl(\int u\,d\mu+\int\bar u\,d\nu\Bigr).
 \]
-es decir, $u(x)+\bar u(\nabla u(x))=x\cdot\nabla u(x)$ para todo $x$. Esto dice
-que la saturación $\varphi(x)+\psi(y)=|x-y|^2$ se verifica en todo punto del
-gráfico de $T=\nabla u$, y en particular $\pi$-c.t.p., pues $\pi$ está
-concentrado en dicho gráfico.
+Para $\gamma=\pi=(\id,T)_\#\mu$ vale la igualdad, pues
+$\int x\cdot y\,d\pi=\int x\cdot T(x)\,d\mu=\int(u+\bar u\circ T)\,d\mu
+=\int u\,d\mu+\int\bar u\,d\nu$ por \eqref{eq:FY.igualdad.criterio}. Luego
+$\int|x-y|^2\,d\pi\le\int|x-y|^2\,d\gamma$ para todo $\gamma\in\Pi(\mu,\nu)$:
+$\pi$ es un plan óptimo y, como $\pi=(\id,T)_\#\mu$, el mapa $T$ resuelve el
+problema de Monge.
 
-Por el criterio de optimalidad (Proposición~\ref{prop.criterio.optimalidad}),
-$\pi$ es un plan óptimo y $(\varphi,\psi)$ es un par dual óptimo. Como
-$\pi=(\id,T)_\#\mu$, el mapa $T$ resuelve el problema de Monge.
+Equivalentemente, en el lenguaje del criterio de optimalidad
+(Proposición~\ref{prop.criterio.optimalidad}): el par
+$\varphi(x)=|x|^2-2u(x)$, $\psi(y)=|y|^2-2\bar u(y)$ satisface
+$\varphi\in L^1(\mu)$, $\psi\in L^1(\nu)$ (con $\psi=-\infty$ a lo sumo en un
+conjunto $\nu$-nulo), $\varphi(x)+\psi(y)\le|x-y|^2$, y la igualdad en el
+gráfico de $T$.
 \end{proof}
 
 \begin{obs}
 Obsérvese que el Corolario~\ref{cor.criterio.Brenier} no requiere
-$\mu\ll\mathcal L^d$ ni compacidad de los soportes: solo usa el criterio de
-optimalidad, que es válido en total generalidad. La continuidad absoluta es
+compacidad de los soportes, ni $\mu\ll\mathcal L^d$ cuando $u$ es
+diferenciable en todo punto: solo usa la desigualdad de Fenchel--Young y la
+igualdad en el gráfico de $\nabla u$. La continuidad absoluta es
 necesaria para la \emph{existencia} del mapa, no para verificar la optimalidad
-de un mapa dado.
+de un mapa dado. El mismo argumento muestra el criterio de Knott--Smith: si
+$\pi\in\Pi(\mu,\nu)$ está concentrado en el grafo del subdiferencial de una
+función convexa $u$, entonces $\pi$ es óptimo
+(Ejercicio~\ref{ejer.Brenier.KnottSmith}).
 \end{obs}
 
 %──────────────────────────────────────────────────────────────────────────────
@@ -7988,10 +8052,9 @@ $A=\tfrac{\sigma_1}{\sigma_0}I$, es decir, el Ejemplo~\ref{ej.gaussianas.isotrop
 Obsérvese además que si $\Sigma_0$ y $\Sigma_1$ conmutan la fórmula se
 simplifica a $A=\Sigma_0^{-1/2}\Sigma_1^{1/2}$, pero en general el orden de
 los factores importa: la expresión de $A$ es la única «media geométrica» de
-$\Sigma_0^{-1}$ y $\Sigma_1$ que resulta simétrica. Esta fórmula tiene
-aplicaciones directas en estadística y aprendizaje automático, donde el
-transporte entre gaussianas aparece como componente básica de modelos más
-complejos.
+$\Sigma_0^{-1}$ y $\Sigma_1$ que resulta simétrica. Esta fórmula se usa, por ejemplo, para comparar distribuciones
+en estadística mediante sus dos primeros momentos: $W_2$ entre las gaussianas
+con esas medias y covarianzas es la llamada distancia de Bures--Wasserstein.
 \end{obs}
 
 %──────────────────────────────────────────────────────────────────────────────
@@ -8038,9 +8101,10 @@ convexas $|x|^2/2$ y $u$, ambas con coeficientes no negativos. Derivando,
 \[
 \nabla u_t(x)=(1-t)x+t\nabla u(x)=(1-t)x+tT(x)=T_t(x).
 \]
-Además $\mu_t=(T_t)_\#\mu$ por definición. Por el
-Corolario~\ref{cor.criterio.Brenier}, $T_t$ es el mapa óptimo entre $\mu$ y
-$\mu_t$.
+Además $\mu_t=(T_t)_\#\mu$ por definición, y $u_t$ es finita en $\R^d$ y
+diferenciable en $\mu$-casi todo punto, como $u$. Por el
+Corolario~\ref{cor.criterio.Brenier} (en su versión para $u$ diferenciable
+$\mu$-c.t.p.), $T_t$ es el mapa óptimo entre $\mu$ y $\mu_t$.
 \end{proof}
 
 \begin{obs}
@@ -8081,9 +8145,11 @@ Conviene contrastar esto con la interpolación lineal entre las medidas,
 \[
 \widetilde\mu_t=(1-t)\mu+t\nu,
 \]
-que en general \emph{no} es gaussiana: para $0<t<1$ es una mezcla de dos
-gaussianas, con densidad bimodal si $\sigma_0$ y $\sigma_1$ son suficientemente
-distintos. La interpolación de McCann respeta la estructura geométrica del
+que en general \emph{no} es gaussiana: para $0<t<1$ y $\sigma_0\ne\sigma_1$
+es una mezcla de dos gaussianas centradas, cuya densidad sigue siendo
+radialmente decreciente (unimodal) pero tiene colas más pesadas que las de
+cualquier gaussiana con la misma varianza. (Si las gaussianas tuvieran medias
+distintas y suficientemente alejadas, la mezcla sería bimodal.) La interpolación de McCann respeta la estructura geométrica del
 problema; la lineal, no.
 \end{ejem}
 
@@ -8127,7 +8193,10 @@ $u=\tfrac12(|x|^2-\varphi)$, en consonancia con el teorema de Brenier.
 Vale la pena aislar cuál es la propiedad estructural que hace funcionar el
 argumento. En la demostración de Brenier, el paso decisivo fue que la condición
 de saturación determinaba \emph{unívocamente} el punto $y$ a partir de $x$. En
-el caso general, ese paso se apoya en la llamada \emph{condición de twist}: que
+el caso general, ese paso se apoya en la llamada \emph{condición de twist}
+(en dimensión uno, la condición
+$\partial^2c/\partial x\,\partial y<0$ del Capítulo~\ref{cap.1D} la implica,
+pues entonces $y\mapsto\partial_xc(x,y)$ es estrictamente monótona): que
 para cada $x$ fijo, la aplicación
 \[
 y\longmapsto\nabla_xc(x,y)
@@ -8148,9 +8217,6 @@ $|x-y|$ es genuinamente más difícil, el plan óptimo no es único en general, 
 resolución —debida a Evans--Gangbo y a Trudinger--Wang, entre otros— requiere
 técnicas completamente distintas.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% APPENDIX
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %──────────────────────────────────────────────────────────────────────────────
 
 \section*{Ejercicios}
@@ -8160,7 +8226,7 @@ Sea $\mu\in\mathcal P_2(\R^d)$.
 \begin{enumerate}[label=(\alph*)]
 \item Probar que la traslación $T(x)=x+v$ es el mapa óptimo entre $\mu$ y
 $T_\#\mu$, y que la dilatación $T(x)=\lambda x$ lo es si y solo si
-$\lambda>0$ o $\mu$ es una masa de Dirac. Más generalmente, $T(x)=Ax+b$ con
+$\lambda\ge0$ o $\mu$ es una masa de Dirac. Más generalmente, $T(x)=Ax+b$ con
 $A$ simétrica definida positiva es óptimo entre $\mu$ y $T_\#\mu$.
 \item Probar que la reflexión $R(x)=-x$ es óptima entre $\mu$ y $R_\#\mu$ si
 y solo si $\mu$ es una masa de Dirac. \emph{Sugerencia:} el soporte de un
@@ -8244,7 +8310,7 @@ sobre $\sop\nu$ y tal que
 u(x)+\bar u(y)=x\cdot y\qquad\text{para $\pi$-casi todo }(x,y).
 \]
 Probar que $\pi$ es óptimo para el costo
-cuadrático. (Es la versión ``con planes'' del
+cuadrático. (Es la versión «con planes» del
 Corolario~\ref{cor.criterio.Brenier}; la desigualdad de Fenchel--Young da
 la admisibilidad.)
 \item Sean $\mu=\frac12(\delta_{(-1,-1)}+\delta_{(1,1)})$ y
@@ -8256,7 +8322,8 @@ $x\cdot y=0$ para los cuatro pares posibles). Concluir que ambos son
 óptimos, que todo $\Pi(\mu,\nu)$ es óptimo, y que la hipótesis
 $\mu\ll\LL^d$ del Teorema~\ref{teo.Brenier} no puede suprimirse.
 \item Comparar con el ejemplo de no unicidad de baricentros de la
-Sección~\ref{sec.bar.unicidad}.
+Observación~\ref{obs.bar.no.unicidad}, que es este mismo par de medidas
+rotado $45^\circ$ y reescalado por $1/\sqrt2$.
 \end{enumerate}
 \end{ejercicio}
 
@@ -8315,7 +8382,7 @@ completo y separable, con una geometría propia. Este espacio métrico es el
 objeto central de la teoría moderna del transporte óptimo y el marco de las
 aplicaciones que veremos en los capítulos siguientes.
 
-El capítulo cobra varias promesas hechas antes. La fórmula
+El capítulo cumple varias promesas hechas antes. La fórmula
 $\int_0^1|F_\nu^{[-1]}-F_\mu^{[-1]}|^p\,dt$ del Capítulo~\ref{cap.1D} y el
 transporte entre gaussianas del Capítulo~\ref{cap.Brenier} se convierten en
 cálculos explícitos de distancias; la interpolación de McCann de la
@@ -8877,10 +8944,13 @@ $\mu$, en tres pasos.
 
 \medskip
 \textbf{Paso 1: truncar.} Para $R>0$, sea
-$\mu_R=\mu|_{\overline{B(0,R)}}+\mu(B(0,R)^c)\,\delta_0$, la medida que deja
-fija la masa de la bola y concentra en el origen la masa exterior. El plan
+$\mu_R=\mu|_{\overline{B(0,R)}}+\mu\bigl(\overline{B(0,R)}^{\,c}\bigr)\,\delta_0$,
+la medida que deja fija la masa de la bola cerrada y concentra en el origen
+la masa exterior (así $\mu_R$ es una probabilidad: la esfera
+$\partial B(0,R)$ se cuenta una sola vez). El plan
 que actúa como la identidad en la bola y envía el exterior a $0$ es
-admisible entre $\mu$ y $\mu_R$, y su costo es $\int_{B(0,R)^c}|x|^p\,d\mu$,
+admisible entre $\mu$ y $\mu_R$, y su costo es
+$\int_{\overline{B(0,R)}^{\,c}}|x|^p\,d\mu$,
 que tiende a cero cuando $R\to\infty$ porque $\mu\in\mathcal P_p(\R^d)$.
 Fijamos $R$ con $W_p(\mu,\mu_R)<\varepsilon$.
 
@@ -9343,19 +9413,22 @@ cuaderno.
 \begin{ejercicio}[Escala]\label{ejc.Wp.escala}
 Probar numéricamente, y luego a mano, que
 \[
-W_p(\lambda_\#\mu,\lambda_\#\nu)=\lambda\,W_p(\mu,\nu)
+W_p(D_{\lambda\#}\mu,D_{\lambda\#}\nu)=\lambda\,W_p(\mu,\nu)
 \]
-para la dilatación $x\mapsto\lambda x$, $\lambda>0$, y que $W_p$ es invariante
+para la dilatación $D_\lambda(x)=\lambda x$, $\lambda>0$, y que $W_p$ es invariante
 por traslaciones simultáneas de ambas medidas
 (Ejercicio~\ref{ejer.Wp.escala}).
 \end{ejercicio}
 
 \begin{ejercicio}[Traslaciones]\label{ejc.Wp.traslaciones}
 Para $\nu=(\tau_v)_\#\mu$, con $\tau_v(x)=x+v$, se tiene $W_p(\mu,\nu)\le|v|$.
-Probar que para $p=2$ hay siempre igualdad y verificarlo numéricamente con
-medidas discretas. (\emph{Sugerencia:} probar primero la descomposición
-$W_2^2(\mu,\nu)=|m_\mu-m_\nu|^2+W_2^2(\tilde\mu,\tilde\nu)$, donde $m_\mu$
-denota la media de $\mu$ y $\tilde\mu$, $\tilde\nu$ las medidas centradas.)
+Recordar que hay igualdad $W_p(\mu,\nu)=|v|$ para todo $p\ge1$
+(Ejercicio~\ref{ejer.Wp.escala}(c)) y verificarlo numéricamente con medidas
+discretas para varios valores de $p$. Para $p=2$, verificar además la
+descomposición $W_2^2(\mu,\nu)=|m_\mu-m_\nu|^2+W_2^2(\tilde\mu,\tilde\nu)$
+para pares $(\mu,\nu)$ arbitrarios, donde $m_\mu$ denota la media de $\mu$ y
+$\tilde\mu$, $\tilde\nu$ las medidas centradas, y comprobar que para $p\ne2$
+no vale la descomposición análoga.
 \end{ejercicio}
 
 \begin{ejercicio}[La interpolación lineal tiene longitud infinita]\label{ejc.Wp.lineal}
@@ -9372,8 +9445,8 @@ par $1\le q<p$, una sucesión $\mu_n$ con $W_q(\mu_n,\delta_0)\to0$ pero
 $W_p(\mu_n,\delta_0)\to\infty$ (cf.\ Ejercicio~\ref{ejer.Wp.escape}).
 \end{ejercicio}
 
-\begin{ejercicio}[Kantorovich--Rubinstein con el solver exacto]\label{ejc.Wp.KR}
-El solver exacto devuelve también potenciales duales
+\begin{ejercicio}[Kantorovich--Rubinstein con el método exacto]\label{ejc.Wp.KR}
+El método exacto devuelve también potenciales duales
 (\texttt{ot.emd(a, b, M, log=True)}). Comparar los potenciales $(u,v)$ así
 obtenidos con la función $1$-Lipschitz $\varphi$ de la Sección~6 del cuaderno:
 no tienen por qué coincidir (¿por qué?), pero el valor dual
@@ -9424,10 +9497,11 @@ Sean $A,B\subset\R^d$ compactos no vacíos. Entonces
 El caso más ilustrativo es el de dos bolas: si $A=B(a,r)$ y $B=B(b,s)$
 entonces $A+B=B(a+b,r+s)$ y la desigualdad es una igualdad, pues
 $|B(x,\rho)|^{1/d}=\omega_d^{1/d}\rho$ con $\omega_d=|B(0,1)|$. En cambio, si
-$A$ es un cubo y $B$ un segmento no paralelo a ninguna de sus caras,
-$A+B$ tiene volumen estrictamente mayor que $|A|$ aunque $|B|=0$: la
-desigualdad dice que agregar un conjunto de medida nula puede aumentar el
-volumen, pero acota por debajo cuánto lo hace.
+$A$ es un cubo y $B$ un segmento cualquiera de longitud positiva,
+$A+B$ tiene volumen estrictamente mayor que $|A|$ aunque $|B|=0$: agregar un
+conjunto de medida nula puede aumentar el volumen. En este caso la
+desigualdad solo da $|A+B|\ge|A|$ y no detecta ese aumento; es una cota
+inferior, que puede estar lejos de ser exacta.
 
 La desigualdad admite una formulación equivalente en términos de combinaciones
 convexas de conjuntos, que es la que la demostración por transporte produce
@@ -9456,9 +9530,18 @@ $A+B=2\bigl(\tfrac12A+\tfrac12B\bigr)$,
 \end{proof}
 
 La forma \eqref{eq:BM.t} dice que la función $t\mapsto|(1-t)A+tB|^{1/d}$ es
-mayor o igual que la interpolación lineal entre sus valores en los extremos;
-de hecho, aplicándola a los conjuntos $(1-s)A+sB$ y $(1-r)A+rB$, se obtiene
-que esa función es \emph{cóncava} en $[0,1]$. Es esta concavidad la que
+mayor o igual que la interpolación lineal entre sus valores en los extremos.
+Si $A$ y $B$ son además \emph{convexos}, esa función es \emph{cóncava} en
+$[0,1]$ (desigualdad de Brunn): llamando $X_s=(1-s)A+sB$, la convexidad da
+$(1-\lambda)X_s+\lambda X_r=X_{(1-\lambda)s+\lambda r}$, pues
+$\alpha K+\beta K=(\alpha+\beta)K$ para todo convexo $K$ y $\alpha,\beta\ge0$,
+y basta aplicar \eqref{eq:BM.t} a los compactos $X_s$ y $X_r$. Para conjuntos
+no convexos solo vale la inclusión
+$(1-\lambda)X_s+\lambda X_r\supset X_{(1-\lambda)s+\lambda r}$, que va en el
+sentido equivocado, y la concavidad puede fallar: por ejemplo, en $\R$, con
+$A=[0{,}30;\,0{,}43]\cup[6{,}99;\,7{,}52]$ y
+$B=[0{,}69;\,1{,}73]\cup[3{,}68;\,5{,}51]\cup[7{,}42;\,8{,}91]$, la función
+$t\mapsto|(1-t)A+tB|$ no es cóncava. La desigualdad \eqref{eq:BM.t} es la que
 conecta con la geometría del capítulo anterior: la curva de conjuntos
 $t\mapsto(1-t)A+tB$ es la imagen geométrica de una geodésica en
 $(\mathcal P_2(\R^d),W_2)$.
@@ -9680,10 +9763,13 @@ dos veces diferenciable, que tiene medida plena. Puede consultarse la
 demostración completa en~\cite[Chapter~6]{Villani2003}.
 
 Vale la pena notar que, en el caso general, ni siquiera hace falta que $A$ y
-$B$ sean compactos: basta que sean borelianos de medida finita y positiva, y
-la única sutileza adicional es la medibilidad de $A+B$, que puede fallar
-para borelianos arbitrarios y por eso el enunciado clásico se da para
-compactos o se usa la medida exterior.
+$B$ sean compactos: basta que sean borelianos de medida finita y positiva. La
+suma $A+B$ de dos borelianos es la imagen del boreliano $A\times B$ por la
+aplicación continua $(a,b)\mapsto a+b$, es decir, un conjunto analítico, y
+por lo tanto es medible Lebesgue (aunque no necesariamente boreliana). La
+medibilidad de $A+B$ sí puede fallar si $A$ y $B$ son solo medibles
+Lebesgue; por eso el enunciado clásico se da para compactos (o para
+borelianos) o se usa la medida interior.
 \end{obs}
 
 \begin{obs}[Convexidad por desplazamiento]\label{obs.desplazamiento.convexo}
@@ -9701,9 +9787,17 @@ convexa en $[0,1]$. La razón es exactamente la del Paso 2: por la ecuación de
 Monge--Ampère, $\rho_t(T_t(x))=\rho_0(x)/\det DT_t(x)$, y
 $\det DT_t(x)^{1/d}$ es cóncavo en $t$ por el Lema~\ref{lema.det.concavo}.
 Para $\mu_0=\mu_A$ y $\mu_1=\mu_B$ uniformes, $\mathcal F(\mu_E)=-|E|^{1/d}$
-para la medida uniforme en $E$, y la convexidad de $\mathcal F$ a lo largo de
-la geodésica es precisamente la concavidad de $t\mapsto|(1-t)A+tB|^{1/d}$
-que discutimos tras la Proposición~\ref{prop.BM.equivalencia}. Esta
+para la medida uniforme en $E$. La medida $\mu_t$ \emph{no} es, en general,
+uniforme sobre $(1-t)A+tB$: está concentrada en $T_t(A)\subset(1-t)A+tB$, y
+por la desigualdad de Jensen $-\mathcal F(\mu_t)\le|T_t(A)|^{1/d}$. La
+convexidad de $\mathcal F$ a lo largo de la geodésica da entonces
+\[
+|(1-t)A+tB|^{1/d}\ge|T_t(A)|^{1/d}\ge-\mathcal F(\mu_t)
+\ge(1-t)|A|^{1/d}+t|B|^{1/d},
+\]
+que es \eqref{eq:BM.t}: la desigualdad de Brunn--Minkowski es una
+consecuencia de la convexidad por desplazamiento (no la concavidad de
+$t\mapsto|(1-t)A+tB|^{1/d}$, que solo vale para convexos). Esta
 \emph{convexidad por desplazamiento} de funcionales de la forma
 $\int F(\rho)$ es el punto de partida de la teoría de flujos gradiente en el
 espacio de Wasserstein, que queda fuera del alcance de estas notas; véase
@@ -9723,8 +9817,11 @@ espacio de Wasserstein, que queda fuera del alcance de estas notas; véase
 A=\prod_{i=1}^d[a_i,b_i],\qquad B=\prod_{i=1}^d[c_i,d_i]
 \]
 en $\R^d$ (usar la desigualdad entre las medias aritmética y geométrica).
-\item Probar que hay igualdad si $A$ y $B$ son homotéticos ($B=\lambda A+v$).
-\item Sea $A$ un cubo y $B$ un segmento no paralelo a ninguna cara de $A$.
+\item Probar que hay igualdad si $A$ y $B$ son convexos y homotéticos
+($B=\lambda A+v$, $\lambda>0$), y mostrar que la hipótesis de convexidad no
+se puede omitir: para $A=B=[0,1]\cup[2,3]\subset\R$, $|A+A|=6>4=|2A|$.
+\item Sea $A$ un cubo y $B$ un segmento de longitud $L>0$ (en cualquier
+dirección).
 Calcular $|A+B|$ y comprobar que es estrictamente mayor que $|A|$ aunque
 $|B|=0$.
 \end{enumerate}
@@ -9808,19 +9905,30 @@ cóncava y positiva en $t$.
 \end{ejercicio}
 
 \begin{ejercicio}[$\bigstar$ Una desigualdad de tipo Sobolev]\label{ejer.BM.sobolev}
-Sea $\Omega\subset\R^d$ convexo y acotado, $f\in W^{1,p}(\Omega)$, y
-$\mu,\nu\in\mathcal P(\Omega)$ con densidades acotadas por $C$ en $L^r$.
-Probar que si $\frac1p+\frac1q+\frac1{q'r}=1+\frac1r$, entonces
+Sea $\Omega\subset\R^d$ convexo y acotado, $f\in C^1(\overline\Omega)$,
+$r\in[1,\infty]$ y $r'$ su exponente conjugado ($\frac1r+\frac1{r'}=1$).
+Sean $\mu=\rho_0\LL^d$ y $\nu=\rho_1\LL^d$ en $\mathcal P(\Omega)$ con
+$\|\rho_0\|_{L^r},\|\rho_1\|_{L^r}\le C$, y supongamos, como en el
+Ejercicio~\ref{ejer.BM.entropia}, que el mapa de Brenier $T$ entre ellas
+satisface la hipótesis (R). Probar que
 \[
-\int_\Omega f\,d(\mu-\nu)\le C^{1/q'}\,\|\nabla f\|_{L^p(\Omega)}\,W_q(\mu,\nu).
+\Bigl|\int_\Omega f\,d(\mu-\nu)\Bigr|\le C^{1/2}\,\|\nabla f\|_{L^{2r'}(\Omega)}\,W_2(\mu,\nu).
 \]
+(Para $r=\infty$ el exponente es $2r'=2$; para $r=1$ es $2r'=\infty$ y la
+desigualdad se reduce a $W_1\le W_2$.)
 \emph{Esquema:} escribir $\int f\,d(\nu-\mu)=\int_0^1\!\!\int\nabla f(T_t(x))\cdot(T(x)-x)\,d\mu\,dt$
-con $T$ el mapa de Brenier y $T_t$ la interpolación; aplicar Hölder con
-exponentes $(p,q,\cdot)$, y controlar $\|\rho_t\|_{L^r}$ uniformemente en
-$t$ mediante la concavidad de $t\mapsto\det DT_t^{1/d}$
-(Lema~\ref{lema.det.concavo}), que da $\rho_t\le\max\{\|\rho_0\|_\infty,\|\rho_1\|_\infty\}$
-en el caso $r=\infty$ y la cota $L^r$ en general. Ver
-\cite[Sec.~5.5]{Santambrogio}.
+con $T_t=(1-t)\id+tT$ y $\mu_t=(T_t)_\#\mu=\rho_t\LL^d$ (que está concentrada en
+$\Omega$ por convexidad); aplicar Cauchy--Schwarz en $L^2(\mu)$, que da el
+factor $\bigl(\int|T-\id|^2d\mu\bigr)^{1/2}=W_2(\mu,\nu)$ y el factor
+$\bigl(\int|\nabla f|^2\rho_t\bigr)^{1/2}$; acotar este último por Hölder con
+exponentes $(r',r)$, y controlar $\|\rho_t\|_{L^r}\le C$ uniformemente en $t$:
+para $r<\infty$ por la convexidad de $t\mapsto\int\rho_t^r$
+(Ejercicio~\ref{ejer.BM.entropia}(c)), y para $r=\infty$ por la ecuación de
+Monge--Ampère y la concavidad de $t\mapsto\det DT_t^{1/d}$
+(Lema~\ref{lema.det.concavo}). Más generalmente, para $q\in(1,\infty)$ y
+$q'=q/(q-1)$ vale la misma desigualdad con $W_q$, $\|\nabla f\|_{L^{q'r'}}$
+y la constante $C^{1/q'}$, usando el mapa óptimo para el costo $|x-y|^q$;
+ver \cite[Sec.~5.5]{Santambrogio}.
 \end{ejercicio}
 
 \chapter{Baricentros de Wasserstein}\label{cap.baricentros}
@@ -10116,25 +10224,27 @@ $\pi_a=(\id,T)_\#\mu_1$, y del mismo modo $\pi_b=(\id,T)_\#\mu_1$. Tomando
 segundas marginales, $\mu_a=T_\#\mu_1=\mu_b$, lo que contradice la hipótesis.
 \end{proof}
 
-\begin{obs}
+\begin{obs}[No unicidad sin continuidad absoluta]\label{obs.bar.no.unicidad}
 La demostración muestra dónde interviene la continuidad absoluta: es lo que
 convierte la igualdad en la convexidad —que solo dice que los dos planes
 $\pi_a,\pi_b$ se pueden mezclar sin perder optimalidad— en la igualdad de los
 planes mismos, porque el plan óptimo desde $\mu_1$ es un mapa y no puede
 dividir masa. Sin ninguna medida absolutamente continua la unicidad puede
 fallar en dimensión $d\ge2$. Por ejemplo, en $\R^2$, sean
-$\mu_1=\tfrac12(\delta_{(0,0)}+\delta_{(1,1)})$ y
-$\mu_2=\tfrac12(\delta_{(1,0)}+\delta_{(0,1)})$ con pesos iguales. Los dos
-emparejamientos posibles tienen el mismo costo cuadrático, de modo que hay dos
+$\mu_1=\tfrac12(\delta_{(-1,0)}+\delta_{(1,0)})$ y
+$\mu_2=\tfrac12(\delta_{(0,-1)}+\delta_{(0,1)})$ con pesos iguales. Los dos
+emparejamientos posibles tienen el mismo costo cuadrático (cada punto se
+mueve a distancia $\sqrt2$, y $W_2^2(\mu_1,\mu_2)=2$), de modo que hay dos
 planes óptimos inducidos por mapas y, por la Proposición~\ref{prop.bar.dos},
 los puntos medios de las dos geodésicas correspondientes,
 \[
-\tfrac12\bigl(\delta_{(1/2,0)}+\delta_{(1/2,1)}\bigr)
+\nu_a=\tfrac12\bigl(\delta_{(-\frac12,-\frac12)}+\delta_{(\frac12,\frac12)}\bigr)
 \qquad\text{y}\qquad
-\tfrac12\bigl(\delta_{(0,1/2)}+\delta_{(1,1/2)}\bigr),
+\nu_b=\tfrac12\bigl(\delta_{(-\frac12,\frac12)}+\delta_{(\frac12,-\frac12)}\bigr),
 \]
-son ambos baricentros (y, por el Lema~\ref{lema.W2.convexo}, también lo es
-cualquier mezcla de los dos). En dimensión uno, en cambio, veremos en la
+son ambos baricentros, con valor mínimo
+$\frac14W_2^2(\mu_1,\mu_2)=\frac12$ (y, por el Lema~\ref{lema.W2.convexo},
+también lo es cualquier mezcla de los dos). En dimensión uno, en cambio, veremos en la
 Proposición~\ref{prop.bar.1D} que el baricentro es siempre único.
 \end{obs}
 
@@ -10160,16 +10270,26 @@ entonces $\mu$ es un baricentro de $(\mu_i,\lambda_i)$.
 
 \begin{proof}
 Fijemos $i$. Por el Corolario~\ref{cor.criterio.Brenier}, $T_i$ es el mapa
-óptimo entre $\mu$ y $\mu_i$, y su demostración muestra que el par
+óptimo entre $\mu$ y $\mu_i$. Consideremos el par
 \[
 \varphi_i(x)=|x|^2-2u_i(x),
 \qquad
-\psi_i(y)=|y|^2-2\bar u_i(y),
+\psi_i(y)=|y|^2-2\bar u_i(y).
 \]
-es admisible para el problema dual con costo $|x-y|^2$ y realiza el valor
-óptimo,
+Por la hipótesis de crecimiento, $\varphi_i$ y $\psi_i$ son finitas y
+$|\varphi_i(x)|\le C(1+|x|^2)$, $|\psi_i(y)|\le C(1+|y|^2)$, de modo que son
+integrables respecto de toda medida de $\mathcal P_2(\R^d)$. (Esta es la
+razón de la hipótesis sobre $\bar u_i$, que no se exige en el
+Corolario~\ref{cor.criterio.Brenier}: aquí hay que integrar $\varphi_i$
+respecto de medidas $\nu$ arbitrarias, y no solo respecto de $\mu$.) La
+desigualdad de Fenchel--Young $x\cdot y\le u_i(x)+\bar u_i(y)$ equivale a
+$\varphi_i(x)+\psi_i(y)\le|x-y|^2$, de modo que el par es admisible para el
+problema dual con costo $|x-y|^2$, y la igualdad
+$u_i(x)+\bar u_i(T_i(x))=x\cdot T_i(x)$ da
+$\varphi_i(x)+\psi_i(T_i(x))=|x-T_i(x)|^2$ para todo $x$; integrando
+respecto de $\mu$,
 \[
-W_2^2(\mu,\mu_i)=\int\varphi_i\,d\mu+\int\psi_i\,d\mu_i.
+W_2^2(\mu,\mu_i)=\int|x-T_i(x)|^2\,d\mu=\int\varphi_i\,d\mu+\int\psi_i\,d\mu_i.
 \]
 Por otra
 parte, por la dualidad débil (Proposición~\ref{prop.dualidad.debil}), para
@@ -10177,9 +10297,8 @@ parte, por la dualidad débil (Proposición~\ref{prop.dualidad.debil}), para
 \[
 W_2^2(\nu,\mu_i)\ge\int\varphi_i\,d\nu+\int\psi_i\,d\mu_i,
 \]
-donde las integrales son finitas porque, por la hipótesis de crecimiento,
-$|\varphi_i(x)|\le C(1+|x|^2)$ y $|\psi_i(y)|\le C(1+|y|^2)$, y las medidas
-tienen segundo momento finito. Multiplicando por $\lambda_i$ y sumando,
+donde las integrales son finitas por lo observado arriba. Multiplicando por
+$\lambda_i$ y sumando,
 \[
 \mathcal F(\nu)
 \ge\int\Bigl(\sum_i\lambda_i\varphi_i\Bigr)d\nu+\sum_i\lambda_i\int\psi_i\,d\mu_i
@@ -10211,8 +10330,8 @@ es lo que permite \emph{verificar} candidatos.
 \section{La formulación multimarginal}\label{sec.bar.multimarginal}
 %──────────────────────────────────────────────────────────────────────────────
 
-En el Capítulo~\ref{cap.interpretaciones} anticipamos que el problema de baricentro está
-relacionado con un problema de transporte con $N$ marginales. Precisamos ahora
+En la Sección~\ref{sec.multimarginal} anticipamos que el problema de
+baricentro está relacionado con un problema de transporte con $N$ marginales. Precisamos ahora
 esa relación. Escribimos $\mathbf x=(x_1,\dots,x_N)\in(\R^d)^N$,
 \[
 A(\mathbf x)=\sum_{i=1}^N\lambda_ix_i,
@@ -10449,17 +10568,24 @@ baricentro de gaussianas es ya un objeto que hay que calcular numéricamente.
 \begin{ejercicio}[Traslaciones y escala]\label{ejer.bar.traslaciones}
 Sean $(\mu_i,\lambda_i)_{i=1}^N$ con $\mu_i\in\mathcal P_2(\R^d)$.
 \begin{enumerate}[label=(\alph*)]
-\item Probar que si $T(x)=Ax+b$ es afín con $A$ lineal e invertible y
+\item Probar que si $T(x)=Ax+b$ es afín, con $A$ lineal, y
 $\mu$ tiene media $m_\mu$, entonces $T_\#\mu$ tiene media $Am_\mu+b$.
 \item Probar que si $\bar\mu$ es un baricentro de $(\mu_i,\lambda_i)$ y
 $v_i\in\R^d$, entonces $\tau_{\bar v\#}\bar\mu$ con $\bar v=\sum\lambda_iv_i$
-es un baricentro de $(\tau_{v_i\#}\mu_i,\lambda_i)$, y que
-$\mathcal F$ cambia en $\sum_i\lambda_i|v_i-\bar v|^2$. \emph{Sugerencia:}
-Lema~\ref{lema.W2.media}.
+es un baricentro de $(\tau_{v_i\#}\mu_i,\lambda_i)$, y que el valor mínimo de
+$\mathcal F$ cambia en
+\[
+\sum_i\lambda_i|v_i-\bar v|^2+2\sum_i\lambda_i\,(m_{\mu_i}-\bar m)\cdot(v_i-\bar v),
+\qquad\bar m=\sum_i\lambda_im_{\mu_i},
+\]
+que se reduce a $\sum_i\lambda_i|v_i-\bar v|^2$ si, por ejemplo, todas las
+$\mu_i$ tienen la misma media. Verificarlo con $\mu_1=\delta_0$,
+$\mu_2=\delta_1$ en $\R$, pesos $\frac12$, $v_1=0$, $v_2=1$: el mínimo pasa
+de $\frac14$ a $1$. \emph{Sugerencia:} Lema~\ref{lema.W2.media}.
 \item Deducir que la media de todo baricentro es $\sum\lambda_im_{\mu_i}$ y
 que para calcular baricentros se puede suponer que todas las $\mu_i$ están
-centradas. Probar también que $D_{\lambda\#}\bar\mu$ es baricentro de
-$(D_{\lambda\#}\mu_i,\lambda_i)$ para la dilatación $D_\lambda$.
+centradas. Probar también que $D_{s\#}\bar\mu$ es baricentro de
+$(D_{s\#}\mu_i,\lambda_i)$ para la dilatación $D_s(x)=sx$, $s>0$.
 \end{enumerate}
 \end{ejercicio}
 
@@ -10549,11 +10675,19 @@ el gráfico de $x\mapsto(T_1(x),\dots,T_N(x))$.
 \item Probar directamente (sin usar el Teorema~\ref{teo.bar.unicidad}) que
 el baricentro de masas de Dirac $\delta_{x_i}$ es único y es
 $\delta_{\bar x}$, $\bar x=\sum\lambda_ix_i$.
-\item Sea $\mu\in\mathcal P_2(\R^d)$ y $\nu=\sum_{k=1}^Nb_k\delta_{y_k}$. Probar
-que $W_2^2(\mu,\nu)\ge\sum_kb_k\,\operatorname{Var}(\mu|_{k})$ donde
-$\mu|_k$ es la restricción normalizada de $\mu$ a la celda que el plan
-óptimo envía a $y_k$, con igualdad si y solo si cada $y_k$ es el baricentro
-de su celda. Deducir la condición de optimalidad del
+\item Sea $\mu\in\mathcal P_2(\R^d)$ y $\nu=\sum_{k=1}^Nb_k\delta_{y_k}$ con
+$y_k$ distintos y $b_k>0$, y sea $\pi$ un plan óptimo entre $\mu$ y $\nu$.
+Para cada $k$ sea
+$\mu|_k=\frac1{b_k}(\pp_1)_\#\bigl(\pi\lfloor_{\R^d\times\{y_k\}}\bigr)$ la
+parte (normalizada) de $\mu$ que $\pi$ envía a $y_k$, de modo que
+$\mu=\sum_kb_k\,\mu|_k$. (Si $\pi$ está inducido por un mapa, por ejemplo si
+$\mu\ll\LL^d$, $\mu|_k$ es la restricción normalizada de $\mu$ a la
+\emph{celda} $T^{-1}(y_k)$; si $\mu$ tiene átomos, $\pi$ puede repartir la
+masa de un átomo entre varias celdas.) Probar que
+$W_2^2(\mu,\nu)=\sum_kb_k\bigl(\operatorname{Var}(\mu|_k)+|m_k-y_k|^2\bigr)
+\ge\sum_kb_k\,\operatorname{Var}(\mu|_k)$, donde $m_k$ es la media de
+$\mu|_k$, con igualdad si y solo si cada $y_k$ es el baricentro $m_k$ de su
+celda. Deducir la condición de optimalidad del
 Ejercicio~\ref{ejer.Wp.distancia.conjunto}(c).
 \end{enumerate}
 \end{ejercicio}
@@ -10569,9 +10703,14 @@ geodésica de $W_2$ entre $\nu_0$ y $\nu_1$ (¿es la única?).
 $t\mapsto W_2^2(\mu,\nu_t)$ no es convexa: vale $1$ en los extremos y $2$ en
 $t=\frac12$.
 \item Comparar con el Lema~\ref{lema.W2.convexo} (convexidad a lo largo de
-interpolaciones lineales) y con el Ejercicio~\ref{ejer.Wp.lineal}. Este
-ejemplo muestra que la unicidad del baricentro no puede probarse por un
-argumento de convexidad geodésica.
+interpolaciones lineales) y con el Ejercicio~\ref{ejer.Wp.lineal}. Calcular
+también $W_2^2(\mu,\nu'_t)$ a lo largo de la otra geodésica
+$\nu'_t=\frac12(\delta_{(-1,1-2t)}+\delta_{(1,-1+2t)})$ entre $\nu_0$ y $\nu_1$,
+y comprobar que allí sí es convexa. Así, $W_2^2(\mu,\cdot)$ no es convexo a
+lo largo de \emph{toda} geodésica, y la unicidad del baricentro no puede
+deducirse directamente de un argumento de convexidad a lo largo de
+geodésicas cualesquiera; la demostración del Teorema~\ref{teo.bar.unicidad}
+usa, en cambio, la convexidad a lo largo de mezclas.
 \end{enumerate}
 \end{ejercicio}
 
@@ -10586,7 +10725,7 @@ cuaderno.
 Para $N$ medidas empíricas en $\R$ con $n$ átomos cada una, mostrar que el
 plan multimarginal óptimo del Teorema~\ref{teo.bar.multimarginal} es el
 comonótono (empareja los $k$-ésimos datos ordenados de cada medida) y que
-$B_\#\gamma^*$ es exactamente el promedio de cuantiles de la
+$A_\#\gamma^*$ es exactamente el promedio de cuantiles de la
 Proposición~\ref{prop.bar.1D}. Verificarlo resolviendo el programa lineal
 multimarginal para $n$ chico.
 \end{ejercicio}
@@ -10594,9 +10733,12 @@ multimarginal para $n$ chico.
 \begin{ejercicio}[Traslaciones]\label{ejc.bar.traslaciones}
 Probar que si se traslada cada $\mu_i$ por un vector $v_i$, el baricentro se
 traslada por $\bar v=\sum_i\lambda_iv_i$ y el valor mínimo de $\mathcal F$
-cambia en $\sum_i\lambda_i|v_i-\bar v|^2$ (cf.\
-Ejercicio~\ref{ejer.bar.traslaciones}). Deducir que para calcular baricentros
-basta centrar todas las medidas, y verificarlo numéricamente.
+cambia en $\sum_i\lambda_i|v_i-\bar v|^2+2\sum_i\lambda_i(m_{\mu_i}-\bar m)\cdot(v_i-\bar v)$,
+con $\bar m=\sum_i\lambda_im_{\mu_i}$ (cf.\
+Ejercicio~\ref{ejer.bar.traslaciones}); en particular, el cambio es
+$\sum_i\lambda_i|v_i-\bar v|^2$ si las $\mu_i$ tienen todas la misma media.
+Deducir que para calcular baricentros basta centrar todas las medidas, y
+verificarlo numéricamente.
 \end{ejercicio}
 
 \begin{ejercicio}[Convexidad del funcional]\label{ejc.bar.convexidad}
@@ -10609,9 +10751,11 @@ segunda? Comparar con el Ejercicio~\ref{ejer.bar.no.convexa.geodesica}.
 
 \begin{ejercicio}[Baricentros de formas]\label{ejc.bar.formas}
 Discretizar dos o tres figuras planas (un disco, un cuadrado, un triángulo)
-como medidas uniformes sobre una grilla y calcular su baricentro resolviendo
-el programa lineal del Teorema~\ref{teo.bar.multimarginal}
-(\texttt{ot.lp.barycenter}). Observar cómo crece el tamaño del problema con
+como medidas uniformes sobre una grilla y calcular su baricentro con soporte
+fijo en la grilla resolviendo un programa lineal (\texttt{ot.lp.barycenter});
+comparar con la formulación multimarginal del
+Teorema~\ref{teo.bar.multimarginal}, que no fija el soporte de antemano.
+Observar cómo crece el tamaño del problema con
 la grilla; en el Capítulo~\ref{cap.Sinkhorn} se ve la versión entrópica, que
 escala mucho mejor.
 \end{ejercicio}
@@ -10816,8 +10960,14 @@ obtenemos \eqref{eq:plan.entropico}.
 
 \medskip
 \textbf{Paso 2: verificación directa y dualidad débil.}
-El argumento anterior es la manera de \emph{descubrir} la forma del plan; para
-que la demostración no dependa del teorema de Lagrange, verificamos ahora
+El Paso 1 da la \emph{existencia} de potenciales con los que el plan tiene la
+forma \eqref{eq:plan.entropico}; es el único lugar donde se usa el teorema de
+los multiplicadores de Lagrange. (Otra demostración de esa existencia, sin
+Lagrange, la da la convergencia del algoritmo de Sinkhorn: el
+Teorema~\ref{teo.sinkhorn.convergencia} produce un par $(\bar\varphi,\bar\psi)$
+cuyo plan asociado está en $\Pi(a,b)$, y por el Paso 2 ese plan es el
+minimizador.) Para identificar el valor óptimo y caracterizar los
+maximizadores no hace falta nada más: verificamos ahora
 directamente que si $(\varphi,\psi)$ es un par cualquiera y
 $\pi\in\Pi(a,b)$ es cualquier plan, entonces
 \begin{equation}\label{eq:dual.debil.entropico}
@@ -10923,8 +11073,8 @@ el siguiente lema.
 \begin{lema}[El límite del \emph{soft-min}]\label{lema.softmin}
 Para todo $\varphi\in\R^n$ y todo $j$,
 \[
-\min_i\{c_{ij}-\varphi_i\}-\varepsilon\log\frac1{\min_ia_i}
-\ \le\ (\varphi)^{c,\varepsilon}_j\ \le\ \min_i\{c_{ij}-\varphi_i\},
+\min_i\{c_{ij}-\varphi_i\}
+\ \le\ (\varphi)^{c,\varepsilon}_j\ \le\ \min_i\{c_{ij}-\varphi_i\}+\varepsilon\log\frac1{\min_ia_i},
 \]
 y en particular $(\varphi)^{c,\varepsilon}_j\to\varphi^c_j=\min_i\{c_{ij}-\varphi_i\}$
 cuando $\varepsilon\to0^+$, uniformemente en $\varphi$. Lo mismo vale para la
@@ -10938,11 +11088,15 @@ realiza el mínimo vale exactamente $e^{-M_j/\varepsilon}$. Luego
 \[
 (\min_ia_i)\,e^{-M_j/\varepsilon}\le\sum_ia_ie^{(\varphi_i-c_{ij})/\varepsilon}\le e^{-M_j/\varepsilon}\sum_ia_i=e^{-M_j/\varepsilon},
 \]
-y tomando $-\varepsilon\log$ (que invierte las desigualdades) se obtienen las
-dos cotas. Como las
-cotas encierran a $(\varphi)^{c,\varepsilon}_j$ en un intervalo de longitud
-$\varepsilon\log(1/\min_ia_i)$ alrededor de $M_j$, la convergencia es
-uniforme.
+y tomando $-\varepsilon\log$, que es decreciente e invierte las
+desigualdades, se obtiene
+$M_j\le(\varphi)^{c,\varepsilon}_j\le M_j-\varepsilon\log(\min_ia_i)
+=M_j+\varepsilon\log(1/\min_ia_i)$. Como las
+cotas encierran a $(\varphi)^{c,\varepsilon}_j$ en el intervalo
+$[M_j,M_j+\varepsilon\log(1/\min_ia_i)]$, la convergencia es
+uniforme. (En particular, el \emph{soft-min} nunca es menor que el mínimo:
+por ejemplo, para $a=(\frac12,\frac12)$, $z=(0,1)$ y $\varepsilon=1$ vale
+$-\log(\frac12+\frac12e^{-1})\approx0{,}38>0$.)
 \end{proof}
 
 La operación $-\varepsilon\log\sum a_ie^{-z_i/\varepsilon}$ es un
@@ -11039,26 +11193,34 @@ potenciales entrópicos: $\varphi^\varepsilon_1=0$, lo cual los determina
 unívocamente (Teorema~\ref{teo.dual.entropico}, ítem 1).
 
 \medskip
-\textbf{Paso 2: los iterados están acotados.} Para $k\ge1$ el plan $\pi^{(k)}$
-tiene columnas correctas: $\sum_i\pi^{(k)}_{ij}=b_j$, porque $\psi^{(k)}=(\varphi^{(k)})^{c,\varepsilon}$
-es exactamente la normalización por columnas. En particular
-$\pi^{(k)}_{ij}\le b_j\le1$ para todo $i,j$, es decir,
+\textbf{Paso 2: los iterados están acotados.} Escribamos
+$\Delta=\max_{i,i',j}|c_{ij}-c_{i'j}|$. Observemos primero que, para
+\emph{cualquier} $\chi\in\R^m$, la $\bar c$-transformada suavizada
+$\phi=(\chi)^{\bar c,\varepsilon}$ tiene oscilación a lo sumo $\Delta$: si
+$S_i=\sum_jb_je^{(\chi_j-c_{ij})/\varepsilon}$, entonces
+$S_i\ge e^{-\Delta/\varepsilon}S_{i'}$ término a término, y tomando
+$-\varepsilon\log$, $\phi_i\le\phi_{i'}+\Delta$ para todo $i,i'$.
+
+Apliquemos esto a los iterados. Por la
+propiedad de traslación $(\chi-s)^{\bar c,\varepsilon}=(\chi)^{\bar c,\varepsilon}+s$,
+cada $\varphi^{(k)}$ normalizado sigue siendo la $\bar c$-transformada
+suavizada de un vector (a saber, $\psi^{(k-1)}$ trasladado), de modo que
+$|\varphi^{(k)}_i-\varphi^{(k)}_{i'}|\le\Delta$ y, con $\varphi^{(k)}_1=0$,
 \[
-\varphi^{(k)}_i+\psi^{(k)}_j\le c_{ij}+\varepsilon\log\frac{1}{a_ib_j}\eqqcolon M
-\qquad\text{para todo }i,j,
+|\varphi^{(k)}_i|\le\Delta\qquad\text{para todo }i\text{ y todo }k\ge1.
 \]
-donde $M$ no depende de $k$. Por otra parte, de la definición de la
-$c$-transformada suavizada y el Lema~\ref{lema.softmin},
-$\psi^{(k)}_j\ge\min_i\{c_{ij}-\varphi^{(k)}_i\}-\varepsilon\log\frac1{\min a_i}$
-y análogamente $\varphi^{(k)}_i\ge\min_j\{c_{ij}-\psi^{(k-1)}_j\}-\varepsilon\log\frac1{\min b_j}$.
-Combinando estas cotas con la normalización $\varphi^{(k)}_1=0$: de la cota
-superior con $i=1$, $\psi^{(k)}_j\le M-c_{1j}$ para todo $j$; luego de la
-cota inferior de $\varphi^{(k+1)}$, $\varphi^{(k+1)}_i\ge\min_j\{c_{ij}-M+c_{1j}\}-\varepsilon\log\frac1{\min b_j}$;
-y de la cota superior con ese $\varphi$ acotado inferiormente, los $\psi$
-quedan acotados inferiormente también, y de la cota inferior de $\psi$ los
-$\varphi$ quedan acotados superiormente. En resumen, existe $R>0$,
-independiente de $k$, con $|\varphi^{(k)}_i|,|\psi^{(k)}_j|\le R$ para todo
-$i,j$ y todo $k\ge2$.
+
+Por otra parte, $\psi^{(k)}=(\varphi^{(k)})^{c,\varepsilon}$, y el
+Lema~\ref{lema.softmin} da
+$\min_i\{c_{ij}-\varphi^{(k)}_i\}\le\psi^{(k)}_j\le\min_i\{c_{ij}-\varphi^{(k)}_i\}+\varepsilon\log\frac1{\min_ia_i}$,
+de donde
+\[
+|\psi^{(k)}_j|\le\|C\|_\infty+\Delta+\varepsilon\log\frac1{\min_ia_i}
+\qquad\text{para todo }j\text{ y todo }k\ge1.
+\]
+En resumen, existe $R>0$, independiente de $k$ (y, para $\varepsilon\le1$,
+también de $\varepsilon$), con $|\varphi^{(k)}_i|,|\psi^{(k)}_j|\le R$ para
+todo $i,j$ y todo $k\ge1$.
 
 \medskip
 \textbf{Paso 3: todo punto límite es el óptimo.} Sea
@@ -11070,14 +11232,18 @@ converge a un valor $d^*$. Por continuidad de $\mathcal D_\varepsilon$ y de las
 $c$-transformadas suavizadas,
 \[
 \mathcal D_\varepsilon(\bar\varphi,\bar\psi)=d^*
-=\lim_\ell\mathcal D_\varepsilon(\varphi^{(k_\ell+1)},\psi^{(k_\ell)})
+=\lim_\ell\mathcal D_\varepsilon\bigl((\psi^{(k_\ell)})^{\bar c,\varepsilon},\psi^{(k_\ell)}\bigr)
 =\mathcal D_\varepsilon\bigl((\bar\psi)^{\bar c,\varepsilon},\bar\psi\bigr),
 \]
-donde usamos que $d_k\le\mathcal D_\varepsilon(\varphi^{(k+1)},\psi^{(k)})\le d_{k+1}$
-—ambos pasos intermedios de la iteración no disminuyen el dual— y que
-$\varphi^{(k_\ell+1)}=(\psi^{(k_\ell)})^{\bar c,\varepsilon}\to(\bar\psi)^{\bar c,\varepsilon}$.
+donde usamos que
+$d_k\le\mathcal D_\varepsilon\bigl((\psi^{(k)})^{\bar c,\varepsilon},\psi^{(k)}\bigr)\le d_{k+1}$
+—ambos pasos intermedios de la iteración no disminuyen el dual, y la
+normalización del Paso~1 no cambia los valores del dual— y que
+$(\psi^{(k_\ell)})^{\bar c,\varepsilon}\to(\bar\psi)^{\bar c,\varepsilon}$.
 Por la unicidad del maximizador en el Lema~\ref{lema.maximizacion.alternada},
-$\bar\varphi=(\bar\psi)^{\bar c,\varepsilon}$. Del mismo modo,
+$\bar\varphi=(\bar\psi)^{\bar c,\varepsilon}$. Además, como
+$\psi^{(k)}=(\varphi^{(k)})^{c,\varepsilon}$ para todo $k\ge1$ (la
+normalización preserva esta relación), pasando al límite,
 $\bar\psi=(\bar\varphi)^{c,\varepsilon}$. Es decir, $(\bar\varphi,\bar\psi)$
 satisface \eqref{eq:ctransf.eps}, de modo que el plan
 $\bar\pi_{ij}=a_ib_je^{(\bar\varphi_i+\bar\psi_j-c_{ij})/\varepsilon}$
@@ -11098,17 +11264,27 @@ continuidad $\pi^{(k)}\to\pi^\varepsilon$.
 
 \begin{obs}[Tasa de convergencia]\label{obs.sinkhorn.tasa}
 El teorema anterior no dice nada sobre la \emph{velocidad} de convergencia.
-Se sabe que es lineal: existe $\kappa\in(0,1)$ tal que la distancia entre
-$(\varphi^{(k)},\psi^{(k)})$ y el óptimo, medida en una métrica adecuada,
-decrece como $\kappa^k$. La demostración clásica, debida a Franklin y
-Lorenz~\cite{FranklinLorenz1989}, muestra que la aplicación
-$v\mapsto b/\bigl((K^\varepsilon)^T(a/K^\varepsilon v)\bigr)$ es una contracción
-para la \emph{métrica proyectiva de Hilbert} en el cono de vectores
-positivos, con constante $\kappa=\tanh(\Delta/4)$, donde
-$\Delta=\log\max_{ijkl}\frac{K_{ik}K_{jl}}{K_{jk}K_{il}}$. Como
-$\Delta$ es del orden de $\|C\|_\infty/\varepsilon$, la tasa se deteriora
-exponencialmente cuando $\varepsilon\to0$: cuanto más cerca del problema
-exacto, más lento el algoritmo. Este es el compromiso fundamental del método,
+Se sabe que es lineal. La demostración clásica, debida a Franklin y
+Lorenz~\cite{FranklinLorenz1989}, usa la \emph{métrica proyectiva de
+Hilbert} en el cono de vectores positivos,
+$d_H(v,w)=\log\max_{j,l}\frac{v_jw_l}{v_lw_j}$. Por el teorema de
+Birkhoff--Hopf, la aplicación lineal $v\mapsto K^\varepsilon v$ (y también
+$u\mapsto(K^\varepsilon)^Tu$) contrae $d_H$ con constante
+$\kappa=\tanh(\Delta_K/4)$, donde
+$\Delta_K=\log\max_{i,j,k,l}\frac{K_{ik}K_{jl}}{K_{jk}K_{il}}$, mientras que
+la inversión entrada a entrada y la multiplicación por los vectores fijos
+$a$ o $b$ son isometrías de $d_H$. Cada \emph{medio paso} de
+\eqref{eq:sinkhorn.uv} es, entonces, una contracción de constante $\kappa$,
+y una iteración completa $v^{(k)}\mapsto v^{(k+1)}=b/\bigl((K^\varepsilon)^T(a/K^\varepsilon v^{(k)})\bigr)$
+es una contracción de constante $\kappa^2$:
+\[
+d_H(v^{(k)},v^\varepsilon)\le\kappa^{2k}\,d_H(v^{(0)},v^\varepsilon),
+\]
+y lo mismo para $u^{(k)}$. Como
+$\Delta_K=\max_{i,j,k,l}(c_{jk}+c_{il}-c_{ik}-c_{jl})/\varepsilon$ es del
+orden de $\|C\|_\infty/\varepsilon$ y $1-\kappa\approx2e^{-\Delta_K/2}$, la
+cota se deteriora exponencialmente cuando $\varepsilon\to0$: cuanto más
+cerca del problema exacto, más lento el algoritmo. Este es el compromiso central del método,
 que en la práctica se maneja combinando valores decrecientes de
 $\varepsilon$ y realizando los cálculos en el dominio logarítmico, es decir,
 directamente sobre $(\varphi,\psi)$ mediante \eqref{eq:sinkhorn.pot}, para
@@ -11278,30 +11454,61 @@ y pesos $\lambda_1,\dots,\lambda_N>0$ con $\sum\lambda_k=1$. Para hacer el
 problema finito-dimensional, suponemos que todas las medidas están
 soportadas en un mismo conjunto finito de puntos $\{z_1,\dots,z_n\}$ —una
 \emph{grilla}— y buscamos el baricentro también entre las medidas soportadas
-en la grilla. Identificamos entonces $\mu_k$ con un vector $b^k\in\R^n$ de
-pesos positivos, la incógnita $\mu$ con un vector $a$ en el simplex
+en la grilla. Identificamos entonces $\mu_k$ con un vector $b^k\in\R^n$
+de pesos no negativos que suman $1$ (algunos pueden ser nulos: la grilla
+suele ser más grande que los soportes; los puntos de peso nulo se tratan
+con la convención $0\log0=0$), la incógnita $\mu$ con un vector $a$ en el simplex
 \[
 \Sigma_n=\Bigl\{a\in\R^n:\ a_i\ge0,\ \sum_ia_i=1\Bigr\},
 \]
 y el costo es la matriz $C_{ij}=|z_i-z_j|^2$.
 
+Cuando la marginal $a$ es una incógnita hay que elegir con cuidado la
+regularización. Para $a$ y $b$ fijas, $\varepsilon\mathrm{KL}(\pi\,|\,a\otimes b)$
+y el regularizador $\varepsilon\sum_{ij}\pi_{ij}(\log\pi_{ij}-1)$ de
+Peyré--Cuturi difieren en una constante
+(Observación~\ref{obs.notacion.peyre}), pero esa constante depende de $a$:
+si $H(a)=-\sum_ia_i\log a_i$ denota la entropía de Shannon de $a$, para todo
+$\pi\in\Pi(a,b)$,
+\[
+\langle C,\pi\rangle+\varepsilon\sum_{ij}\pi_{ij}(\log\pi_{ij}-1)
+=\langle C,\pi\rangle+\varepsilon\mathrm{KL}(\pi\,|\,a\otimes b)
+-\varepsilon\bigl(H(a)+H(b)+1\bigr).
+\]
+Llamamos
+\[
+\widetilde{\mathrm{OT}}_\varepsilon(a,b)
+=\min_{\pi\in\Pi(a,b)}\Bigl\{\langle C,\pi\rangle+\varepsilon\sum_{ij}\pi_{ij}(\log\pi_{ij}-1)\Bigr\}
+=\mathrm{OT}_\varepsilon(a,b)-\varepsilon\bigl(H(a)+H(b)+1\bigr),
+\]
+que tiene el mismo plan óptimo $\pi^\varepsilon$ que $\mathrm{OT}_\varepsilon(a,b)$
+pero, como función de $a$, no difiere de él en una constante. El algoritmo de
+Sinkhorn para baricentros que describimos más abajo (y la función
+\texttt{ot.bregman.barycenter} de POT) minimiza la versión con
+$\widetilde{\mathrm{OT}}_\varepsilon$; minimizar con $\mathrm{OT}_\varepsilon$
+agregaría el término $\varepsilon H(a)$, que penaliza la dispersión de $a$ y
+da otro minimizador.
+
 \begin{defi}[Baricentro entrópico]\label{def.baricentro.entropico}
 El \emph{baricentro entrópico} de $(b^k,\lambda_k)$ con parámetro
 $\varepsilon>0$ es el minimizador de
 \[
-\mathcal F_\varepsilon(a)=\sum_{k=1}^N\lambda_k\,\mathrm{OT}_\varepsilon(a,b^k),
+\mathcal F_\varepsilon(a)=\sum_{k=1}^N\lambda_k\,\widetilde{\mathrm{OT}}_\varepsilon(a,b^k),
 \qquad a\in\Sigma_n.
 \]
 \end{defi}
 
-Para $\varepsilon=0$, con $\mathrm{OT}_0=\mathrm{OT}$, esta es la versión
+Para $\varepsilon=0$, con $\widetilde{\mathrm{OT}}_0=\mathrm{OT}$, esta es la versión
 discreta del funcional de baricentro del Capítulo~\ref{cap.baricentros}
 restringido a la grilla.
 
 \begin{prop}\label{prop.baricentro.entropico}
-Para todo $\varepsilon>0$, la función $a\mapsto\mathrm{OT}_\varepsilon(a,b)$ es
-convexa en $\Sigma_n$ para cada $b$ fijo, y $\mathcal F_\varepsilon$ alcanza
-su mínimo en $\Sigma_n$.
+Para todo $\varepsilon>0$ y cada $b$ fijo, la función
+$a\mapsto\mathrm{OT}_\varepsilon(a,b)$ es convexa y semicontinua
+inferiormente en $\Sigma_n$, y la función $a\mapsto\widetilde{\mathrm{OT}}_\varepsilon(a,b)$
+es estrictamente convexa y semicontinua inferiormente en $\Sigma_n$. En
+consecuencia, $\mathcal F_\varepsilon$ alcanza su mínimo en $\Sigma_n$ en un
+único punto: el baricentro entrópico existe y es único.
 \end{prop}
 
 \begin{proof}
@@ -11315,11 +11522,10 @@ $(p,q)\mapsto p\log(p/q)$ es convexa en $\{p\ge0,\,q>0\}$ por ser la
 (Ejercicio~\ref{ejer.perspectiva}). El ínfimo en $\pi$ de una función
 conjuntamente convexa de $(a,\pi)$, sobre un conjunto de restricciones convexo
 en $(a,\pi)$ (las marginales son lineales en $(a,\pi)$), es una función
-convexa de $a$. Luego $\mathrm{OT}_\varepsilon(\cdot,b)$ es convexa, y
-$\mathcal F_\varepsilon$ también.
+convexa de $a$. Luego $\mathrm{OT}_\varepsilon(\cdot,b)$ es convexa.
 
-Para la existencia del mínimo basta ver que $a\mapsto\mathrm{OT}_\varepsilon(a,b)$
-es semicontinua inferiormente en $\Sigma_n$, que es compacto. Sean
+Veamos que $a\mapsto\mathrm{OT}_\varepsilon(a,b)$
+es semicontinua inferiormente en $\Sigma_n$. Sean
 $a^\ell\to a$ en $\Sigma_n$ y $\pi^\ell\in\Pi(a^\ell,b)$ óptimos. Pasando a una
 subsucesión, $\pi^\ell\to\pi$, y necesariamente $\pi\in\Pi(a,b)$. Como
 $(p,q)\mapsto p\log(p/q)$ es semicontinua inferiormente en
@@ -11336,6 +11542,15 @@ sigue de $\log x\ge1-1/x$, da el límite inferior correcto en $q=0$),
 \end{aligned}
 \]
 que es la semicontinuidad buscada.
+
+Finalmente, $\widetilde{\mathrm{OT}}_\varepsilon(a,b)=\mathrm{OT}_\varepsilon(a,b)-\varepsilon H(a)-\varepsilon(H(b)+1)$,
+y $a\mapsto-H(a)=\sum_ia_i\log a_i$ es continua y estrictamente convexa en
+$\Sigma_n$ (Lema~\ref{lema.KL}, con $h(s)=s\log s$). Por lo tanto
+$\widetilde{\mathrm{OT}}_\varepsilon(\cdot,b)$ es estrictamente convexa y
+semicontinua inferiormente, y lo mismo vale para $\mathcal F_\varepsilon$,
+que es una combinación con pesos positivos de estas funciones. Una función
+semicontinua inferiormente en el compacto $\Sigma_n$ alcanza su mínimo, y
+la convexidad estricta da la unicidad del minimizador.
 \end{proof}
 
 \begin{ejer}\label{ejer.perspectiva}
@@ -11348,9 +11563,11 @@ $(p,q)\mapsto p\log(p/q)$ es convexa en $\{p\ge0,\,q>0\}$ (con $0\log0=0$).
 La convexidad de $a\mapsto\mathrm{OT}_\varepsilon(a,b)$ —y de su análogo sin
 regularizar $a\mapsto\mathrm{OT}(a,b)$— es la contraparte discreta del
 Lema~\ref{lema.W2.convexo}: el costo de transporte es convexo respecto de la
-estructura lineal de las medidas. Si además alguna de las $b^k$ tiene todas
-sus entradas positivas, se puede probar que $\mathcal F_\varepsilon$ es
-estrictamente convexa y el baricentro entrópico es único; no lo haremos.
+estructura lineal de las medidas. La convexidad \emph{estricta} de
+$\mathcal F_\varepsilon$ la aporta el término $-\varepsilon H(a)$; por eso el
+baricentro entrópico es único aun cuando el baricentro sin regularizar no
+lo es (Observación~\ref{obs.bar.no.unicidad} y
+Ejercicio~\ref{ejer.bar.entropico}).
 \end{obs}
 
 El baricentro entrópico se calcula con una variante del algoritmo de Sinkhorn
@@ -11376,10 +11593,17 @@ con producto $\odot$ y potencias entrada a entrada.
 \end{enumerate}
 \end{quote}
 
-Cada paso es una proyección, en el sentido de la entropía relativa, sobre
-uno de los conjuntos de restricciones; el algoritmo es un caso de
+Cada paso es una proyección, en el sentido de la entropía relativa
+\emph{generalizada} $\widetilde{\mathrm{KL}}(p\,|\,q)=\sum p\log(p/q)-p+q$
+(que no exige que $p$ y $q$ tengan masa $1$), sobre uno de los conjuntos de
+restricciones; el algoritmo es un caso de
 \emph{proyecciones de Bregman iteradas}, y su convergencia al baricentro
-entrópico está demostrada en~\cite{Benamou2015}. No reproducimos la
+entrópico de la Definición~\ref{def.baricentro.entropico} está demostrada
+en~\cite{Benamou2015}. Observemos que el paso~3 no normaliza $a$: por la
+desigualdad de Hölder, $\sum_ia_i\le\prod_k\bigl(\sum_i(u^k\odot K^\varepsilon v^k)_i\bigr)^{\lambda_k}=1$,
+con igualdad si y solo si todas las primeras marginales
+$u^k\odot K^\varepsilon v^k$ coinciden; durante la iteración $a$ tiene
+masa a lo sumo $1$, y en el límite masa exactamente $1$. No reproducimos la
 demostración; el cuaderno de cómputo que acompaña al curso implementa el
 algoritmo y verifica numéricamente que, para $\varepsilon$ pequeño, recupera
 los baricentros explícitos del Capítulo~\ref{cap.baricentros}: el promedio
@@ -11414,7 +11638,9 @@ produce el mismo minimizador $\pi^\ve$.
 \item (Desigualdad de Pinsker.) Probar que
 $\|\pi-a\otimes b\|_1^2\le2\,\mathrm{KL}(\pi\,|\,a\otimes b)$.
 \emph{Sugerencia:} reducirlo al caso de dos puntos (agrupar según el signo
-de $\pi_{ij}-a_ib_j$ y usar la convexidad de $\mathrm{KL}$) y estudiar la
+de $\pi_{ij}-a_ib_j$ y usar la desigualdad de log-suma
+$\sum_ks_k\log\frac{s_k}{r_k}\ge\bigl(\sum_ks_k\bigr)\log\frac{\sum_ks_k}{\sum_kr_k}$,
+que es la convexidad conjunta de $(s,r)\mapsto s\log\frac sr$) y estudiar la
 función $t\mapsto t\log\frac tp+(1-t)\log\frac{1-t}{1-p}-2(t-p)^2$.
 \item Deducir de (b) y de la Proposición~\ref{prop.eps.infinito} la
 velocidad $\|\pi^\ve-a\otimes b\|_1\le2\sqrt{\|C\|_\infty/\ve}$.
@@ -11435,7 +11661,7 @@ en $(0,\infty)$ (es un ínfimo de funciones afines de $\ve$), y que
 donde sea derivable.
 \item Deducir que $\ve\mapsto\mathrm{KL}(\pi^\ve\,|\,a\otimes b)$ es no
 creciente y que $\ve\mapsto\langle C,\pi^\ve\rangle$ es no decreciente:
-al aumentar la regularización el plan se vuelve más ``desordenado'' y más
+al aumentar la regularización el plan se vuelve más «desordenado» y más
 caro.
 \item Probar que $\lim_{\ve\to\infty}\mathrm{OT}_\ve(a,b)=\langle C,a\otimes b\rangle$
 y que $\lim_{\ve\to0}\mathrm{OT}_\ve(a,b)=\mathrm{OT}(a,b)$, y que ambas
@@ -11485,7 +11711,11 @@ Completar los detalles de la Observación~\ref{obs.potenciales.eps}.
 está acotado uniformemente para $\ve\in(0,1]$. \emph{Sugerencia:}
 $\psi^\ve=(\varphi^\ve)^{c,\ve}$ y el Lema~\ref{lema.softmin} dan
 $\|\psi^\ve-(\varphi^\ve)^c\|_\infty\le\ve\log\frac1{\min a_i}$; usar que
-las $c$-transformadas de funciones con $\varphi_1=0$ están acotadas.
+$\varphi^\ve=(\psi^\ve)^{\bar c,\ve}$ tiene oscilación a lo sumo
+$\max_{i,i',j}|c_{ij}-c_{i'j}|$ (Paso~2 de la demostración del
+Teorema~\ref{teo.sinkhorn.convergencia}), de modo que, con
+$\varphi^\ve_1=0$, $\varphi^\ve$ y luego $(\varphi^\ve)^c$ están acotadas
+independientemente de $\ve$.
 \item Probar que todo punto límite $(\varphi^0,\psi^0)$ satisface
 $\psi^0=(\varphi^0)^c$, $\varphi^0=(\psi^0)^{\bar c}$ y
 $\varphi^0_i+\psi^0_j=c_{ij}$ sobre el soporte de $\pi^0$, y concluir que es
@@ -11516,23 +11746,28 @@ mano los límites $\ve\to0$ y $\ve\to\infty$.
 \begin{ejercicio}[Baricentros entrópicos]\label{ejer.bar.entropico}
 \leavevmode
 \begin{enumerate}[label=(\alph*)]
-\item Probar que si alguna $b^k$ tiene todas sus entradas positivas, entonces
-$a\mapsto\mathrm{OT}_\ve(a,b^k)$ es estrictamente convexa en $\Sigma_n$ y el
-baricentro entrópico es único. \emph{Sugerencia:} la función
-$(a,\pi)\mapsto\langle C,\pi\rangle+\ve\mathrm{KL}(\pi\,|\,a\otimes b^k)$ es
-estrictamente convexa en $\pi$ y el minimizador depende continuamente de
-$a$; estudiar la igualdad en la desigualdad de convexidad.
+\item Probar directamente que $a\mapsto\widetilde{\mathrm{OT}}_\ve(a,b^k)$ es
+estrictamente convexa en $\Sigma_n$, sin usar la entropía $H(a)$:
+si $\pi$ y $\pi'$ son los planes óptimos para $a\ne a'$, el plan
+$\frac12(\pi+\pi')$ es admisible para $\frac12(a+a')$, y la convexidad
+estricta de $\pi\mapsto\sum\pi_{ij}(\log\pi_{ij}-1)$ da una desigualdad
+estricta (¿por qué $\pi\ne\pi'$?). Deducir otra vez la unicidad del
+baricentro entrópico.
 \item Interpretar el paso 3 del algoritmo de la
 Sección~\ref{sec.baricentros.entropicos} como una \emph{proyección de
 Bregman}: dados los planes $\pi^1,\dots,\pi^N$ (con primeras marginales
 $m^k=\pi^k\mathbf 1$ distintas), probar que el problema
 \[
-\min\Bigl\{\sum_k\lambda_k\,\mathrm{KL}(\tilde\pi^k\,|\,\pi^k):\ \tilde\pi^k\mathbf 1=a\ \text{para todo }k,\ a\in\Sigma_n\Bigr\}
+\min\Bigl\{\sum_k\lambda_k\,\widetilde{\mathrm{KL}}(\tilde\pi^k\,|\,\pi^k):\ \tilde\pi^k\mathbf 1=a\ \text{para todo }k,\ a\in\R^n_{\ge0}\Bigr\},
 \]
+donde $\widetilde{\mathrm{KL}}(p\,|\,q)=\sum p\log\frac pq-p+q$,
 tiene solución $\tilde\pi^k=\operatorname{diag}(a/m^k)\,\pi^k$ con
-$a\propto\prod_k(m^k)^{\lambda_k}$ (media geométrica ponderada), que es la
-actualización del algoritmo. ¿Por qué no aparece la media aritmética?
-\item En el ejemplo de no unicidad del Capítulo~\ref{cap.baricentros}
+$a=\prod_k(m^k)^{\lambda_k}$ (media geométrica ponderada, sin normalizar),
+que es la actualización del algoritmo. Probar que si en cambio se usa la
+$\mathrm{KL}$ usual y se impone $a\in\Sigma_n$, se obtiene la versión
+normalizada $a\propto\prod_k(m^k)^{\lambda_k}$. ¿Por qué no aparece la media
+aritmética?
+\item En el ejemplo de no unicidad de la Observación~\ref{obs.bar.no.unicidad}
 ($\mu_1$ con átomos en $(\pm1,0)$, $\mu_2$ con átomos en $(0,\pm1)$, sobre
 una grilla que contenga los cuatro candidatos $(\pm\frac12,\pm\frac12)$),
 probar que el baricentro entrópico es único para todo $\ve>0$ y simétrico
@@ -11559,12 +11794,13 @@ $\log(1/\min_ia_i)$.
 Implementar la mejora de potenciales $\varphi\mapsto\varphi^{c\bar c}$ de la
 Proposición~\ref{prop:mejora-potenciales}, sin regularización, y compararla
 con la iteración de Sinkhorn para $\ve$ pequeño partiendo del mismo $\varphi$.
-¿Converge la versión no regularizada? ¿Y la regularizada?
+¿Converge la versión no regularizada? ¿Y la regularizada? Comparar con el
+Ejercicio~\ref{ejer.mejora.discreta}.
 \end{ejercicio}
 
 \begin{ejercicio}[Costo de cada iteración]\label{ejc.eps.costo}
 Medir el tiempo de una iteración de Sinkhorn para $n=m=500,1000,2000,4000$ y
-verificar el crecimiento $O(nm)$. Comparar con el tiempo del solver exacto
+verificar el crecimiento $O(nm)$. Comparar con el tiempo del método exacto
 (\texttt{ot.emd}) para los mismos tamaños.
 \end{ejercicio}
 
@@ -11581,10 +11817,10 @@ hacen falta en cada caso?
 
 \begin{ejercicio}[Unicidad del baricentro entrópico]\label{ejc.eps.unicidad}
 Verificar numéricamente que el baricentro entrópico del ejemplo de no
-unicidad del Ejemplo~\ref{ej.bar.diracs} ($\mu_1$ con átomos en $(\pm1,0)$,
+unicidad de la Observación~\ref{obs.bar.no.unicidad} ($\mu_1$ con átomos en $(\pm1,0)$,
 $\mu_2$ con átomos en $(0,\pm1)$, sobre una grilla que contenga los cuatro
 candidatos) es \emph{único} y simétrico: la entropía rompe la degeneración
-eligiendo la combinación más ``repartida''. Comparar con el
+eligiendo la combinación más «repartida». Comparar con el
 Ejercicio~\ref{ejer.bar.entropico}.
 \end{ejercicio}
 
@@ -11599,8 +11835,8 @@ medibles e integral--- pensado para fijar el lenguaje y la notación del
 Capítulo~\ref{cap.intro}; el lector que las conozca puede omitirla. Las
 secciones siguientes tienen otro carácter: presentan el teorema de
 desintegración de medidas en espacios polacos y su consecuencia más importante
-para estas notas, el \emph{lema de pegado}, que son las herramientas técnicas
-de los Capítulos~\ref{cap.Wp} y~\ref{cap.baricentros}.
+para estas notas, el \emph{lema de pegado}; ambos son las herramientas
+técnicas de los Capítulos~\ref{cap.Wp} y~\ref{cap.baricentros}.
 
 \section{Repaso de teoría de la medida}\label{sec.ap.medida.repaso}
 
@@ -11754,7 +11990,7 @@ Sea ahora $f\colon X\to\R$ una función medible. Se definen
 \[
 f^+(x)=\max\{f(x),0\},
 \qquad
-f^-(x)=\max\{-f(x),0\},
+f^-(x)=\max\{-f(x),0\}.
 \]
 Observemos que se tiene
 \[
@@ -11786,19 +12022,13 @@ Además, \(f\) se dice integrable si
 
 
 \subsection*{Notación y ejemplos básicos}\label{sec.medidas.prob}
-Resumimos la notación que se usa en todo el texto. Un \emph{espacio medible} es un par $(X,\mathcal A)$
-formado por un conjunto $X$ y una $\sigma$-álgebra $\mathcal A$ de subconjuntos
-de $X$; cuando $X$ es un espacio métrico tomaremos siempre
-$\mathcal A=\mathcal B(X)$, la $\sigma$-álgebra de Borel, y en particular en
-$\mathbb R^d$ trabajaremos con los borelianos y con la medida de Lebesgue
-$\mathcal L^d$. Denotamos por $\mathcal M_+(X)$ al conjunto de las medidas
-finitas sobre $X$ y por
-\[
-\mathcal P(X)=\{\mu\in\mathcal M_+(X):\ \mu(X)=1\}
-\]
-al de las medidas de probabilidad. Para $f\colon X\to\mathbb R$ medible e
-integrable escribimos $\int_Xf\,d\mu$ para su integral, y $\mathbf 1_A$ para la
-función indicadora de un conjunto $A$. Los dos ejemplos de medidas de
+Resumimos la notación que se usa en todo el texto. Como dijimos, cuando $X$
+es un espacio métrico tomaremos siempre la $\sigma$-álgebra de Borel
+$\mathcal B(X)$, y en $\mathbb R^d$ trabajaremos además con la medida de
+Lebesgue $\mathcal L^d$. Recordemos que $\mathcal M_+(X)$ y
+$\mathcal P(X)=\{\mu\in\mathcal M_+(X):\ \mu(X)=1\}$ denotan,
+respectivamente, los conjuntos de medidas finitas y de medidas de
+probabilidad sobre $X$. Los dos ejemplos de medidas de
 probabilidad que aparecerán constantemente son los siguientes.
 
 \begin{defi}[Medida de Dirac]
@@ -11868,7 +12098,7 @@ teoría de la medida, por ejemplo~\cite{Billingsley}.
 
 \section{El teorema de desintegración}
 
-En este apéndice presentamos el teorema de desintegración de medidas y su
+En esta sección presentamos el teorema de desintegración de medidas y su
 consecuencia más importante para estas notas, el \emph{lema de pegado}, que
 permite «componer» dos planes de transporte que comparten una marginal. Este
 lema es la herramienta central en la demostración de la desigualdad
@@ -11941,7 +12171,7 @@ Veamos ahora los dos casos elementales.
 
 \begin{prop}[Caso discreto]\label{prop.desint.discreta}
 Supongamos que $\mu=\sum_{i\in I}a_i\delta_{x_i}$, con $I$ finito o numerable,
-$a_i>0$ y $\sum_ia_i=1$. Entonces la desintegración de $\pi$ respecto de $\mu$
+los puntos $x_i$ distintos dos a dos, $a_i>0$ y $\sum_ia_i=1$. Entonces la desintegración de $\pi$ respecto de $\mu$
 está dada por
 \[
 \pi_{x_i}(B)=\frac{\pi(\{x_i\}\times B)}{a_i},
@@ -12086,13 +12316,21 @@ Veamos que la expresión tiene sentido, es decir, que la función de $x_2$ entre
 paréntesis es boreliana. Si $f=\mathbf 1_{A_1\times A_2\times A_3}$ es la
 indicadora de un rectángulo, dicha función vale
 $\mathbf 1_{A_2}(x_2)\,\pi^{12}_{x_2}(A_1)\,\pi^{23}_{x_2}(A_3)$, que es
-boreliana por el ítem 1 del Teorema~\ref{teo.desintegracion}. La clase de los
-borelianos $E\subset X_1\times X_2\times X_3$ para los cuales la función es
-boreliana con $f=\mathbf 1_E$ es una clase monótona (es cerrada por uniones
-crecientes y por diferencias propias, gracias a la convergencia monótona y a
-la linealidad) que contiene al $\pi$-sistema de los rectángulos; por el
-teorema de la clase monótona, contiene a todos los borelianos. El caso general
-se obtiene aproximando $f$ por funciones simples.
+boreliana por el ítem 1 del Teorema~\ref{teo.desintegracion}. Para un
+boreliano $E$ general hay que controlar también las integrales interiores:
+sea $\mathcal C$ la clase de los borelianos $E\subset X_1\times X_2\times X_3$
+tales que la función
+$(x_1,x_2)\mapsto\pi^{23}_{x_2}\bigl(\{x_3:(x_1,x_2,x_3)\in E\}\bigr)$ es
+boreliana en $X_1\times X_2$ y la función
+$x_2\mapsto\int_{X_1}\pi^{23}_{x_2}\bigl(\{x_3:(x_1,x_2,x_3)\in E\}\bigr)\,d\pi^{12}_{x_2}(x_1)$
+es boreliana en $X_2$. Para rectángulos ambas funciones son productos de
+funciones borelianas (ítem 1 del Teorema~\ref{teo.desintegracion}, y la
+misma propiedad para $\pi^{12}$). La clase $\mathcal C$ es cerrada por uniones
+crecientes y por diferencias propias (convergencia monótona y linealidad,
+aplicadas primero a la integral interior y luego a la exterior), y contiene
+al espacio total; por el teorema de la clase monótona de Dynkin, contiene a
+todos los borelianos. El caso general se obtiene aproximando $f$ por
+funciones simples.
 
 Definimos entonces $\gamma(E)=\Lambda(\mathbf 1_E)$ para $E$ boreliano. Se
 verifica de inmediato que $\gamma(\varnothing)=0$, que $\gamma$ es
@@ -12190,7 +12428,7 @@ primer momento finito).
 sea $T(x)=\int y\,d\pi_x(y)$ el \emph{baricentro condicional}. Probar que
 $\int|x-y|^2d\pi\ge\int|x-T(x)|^2d\mu$, con igualdad si y solo si $\pi$ está
 inducido por $T$. Concluir que si $T_\#\mu=\nu$, el plan $(\id,T)_\#\mu$ es
-mejor que $\pi$: ``promediar el destino no aumenta el costo cuadrático''.
+mejor que $\pi$: «promediar el destino no aumenta el costo cuadrático».
 ¿Por qué esto no demuestra que los planes óptimos son mapas?
 \end{enumerate}
 \end{ejercicio}
@@ -12203,7 +12441,7 @@ $\pi_{34}\in\Pi(\mu_3,\mu_4)$.
 $\pi_{34}$ (a lo largo de la tercera coordenada) da la misma medida en
 $X_1\times X_2\times X_3\times X_4$ que pegar primero $\pi_{23}$ con
 $\pi_{34}$ y luego con $\pi_{12}$.
-\item Deducir la desigualdad triangular ``iterada''
+\item Deducir la desigualdad triangular «iterada»
 \[
 W_p(\mu_1,\mu_4)\le W_p(\mu_1,\mu_2)+W_p(\mu_2,\mu_3)+W_p(\mu_3,\mu_4)
 \]
@@ -12218,14 +12456,17 @@ la medida pegada es $(\id,T_1,T_2\circ T_1,T_3\circ T_2\circ T_1)_\#\mu_1$.
 Sean $\mu,\nu\in\mathcal P(\R^2)$ con marginales sobre la primera coordenada
 $\mu^1$, $\nu^1$ y desintegraciones $\mu=\mu_x\otimes\mu^1$, $\nu=\nu_x\otimes\nu^1$.
 \begin{enumerate}[label=(\alph*)]
-\item (``Knothe--Rosenblatt''.) Supongamos $\mu^1$ y todas las $\mu_x$ sin
+\item («Knothe--Rosenblatt».) Supongamos $\mu^1$ y todas las $\mu_x$ sin
 átomos. Sea $T^1$ el mapa monótono de $\mu^1$ a $\nu^1$ y, para cada $x$,
 $T^2_x$ el mapa monótono de $\mu_x$ a $\nu_{T^1(x)}$. Probar que
 $T(x,y)=(T^1(x),T^2_x(y))$ transporta $\mu$ en $\nu$. (Es el
 \emph{reordenamiento de Knothe--Rosenblatt}; no es óptimo para el costo
 cuadrático, pero es explícito y triangular.)
-\item Probar que $W_2^2(\mu,\nu)\le W_2^2(\mu^1,\nu^1)+\int W_2^2(\mu_x,\nu_{T^1(x)})\,d\mu^1(x)$
-y que, en general, la desigualdad es estricta.
+\item Bajo las hipótesis de (a), y suponiendo además que $\mu,\nu\in\mathcal P_2(\R^2)$,
+probar que $W_2^2(\mu,\nu)\le W_2^2(\mu^1,\nu^1)+\int W_2^2(\mu_x,\nu_{T^1(x)})\,d\mu^1(x)$
+y que, en general, la desigualdad es estricta. (Sin la hipótesis de que
+$\mu^1$ no tenga átomos, $T^1$ puede no existir; reemplazarlo por un plan
+óptimo entre $\mu^1$ y $\nu^1$ y enunciar la desigualdad análoga.)
 \item Probar que si $\mu=\mu^1\otimes\alpha$ y $\nu=\nu^1\otimes\beta$ son
 productos, entonces $W_2^2(\mu,\nu)=W_2^2(\mu^1,\nu^1)+W_2^2(\alpha,\beta)$.
 \end{enumerate}
@@ -12240,7 +12481,7 @@ particular que utilizaremos en estas notas. El tratamiento general de la teoría
 de dualidad convexa puede consultarse en el clásico texto de Rockafellar
 \cite{Rockafellar1970}.
 
-A lo largo de esta sección, $E$ denotará un espacio de Banach real y $E^*$ su
+A lo largo de este apéndice, $E$ denotará un espacio de Banach real y $E^*$ su
 dual topológico.
 
 \section{Transformada de Legendre--Fenchel}
@@ -12263,7 +12504,9 @@ F(\lambda x+(1-\lambda)y)
 para todo $x,y\in E$ y todo $\lambda\in[0,1]$.
 
 \begin{defi}
-La transformada de Legendre--Fenchel de $F$ es la función
+La transformada de Legendre--Fenchel de $F$ (que ya usamos en la
+Sección~\ref{sec.demo.dualidad}; para $E=\R^d$ es la transformada de
+Legendre $\bar u$ de la Sección~\ref{sec.costo.cuadratico}) es la función
 
 \[
 F^*:E^*\longrightarrow\mathbb R\cup\{+\infty\},
@@ -12601,7 +12844,9 @@ Calcular la transformada de Legen\-dre--Fenchel de las siguientes funciones
 de $\R$ en $\R\cup\{+\infty\}$:
 \begin{enumerate}[label=(\alph*)]
 \item $f_p(x)=\frac{x^p}{p}$ para $x\ge0$ y $+\infty$ para $x<0$, con $p>1$
-(se obtiene $f_{p'}$ con $\frac1p+\frac1{p'}=1$, restringida a $y\ge0$);
+(se obtiene $f_p^*(y)=\frac{(y_+)^{p'}}{p'}$, con $\frac1p+\frac1{p'}=1$ e
+$y_+=\max\{y,0\}$: coincide con $f_{p'}$ para $y\ge0$, pero vale $0$, y no
+$+\infty$, para $y<0$);
 \item $f_\infty(x)=0$ si $x\in[0,1]$, $+\infty$ en otro caso; interpretar el
 resultado como límite $p\to\infty$ de (a);
 \item $f(x)=|x|$, $f(x)=e^x$, $f(x)=-\log x$ ($x>0$), $f(x)=x\log x$ ($x\ge0$).
@@ -12619,11 +12864,14 @@ con infinitos minimizadores, y otro sin minimizadores pero con ínfimo finito.
 \begin{ejercicio}[Biconjugada]\label{ejer.FR.biconjugada}
 Sea $F\colon E\to\R\cup\{+\infty\}$ propia.
 \begin{enumerate}[label=(\alph*)]
-\item Probar que $F^{**}\le F$ y que $F^{**}$ es la mayor función convexa
-y semicontinua inferiormente que está por debajo de $F$.
+\item Probar que $F^{**}\le F$ y que $F^{**}$ es la envolvente superior de
+las minorantes afines continuas de $F$. Si $F$ admite alguna minorante afín
+continua, $F^{**}$ es la mayor función convexa y semicontinua inferiormente
+$E\to\R\cup\{+\infty\}$ que está por debajo de $F$. Si no admite ninguna,
+entonces $F^*\equiv+\infty$ y $F^{**}\equiv-\infty$.
 \item Probar que si $F$ es convexa, semicontinua inferiormente y propia,
 entonces $F^{**}=F$. \emph{Sugerencia:} si $F^{**}(x_0)<F(x_0)$, separar el
-punto $(x_0,F^{**}(x_0))$ del epigrafo de $F$ (cerrado y convexo en
+punto $(x_0,F^{**}(x_0))$ del epígrafo de $F$ (cerrado y convexo en
 $E\times\R$) mediante Hahn--Banach, como en la demostración del
 Teorema~\ref{teo.FR}.
 \item Calcular $F^{**}$ para $F(x)=\min\{|x-1|,|x+1|\}$ en $\R$.
@@ -12636,10 +12884,24 @@ Sea $K\subset\R^n$ convexo cerrado no vacío y $\chi_K$ su función indicatriz
 \begin{enumerate}[label=(\alph*)]
 \item Probar que $\chi_K^*(y)=\sup_{x\in K}x\cdot y$ es la \emph{función
 soporte} de $K$, y que $K=\{x:\ x\cdot y\le\chi_K^*(y)\ \forall y\}$.
-\item Aplicar el Teorema~\ref{teo.FR} con $F=\chi_K$ y $G(x)=c\cdot x$
-para reobtener la dualidad de programación lineal del
-Capítulo~\ref{cap.PL} (con $K=\{x\ge0:\ Ax=b\}$), identificando qué
-hipótesis del teorema corresponde a la factibilidad del primal.
+\item Sean $A\in\R^{m\times n}$, $b\in\R^m$ y $c\in\R^n$. Observar que el
+Teorema~\ref{teo.FR} no da nada útil con $F=\chi_K$,
+$K=\{x\ge0:\ Ax=b\}$, y $G(x)=c\cdot x$: en general $K$ tiene interior vacío
+y $\chi_K$ no es continua en ningún punto (e intercambiando los papeles se
+obtiene la tautología $\inf_Kc\cdot x=\inf_Kc\cdot x$). Aplicarlo en cambio con
+$F=\chi_{\{x\ge0\}}$ y $G(x)=c\cdot x+\chi_{\{Ax=b\}}(x)$: calcular
+$F^*=\chi_{\{z\le0\}}$ y $G^*(z)=b\cdot y$ si $z=c+A^Ty$ para algún $y$
+($+\infty$ si $z-c\notin\operatorname{Im}A^T$), y deducir
+\[
+\inf\{c\cdot x:\ Ax=b,\ x\ge0\}=\max\{b\cdot y:\ A^Ty\le c\}
+\]
+bajo la hipótesis de que existe $x_0$ con $Ax_0=b$ y $x_0>0$ (todas sus
+coordenadas positivas), que es la que garantiza la continuidad de $F$ en
+un punto donde $G$ es finita. (El ínfimo también se alcanza, por ser un
+programa lineal factible y acotado.) Comparar con el
+Teorema~\ref{teo.PL.dualidad.fuerte}, que vale bajo la mera existencia de una
+solución óptima: esa versión más fuerte usa la estructura poliédrica del
+problema y no se deduce de esta forma del teorema de Fenchel--Rockafellar.
 \end{enumerate}
 \end{ejercicio}
 
@@ -12648,7 +12910,7 @@ hipótesis del teorema corresponde a la factibilidad del primal.
 La factorización polar es una descomposición clásica de las matrices que
 puede verse como el análogo matricial de la estructura que aparecerá más
 adelante para los mapas de transporte óptimo. En particular, permite
-escribir una transformación lineal invertible como la composición de una
+escribir una transformación lineal inversible como la composición de una
 transformación ortogonal y una transformación que es el gradiente de una
 función convexa.
 
@@ -12679,7 +12941,7 @@ construida en el párrafo anterior.
 \end{proof}
 
 
-Ahora si, demostremos el teorema de factorización polar de matrices.
+Ahora sí, demostremos el teorema de factorización polar de matrices.
 \begin{teo}[Factorización polar]\label{teo.FP.lineal}
 Sea $A\in\mathbb R^{d\times d}$ una matriz inversible. Entonces existen
 una única matriz simétrica definida positiva $S$ y una única matriz
@@ -12824,8 +13086,11 @@ de las matrices simétricas semidefinidas positivas.
 \item Probar que si $0\preceq M\preceq N$ (orden de Loewner) entonces
 $M^{1/2}\preceq N^{1/2}$, pero que $M\preceq N$ no implica $M^2\preceq N^2$
 (dar un ejemplo $2\times2$).
-\item Probar que la fórmula del Lema~\ref{lema.raiz.cuadrada} para la
-solución de $A\Sigma_0A=\Sigma_1$ define una función continua de
+\item Probar que la fórmula
+$A=\Sigma_0^{-1/2}\bigl(\Sigma_0^{1/2}\Sigma_1\Sigma_0^{1/2}\bigr)^{1/2}\Sigma_0^{-1/2}$
+de la Observación~\ref{obs.gaussianas.generales} para la solución simétrica
+definida positiva de $A\Sigma_0A=\Sigma_1$ (que usa la raíz cuadrada del
+Lema~\ref{lema.raiz.cuadrada}) define una función continua de
 $(\Sigma_0,\Sigma_1)$ en el conjunto de pares de matrices definidas
 positivas.
 \end{enumerate}
@@ -12920,12 +13185,7 @@ que es el único. En un punto anguloso hay, en cambio, muchos: por ejemplo,
 para $u(x)=|x|$ en $\R$ se tiene $\partial u(0)=[-1,1]$, mientras que
 $\partial u(x)=\{\operatorname{sgn}x\}$ si $x\neq0$.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% FIGURA 4 -- Apéndice C, Sección "El subdiferencial".
-%% Insertar después del párrafo que sigue a la Definición def.subdiferencial
-%% (el que menciona el ejemplo u(x)=|x|, \partial u(0)=[-1,1]).
-%% Referenciar con \ref{fig.subdiferencial}.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[scale=1.15]
@@ -13179,7 +13439,7 @@ inferiormente?
 \item Deducir que $\partial\bar u=(\partial u)^{-1}$ como
 \emph{grafos}: $\{(y,x):x\in\partial\bar u(y)\}=\{(y,x):y\in\partial u(x)\}$.
 En el caso del Teorema~\ref{teo.Brenier}, interpretar esto como
-``$\nabla\bar u$ es el mapa óptimo inverso''.
+«$\nabla\bar u$ es el mapa óptimo inverso».
 \end{enumerate}
 \end{ejercicio}
 
@@ -13232,7 +13492,7 @@ parte de la teoría: su propósito es que el lector pueda ver los objetos del
 curso ---planes, potenciales, mapas monótonos, geodésicas, baricentros--- en
 ejemplos concretos, y comprobar numéricamente lo que los teoremas afirman.
 Cada cuaderno termina con una lista de ejercicios computacionales, que son
-los mismos que aparecen en la subsección ``Ejercicios computacionales'' del
+los mismos que aparecen en la subsección «Ejercicios computacionales» del
 capítulo correspondiente. Los cuadernos están pensados para ejecutarse en
 Google Colab, que no requiere instalar nada; también pueden ejecutarse en
 cualquier instalación local de Jupyter.
@@ -13270,10 +13530,14 @@ aparecen en los cuadernos son pocas:
 de Kantorovich (devuelven el plan y el costo óptimo, respectivamente; con la
 opción \texttt{log=True} también los potenciales duales);
 \texttt{ot.sinkhorn} y \texttt{ot.sinkhorn2} resuelven el problema entrópico
-del Capítulo~\ref{cap.Sinkhorn}; \texttt{ot.lp.barycenter} y
-\texttt{ot.bregman.barycenter} calculan baricentros exactos y entrópicos. Los
+del Capítulo~\ref{cap.Sinkhorn}; \texttt{ot.lp.barycenter} calcula
+baricentros exactos con soporte fijo (los baricentros entrópicos se programan
+directamente en el cuaderno \emph{Transporte entrópico y Sinkhorn}, y para
+imágenes se usa \texttt{ot.bregman.convolutional\_barycenter2d}). Los
 problemas duales del cuaderno \emph{Dualidad} se resuelven con
-\texttt{scipy.optimize.linprog}.
+\texttt{scipy.optimize.linprog}. Los cuadernos se distribuyen ya ejecutados,
+con sus salidas, y la sección final de ejercicios de cada uno se genera a
+partir de estas notas.
 
 Dos convenciones de POT conviene tener presentes al leer el código, porque
 difieren de las de estas notas.
@@ -13291,16 +13555,26 @@ constante
 \[
 \ve\Bigl(\sum_ia_i\log a_i+\sum_jb_j\log b_j\Bigr),
 \]
-pues las marginales están fijas: el minimizador es el mismo $\pi^\ve$ y los potenciales
-duales coinciden, pero el valor que devuelve \texttt{ot.sinkhorn2} no es
-$\mathrm{OT}_\ve(a,b)$. En los cuadernos, cuando importa el valor, se calcula
+pues las marginales están fijas: el minimizador es el mismo $\pi^\ve$. Los
+potenciales duales, en cambio, no coinciden: \texttt{ot.sinkhorn} (con
+\texttt{log=True}) devuelve los escalamientos $u,v$ con
+$\pi^\ve=\operatorname{diag}(u)K^\ve\operatorname{diag}(v)$, y sus
+potenciales $f=\ve\log u$, $g=\ve\log v$ se relacionan con los de la
+Observación~\ref{obs.notacion.peyre} por $f_i=\varphi^\ve_i+\ve\log a_i$,
+$g_j=\psi^\ve_j+\ve\log b_j$, que no es una traslación por una constante.
+Además, \texttt{ot.sinkhorn2} no devuelve el valor regularizado: devuelve
+solo el costo de transporte $\langle C,\pi^\ve\rangle$ del plan entrópico
+(lo comprobamos con POT~0.9), que no es $\mathrm{OT}_\ve(a,b)$. En los
+cuadernos, cuando importa el valor, se calcula
 $\langle C,\pi^\ve\rangle+\ve\,\mathrm{KL}(\pi^\ve\,|\,a\otimes b)$
 directamente a partir del plan.
 \end{enumerate}
 
-Los cuadernos citan los resultados de las notas por su nombre (``el teorema
-de optimalidad del mapa monótono'', ``la fórmula del área'') y no por su
-número, para que sigan siendo legibles si la numeración cambia.
+Los cuadernos citan los resultados y ejercicios de las notas por su número
+(por ejemplo, «Teorema~8.4.1» o «Ejercicio~8.5»); esa numeración es la de la
+versión publicada del PDF de las notas en el repositorio del curso. Si se
+trabaja con una versión anterior o posterior de las notas, conviene
+identificar el resultado por su enunciado o por el capítulo en que aparece.
 
 \bibliographystyle{plain}
 \bibliography{biblio}
