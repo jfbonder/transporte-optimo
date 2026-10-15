@@ -8,31 +8,25 @@ las notas). La numeración y el orden se toman de notas/Notas-TO.tex.
 
 Uso:  python3 herramientas/generar_sugerencias.py   (después de compilar las notas)
 """
-import re, pathlib, sys
+import pathlib
+import re
+import sys
+
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from comun import src, L, PREAMBULO, RAIZ, REPO, encabezado_fancy  # noqa: E402
+from comun import PREAMBULO, RAIZ, REPO, capitulos, encabezado_fancy, src  # noqa: E402
 
 DEST = RAIZ / 'practicas' / 'sugerencias.tex'
 FUENTE = RAIZ / 'practicas' / 'sugerencias-fuente.tex'
 
-i_app = next(i for i, l in enumerate(L) if l.startswith('\\appendix'))
-caps = []  # (num, titulo, linea)
-n_cap = 0; n_app = 0
-for i, l in enumerate(L):
-    if l.startswith('\\chapter{'):   # sin los \chapter* (prefacio)
-        if i < i_app:
-            n_cap += 1; num = str(n_cap)
-        else:
-            num = chr(ord('A') + n_app); n_app += 1
-        m = re.match(r'\\chapter\{(.*?)\}(\\label|$)', l)
-        caps.append((num, m.group(1), i))
+caps = capitulos()   # (num, titulo, inicio, fin)
+
 
 def cap_de(linea):
-    c = None
-    for num, tit, i in caps:
-        if i <= linea:
-            c = (num, tit)
-    return c
+    """(num, titulo) del capítulo o apéndice que contiene la línea `linea`."""
+    for num, tit, i0, i1 in caps:
+        if i0 <= linea < i1:
+            return num, tit
+    sys.exit('ejercicio fuera de un capítulo numerado (línea %d)' % (linea + 1))
 
 # leer la fuente: \sug{etiqueta}{texto} con llaves balanceadas
 fuente = FUENTE.read_text(encoding='utf-8')
@@ -84,9 +78,13 @@ partes = [PREAMBULO, '',
           '\\newcommand{\\ejlabel}[2]{\\par\\medskip\\noindent\\textbf{Ejercicio #1}\\ifx\\relax#2\\relax\\else\\ (#2)\\fi\\textbf{.}\\ }',
           '\\begin{document}']
 partes += encabezado_fancy('Sugerencias para los ejercicios', 'Sugerencias')
-partes += ['\\noindent{\\footnotesize La numeración es la de las notas y de las guías (Ejercicio $n.k$ = ejercicio $k$ del Capítulo $n$); las referencias remiten a las notas (\\url{%s}). Las sugerencias indican una idea o el resultado que conviene usar, no una solución completa. Solo figuran los ejercicios que tienen sugerencia.}' % REPO,
-          '\\bigskip']
-for num, tit, _ in caps:
+nota = ('La numeración es la de las notas y de las guías (Ejercicio $n.k$ = ejercicio $k$ del Capítulo $n$); '
+        'las referencias remiten a las notas (\\url{%s}). Las sugerencias indican una idea o el resultado que '
+        'conviene usar, no una solución completa.' % REPO)
+if total < len(vistos):
+    nota += ' Solo figuran los ejercicios que tienen sugerencia.'
+partes += ['\\noindent{\\footnotesize %s}' % nota, '\\bigskip']
+for num, tit, _, _ in caps:
     if num not in por_cap:
         continue
     tit_limpio = tit.replace('\\texorpdfstring{$c$}{c}', '$c$')
