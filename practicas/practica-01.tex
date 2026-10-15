@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -199,7 +195,7 @@ $\sigma$-álgebra en $Y$ que hace medible a $T$, y que
 $\nu(B)=\mu(T^{-1}(B))$ define una medida en $(Y,\Sigma')$. Si $\mu$ es de
 probabilidad, $\nu=T_\#\mu$ también lo es.
 \item Si $S\colon Y\to Z$ es medible, $(S\circ T)_\#\mu=S_\#(T_\#\mu)$.
-Deducir que si $T$ es biyectiva y bimedible, $\nu=T_\#\mu$ si y sólo si
+Deducir que si $T$ es biyectiva y bimedible, $\nu=T_\#\mu$ si y solo si
 $\mu=(T^{-1})_\#\nu$.
 \item Si $\mu=\sum_{i\ge1}m_i\delta_{x_i}$, escribir $T_\#\mu$ como una medida
 de soporte numerable.
@@ -211,7 +207,7 @@ pero $\nu\ne T_\#\mu$.
 
 \begin{ejercicio}[Caracterización integral del push-forward]\label{ejer.pushforward.integral}
 Sean $X$, $Y$ espacios métricos, $\mu\in\mathcal P(X)$ y $T\colon X\to Y$
-medible. Probar que $T_\#\mu=\nu$ si y sólo si
+medible. Probar que $T_\#\mu=\nu$ si y solo si
 \[
 \int_X\phi(T(x))\,d\mu(x)=\int_Y\phi(y)\,d\nu(y)
 \qquad\text{para toda }\phi\in L^1(\nu).
@@ -229,7 +225,7 @@ $T_\#\bigl(\LL^1\lfloor_{[0,1]}\bigr)$.
 \item $T(x)=x^2$; $T_\#\bigl(\LL^1\lfloor_{[0,1]}\bigr)$ y
 $T_\#\bigl(\tfrac12\LL^1\lfloor_{[-1,1]}\bigr)$.
 \item $T(x)=x-\lfloor x\rfloor$ (parte fraccionaria); $T_\#\bigl(\tfrac12\LL^1\lfloor_{[0,2]}\bigr)$
-y $T_\#\bigl(\LL^1\lfloor_{[0,3/2]}\cdot\tfrac23\bigr)$.
+y $T_\#\bigl(\tfrac23\LL^1\lfloor_{[0,3/2]}\bigr)$.
 \end{enumerate}
 \end{ejercicio}
 
@@ -239,7 +235,7 @@ $f(x)=g(T(x))\,|\det DT(x)|$ para $T$ de clase $C^1$ y biyectiva.
 \begin{enumerate}[label=(\alph*)]
 \item Verificar que la fórmula falla para $T(x)=x^2$ con
 $\mu=\frac12\LL^1\lfloor_{[-1,1]}$ (comparar con el
-Ejercicio~\ref{ejer.pushforward.ejemplos}) y para la ``carpa''
+Ejercicio~\ref{ejer.pushforward.ejemplos}) y para la «carpa»
 $T(x)=\min\{2x,2-2x\}$ con $\mu=\LL^1\lfloor_{[0,1]}$, e identificar en cada
 caso qué hipótesis no se cumple.
 \item Probar la versión para $T$ de clase $C^1$ localmente inyectiva pero
@@ -251,14 +247,14 @@ creciente y $T_\#\LL^1\lfloor_{[0,1]}=\LL^1\lfloor_{[0,1]}$, entonces $T=\id$.
 \end{ejercicio}
 
 \begin{ejercicio}[Soporte del push-forward]\label{ejer.soporte.pushforward}
-Sea $\mu\in\mathcal P(X)$ con $X$ métrico y $T\colon X\to Y$ continua.
+Sea $\mu\in\mathcal P(X)$ con $X$ métrico separable (de modo que
+$\mu(\sop\mu)=1$) y $T\colon X\to Y$ continua.
 \begin{enumerate}[label=(\alph*)]
-\item Probar que $\sop(T_\#\mu)\subset\overline{T(\sop\mu)}$, con igualdad si
-$\sop\mu$ es compacto.
+\item Probar que $\sop(T_\#\mu)=\overline{T(\sop\mu)}$.
 \item Dar un ejemplo en el que $T(\sop\mu)$ no sea cerrado y la inclusión
 $\sop(T_\#\mu)\subset T(\sop\mu)$ sea falsa.
 \item Determinar el soporte de $\LL^1\lfloor_{(0,1)}$, de
-$\LL^1\lfloor_{e^{-x}\I_{[0,\infty)}}$ y de $\LL^1\lfloor_{[0,1]\setminus\Q}$.
+$e^{-x}\LL^1\lfloor_{[0,\infty)}$ y de $\LL^1\lfloor_{[0,1]\setminus\Q}$.
 \end{enumerate}
 \end{ejercicio}
 
@@ -270,7 +266,7 @@ con $T_\#\mu=\nu$.
 $\pi(X\times B)=\nu(B)$, es decir, $\pi\in\Pi(\mu,\nu)$.
 \item Probar que $\Pi(\mu,\nu)\ne\emptyset$ para cualesquiera $\mu,\nu$,
 aunque no exista ningún $T$ con $T_\#\mu=\nu$.
-\item Probar que $\pi\in\Pi(\mu,\nu)$ está inducido por un mapa si y sólo si
+\item Probar que $\pi\in\Pi(\mu,\nu)$ está inducido por un mapa si y solo si
 $\pi$ está concentrado en el gráfico de una función medible $T\colon X\to Y$,
 es decir, $\pi(\{(x,T(x)):x\in X\})=1$. (Compárese con el
 Lema~\ref{N-lema.grafico}.)
@@ -301,14 +297,14 @@ para $i=0,1$.
 transporta $\mu$ en $\nu$. Concluir que
 $\mathcal T(\mu,\nu)=\{T:T_\#\mu=\nu\}$ no es convexo.
 \item Probar en cambio que $\Pi(\mu,\nu)$ es convexo y que el funcional de
-Kantorovich $\pi\mapsto\int c\,d\pi$ es afín sobre $\Pi(\mu,\nu)$. Éste es
+Kantorovich $\pi\mapsto\int c\,d\pi$ es afín sobre $\Pi(\mu,\nu)$. Este es
 uno de los motivos de la relajación de Kantorovich.
 \end{enumerate}
 \end{ejercicio}
 
 \begin{ejercicio}[Caracterización de los planes por integrales]\label{ejer.planes.integrales}
 Sean $\mu\in\mathcal P(X)$, $\nu\in\mathcal P(Y)$ y $\pi\in\mathcal P(X\times Y)$.
-Probar que $\pi\in\Pi(\mu,\nu)$ si y sólo si
+Probar que $\pi\in\Pi(\mu,\nu)$ si y solo si
 \[
 \int_{X\times Y}\bigl(\phi(x)+\psi(y)\bigr)\,d\pi(x,y)
 =\int_X\phi\,d\mu+\int_Y\psi\,d\nu

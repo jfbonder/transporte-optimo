@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -208,15 +204,15 @@ factible. ¿Contradicen estos ejemplos el teorema de dualidad fuerte?
 Sean $x$ factible para el primal $\min\{c^Tx:Ax=b,\,x\ge0\}$ e $y$ factible
 para su dual $\max\{b^Ty:A^Ty\le c\}$.
 \begin{enumerate}[label=(\alph*)]
-\item Probar que $c^Tx-b^Ty=x^T(c-A^Ty)$ y que ambos son óptimos si y sólo
+\item Probar que $c^Tx-b^Ty=x^T(c-A^Ty)$ y que ambos son óptimos si y solo
 si $x_j\,(c-A^Ty)_j=0$ para todo $j$.
 \item Traducirlo al problema de transporte discreto de la
 Sección~\ref{N-kant.discreto}: $\pi$ y $(\varphi,\psi)$ factibles son ambos
-óptimos si y sólo si
+óptimos si y solo si
 \[
 \pi_{ij}>0\ \Longrightarrow\ \varphi_i+\psi_j=c_{ij}.
 \]
-Ésta es la versión discreta de la \emph{condición de saturación} que
+Esta es la versión discreta de la \emph{condición de saturación} que
 reaparecerá en los Capítulos~\ref{N-cap.dual.discreto} y~\ref{N-cap.dual}.
 \end{enumerate}
 \end{ejercicio}
@@ -266,14 +262,15 @@ Es decir: para pesos uniformes, el problema de Kantorovich discreto coincide
 con el problema de Monge (una asignación óptima), aunque el primero tiene
 $N^2$ variables continuas y el segundo $N!$ candidatos.
 \item Escribir el dual del problema de asignación y probar que una
-permutación $\sigma$ es óptima si y sólo si existen $\varphi,\psi\in\R^N$
+permutación $\sigma$ es óptima si y solo si existen $\varphi,\psi\in\R^N$
 con $\varphi_i+\psi_j\le c_{ij}$ para todo $i,j$ y
 $\varphi_i+\psi_{\sigma(i)}=c_{i\sigma(i)}$ para todo $i$. Interpretar
-$\varphi_i$ y $\psi_j$ como precios (problema de asignación de
-Koopmans--Beckmann).
+$\varphi_i$ y $\psi_j$ como precios que sostienen la asignación óptima (en
+el sentido del trabajo de Koopmans y Beckmann de 1957; no confundir con el
+\emph{problema cuadrático} de asignación, que también lleva su nombre).
 \item Para $c_{ij}=|x_i-y_j|^2$ con $x_1<\dots<x_N$ e $y_1<\dots<y_N$ en
 $\R$, probar directamente que $\sigma=\id$ es óptima (intercambiar dos
-asignaciones cruzadas no aumenta el costo). Éste es el germen del
+asignaciones cruzadas no aumenta el costo). Este es el germen del
 Capítulo~\ref{N-cap.1D}.
 \end{enumerate}
 \end{ejercicio}

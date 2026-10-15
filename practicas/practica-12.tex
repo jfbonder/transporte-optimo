@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -195,17 +191,24 @@
 \begin{ejercicio}[Traslaciones y escala]\label{ejer.bar.traslaciones}
 Sean $(\mu_i,\lambda_i)_{i=1}^N$ con $\mu_i\in\mathcal P_2(\R^d)$.
 \begin{enumerate}[label=(\alph*)]
-\item Probar que si $T(x)=Ax+b$ es afín con $A$ lineal e invertible y
+\item Probar que si $T(x)=Ax+b$ es afín, con $A$ lineal, y
 $\mu$ tiene media $m_\mu$, entonces $T_\#\mu$ tiene media $Am_\mu+b$.
 \item Probar que si $\bar\mu$ es un baricentro de $(\mu_i,\lambda_i)$ y
 $v_i\in\R^d$, entonces $\tau_{\bar v\#}\bar\mu$ con $\bar v=\sum\lambda_iv_i$
-es un baricentro de $(\tau_{v_i\#}\mu_i,\lambda_i)$, y que
-$\mathcal F$ cambia en $\sum_i\lambda_i|v_i-\bar v|^2$. \emph{Sugerencia:}
-Lema~\ref{N-lema.W2.media}.
+es un baricentro de $(\tau_{v_i\#}\mu_i,\lambda_i)$, y que el valor mínimo de
+$\mathcal F$ cambia en
+\[
+\sum_i\lambda_i|v_i-\bar v|^2+2\sum_i\lambda_i\,(m_{\mu_i}-\bar m)\cdot(v_i-\bar v),
+\qquad\bar m=\sum_i\lambda_im_{\mu_i},
+\]
+que se reduce a $\sum_i\lambda_i|v_i-\bar v|^2$ si, por ejemplo, todas las
+$\mu_i$ tienen la misma media. Verificarlo con $\mu_1=\delta_0$,
+$\mu_2=\delta_1$ en $\R$, pesos $\frac12$, $v_1=0$, $v_2=1$: el mínimo pasa
+de $\frac14$ a $1$. \emph{Sugerencia:} Lema~\ref{N-lema.W2.media}.
 \item Deducir que la media de todo baricentro es $\sum\lambda_im_{\mu_i}$ y
 que para calcular baricentros se puede suponer que todas las $\mu_i$ están
-centradas. Probar también que $D_{\lambda\#}\bar\mu$ es baricentro de
-$(D_{\lambda\#}\mu_i,\lambda_i)$ para la dilatación $D_\lambda$.
+centradas. Probar también que $D_{s\#}\bar\mu$ es baricentro de
+$(D_{s\#}\mu_i,\lambda_i)$ para la dilatación $D_s(x)=sx$, $s>0$.
 \end{enumerate}
 \end{ejercicio}
 
@@ -295,11 +298,19 @@ el gráfico de $x\mapsto(T_1(x),\dots,T_N(x))$.
 \item Probar directamente (sin usar el Teorema~\ref{N-teo.bar.unicidad}) que
 el baricentro de masas de Dirac $\delta_{x_i}$ es único y es
 $\delta_{\bar x}$, $\bar x=\sum\lambda_ix_i$.
-\item Sea $\mu\in\mathcal P_2(\R^d)$ y $\nu=\sum_{k=1}^Nb_k\delta_{y_k}$. Probar
-que $W_2^2(\mu,\nu)\ge\sum_kb_k\,\operatorname{Var}(\mu|_{k})$ donde
-$\mu|_k$ es la restricción normalizada de $\mu$ a la celda que el plan
-óptimo envía a $y_k$, con igualdad si y sólo si cada $y_k$ es el baricentro
-de su celda. Deducir la condición de optimalidad del
+\item Sea $\mu\in\mathcal P_2(\R^d)$ y $\nu=\sum_{k=1}^Nb_k\delta_{y_k}$ con
+$y_k$ distintos y $b_k>0$, y sea $\pi$ un plan óptimo entre $\mu$ y $\nu$.
+Para cada $k$ sea
+$\mu|_k=\frac1{b_k}(\pp_1)_\#\bigl(\pi\lfloor_{\R^d\times\{y_k\}}\bigr)$ la
+parte (normalizada) de $\mu$ que $\pi$ envía a $y_k$, de modo que
+$\mu=\sum_kb_k\,\mu|_k$. (Si $\pi$ está inducido por un mapa, por ejemplo si
+$\mu\ll\LL^d$, $\mu|_k$ es la restricción normalizada de $\mu$ a la
+\emph{celda} $T^{-1}(y_k)$; si $\mu$ tiene átomos, $\pi$ puede repartir la
+masa de un átomo entre varias celdas.) Probar que
+$W_2^2(\mu,\nu)=\sum_kb_k\bigl(\operatorname{Var}(\mu|_k)+|m_k-y_k|^2\bigr)
+\ge\sum_kb_k\,\operatorname{Var}(\mu|_k)$, donde $m_k$ es la media de
+$\mu|_k$, con igualdad si y solo si cada $y_k$ es el baricentro $m_k$ de su
+celda. Deducir la condición de optimalidad del
 Ejercicio~\ref{N-ejer.Wp.distancia.conjunto}(c).
 \end{enumerate}
 \end{ejercicio}
@@ -315,9 +326,14 @@ geodésica de $W_2$ entre $\nu_0$ y $\nu_1$ (¿es la única?).
 $t\mapsto W_2^2(\mu,\nu_t)$ no es convexa: vale $1$ en los extremos y $2$ en
 $t=\frac12$.
 \item Comparar con el Lema~\ref{N-lema.W2.convexo} (convexidad a lo largo de
-interpolaciones lineales) y con el Ejercicio~\ref{N-ejer.Wp.lineal}. Este
-ejemplo muestra que la unicidad del baricentro no puede probarse por un
-argumento de convexidad geodésica.
+interpolaciones lineales) y con el Ejercicio~\ref{N-ejer.Wp.lineal}. Calcular
+también $W_2^2(\mu,\nu'_t)$ a lo largo de la otra geodésica
+$\nu'_t=\frac12(\delta_{(-1,1-2t)}+\delta_{(1,-1+2t)})$ entre $\nu_0$ y $\nu_1$,
+y comprobar que allí sí es convexa. Así, $W_2^2(\mu,\cdot)$ no es convexo a
+lo largo de \emph{toda} geodésica, y la unicidad del baricentro no puede
+deducirse directamente de un argumento de convexidad a lo largo de
+geodésicas cualesquiera; la demostración del Teorema~\ref{N-teo.bar.unicidad}
+usa, en cambio, la convexidad a lo largo de mezclas.
 \end{enumerate}
 \end{ejercicio}
 
@@ -332,7 +348,7 @@ cuaderno.
 Para $N$ medidas empíricas en $\R$ con $n$ átomos cada una, mostrar que el
 plan multimarginal óptimo del Teorema~\ref{N-teo.bar.multimarginal} es el
 comonótono (empareja los $k$-ésimos datos ordenados de cada medida) y que
-$B_\#\gamma^*$ es exactamente el promedio de cuantiles de la
+$A_\#\gamma^*$ es exactamente el promedio de cuantiles de la
 Proposición~\ref{N-prop.bar.1D}. Verificarlo resolviendo el programa lineal
 multimarginal para $n$ chico.
 \end{ejercicio}
@@ -340,9 +356,12 @@ multimarginal para $n$ chico.
 \begin{ejercicio}[Traslaciones]\label{ejc.bar.traslaciones}
 Probar que si se traslada cada $\mu_i$ por un vector $v_i$, el baricentro se
 traslada por $\bar v=\sum_i\lambda_iv_i$ y el valor mínimo de $\mathcal F$
-cambia en $\sum_i\lambda_i|v_i-\bar v|^2$ (cf.\
-Ejercicio~\ref{ejer.bar.traslaciones}). Deducir que para calcular baricentros
-basta centrar todas las medidas, y verificarlo numéricamente.
+cambia en $\sum_i\lambda_i|v_i-\bar v|^2+2\sum_i\lambda_i(m_{\mu_i}-\bar m)\cdot(v_i-\bar v)$,
+con $\bar m=\sum_i\lambda_im_{\mu_i}$ (cf.\
+Ejercicio~\ref{ejer.bar.traslaciones}); en particular, el cambio es
+$\sum_i\lambda_i|v_i-\bar v|^2$ si las $\mu_i$ tienen todas la misma media.
+Deducir que para calcular baricentros basta centrar todas las medidas, y
+verificarlo numéricamente.
 \end{ejercicio}
 
 \begin{ejercicio}[Convexidad del funcional]\label{ejc.bar.convexidad}
@@ -355,9 +374,11 @@ segunda? Comparar con el Ejercicio~\ref{ejer.bar.no.convexa.geodesica}.
 
 \begin{ejercicio}[Baricentros de formas]\label{ejc.bar.formas}
 Discretizar dos o tres figuras planas (un disco, un cuadrado, un triángulo)
-como medidas uniformes sobre una grilla y calcular su baricentro resolviendo
-el programa lineal del Teorema~\ref{N-teo.bar.multimarginal}
-(\texttt{ot.lp.barycenter}). Observar cómo crece el tamaño del problema con
+como medidas uniformes sobre una grilla y calcular su baricentro con soporte
+fijo en la grilla resolviendo un programa lineal (\texttt{ot.lp.barycenter});
+comparar con la formulación multimarginal del
+Teorema~\ref{N-teo.bar.multimarginal}, que no fija el soporte de antemano.
+Observar cómo crece el tamaño del problema con
 la grilla; en el Capítulo~\ref{N-cap.Sinkhorn} se ve la versión entrópica, que
 escala mucho mejor.
 \end{ejercicio}

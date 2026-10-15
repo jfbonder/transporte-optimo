@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -186,7 +182,7 @@
 \fancyhead[L]{{\footnotesize{\usefont{T1}{phv}{m}{n}{\sc Teoría de Transporte Óptimo}}}}
 \fancyhead[R]{\footnotesize \usefont{T1}{phv}{m}{n}{\sc Práctica 10}}
 \thispagestyle{plain}
-\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~10 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~10 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}). ($\bigstar$) ejercicio de mayor dificultad o que excede el programa.}
 \medskip
 
 \cuadernolink{Distancias de Wasserstein}{04-distancias-wasserstein.ipynb}
@@ -277,7 +273,7 @@ $\int u\,d(\mu_0-\mu_1)=\tfrac49$. Deducir $W_1(\mu_0,\mu_1)\ge\tfrac49$.
 \item Para cada $y$ fijo, comparar las funciones de distribución de
 $\rho_0(\cdot,y)$ y $\rho_1(\cdot,y)$ y probar, usando el
 Ejercicio~\ref{N-ejer.1D.dominancia}, que existe un plan que mueve la masa
-sólo hacia la derecha a lo largo de rectas horizontales. Probar que ese
+solo hacia la derecha a lo largo de rectas horizontales. Probar que ese
 plan satura $u(x)-u(x')=|x-x'|$ en su soporte y concluir que es óptimo y que
 $W_1(\mu_0,\mu_1)=\tfrac49$.
 \item ¿Es único el plan óptimo? ¿Es único el potencial de Kantorovich?
@@ -289,7 +285,7 @@ Sean $\mu$ y $\nu$ las medidas del Ejercicio~\ref{N-ejer.Brenier.radial} y
 $c(x,y)=|x-y|$.
 \begin{enumerate}[label=(\alph*)]
 \item Probar que $u(x)=-|x|$ es $1$-Lipschitz y que $u(x)-u(y)=|x-y|$ si y
-sólo si $y=tx$ con $t\ge1$ (mismo rayo, más lejos del origen).
+solo si $y=tx$ con $t\ge1$ (mismo rayo, más lejos del origen).
 \item Deducir que el mapa radial $T$ del Ejercicio~\ref{N-ejer.Brenier.radial}
 es también óptimo para $c(x,y)=|x-y|$, y que
 $W_1(\mu,\nu)=\int(|T(x)|-|x|)\,d\mu=\int|y|\,d\nu-\int|x|\,d\mu$.
@@ -388,19 +384,22 @@ cuaderno.
 \begin{ejercicio}[Escala]\label{ejc.Wp.escala}
 Probar numéricamente, y luego a mano, que
 \[
-W_p(\lambda_\#\mu,\lambda_\#\nu)=\lambda\,W_p(\mu,\nu)
+W_p(D_{\lambda\#}\mu,D_{\lambda\#}\nu)=\lambda\,W_p(\mu,\nu)
 \]
-para la dilatación $x\mapsto\lambda x$, $\lambda>0$, y que $W_p$ es invariante
+para la dilatación $D_\lambda(x)=\lambda x$, $\lambda>0$, y que $W_p$ es invariante
 por traslaciones simultáneas de ambas medidas
 (Ejercicio~\ref{ejer.Wp.escala}).
 \end{ejercicio}
 
 \begin{ejercicio}[Traslaciones]\label{ejc.Wp.traslaciones}
 Para $\nu=(\tau_v)_\#\mu$, con $\tau_v(x)=x+v$, se tiene $W_p(\mu,\nu)\le|v|$.
-Probar que para $p=2$ hay siempre igualdad y verificarlo numéricamente con
-medidas discretas. (\emph{Sugerencia:} probar primero la descomposición
-$W_2^2(\mu,\nu)=|m_\mu-m_\nu|^2+W_2^2(\tilde\mu,\tilde\nu)$, donde $m_\mu$
-denota la media de $\mu$ y $\tilde\mu$, $\tilde\nu$ las medidas centradas.)
+Recordar que hay igualdad $W_p(\mu,\nu)=|v|$ para todo $p\ge1$
+(Ejercicio~\ref{ejer.Wp.escala}(c)) y verificarlo numéricamente con medidas
+discretas para varios valores de $p$. Para $p=2$, verificar además la
+descomposición $W_2^2(\mu,\nu)=|m_\mu-m_\nu|^2+W_2^2(\tilde\mu,\tilde\nu)$
+para pares $(\mu,\nu)$ arbitrarios, donde $m_\mu$ denota la media de $\mu$ y
+$\tilde\mu$, $\tilde\nu$ las medidas centradas, y comprobar que para $p\ne2$
+no vale la descomposición análoga.
 \end{ejercicio}
 
 \begin{ejercicio}[La interpolación lineal tiene longitud infinita]\label{ejc.Wp.lineal}
@@ -417,8 +416,8 @@ par $1\le q<p$, una sucesión $\mu_n$ con $W_q(\mu_n,\delta_0)\to0$ pero
 $W_p(\mu_n,\delta_0)\to\infty$ (cf.\ Ejercicio~\ref{ejer.Wp.escape}).
 \end{ejercicio}
 
-\begin{ejercicio}[Kantorovich--Rubinstein con el solver exacto]\label{ejc.Wp.KR}
-El solver exacto devuelve también potenciales duales
+\begin{ejercicio}[Kantorovich--Rubinstein con el método exacto]\label{ejc.Wp.KR}
+El método exacto devuelve también potenciales duales
 (\texttt{ot.emd(a, b, M, log=True)}). Comparar los potenciales $(u,v)$ así
 obtenidos con la función $1$-Lipschitz $\varphi$ de la Sección~6 del cuaderno:
 no tienen por qué coincidir (¿por qué?), pero el valor dual

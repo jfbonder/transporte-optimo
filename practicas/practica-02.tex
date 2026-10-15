@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -186,7 +182,7 @@
 \fancyhead[L]{{\footnotesize{\usefont{T1}{phv}{m}{n}{\sc Teoría de Transporte Óptimo}}}}
 \fancyhead[R]{\footnotesize \usefont{T1}{phv}{m}{n}{\sc Práctica 2}}
 \thispagestyle{plain}
-\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~2 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~2 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}). ($\bigstar$) ejercicio de mayor dificultad o que excede el programa.}
 \medskip
 
 \cuadernolink{Monge y Kantorovich}{01-monge-kantorovich.ipynb}
@@ -200,7 +196,7 @@ y, en caso afirmativo, hallar el límite:
 &\text{(a) }\delta_{1/n};\quad
 \text{(b) }\delta_n;\quad
 \text{(c) }\tfrac12\delta_0+\tfrac12\delta_{1/n};\\[2pt]
-&\text{(d) }\LL^1\lfloor_{[0,1-1/n]}\cdot\tfrac{n}{n-1};\quad
+&\text{(d) }\tfrac{n}{n-1}\LL^1\lfloor_{[0,1-1/n]};\quad
 \text{(e) }n\,\LL^1\lfloor_{[0,1/n]};\quad
 \text{(f) }\tfrac1n\sum_{k=1}^n\delta_{k/n}.
 \end{aligned}
@@ -217,9 +213,9 @@ $T_\#\mu_n\rightharpoonup T_\#\mu$ en $\mathcal P(Y)$.
 \item Concluir que si $\mu_m=\frac1m\sum_{j=1}^m\delta_{x_j}$ converge
 débilmente a $\mu$ (por ejemplo, si los $x_j$ son muestras independientes de
 $\mu$, por la ley de los grandes números), entonces
-$\frac1m\sum_j\delta_{T(x_j)}\rightharpoonup T_\#\mu$: ``los mapas de
-transporte mandan muestras en muestras''.
-\item Mostrar con un ejemplo que (a) falla si $T$ es sólo medible.
+$\frac1m\sum_j\delta_{T(x_j)}\rightharpoonup T_\#\mu$: «los mapas de
+transporte mandan muestras en muestras».
+\item Mostrar con un ejemplo que (a) falla si $T$ es solo medible.
 \end{enumerate}
 \end{ejercicio}
 
@@ -230,13 +226,16 @@ transporte mandan muestras en muestras''.
 $(f_n)_\#\LL^1\lfloor_{[0,1]}=\LL^1\lfloor_{[0,1]}$ para todo $n$ y
 $f_n\rightharpoonup\frac12$ débilmente en $L^2(0,1)$, es decir,
 $\int f_n g\to\frac12\int g$ para toda $g\in L^2(0,1)$.
-\emph{Sugerencia:} funciones ``diente de sierra'' de período $1/n$.
+\emph{Sugerencia:} funciones «diente de sierra» de período $1/n$.
 \item Sea $\pi_n=(\id,f_n)_\#\LL^1\lfloor_{[0,1]}$. Probar que
 $\pi_n\rightharpoonup\LL^1\lfloor_{[0,1]}\otimes\LL^1\lfloor_{[0,1]}$, que no
 está inducido por ningún mapa. Concluir que el conjunto de planes inducidos
 por mapas no es débilmente cerrado, y comentar por qué esto obstruye el
 método directo para el problema de Monge.
-\item ¿Es posible elegir las $f_n$ de clase $C^1$?
+\item Probar que si $f\colon[0,1]\to[0,1]$ es de clase $C^1$ y
+$f_\#\LL^1\lfloor_{[0,1]}=\LL^1\lfloor_{[0,1]}$, entonces $f(x)=x$ o
+$f(x)=1-x$. Deducir que en (a) no es posible elegir las $f_n$ de clase $C^1$
+(aunque sí lipschitzianas).
 \end{enumerate}
 \end{ejercicio}
 
@@ -278,7 +277,7 @@ monótona.
 en $\mathcal P(X\times Y)$ y $c$ es semicontinua inferiormente y acotada
 inferiormente, entonces $\int c\,d\pi\le\liminf_n\int c\,d\pi_n$.
 \item Mostrar con un ejemplo que la semicontinuidad inferior del funcional
-de Kantorovich falla si $c$ es sólo medible y acotada.
+de Kantorovich falla si $c$ es solo medible y acotada.
 \end{enumerate}
 \end{ejercicio}
 
@@ -297,14 +296,14 @@ $|x-y|$ el plan óptimo no es único en general, estos límites
 \emph{seleccionan} planes óptimos particulares; ¿qué se puede decir del
 límite $\ve\to\infty$ en el segundo caso, una vez normalizado el costo?
 \item ($\bigstar$) Si $\mu$ y $\nu$ tienen soportes disjuntos y
-$\mu\ll\LL^d$, el límite en (b) es único y es el plan ``monótono a lo largo
-de rayos''; ver \cite[Sec.~3.1]{Santambrogio}.
+$\mu\ll\LL^d$, el límite en (b) es único y es el plan «monótono a lo largo
+de rayos»; ver \cite[Sec.~3.1]{Santambrogio}.
 \end{enumerate}
 \end{ejercicio}
 
 \begin{ejercicio}[$\bigstar$ La convergencia débil es metrizable]\label{ejer.debil.metrizable}
 Sea $X$ un espacio métrico completo y separable. Probar que existe una
-métrica $d$ en $\mathcal P(X)$ tal que $\mu_n\rightharpoonup\mu$ si y sólo
+métrica $d$ en $\mathcal P(X)$ tal que $\mu_n\rightharpoonup\mu$ si y solo
 si $d(\mu_n,\mu)\to0$. \emph{Sugerencia:} tomar una sucesión
 $(g_k)\subset C_b(X)$ densa en un sentido adecuado (por ejemplo, densa en
 $\operatorname{Lip}_b(X)$ para la convergencia uniforme sobre compactos) y
@@ -322,7 +321,7 @@ Kantorovich}, que acompaña los Capítulos~\ref{N-cap.intro} y~\ref{N-cap.existe
 final del cuaderno. Las referencias a secciones son a las del cuaderno.
 
 \begin{ejercicio}[Asignación y Kantorovich]\label{ejc.MK.asignacion}
-Para $n$ puntos con masas uniformes, verificar que el solver exacto
+Para $n$ puntos con masas uniformes, verificar que el método exacto
 (\texttt{ot.emd}) devuelve siempre una matriz de permutación dividida por $n$
 y que su costo coincide con el del problema de asignación resuelto con la
 rutina de SciPy, como predice el teorema de Birkhoff
@@ -359,7 +358,7 @@ Ejercicio~\ref{N-ejer.1D.concavo}.
 \end{ejercicio}
 
 \begin{ejercicio}[Convergencia débil de planes]\label{ejc.MK.debil}
-Con las funciones ``diente de sierra'' $f_n$ del
+Con las funciones «diente de sierra» $f_n$ del
 Ejercicio~\ref{ejer.mapas.no.compactos}, verificar numéricamente que
 $\int_0^1\phi(x)\psi(f_n(x))\,dx\to\int_0^1\phi\int_0^1\psi$ para varias
 $\phi,\psi$ continuas (por ejemplo, polinomios y senos). Repetir con

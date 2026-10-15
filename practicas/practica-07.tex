@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -204,8 +200,8 @@ $\operatorname{Cov}(X,Y)\le\sigma_\mu\sigma_\nu$ y deducir que
 \[
 \min_{\pi\in\Pi(\mu,\nu)}\E|X-Y|^2\ge(m_\mu-m_\nu)^2+(\sigma_\mu-\sigma_\nu)^2 .
 \]
-\item Probar que hay igualdad en (b) si y sólo si $Y=aX+b$ casi seguramente
-con $a>0$; por lo tanto la cota de (b) se alcanza si y sólo si $\nu$ es la
+\item Probar que hay igualdad en (b) si y solo si $Y=aX+b$ casi seguramente
+con $a>0$; por lo tanto la cota de (b) se alcanza si y solo si $\nu$ es la
 imagen de $\mu$ por una afinidad creciente (por ejemplo, si ambas son
 gaussianas). En el Capítulo~\ref{N-cap.1D} se identifica el acoplamiento que
 realiza el mínimo en general.
@@ -222,7 +218,7 @@ $\max\{F_\mu(x)+F_\nu(y)-1,\,0\}\le H(x,y)\le\min\{F_\mu(x),F_\nu(y)\}$
 para todo $(x,y)$.
 \item Probar que ambas cotas son funciones de distribución de elementos de
 $\Pi(\mu,\nu)$. (La cota superior es el plan comonótono del
-Capítulo~\ref{N-cap.1D}; la inferior, el ``antimonótono''.)
+Capítulo~\ref{N-cap.1D}; la inferior, el «antimonótono».)
 \end{enumerate}
 \end{ejercicio}
 
@@ -233,7 +229,7 @@ $u=\bigl(\begin{smallmatrix}4&3\\3&1\end{smallmatrix}\bigr)$. Todos los
 agentes tienen el mismo peso.
 \begin{enumerate}[label=(\alph*)]
 \item Hallar el matching que maximiza el excedente total y compararlo con
-el matching ``codicioso'' que asigna primero el par de mayor excedente.
+el matching «codicioso» que asigna primero el par de mayor excedente.
 \item Hallar un sistema de precios $(\varphi,\psi)$ (salarios y beneficios)
 con $\varphi_i+\psi_j\ge u_{ij}$ para todo par y con igualdad en los pares
 emparejados. Verificar que es un equilibrio: ningún par no emparejado puede
@@ -275,9 +271,9 @@ planes óptimos para el costo $d(x,x')^2$ (o cualquier costo continuo que
 se anule exactamente en la diagonal); pegar $\alpha_n$, $\gamma$ y $\beta_n$
 con el Lema~\ref{N-lema.pegado} y proyectar sobre las coordenadas
 extremas. Probar que $\int d(x,x')^2\,d\alpha_n\to0$ y usarlo para pasar al límite.
-\item Deducir que $\mathcal T_c(\mu_n,\nu_n)\to\mathcal T_c(\mu,\nu)$, donde
-$\mathcal T_c$ denota el costo óptimo, y más generalmente que
-$\mathcal T_{c_n}(\mu_n,\nu_n)\to\mathcal T_c(\mu,\nu)$ si $c_n\to c$
+\item Deducir que $\mathrm{OT}_c(\mu_n,\nu_n)\to\mathrm{OT}_c(\mu,\nu)$, donde
+$\mathrm{OT}_c$ denota el costo óptimo, y más generalmente que
+$\mathrm{OT}_{c_n}(\mu_n,\nu_n)\to\mathrm{OT}_c(\mu,\nu)$ si $c_n\to c$
 uniformemente.
 \item Concluir que si $\mu_n$, $\nu_n$ son discretizaciones (por ejemplo,
 medidas empíricas) de $\mu$, $\nu$, el costo óptimo discreto calculado por

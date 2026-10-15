@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -200,7 +196,7 @@ $A=\lambda R_\theta$.
 \item Probar que $A=SU$ con $S=(AA^T)^{1/2}$ y que también existe una
 factorización $A=U'S'$ con $S'=(A^TA)^{1/2}$; relacionar $S$, $S'$, $U$ y
 $U'$.
-\item Probar que $A$ es normal ($AA^T=A^TA$) si y sólo si $S$ y $U$
+\item Probar que $A$ es normal ($AA^T=A^TA$) si y solo si $S$ y $U$
 conmutan.
 \end{enumerate}
 \end{ejercicio}
@@ -225,8 +221,11 @@ de las matrices simétricas semidefinidas positivas.
 \item Probar que si $0\preceq M\preceq N$ (orden de Loewner) entonces
 $M^{1/2}\preceq N^{1/2}$, pero que $M\preceq N$ no implica $M^2\preceq N^2$
 (dar un ejemplo $2\times2$).
-\item Probar que la fórmula del Lema~\ref{N-lema.raiz.cuadrada} para la
-solución de $A\Sigma_0A=\Sigma_1$ define una función continua de
+\item Probar que la fórmula
+$A=\Sigma_0^{-1/2}\bigl(\Sigma_0^{1/2}\Sigma_1\Sigma_0^{1/2}\bigr)^{1/2}\Sigma_0^{-1/2}$
+de la Observación~\ref{N-obs.gaussianas.generales} para la solución simétrica
+definida positiva de $A\Sigma_0A=\Sigma_1$ (que usa la raíz cuadrada del
+Lema~\ref{N-lema.raiz.cuadrada}) define una función continua de
 $(\Sigma_0,\Sigma_1)$ en el conjunto de pares de matrices definidas
 positivas.
 \end{enumerate}

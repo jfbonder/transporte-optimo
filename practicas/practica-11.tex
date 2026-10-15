@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -186,7 +182,7 @@
 \fancyhead[L]{{\footnotesize{\usefont{T1}{phv}{m}{n}{\sc Teoría de Transporte Óptimo}}}}
 \fancyhead[R]{\footnotesize \usefont{T1}{phv}{m}{n}{\sc Práctica 11}}
 \thispagestyle{plain}
-\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~11 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~11 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}). ($\bigstar$) ejercicio de mayor dificultad o que excede el programa.}
 \medskip
 
 
@@ -199,8 +195,11 @@
 A=\prod_{i=1}^d[a_i,b_i],\qquad B=\prod_{i=1}^d[c_i,d_i]
 \]
 en $\R^d$ (usar la desigualdad entre las medias aritmética y geométrica).
-\item Probar que hay igualdad si $A$ y $B$ son homotéticos ($B=\lambda A+v$).
-\item Sea $A$ un cubo y $B$ un segmento no paralelo a ninguna cara de $A$.
+\item Probar que hay igualdad si $A$ y $B$ son convexos y homotéticos
+($B=\lambda A+v$, $\lambda>0$), y mostrar que la hipótesis de convexidad no
+se puede omitir: para $A=B=[0,1]\cup[2,3]\subset\R$, $|A+A|=6>4=|2A|$.
+\item Sea $A$ un cubo y $B$ un segmento de longitud $L>0$ (en cualquier
+dirección).
 Calcular $|A+B|$ y comprobar que es estrictamente mayor que $|A|$ aunque
 $|B|=0$.
 \end{enumerate}
@@ -284,19 +283,30 @@ cóncava y positiva en $t$.
 \end{ejercicio}
 
 \begin{ejercicio}[$\bigstar$ Una desigualdad de tipo Sobolev]\label{ejer.BM.sobolev}
-Sea $\Omega\subset\R^d$ convexo y acotado, $f\in W^{1,p}(\Omega)$, y
-$\mu,\nu\in\mathcal P(\Omega)$ con densidades acotadas por $C$ en $L^r$.
-Probar que si $\frac1p+\frac1q+\frac1{q'r}=1+\frac1r$, entonces
+Sea $\Omega\subset\R^d$ convexo y acotado, $f\in C^1(\overline\Omega)$,
+$r\in[1,\infty]$ y $r'$ su exponente conjugado ($\frac1r+\frac1{r'}=1$).
+Sean $\mu=\rho_0\LL^d$ y $\nu=\rho_1\LL^d$ en $\mathcal P(\Omega)$ con
+$\|\rho_0\|_{L^r},\|\rho_1\|_{L^r}\le C$, y supongamos, como en el
+Ejercicio~\ref{ejer.BM.entropia}, que el mapa de Brenier $T$ entre ellas
+satisface la hipótesis (R). Probar que
 \[
-\int_\Omega f\,d(\mu-\nu)\le C^{1/q'}\,\|\nabla f\|_{L^p(\Omega)}\,W_q(\mu,\nu).
+\Bigl|\int_\Omega f\,d(\mu-\nu)\Bigr|\le C^{1/2}\,\|\nabla f\|_{L^{2r'}(\Omega)}\,W_2(\mu,\nu).
 \]
+(Para $r=\infty$ el exponente es $2r'=2$; para $r=1$ es $2r'=\infty$ y la
+desigualdad se reduce a $W_1\le W_2$.)
 \emph{Esquema:} escribir $\int f\,d(\nu-\mu)=\int_0^1\!\!\int\nabla f(T_t(x))\cdot(T(x)-x)\,d\mu\,dt$
-con $T$ el mapa de Brenier y $T_t$ la interpolación; aplicar Hölder con
-exponentes $(p,q,\cdot)$, y controlar $\|\rho_t\|_{L^r}$ uniformemente en
-$t$ mediante la concavidad de $t\mapsto\det DT_t^{1/d}$
-(Lema~\ref{N-lema.det.concavo}), que da $\rho_t\le\max\{\|\rho_0\|_\infty,\|\rho_1\|_\infty\}$
-en el caso $r=\infty$ y la cota $L^r$ en general. Ver
-\cite[Sec.~5.5]{Santambrogio}.
+con $T_t=(1-t)\id+tT$ y $\mu_t=(T_t)_\#\mu=\rho_t\LL^d$ (que está concentrada en
+$\Omega$ por convexidad); aplicar Cauchy--Schwarz en $L^2(\mu)$, que da el
+factor $\bigl(\int|T-\id|^2d\mu\bigr)^{1/2}=W_2(\mu,\nu)$ y el factor
+$\bigl(\int|\nabla f|^2\rho_t\bigr)^{1/2}$; acotar este último por Hölder con
+exponentes $(r',r)$, y controlar $\|\rho_t\|_{L^r}\le C$ uniformemente en $t$:
+para $r<\infty$ por la convexidad de $t\mapsto\int\rho_t^r$
+(Ejercicio~\ref{ejer.BM.entropia}(c)), y para $r=\infty$ por la ecuación de
+Monge--Ampère y la concavidad de $t\mapsto\det DT_t^{1/d}$
+(Lema~\ref{N-lema.det.concavo}). Más generalmente, para $q\in(1,\infty)$ y
+$q'=q/(q-1)$ vale la misma desigualdad con $W_q$, $\|\nabla f\|_{L^{q'r'}}$
+y la constante $C^{1/q'}$, usando el mapa óptimo para el costo $|x-y|^q$;
+ver \cite[Sec.~5.5]{Santambrogio}.
 \end{ejercicio}
 
 \bibliographystyle{plain}

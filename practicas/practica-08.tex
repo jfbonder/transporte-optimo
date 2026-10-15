@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -186,7 +182,7 @@
 \fancyhead[L]{{\footnotesize{\usefont{T1}{phv}{m}{n}{\sc Teoría de Transporte Óptimo}}}}
 \fancyhead[R]{\footnotesize \usefont{T1}{phv}{m}{n}{\sc Práctica 8}}
 \thispagestyle{plain}
-\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~8 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~8 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}). ($\bigstar$) ejercicio de mayor dificultad o que excede el programa.}
 \medskip
 
 \cuadernolink{OT en dimensión uno}{03-ot-dimension-uno.ipynb}
@@ -211,7 +207,7 @@ Sea $\mu\in\mathcal P(\R)$ y $F^{[-1]}_\mu$ su pseudoinversa.
 izquierda en $(0,1)$, y que $F_\mu^{[-1]}(t)\le x\iff t\le F_\mu(x)$
 (desigualdad de Galois).
 \item Probar que $\int_\R g\,d\mu=\int_0^1g(F_\mu^{[-1]}(t))\,dt$ para toda
-$g\ge0$ medible; en particular $\mu\in\mathcal P_p(\R)$ si y sólo si
+$g\ge0$ medible; en particular $\mu\in\mathcal P_p(\R)$ si y solo si
 $F_\mu^{[-1]}\in L^p(0,1)$.
 \item Probar que si $G\colon(0,1)\to\R$ es no decreciente y continua por la
 izquierda, entonces $G=F_{\bar\mu}^{[-1]}$ para $\bar\mu=G_\#\LL^1\lfloor_{(0,1)}$.
@@ -252,7 +248,7 @@ $\gamma_{anti}$.
 \end{enumerate}
 \end{ejercicio}
 
-\begin{ejercicio}[Costos cóncavos: el plan monótono no es óptimo]\label{ejer.1D.concavo}
+\begin{ejercicio}[Costos cóncavos: el plan comonótono no es óptimo]\label{ejer.1D.concavo}
 Sea $c(x,y)=|x-y|^{1/2}$, $\mu=\frac12(\delta_0+\delta_1)$ y
 $\nu=\frac12(\delta_1+\delta_2)$.
 \begin{enumerate}[label=(\alph*)]
@@ -274,7 +270,7 @@ general de costos cóncavos.)
 \begin{enumerate}[label=(\alph*)]
 \item Construir un boreliano $A\subset[0,1]$ tal que
 $0<\LL^1(I\cap A)<\LL^1(I)$ para todo intervalo abierto $I\subset[0,1]$.
-\emph{Sugerencia:} unión numerable de conjuntos ``de Cantor gordos''
+\emph{Sugerencia:} unión numerable de conjuntos «de Cantor gordos»
 centrados en los racionales, con medidas que sumen menos que $1$.
 \item Sea $\mu=\LL^1\lfloor_A/\LL^1(A)$. Probar que $F_\mu$ es continua y
 estrictamente creciente en $[0,1]$, de modo que $T_\text{mon}\colon\mu\to\LL^1\lfloor_{[0,1]}$
@@ -304,7 +300,7 @@ Los ejercicios siguientes se resuelven con el cuaderno \emph{OT en dimensión
 uno} (véase el Apéndice~\ref{N-ap.cuadernos}); los enunciados figuran también al
 final del cuaderno. Las referencias a secciones son a las del cuaderno.
 
-\begin{ejercicio}[Mapas monótonos explícitos]\label{ejc.1D.explicitos}
+\begin{ejercicio}[Mapas monótonos explícitos: cálculo numérico]\label{ejc.1D.explicitos}
 Calcular numéricamente $T_{\mathrm{mon}}$ para $\mu=\LL^1\lfloor_{[0,1]}$ y
 $\nu$ exponencial, para $\mu$ uniforme y $\nu=\frac13\delta_0+\frac23\delta_1$,
 y para $\mu=\frac12(\delta_0+\delta_1)$ y $\nu$ uniforme, y comparar con las
@@ -312,7 +308,7 @@ fórmulas del Ejercicio~\ref{ejer.1D.explicitos}. En el último caso, verificar
 que el plan comonótono \emph{no} está inducido por un mapa y describirlo.
 \end{ejercicio}
 
-\begin{ejercicio}[Dominancia estocástica]\label{ejc.1D.dominancia}
+\begin{ejercicio}[Dominancia estocástica: cálculo numérico]\label{ejc.1D.dominancia}
 Para pares $(\mu,\nu)$ de muestras, verificar numéricamente la equivalencia
 entre $F_\mu\ge F_\nu$ y $T_{\mathrm{mon}}\ge\id$ del
 Ejercicio~\ref{ejer.1D.dominancia}: graficar ambas condiciones para
@@ -320,7 +316,7 @@ $\mu=N(0,1)$ y $\nu=N(m,\sigma^2)$ con varios $(m,\sigma)$, y hallar la región
 del plano $(m,\sigma)$ donde valen.
 \end{ejercicio}
 
-\begin{ejercicio}[Cotas de Fréchet--Hoeffding]\label{ejc.1D.frechet}
+\begin{ejercicio}[Cotas de Fréchet--Hoeffding: cálculo numérico]\label{ejc.1D.frechet}
 Para $\mu$, $\nu$ discretas con $n$ átomos, calcular la función de
 distribución conjunta $H(x,y)=\pi((-\infty,x]\times(-\infty,y])$ de varios
 planes (el comonótono, el antimonótono, el producto y planes aleatorios) y
@@ -328,10 +324,10 @@ verificar las cotas $\max\{F_\mu+F_\nu-1,0\}\le H\le\min\{F_\mu,F_\nu\}$ del
 Ejercicio~\ref{N-ejer.frechet.hoeffding}, con igualdad para los planes extremos.
 \end{ejercicio}
 
-\begin{ejercicio}[Costos cóncavos]\label{ejc.1D.concavos}
+\begin{ejercicio}[Costos cóncavos: cálculo numérico]\label{ejc.1D.concavos}
 Con $\mu=\frac12(\delta_0+\delta_1)$ y $\nu=\frac12(\delta_1+\delta_2)$,
 calcular el plan óptimo de $|x-y|^p$ para $p\in\{0{,}25,\,0{,}5,\,1,\,2\}$ y
-determinar para qué $p$ deja de ser óptimo el plan monótono. Repetir con dos
+determinar para qué $p$ deja de ser óptimo el plan comonótono. Repetir con dos
 densidades continuas que se superpongan y medir la masa que el plan óptimo
 deja en la diagonal como función de $p$ (Ejercicio~\ref{ejer.1D.concavo}).
 \end{ejercicio}

@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -180,7 +176,7 @@
 
 \begin{document}
 \renewcommand{\thechapter}{A}
-\encabezado{Apéndice A: Complementos de teoría de la medida}\label{ap.medida}
+\encabezado{Apéndice A: Complementos de teoría de la medida}
 \bigskip
 \pagestyle{fancy}
 \fancyhead[L]{{\footnotesize{\usefont{T1}{phv}{m}{n}{\sc Teoría de Transporte Óptimo}}}}
@@ -207,17 +203,17 @@ mapa: ¿cuánto vale $\pi_x$?).
 \begin{ejercicio}[Independencia y planes inducidos]\label{ejer.desint.independencia}
 Sea $\pi\in\Pi(\mu,\nu)$ con desintegración $\{\pi_x\}$.
 \begin{enumerate}[label=(\alph*)]
-\item Probar que $\pi=\mu\otimes\nu$ si y sólo si $\pi_x=\nu$ para
+\item Probar que $\pi=\mu\otimes\nu$ si y solo si $\pi_x=\nu$ para
 $\mu$-c.t.p.\ $x$.
-\item Probar que $\pi$ está inducido por un mapa si y sólo si $\pi_x$ es una
+\item Probar que $\pi$ está inducido por un mapa si y solo si $\pi_x$ es una
 masa de Dirac para $\mu$-c.t.p.\ $x$ (Proposición~\ref{N-prop.desint.mapa}), y
 que en ese caso el mapa es $T(x)=\int y\,d\pi_x(y)$ (cuando $\nu$ tiene
 primer momento finito).
 \item Para $\pi\in\Pi(\mu,\nu)$ arbitrario con $\nu\in\mathcal P_2(\R^d)$,
 sea $T(x)=\int y\,d\pi_x(y)$ el \emph{baricentro condicional}. Probar que
-$\int|x-y|^2d\pi\ge\int|x-T(x)|^2d\mu$, con igualdad si y sólo si $\pi$ está
+$\int|x-y|^2d\pi\ge\int|x-T(x)|^2d\mu$, con igualdad si y solo si $\pi$ está
 inducido por $T$. Concluir que si $T_\#\mu=\nu$, el plan $(\id,T)_\#\mu$ es
-mejor que $\pi$: ``promediar el destino no aumenta el costo cuadrático''.
+mejor que $\pi$: «promediar el destino no aumenta el costo cuadrático».
 ¿Por qué esto no demuestra que los planes óptimos son mapas?
 \end{enumerate}
 \end{ejercicio}
@@ -230,7 +226,7 @@ $\pi_{34}\in\Pi(\mu_3,\mu_4)$.
 $\pi_{34}$ (a lo largo de la tercera coordenada) da la misma medida en
 $X_1\times X_2\times X_3\times X_4$ que pegar primero $\pi_{23}$ con
 $\pi_{34}$ y luego con $\pi_{12}$.
-\item Deducir la desigualdad triangular ``iterada''
+\item Deducir la desigualdad triangular «iterada»
 \[
 W_p(\mu_1,\mu_4)\le W_p(\mu_1,\mu_2)+W_p(\mu_2,\mu_3)+W_p(\mu_3,\mu_4)
 \]
@@ -245,14 +241,17 @@ la medida pegada es $(\id,T_1,T_2\circ T_1,T_3\circ T_2\circ T_1)_\#\mu_1$.
 Sean $\mu,\nu\in\mathcal P(\R^2)$ con marginales sobre la primera coordenada
 $\mu^1$, $\nu^1$ y desintegraciones $\mu=\mu_x\otimes\mu^1$, $\nu=\nu_x\otimes\nu^1$.
 \begin{enumerate}[label=(\alph*)]
-\item (``Knothe--Rosenblatt''.) Supongamos $\mu^1$ y todas las $\mu_x$ sin
+\item («Knothe--Rosenblatt».) Supongamos $\mu^1$ y todas las $\mu_x$ sin
 átomos. Sea $T^1$ el mapa monótono de $\mu^1$ a $\nu^1$ y, para cada $x$,
 $T^2_x$ el mapa monótono de $\mu_x$ a $\nu_{T^1(x)}$. Probar que
 $T(x,y)=(T^1(x),T^2_x(y))$ transporta $\mu$ en $\nu$. (Es el
 \emph{reordenamiento de Knothe--Rosenblatt}; no es óptimo para el costo
 cuadrático, pero es explícito y triangular.)
-\item Probar que $W_2^2(\mu,\nu)\le W_2^2(\mu^1,\nu^1)+\int W_2^2(\mu_x,\nu_{T^1(x)})\,d\mu^1(x)$
-y que, en general, la desigualdad es estricta.
+\item Bajo las hipótesis de (a), y suponiendo además que $\mu,\nu\in\mathcal P_2(\R^2)$,
+probar que $W_2^2(\mu,\nu)\le W_2^2(\mu^1,\nu^1)+\int W_2^2(\mu_x,\nu_{T^1(x)})\,d\mu^1(x)$
+y que, en general, la desigualdad es estricta. (Sin la hipótesis de que
+$\mu^1$ no tenga átomos, $T^1$ puede no existir; reemplazarlo por un plan
+óptimo entre $\mu^1$ y $\nu^1$ y enunciar la desigualdad análoga.)
 \item Probar que si $\mu=\mu^1\otimes\alpha$ y $\nu=\nu^1\otimes\beta$ son
 productos, entonces $W_2^2(\mu,\nu)=W_2^2(\mu^1,\nu^1)+W_2^2(\alpha,\beta)$.
 \end{enumerate}

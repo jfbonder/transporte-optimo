@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -197,9 +193,9 @@ Sea $c\colon X\times Y\to\R$ acotada y sea $\chi\colon X\to\R$ acotada.
 \begin{enumerate}[label=(\alph*)]
 \item Probar que $\chi^{c\bar c}\ge\chi$ y que $\chi^{c\bar cc}=\chi^c$.
 Deducir que la operación $\chi\mapsto\chi^{c\bar c}$ es idempotente.
-\item Decimos que $\varphi\colon X\to\R$ es \emph{$c$-cóncava} si
-$\varphi=\zeta^{\bar c}$ para alguna $\zeta\colon Y\to\R\cup\{-\infty\}$.
-Probar que $\varphi$ es $c$-cóncava si y sólo si $\varphi=\varphi^{c\bar c}$.
+\item Recordemos (Definición~\ref{N-def.cconcava}) que $\varphi\colon X\to\R$
+es $c$-cóncava si $\varphi=\zeta^{\bar c}$ para alguna
+$\zeta\colon Y\to\R\cup\{-\infty\}$ no idénticamente $-\infty$. Probar que $\varphi$ es $c$-cóncava si y solo si $\varphi=\varphi^{c\bar c}$.
 \item Probar que $(\chi+s)^c=\chi^c-s$ para $s\in\R$, y que
 $\chi\le\tilde\chi$ implica $\chi^c\ge\tilde\chi^c$.
 \item Probar que el ínfimo puntual de una familia de funciones
@@ -215,19 +211,19 @@ módulo de continuidad $\omega$ común). Probar que la familia
 $\{x\mapsto\inf_{\alpha\in A}f(x,\alpha):f\in\mathcal F\}$ es equicontinua
 con el mismo módulo $\omega$, siempre que los ínfimos sean finitos. Explicar
 en qué punto de la demostración del Teorema~\ref{N-teo.existencia.potenciales}
-se usa este hecho (Lema~\ref{N-lema.ctranf.lip}).
+se usa este hecho (Proposición~\ref{N-prop.ctransf.modulo}).
 \end{ejercicio}
 
 \begin{ejercicio}[Costos que son distancias]\label{ejer.ctransf.distancia}
 Sea $X=Y$ y $c=d$ una distancia en $X$ (acotada, para simplificar).
 \begin{enumerate}[label=(\alph*)]
-\item Probar que $\varphi\colon X\to\R$ es $c$-cóncava si y sólo si es
+\item Probar que $\varphi\colon X\to\R$ es $c$-cóncava si y solo si es
 $1$-Lipschitz respecto de $d$, y que en ese caso $\varphi^c=-\varphi$.
 \item Deducir que, para este costo, el problema dual se escribe
 \[
 \sup\Bigl\{\int\varphi\,d(\mu-\nu):\ \varphi\ \text{$1$-Lipschitz}\Bigr\}.
 \]
-(Éste es el contenido del Lema~\ref{N-lema.KR.ctransformada} y del
+(Este es el contenido del Lema~\ref{N-lema.KR.ctransformada} y del
 Teorema~\ref{N-teo.KR} para $d(x,y)=|x-y|$.)
 \item Aplicarlo a $c(x,y)=|x-y|^\alpha$ en $\R^d$ con $0<\alpha<1$: probar
 que es una distancia y que
@@ -245,15 +241,17 @@ para $\mu,\nu$ con soporte compacto.
 Sea $c(x,y)=|x-y|^2$ en $\R^d$.
 \begin{enumerate}[label=(\alph*)]
 \item Para $\chi(x)=\lambda|x|^2$, calcular $\chi^c$ y mostrar que es finita
-si y sólo si $\lambda<1$; en ese caso $\chi^c(y)=-\frac{\lambda}{1-\lambda}|y|^2$.
+si y solo si $\lambda<1$; en ese caso $\chi^c(y)=-\frac{\lambda}{1-\lambda}|y|^2$.
 \item Para $\chi(x)=a\cdot x+b$, calcular $\chi^c$ y $\chi^{c\bar c}$.
-\item Probar que $\varphi$ es $c$-cóncava si y sólo si $u(x)=|x|^2-\varphi(x)$
-es convexa y semicontinua inferiormente, y expresar $\varphi^c$ en términos
-de la transformada de Legendre $\bar u$ (Sección~\ref{N-sec.costo.cuadratico}).
+\item Probar que $\varphi$ es $c$-cóncava si y solo si
+$u(x)=\frac12\bigl(|x|^2-\varphi(x)\bigr)$ es convexa y semicontinua
+inferiormente (la normalización de la Sección~\ref{N-sec.costo.cuadratico}), y
+probar que $\varphi^c(y)=|y|^2-2\bar u(y)$, donde $\bar u$ es la
+transformada de Legendre de $u$.
 \end{enumerate}
 \end{ejercicio}
 
-\begin{ejercicio}[La mejora de potenciales converge en el caso discreto]\label{ejer.mejora.discreta}
+\begin{ejercicio}[La mejora de potenciales se estaciona en el caso discreto]\label{ejer.mejora.discreta}
 En el problema discreto (Capítulo~\ref{N-cap.dual.discreto}), la
 Proposición~\ref{N-prop:mejora-potenciales} dice que $(\varphi,\psi)\mapsto
 (\varphi^{c\bar c},\varphi^c)$ no empeora el funcional dual.
@@ -263,7 +261,7 @@ $\varphi\mapsto\varphi^{c\bar c}$ se detiene en un paso: $\varphi^{c\bar c}$
 ya es $c$-cóncava (Ejercicio~\ref{ejer.ctransf.propiedades}).
 \item Mostrar con el ejemplo del Ejercicio~\ref{N-ejer.PL.2x2} que un par
 $(\varphi^{c\bar c},\varphi^c)$ no tiene por qué ser óptimo: la mejora de
-potenciales produce pares admisibles ``ajustados'' pero no resuelve el
+potenciales produce pares admisibles «ajustados» pero no resuelve el
 problema dual. (En el Capítulo~\ref{N-cap.Sinkhorn} se verá que la versión
 \emph{suavizada} de esta iteración sí converge al óptimo del problema
 regularizado.)
@@ -279,7 +277,7 @@ cuaderno. Las referencias a secciones son a las del cuaderno.
 
 \begin{ejercicio}[El $2\times2$ y su degeneración]\label{ejc.dual.2x2}
 En el ejemplo $2\times2$ de la Sección~8 del cuaderno, reemplazar
-$c_{12}=3$ por un parámetro $s$ y calcular el plan óptimo para $s\in[0,4]$.
+$c_{11}=1$ por un parámetro $s$ y calcular el plan óptimo para $s\in[0,6]$.
 Hallar el valor de $s$ en el que cambia el vértice óptimo y verificar que allí
 todo el segmento $\Pi(a,b)$ es óptimo y los potenciales pierden unicidad (más
 allá de la constante aditiva).
@@ -303,7 +301,9 @@ grilla regular en lugar de al azar?
 \end{ejercicio}
 
 \begin{ejercicio}[Mejora de potenciales]\label{ejc.dual.mejora}
-Para $100$ vectores $\varphi$ aleatorios, calcular la fracción de la brecha
+Sea $\mathcal D^*=\max\mathcal D$ el valor óptimo del problema dual discreto
+(que coincide con el costo óptimo). Para $100$ vectores $\varphi$ aleatorios,
+calcular la fracción de la brecha
 dual $\mathcal D^*-\mathcal D(\varphi,\varphi^c)$ que cierra un paso de mejora
 $\varphi\mapsto\varphi^{c\bar c}$ (Proposición~\ref{N-prop:mejora-potenciales})
 y graficar su histograma. ¿Hay algún $\varphi$ inicial para el cual un solo

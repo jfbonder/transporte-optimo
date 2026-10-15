@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -186,25 +182,25 @@
 \fancyhead[L]{{\footnotesize{\usefont{T1}{phv}{m}{n}{\sc Teoría de Transporte Óptimo}}}}
 \fancyhead[R]{\footnotesize \usefont{T1}{phv}{m}{n}{\sc Práctica 4}}
 \thispagestyle{plain}
-\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~4 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~4 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}). ($\bigstar$) ejercicio de mayor dificultad o que excede el programa.}
 \medskip
 
 
-\begin{ejercicio}[Desigualdades ``casi en todo punto'' y planes]\label{ejer.ctp.planes}
+\begin{ejercicio}[Desigualdades «casi en todo punto» y planes]\label{ejer.ctp.planes}
 Sean $\pi\in\Pi(\mu,\nu)$ y $c$, $\phi$, $\psi$ funciones medibles.
 \begin{enumerate}[label=(\alph*)]
 \item Supongamos que existen $N\subset X$ y $M\subset Y$ con
 $\mu(N)=\nu(M)=0$ tales que $\phi(x)+\psi(y)\le c(x,y)$ para todo $x\notin N$
 y todo $y\notin M$. Probar que $\phi(x)+\psi(y)\le c(x,y)$ para
 $\pi$-casi todo $(x,y)$.
-\item Mostrar que la conclusión es \emph{falsa} si sólo se supone que la
+\item Mostrar que la conclusión es \emph{falsa} si solo se supone que la
 desigualdad vale $(\mu\otimes\nu)$-c.t.p.: tomar $X=Y=[0,1]$,
 $\mu=\nu=\LL^1$, $c=\I_{\{x\ne y\}}$, $\phi=\psi=\tfrac12$ y
 $\pi=(\id,\id)_\#\mu$.
 \item Explicar por qué (b) obliga a definir la clase admisible
 $\mathcal A_c$ con la desigualdad en \emph{todo} punto, y qué fallaría en la
 dualidad débil (Proposición~\ref{N-prop.dualidad.debil}) con una definición
-``c.t.p.''.
+«c.t.p.».
 \end{enumerate}
 \end{ejercicio}
 
@@ -260,8 +256,39 @@ y por lo tanto que $\min_\Pi\int c_k\,d\gamma\nearrow\min_\Pi\int c\,d\gamma$.
 =\sup_k\min_\Pi\int c_k\,d\gamma=\min_\Pi\int c\,d\gamma\ \ge\ \sup_{\mathcal A_c}\D,
 \]
 donde la última desigualdad es la dualidad débil.
-\item ¿Qué cambia si $X$, $Y$ son sólo completos y separables? Consultar
+\item ¿Qué cambia si $X$, $Y$ son solo completos y separables? Consultar
 \cite[Thm.~1.3]{Villani2003} o \cite[Thm.~1.39]{Santambrogio}.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[La dualidad de programación lineal como principio minimax]\label{ejer.PL.minimax}
+Sean $A\in\R^{m\times n}$, $b\in\R^m$ y $c\in\R^n$, y consideremos el par de
+problemas
+\[
+\text{(P)}\quad\sup\{c^Tx:\ x\in\R^n,\ Ax\le b\},
+\qquad
+\text{(D)}\quad\inf\{b^Ty:\ y\in\R^m,\ y\ge0,\ A^Ty=c\}.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Sea $L(x,y)=c^Tx+y^T(b-Ax)$ para $x\in\R^n$, $y\ge0$. Probar que
+$\inf_{y\ge0}L(x,y)$ vale $c^Tx$ si $Ax\le b$ y $-\infty$ en otro caso, y que
+$\sup_xL(x,y)$ vale $b^Ty$ si $A^Ty=c$ y $+\infty$ en otro caso. Deducir que
+$\text{(P)}=\sup_x\inf_{y\ge0}L$ y $\text{(D)}=\inf_{y\ge0}\sup_xL$, y la
+dualidad débil $\text{(P)}\le\text{(D)}$.
+\item Supongamos que \emph{ambos} problemas son factibles. Probar que
+$\text{(P)}=\text{(D)}$ y que ambos valores se alcanzan, es decir, que vale el
+principio minimax
+\[
+\max_x\min_{y\ge0}L=\min_{y\ge0}\max_xL.
+\]
+\emph{Sugerencia:} escribir (D) en la forma estándar del
+Capítulo~\ref{N-cap.PL}, comprobar que su dual es (P) (con $x=x^+-x^-$ si hace
+falta) y aplicar el Teorema~\ref{N-teo.PL.dualidad.fuerte}; para ver que (D)
+tiene solución óptima, usar que un programa lineal factible y acotado
+alcanza su ínfimo.
+\item Mostrar que sin la hipótesis de factibilidad la igualdad puede fallar:
+con $m=n=1$, $A=0$, $b=-1$ y $c=1$, se tiene $\text{(P)}=-\infty$ y
+$\text{(D)}=+\infty$.
 \end{enumerate}
 \end{ejercicio}
 

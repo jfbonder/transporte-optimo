@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -205,7 +201,9 @@ Calcular la transformada de Legen\-dre--Fenchel de las siguientes funciones
 de $\R$ en $\R\cup\{+\infty\}$:
 \begin{enumerate}[label=(\alph*)]
 \item $f_p(x)=\frac{x^p}{p}$ para $x\ge0$ y $+\infty$ para $x<0$, con $p>1$
-(se obtiene $f_{p'}$ con $\frac1p+\frac1{p'}=1$, restringida a $y\ge0$);
+(se obtiene $f_p^*(y)=\frac{(y_+)^{p'}}{p'}$, con $\frac1p+\frac1{p'}=1$ e
+$y_+=\max\{y,0\}$: coincide con $f_{p'}$ para $y\ge0$, pero vale $0$, y no
+$+\infty$, para $y<0$);
 \item $f_\infty(x)=0$ si $x\in[0,1]$, $+\infty$ en otro caso; interpretar el
 resultado como límite $p\to\infty$ de (a);
 \item $f(x)=|x|$, $f(x)=e^x$, $f(x)=-\log x$ ($x>0$), $f(x)=x\log x$ ($x\ge0$).
@@ -223,11 +221,14 @@ con infinitos minimizadores, y otro sin minimizadores pero con ínfimo finito.
 \begin{ejercicio}[Biconjugada]\label{ejer.FR.biconjugada}
 Sea $F\colon E\to\R\cup\{+\infty\}$ propia.
 \begin{enumerate}[label=(\alph*)]
-\item Probar que $F^{**}\le F$ y que $F^{**}$ es la mayor función convexa
-y semicontinua inferiormente que está por debajo de $F$.
+\item Probar que $F^{**}\le F$ y que $F^{**}$ es la envolvente superior de
+las minorantes afines continuas de $F$. Si $F$ admite alguna minorante afín
+continua, $F^{**}$ es la mayor función convexa y semicontinua inferiormente
+$E\to\R\cup\{+\infty\}$ que está por debajo de $F$. Si no admite ninguna,
+entonces $F^*\equiv+\infty$ y $F^{**}\equiv-\infty$.
 \item Probar que si $F$ es convexa, semicontinua inferiormente y propia,
 entonces $F^{**}=F$. \emph{Sugerencia:} si $F^{**}(x_0)<F(x_0)$, separar el
-punto $(x_0,F^{**}(x_0))$ del epigrafo de $F$ (cerrado y convexo en
+punto $(x_0,F^{**}(x_0))$ del epígrafo de $F$ (cerrado y convexo en
 $E\times\R$) mediante Hahn--Banach, como en la demostración del
 Teorema~\ref{N-teo.FR}.
 \item Calcular $F^{**}$ para $F(x)=\min\{|x-1|,|x+1|\}$ en $\R$.
@@ -240,10 +241,24 @@ Sea $K\subset\R^n$ convexo cerrado no vacío y $\chi_K$ su función indicatriz
 \begin{enumerate}[label=(\alph*)]
 \item Probar que $\chi_K^*(y)=\sup_{x\in K}x\cdot y$ es la \emph{función
 soporte} de $K$, y que $K=\{x:\ x\cdot y\le\chi_K^*(y)\ \forall y\}$.
-\item Aplicar el Teorema~\ref{N-teo.FR} con $F=\chi_K$ y $G(x)=c\cdot x$
-para reobtener la dualidad de programación lineal del
-Capítulo~\ref{N-cap.PL} (con $K=\{x\ge0:\ Ax=b\}$), identificando qué
-hipótesis del teorema corresponde a la factibilidad del primal.
+\item Sean $A\in\R^{m\times n}$, $b\in\R^m$ y $c\in\R^n$. Observar que el
+Teorema~\ref{N-teo.FR} no da nada útil con $F=\chi_K$,
+$K=\{x\ge0:\ Ax=b\}$, y $G(x)=c\cdot x$: en general $K$ tiene interior vacío
+y $\chi_K$ no es continua en ningún punto (e intercambiando los papeles se
+obtiene la tautología $\inf_Kc\cdot x=\inf_Kc\cdot x$). Aplicarlo en cambio con
+$F=\chi_{\{x\ge0\}}$ y $G(x)=c\cdot x+\chi_{\{Ax=b\}}(x)$: calcular
+$F^*=\chi_{\{z\le0\}}$ y $G^*(z)=b\cdot y$ si $z=c+A^Ty$ para algún $y$
+($+\infty$ si $z-c\notin\operatorname{Im}A^T$), y deducir
+\[
+\inf\{c\cdot x:\ Ax=b,\ x\ge0\}=\max\{b\cdot y:\ A^Ty\le c\}
+\]
+bajo la hipótesis de que existe $x_0$ con $Ax_0=b$ y $x_0>0$ (todas sus
+coordenadas positivas), que es la que garantiza la continuidad de $F$ en
+un punto donde $G$ es finita. (El ínfimo también se alcanza, por ser un
+programa lineal factible y acotado.) Comparar con el
+Teorema~\ref{N-teo.PL.dualidad.fuerte}, que vale bajo la mera existencia de una
+solución óptima: esa versión más fuerte usa la estructura poliédrica del
+problema y no se deduce de esta forma del teorema de Fenchel--Rockafellar.
 \end{enumerate}
 \end{ejercicio}
 

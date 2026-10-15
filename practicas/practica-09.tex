@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -186,7 +182,7 @@
 \fancyhead[L]{{\footnotesize{\usefont{T1}{phv}{m}{n}{\sc Teoría de Transporte Óptimo}}}}
 \fancyhead[R]{\footnotesize \usefont{T1}{phv}{m}{n}{\sc Práctica 9}}
 \thispagestyle{plain}
-\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~9 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}).}
+\noindent{\footnotesize Los ejercicios son los de la sección de ejercicios del Capítulo~9 de las notas del curso, con la misma numeración; las referencias a teoremas, proposiciones y secciones remiten a las notas (\url{https://github.com/jfbonder/transporte-optimo}). ($\bigstar$) ejercicio de mayor dificultad o que excede el programa.}
 \medskip
 
 
@@ -194,11 +190,11 @@
 Sea $\mu\in\mathcal P_2(\R^d)$.
 \begin{enumerate}[label=(\alph*)]
 \item Probar que la traslación $T(x)=x+v$ es el mapa óptimo entre $\mu$ y
-$T_\#\mu$, y que la dilatación $T(x)=\lambda x$ lo es si y sólo si
-$\lambda>0$ o $\mu$ es una masa de Dirac. Más generalmente, $T(x)=Ax+b$ con
+$T_\#\mu$, y que la dilatación $T(x)=\lambda x$ lo es si y solo si
+$\lambda\ge0$ o $\mu$ es una masa de Dirac. Más generalmente, $T(x)=Ax+b$ con
 $A$ simétrica definida positiva es óptimo entre $\mu$ y $T_\#\mu$.
 \item Probar que la reflexión $R(x)=-x$ es óptima entre $\mu$ y $R_\#\mu$ si
-y sólo si $\mu$ es una masa de Dirac. \emph{Sugerencia:} el soporte de un
+y solo si $\mu$ es una masa de Dirac. \emph{Sugerencia:} el soporte de un
 plan óptimo para el costo cuadrático es $c$-cíclicamente monótono; escribir
 la condición para dos puntos $(x,-x)$, $(x',-x')$.
 \item Si $u$ es convexa y $C^1$ con $\nabla u_\#\mu=\nu$, probar que
@@ -279,7 +275,7 @@ sobre $\sop\nu$ y tal que
 u(x)+\bar u(y)=x\cdot y\qquad\text{para $\pi$-casi todo }(x,y).
 \]
 Probar que $\pi$ es óptimo para el costo
-cuadrático. (Es la versión ``con planes'' del
+cuadrático. (Es la versión «con planes» del
 Corolario~\ref{N-cor.criterio.Brenier}; la desigualdad de Fenchel--Young da
 la admisibilidad.)
 \item Sean $\mu=\frac12(\delta_{(-1,-1)}+\delta_{(1,1)})$ y
@@ -291,7 +287,8 @@ $x\cdot y=0$ para los cuatro pares posibles). Concluir que ambos son
 óptimos, que todo $\Pi(\mu,\nu)$ es óptimo, y que la hipótesis
 $\mu\ll\LL^d$ del Teorema~\ref{N-teo.Brenier} no puede suprimirse.
 \item Comparar con el ejemplo de no unicidad de baricentros de la
-Sección~\ref{N-sec.bar.unicidad}.
+Observación~\ref{N-obs.bar.no.unicidad}, que es este mismo par de medidas
+rotado $45^\circ$ y reescalado por $1/\sqrt2$.
 \end{enumerate}
 \end{ejercicio}
 

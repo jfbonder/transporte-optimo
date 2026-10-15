@@ -1,11 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTAS TEORIA DE TRANSPORTE OPTIMO
-%
-% Contains ?? figures. 
-% File started: ??
-% First circulated version: ??
-% Last version:
-% Last modification: -
+% FCEN-UBA, segundo cuatrimestre de 2026. Fuente unica de las notas
+% y de las guias de ejercicios (herramientas/generar_practicas.py).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt,a4paper]{amsart}
@@ -203,7 +199,9 @@ produce el mismo minimizador $\pi^\ve$.
 \item (Desigualdad de Pinsker.) Probar que
 $\|\pi-a\otimes b\|_1^2\le2\,\mathrm{KL}(\pi\,|\,a\otimes b)$.
 \emph{Sugerencia:} reducirlo al caso de dos puntos (agrupar según el signo
-de $\pi_{ij}-a_ib_j$ y usar la convexidad de $\mathrm{KL}$) y estudiar la
+de $\pi_{ij}-a_ib_j$ y usar la desigualdad de log-suma
+$\sum_ks_k\log\frac{s_k}{r_k}\ge\bigl(\sum_ks_k\bigr)\log\frac{\sum_ks_k}{\sum_kr_k}$,
+que es la convexidad conjunta de $(s,r)\mapsto s\log\frac sr$) y estudiar la
 función $t\mapsto t\log\frac tp+(1-t)\log\frac{1-t}{1-p}-2(t-p)^2$.
 \item Deducir de (b) y de la Proposición~\ref{N-prop.eps.infinito} la
 velocidad $\|\pi^\ve-a\otimes b\|_1\le2\sqrt{\|C\|_\infty/\ve}$.
@@ -224,7 +222,7 @@ en $(0,\infty)$ (es un ínfimo de funciones afines de $\ve$), y que
 donde sea derivable.
 \item Deducir que $\ve\mapsto\mathrm{KL}(\pi^\ve\,|\,a\otimes b)$ es no
 creciente y que $\ve\mapsto\langle C,\pi^\ve\rangle$ es no decreciente:
-al aumentar la regularización el plan se vuelve más ``desordenado'' y más
+al aumentar la regularización el plan se vuelve más «desordenado» y más
 caro.
 \item Probar que $\lim_{\ve\to\infty}\mathrm{OT}_\ve(a,b)=\langle C,a\otimes b\rangle$
 y que $\lim_{\ve\to0}\mathrm{OT}_\ve(a,b)=\mathrm{OT}(a,b)$, y que ambas
@@ -274,12 +272,16 @@ Completar los detalles de la Observación~\ref{N-obs.potenciales.eps}.
 está acotado uniformemente para $\ve\in(0,1]$. \emph{Sugerencia:}
 $\psi^\ve=(\varphi^\ve)^{c,\ve}$ y el Lema~\ref{N-lema.softmin} dan
 $\|\psi^\ve-(\varphi^\ve)^c\|_\infty\le\ve\log\frac1{\min a_i}$; usar que
-las $c$-transformadas de funciones con $\varphi_1=0$ están acotadas.
+$\varphi^\ve=(\psi^\ve)^{\bar c,\ve}$ tiene oscilación a lo sumo
+$\max_{i,i',j}|c_{ij}-c_{i'j}|$ (Paso~2 de la demostración del
+Teorema~\ref{N-teo.sinkhorn.convergencia}), de modo que, con
+$\varphi^\ve_1=0$, $\varphi^\ve$ y luego $(\varphi^\ve)^c$ están acotadas
+independientemente de $\ve$.
 \item Probar que todo punto límite $(\varphi^0,\psi^0)$ satisface
 $\psi^0=(\varphi^0)^c$, $\varphi^0=(\psi^0)^{\bar c}$ y
 $\varphi^0_i+\psi^0_j=c_{ij}$ sobre el soporte de $\pi^0$, y concluir que es
 un par óptimo del problema dual de Kantorovich.
-\item ¿Converge toda la familia $(\varphi^\ve,\psi^\ve)$, o sólo
+\item ¿Converge toda la familia $(\varphi^\ve,\psi^\ve)$, o solo
 subsucesiones? Discutirlo en el ejemplo del
 Ejercicio~\ref{N-ejer.discreto.3x3}, donde los potenciales de Kantorovich
 forman un segmento: ¿a qué punto del segmento converge el límite entrópico?
@@ -295,7 +297,7 @@ $\pi^\ve=a\otimes b$ para todo $\ve$, y el algoritmo de Sinkhorn converge en
 una iteración.
 \item Recíprocamente, probar que si $\pi^\ve=a\otimes b$ para algún
 $\ve>0$, entonces $C$ es de la forma (a). Deducir que $\pi^\ve$ tiene rango
-uno si y sólo si $C$ es de la forma (a).
+uno si y solo si $C$ es de la forma (a).
 \item Sea $n=m=2$. Escribir explícitamente $\pi^\ve$ en función de $a$, $b$,
 $C$ y $\ve$ (el problema se reduce a una ecuación escalar) y verificar a
 mano los límites $\ve\to0$ y $\ve\to\infty$.
@@ -305,23 +307,28 @@ mano los límites $\ve\to0$ y $\ve\to\infty$.
 \begin{ejercicio}[Baricentros entrópicos]\label{ejer.bar.entropico}
 \leavevmode
 \begin{enumerate}[label=(\alph*)]
-\item Probar que si alguna $b^k$ tiene todas sus entradas positivas, entonces
-$a\mapsto\mathrm{OT}_\ve(a,b^k)$ es estrictamente convexa en $\Sigma_n$ y el
-baricentro entrópico es único. \emph{Sugerencia:} la función
-$(a,\pi)\mapsto\langle C,\pi\rangle+\ve\mathrm{KL}(\pi\,|\,a\otimes b^k)$ es
-estrictamente convexa en $\pi$ y el minimizador depende continuamente de
-$a$; estudiar la igualdad en la desigualdad de convexidad.
+\item Probar directamente que $a\mapsto\widetilde{\mathrm{OT}}_\ve(a,b^k)$ es
+estrictamente convexa en $\Sigma_n$, sin usar la entropía $H(a)$:
+si $\pi$ y $\pi'$ son los planes óptimos para $a\ne a'$, el plan
+$\frac12(\pi+\pi')$ es admisible para $\frac12(a+a')$, y la convexidad
+estricta de $\pi\mapsto\sum\pi_{ij}(\log\pi_{ij}-1)$ da una desigualdad
+estricta (¿por qué $\pi\ne\pi'$?). Deducir otra vez la unicidad del
+baricentro entrópico.
 \item Interpretar el paso 3 del algoritmo de la
 Sección~\ref{N-sec.baricentros.entropicos} como una \emph{proyección de
 Bregman}: dados los planes $\pi^1,\dots,\pi^N$ (con primeras marginales
 $m^k=\pi^k\mathbf 1$ distintas), probar que el problema
 \[
-\min\Bigl\{\sum_k\lambda_k\,\mathrm{KL}(\tilde\pi^k\,|\,\pi^k):\ \tilde\pi^k\mathbf 1=a\ \text{para todo }k,\ a\in\Sigma_n\Bigr\}
+\min\Bigl\{\sum_k\lambda_k\,\widetilde{\mathrm{KL}}(\tilde\pi^k\,|\,\pi^k):\ \tilde\pi^k\mathbf 1=a\ \text{para todo }k,\ a\in\R^n_{\ge0}\Bigr\},
 \]
+donde $\widetilde{\mathrm{KL}}(p\,|\,q)=\sum p\log\frac pq-p+q$,
 tiene solución $\tilde\pi^k=\operatorname{diag}(a/m^k)\,\pi^k$ con
-$a\propto\prod_k(m^k)^{\lambda_k}$ (media geométrica ponderada), que es la
-actualización del algoritmo. ¿Por qué no aparece la media aritmética?
-\item En el ejemplo de no unicidad del Capítulo~\ref{N-cap.baricentros}
+$a=\prod_k(m^k)^{\lambda_k}$ (media geométrica ponderada, sin normalizar),
+que es la actualización del algoritmo. Probar que si en cambio se usa la
+$\mathrm{KL}$ usual y se impone $a\in\Sigma_n$, se obtiene la versión
+normalizada $a\propto\prod_k(m^k)^{\lambda_k}$. ¿Por qué no aparece la media
+aritmética?
+\item En el ejemplo de no unicidad de la Observación~\ref{N-obs.bar.no.unicidad}
 ($\mu_1$ con átomos en $(\pm1,0)$, $\mu_2$ con átomos en $(0,\pm1)$, sobre
 una grilla que contenga los cuatro candidatos $(\pm\frac12,\pm\frac12)$),
 probar que el baricentro entrópico es único para todo $\ve>0$ y simétrico
@@ -348,12 +355,13 @@ $\log(1/\min_ia_i)$.
 Implementar la mejora de potenciales $\varphi\mapsto\varphi^{c\bar c}$ de la
 Proposición~\ref{N-prop:mejora-potenciales}, sin regularización, y compararla
 con la iteración de Sinkhorn para $\ve$ pequeño partiendo del mismo $\varphi$.
-¿Converge la versión no regularizada? ¿Y la regularizada?
+¿Converge la versión no regularizada? ¿Y la regularizada? Comparar con el
+Ejercicio~\ref{N-ejer.mejora.discreta}.
 \end{ejercicio}
 
 \begin{ejercicio}[Costo de cada iteración]\label{ejc.eps.costo}
 Medir el tiempo de una iteración de Sinkhorn para $n=m=500,1000,2000,4000$ y
-verificar el crecimiento $O(nm)$. Comparar con el tiempo del solver exacto
+verificar el crecimiento $O(nm)$. Comparar con el tiempo del método exacto
 (\texttt{ot.emd}) para los mismos tamaños.
 \end{ejercicio}
 
@@ -370,10 +378,10 @@ hacen falta en cada caso?
 
 \begin{ejercicio}[Unicidad del baricentro entrópico]\label{ejc.eps.unicidad}
 Verificar numéricamente que el baricentro entrópico del ejemplo de no
-unicidad del Ejemplo~\ref{N-ej.bar.diracs} ($\mu_1$ con átomos en $(\pm1,0)$,
+unicidad de la Observación~\ref{N-obs.bar.no.unicidad} ($\mu_1$ con átomos en $(\pm1,0)$,
 $\mu_2$ con átomos en $(0,\pm1)$, sobre una grilla que contenga los cuatro
 candidatos) es \emph{único} y simétrico: la entropía rompe la degeneración
-eligiendo la combinación más ``repartida''. Comparar con el
+eligiendo la combinación más «repartida». Comparar con el
 Ejercicio~\ref{ejer.bar.entropico}.
 \end{ejercicio}
 
