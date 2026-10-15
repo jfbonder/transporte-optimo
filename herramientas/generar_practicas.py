@@ -19,7 +19,7 @@ DEST = RAIZ / 'practicas'
 REPO = 'https://github.com/jfbonder/transporte-optimo'
 COLAB = 'https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/'
 
-# cuaderno asociado a cada capítulo (sólo los que tienen ejercicios computacionales)
+# cuaderno asociado a cada capítulo (solo los que tienen ejercicios computacionales)
 CUADERNOS = {
     2: ('Monge y Kantorovich', '01-monge-kantorovich.ipynb'),
     6: ('Dualidad', '02-dualidad.ipynb'),

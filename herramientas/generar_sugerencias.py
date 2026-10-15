@@ -84,7 +84,7 @@ partes = [PREAMBULO, '',
           '\\newcommand{\\ejlabel}[2]{\\par\\medskip\\noindent\\textbf{Ejercicio #1}\\ifx\\relax#2\\relax\\else\\ (#2)\\fi\\textbf{.}\\ }',
           '\\begin{document}']
 partes += encabezado_fancy('Sugerencias para los ejercicios', 'Sugerencias')
-partes += ['\\noindent{\\footnotesize La numeración es la de las notas y de las guías (Ejercicio $n.k$ = ejercicio $k$ del Capítulo $n$); las referencias remiten a las notas (\\url{%s}). Las sugerencias indican una idea o el resultado que conviene usar, no una solución completa. Sólo figuran los ejercicios que tienen sugerencia.}' % REPO,
+partes += ['\\noindent{\\footnotesize La numeración es la de las notas y de las guías (Ejercicio $n.k$ = ejercicio $k$ del Capítulo $n$); las referencias remiten a las notas (\\url{%s}). Las sugerencias indican una idea o el resultado que conviene usar, no una solución completa. Solo figuran los ejercicios que tienen sugerencia.}' % REPO,
           '\\bigskip']
 for num, tit, _ in caps:
     if num not in por_cap:
