@@ -6131,7 +6131,10 @@ de \emph{emparejamientos} (\emph{matching}) entre dos poblaciones. En este conte
 $\pi\in\Pi(\mu,\nu)$ no representa el movimiento de masa sino una regla de
 asociación: la cantidad $\pi(A\times B)$ indica la fracción de agentes de
 tipo $x\in A$ emparejados con agentes de tipo $y\in B$. Si $U(x,y)$ denota
-la utilidad total generada por la asociación de los tipos $x$ e $y$, el
+la utilidad total generada por la asociación de los tipos $x$ e $y$, y
+suponemos que la utilidad es \emph{transferible} —los dos miembros de una
+pareja pueden repartirse $U(x,y)$ de cualquier manera, por ejemplo mediante
+pagos en dinero, de modo que para la eficiencia solo importa el total—, el
 matching socialmente óptimo resuelve
 \[
 \max_{\pi\in\Pi(\mu,\nu)}\int U(x,y)\,d\pi(x,y),
@@ -6160,7 +6163,21 @@ efectivamente formadas agotan exactamente ese valor, de modo que $\varphi(x)$
 y $\psi(y)$ pueden interpretarse como la parte del excedente total que captura
 cada agente. Estas son precisamente las condiciones de optimalidad del
 problema de transporte y su dual con costo $c=-U$, lo que establece la
-equivalencia entre matching estable y transporte óptimo.
+equivalencia entre matching estable y transporte óptimo en el modelo con
+utilidad transferible. En el caso discreto, con finitos agentes de cada lado,
+este es el \emph{juego de asignación} de Shapley y
+Shubik~\cite{ShapleyShubik1971}, que probaron que los repartos estables (el
+\emph{núcleo} del juego) son exactamente las soluciones del problema dual del
+programa lineal de asignación óptima.
+
+La hipótesis de utilidad transferible es esencial. En el problema de los
+\emph{matrimonios estables} de Gale y Shapley~\cite{GaleShapley1962} no hay
+pagos: cada agente tiene un orden de preferencias sobre sus posibles parejas,
+y un matching es estable si ningún par de agentes se prefiere mutuamente a
+sus parejas actuales. Gale y Shapley probaron que siempre existe un matching
+estable y lo construyeron con un algoritmo de propuestas sucesivas; pero el
+problema es de naturaleza combinatoria y sus herramientas son distintas de
+las del transporte óptimo.
 
 Los mismos potenciales admiten además una interpretación como precios de
 mercado. Supongamos que $x$ representa un tipo de bien e $y$ un tipo de
@@ -6176,7 +6193,9 @@ con la oferta $\mu$ y la de consumidores con $\nu$. Esta compatibilidad se
 traduce exactamente en que el plan inducido por las decisiones individuales
 satisfaga las condiciones de optimalidad del transporte óptimo, y los
 potenciales $\varphi$ y $\psi$ actúan como los precios que coordinan a los
-agentes y hacen posible el equilibrio.
+agentes y hacen posible el equilibrio. (En el caso discreto, la
+correspondencia entre repartos estables y precios de equilibrio también está
+en~\cite{ShapleyShubik1971}.)
 
 En ambas interpretaciones, la estructura matemática del transporte óptimo
 —una desigualdad global y una igualdad sobre el soporte del plan óptimo—
@@ -6239,7 +6258,7 @@ y las condiciones de optimalidad relacionan el soporte del plan óptimo con la
 saturación de la desigualdad dual. La principal diferencia es que ahora
 contamos con un potencial por cada marginal.
 
-\section{Transporte óptimo y discretización}
+\section{Transporte óptimo y discretización}\label{sec.discretizacion}
 
 Una pregunta natural, especialmente para quienes trabajan con datos, es la
 siguiente: en la práctica las medidas $\mu$ y $\nu$ se conocen a través de
@@ -6269,7 +6288,11 @@ sentido $\pi_{n,m}$ converge cuando $n,m\to\infty$, es necesario saber
 que existe un plan óptimo continuo $\pi^*$ entre $\mu$ y $\nu$, que
 $\pi^*$ es único bajo hipótesis adecuadas, y que la convergencia ocurre
 en una topología razonable. Sin ese marco, la discretización es un
-procedimiento ad hoc sin garantías de consistencia.
+procedimiento ad hoc sin garantías de consistencia. (La primera pieza de
+ese marco —que las medidas empíricas convergen casi seguramente a $\mu$ y
+$\nu$ en distancia de Wasserstein, y con ellas los costos $W_p(\mu_n,\nu_m)$— es el
+Corolario~\ref{cor.Wp.empirica} para medidas con soporte compacto, y la
+Observación~\ref{obs.Wp.empirica.general} en general.)
 
 \medskip
 \emph{La estructura del objeto continuo guía la aproximación discreta.}
@@ -8054,7 +8077,14 @@ simplifica a $A=\Sigma_0^{-1/2}\Sigma_1^{1/2}$, pero en general el orden de
 los factores importa: la expresión de $A$ es la única «media geométrica» de
 $\Sigma_0^{-1}$ y $\Sigma_1$ que resulta simétrica. Esta fórmula se usa, por ejemplo, para comparar distribuciones
 en estadística mediante sus dos primeros momentos: $W_2$ entre las gaussianas
-con esas medias y covarianzas es la llamada distancia de Bures--Wasserstein.
+con esas medias y covarianzas es la llamada distancia de Bures--Wasserstein
+(la fórmula con medias arbitrarias es \eqref{eq:W2.gauss}, en el
+Capítulo~\ref{cap.Wp}). Un ejemplo muy difundido es la \emph{Fréchet
+Inception Distance} (FID)~\cite{Heusel2017}, con la que se evalúan los
+modelos generativos de imágenes: se calculan las medias y las covarianzas
+empíricas de las representaciones que una red neuronal fija asigna a las
+imágenes reales y a las generadas, y la FID es exactamente $W_2^2$ entre las
+dos gaussianas con esos parámetros.
 \end{obs}
 
 %──────────────────────────────────────────────────────────────────────────────
@@ -8658,7 +8688,7 @@ Demostraremos completamente la implicación directa, que es la que se usa en
 el resto de las notas, y la recíproca en el caso en que todas las medidas
 están concentradas en un compacto fijo, donde la condición sobre los momentos
 es automática. La recíproca en general requiere un argumento adicional de
-truncamiento; puede consultarse en~\cite[Theorem~6.9]{Villani2003}
+truncamiento; puede consultarse en~\cite[Theorem~6.9]{Villani2009}
 o~\cite[Theorem~5.11]{Santambrogio}.
 
 Necesitaremos una parte del llamado \emph{teorema de Portmanteau}, que
@@ -8849,6 +8879,123 @@ hay masa que pueda escaparse al infinito. En $\mathcal P_p(\R^d)$ general
 ese escape es posible —por ejemplo $\mu_n=(1-\tfrac1n)\delta_0+\tfrac1n\delta_{n}$
 converge débilmente a $\delta_0$ pero $W_1(\mu_n,\delta_0)=1$— y la condición
 sobre los momentos es exactamente lo que lo impide.
+\end{obs}
+
+\subsection*{Medidas empíricas}
+
+El teorema anterior responde a la pregunta que quedó abierta en la
+Sección~\ref{sec.discretizacion}: si una medida $\mu$ se conoce solo a
+través de una muestra, ¿en qué sentido la muestra la aproxima? Sean
+$\mathbf X_1,\mathbf X_2,\dots$ variables aleatorias independientes con ley
+$\mu$, definidas en un espacio de probabilidad $(\Omega,\A,\P)$. La
+\emph{medida empírica}
+\[
+\mu_n=\frac1n\sum_{i=1}^n\delta_{\mathbf X_i}
+\]
+es una medida de probabilidad aleatoria: para cada $\omega\in\Omega$,
+$\mu_n^\omega=\frac1n\sum_{i=1}^n\delta_{\mathbf X_i(\omega)}$, y para toda
+$f$ acotada y medible, $\int f\,d\mu_n=\frac1n\sum_{i=1}^nf(\mathbf X_i)$ es
+el promedio de $n$ variables aleatorias independientes con esperanza
+$\int f\,d\mu$.
+
+\begin{cor}[Consistencia de la medida empírica]\label{cor.Wp.empirica}
+Sea $\mu\in\mathcal P(\R^d)$ concentrada en un compacto $K$, y sea $\mu_n$ la
+medida empírica de una sucesión de variables aleatorias independientes con
+ley $\mu$. Entonces, con probabilidad $1$,
+\[
+\mu_n\rightharpoonup\mu
+\qquad\text{y}\qquad
+W_p(\mu_n,\mu)\longrightarrow0\quad\text{para todo }p\ge1.
+\]
+En consecuencia, si $\nu$ está concentrada en un compacto y $\nu_m$ es la
+medida empírica de otra sucesión de variables aleatorias independientes con
+ley $\nu$, entonces, con probabilidad $1$,
+$W_p(\mu_n,\nu_m)\to W_p(\mu,\nu)$ cuando $n,m\to\infty$.
+\end{cor}
+
+\begin{proof}
+El espacio $C(K)$ de funciones continuas en $K$ con la norma del supremo es
+separable: por el teorema de Stone--Weierstrass, las restricciones a $K$ de
+los polinomios con coeficientes racionales son densas. Sea
+$\{f_k\}_{k\ge1}$ una sucesión densa. Para cada $k$, las variables
+$f_k(\mathbf X_i)$ son independientes, acotadas y con esperanza
+$\int f_k\,d\mu$; por la ley fuerte de los grandes números existe un
+conjunto $\Omega_k$ con $\P(\Omega_k)=1$ en el que
+$\int f_k\,d\mu_n\to\int f_k\,d\mu$. Sea $\Omega'$ la intersección de los
+$\Omega_k$ y del conjunto $\{\mathbf X_i\in K\text{ para todo }i\}$; como es
+una intersección numerable de conjuntos de probabilidad $1$,
+$\P(\Omega')=1$.
+
+Fijemos $\omega\in\Omega'$. Todas las medidas $\mu_n^\omega$ y $\mu$ están
+concentradas en $K$, de modo que $\int f\,d\mu_n^\omega$ y $\int f\,d\mu$
+dependen solo de la restricción de $f$ a $K$. Dadas $f\in C_b(\R^d)$ y
+$\eta>0$, elegimos $k$ con $\sup_K|f-f_k|<\eta$, y entonces
+\[
+\Bigl|\int f\,d\mu_n^\omega-\int f\,d\mu\Bigr|
+\le2\eta+\Bigl|\int f_k\,d\mu_n^\omega-\int f_k\,d\mu\Bigr|,
+\]
+cuyo $\limsup$ es a lo sumo $2\eta$. Como $\eta$ es arbitrario,
+$\mu_n^\omega\rightharpoonup\mu$. Como además todas las medidas están
+concentradas en $K$, que está contenido en una bola cerrada, la recíproca en
+compactos del Teorema~\ref{teo.Wp.convergencia} da
+$W_p(\mu_n^\omega,\mu)\to0$ para todo $p\ge1$.
+
+La última afirmación se sigue de la desigualdad triangular para $W_p$
+(Sección~\ref{sec.Wp.distancia}):
+$|W_p(\mu_n,\nu_m)-W_p(\mu,\nu)|\le W_p(\mu_n,\mu)+W_p(\nu_m,\nu)$.
+\end{proof}
+
+\begin{obs}[El caso general]\label{obs.Wp.empirica.general}
+Sin la hipótesis de soporte compacto, la convergencia débil
+$\mu_n\rightharpoonup\mu$ con probabilidad $1$ sigue valiendo para toda
+$\mu\in\mathcal P(\R^d)$ —es el \emph{teorema de Varadarajan}; véase
+\cite[Theorem~11.4.1]{Dudley2002}—, y si $\mu\in\mathcal P_p(\R^d)$, la ley
+fuerte de los grandes números aplicada a $|\mathbf X_i|^p$ da
+$\int|x|^p\,d\mu_n\to\int|x|^p\,d\mu$ con probabilidad $1$. El
+Teorema~\ref{teo.Wp.convergencia} en su versión general da entonces
+$W_p(\mu_n,\mu)\to0$ con probabilidad $1$.
+\end{obs}
+
+\begin{obs}[Velocidad de convergencia y maldición de la
+dimensión]\label{obs.Wp.tasas}
+El Corolario~\ref{cor.Wp.empirica} no dice nada sobre la \emph{velocidad} de
+la convergencia, y la velocidad depende de manera dramática de la
+dimensión. Sea $\mu$ concentrada en un compacto de $\R^d$.
+\begin{itemize}
+\item En dimensión $d=1$, $\E\,W_1(\mu_n,\mu)\le Cn^{-1/2}$: es una
+consecuencia sencilla de la fórmula del área del
+Ejemplo~\ref{ej.Wp.1D} (Ejercicio~\ref{ejer.Wp.empirica.1D}).
+\item En general, Fournier y Guillin~\cite[Theorem~1]{FournierGuillin2015}
+probaron que
+\[
+\E\,W_p^p(\mu_n,\mu)\le C\cdot
+\begin{cases}
+n^{-1/2}&\text{si }d<2p,\\
+n^{-1/2}\log(1+n)&\text{si }d=2p,\\
+n^{-p/d}&\text{si }d>2p,
+\end{cases}
+\]
+con $C$ dependiente de $d$, $p$ y del soporte de $\mu$; en particular
+$\E\,W_p(\mu_n,\mu)\le C\,n^{-1/d}$ si $d>2p$. Para $p=1$ y $d\ge3$ la
+cota $n^{-1/d}$ se remonta a Dudley~\cite{Dudley1969}, quien observó también
+que no puede mejorarse cuando $\mu$ es absolutamente continua: en ese caso
+$\E\,W_1(\mu_n,\mu)\ge c\,n^{-1/d}$ (véase la introducción
+de~\cite{WeedBach2019}).
+\item El caso $d=2$, $p=1$ es crítico. Para dos muestras independientes de
+$n$ puntos uniformes en el cuadrado unidad, Ajtai, Komlós y
+Tusnády~\cite{AKT1984} probaron que el costo del emparejamiento óptimo entre
+ellas es, con probabilidad tendiendo a $1$, del orden de
+$\sqrt{n\log n}$; dividiendo por $n$, la distancia $W_1$ entre las dos
+medidas empíricas es del orden de $\sqrt{\log n/n}$.
+\end{itemize}
+El exponente $1/d$ es la \emph{maldición de la dimensión}: para reducir el
+error a la mitad en dimensión $10$ hacen falta del orden de $2^{10}\approx1000$
+veces más puntos. Weed y Bach~\cite{WeedBach2019} mostraron que lo que
+determina el exponente no es la dimensión del ambiente sino una dimensión
+\emph{intrínseca} de $\mu$, de modo que las medidas concentradas cerca de
+conjuntos de dimensión baja se estiman más rápido. El
+Ejercicio~\ref{ejc.Wp.muestras} propone observar estos exponentes
+numéricamente.
 \end{obs}
 
 %──────────────────────────────────────────────────────────────────────────────
@@ -9206,11 +9353,21 @@ Kantorovich--Rubinstein}— en el espacio de medidas con signo de masa total
 nula y primer momento finito. Esta es la forma en que $W_1$ interviene en
 aplicaciones donde interesa comparar una medida empírica con un modelo, o
 entrenar un modelo generativo para que su ley se acerque a la de los datos:
-en ambos casos el supremo sobre funciones $1$-Lipschitz se aproxima
-restringiéndolo a una familia paramétrica de funciones (por ejemplo, redes
-neuronales con pesos acotados), y la distancia se estima sin calcular ningún
-plan de transporte. Volveremos sobre el cálculo efectivo de distancias de
-Wasserstein en el Capítulo~\ref{cap.Sinkhorn}.
+en ambos casos el supremo sobre funciones $1$-Lipschitz se reemplaza por un
+supremo sobre una familia paramétrica de funciones (por ejemplo, redes
+neuronales), y la distancia se estima sin calcular ningún plan de
+transporte. Es la idea de las \emph{GAN de Wasserstein}~\cite{Arjovsky2017}.
+Conviene tener presentes dos limitaciones. Primero, si todas las funciones
+de la familia son $1$-Lipschitz, el supremo restringido es solo una
+\emph{cota inferior} de $W_1(\mu,\nu)$, y en general no se sabe cuánto se
+pierde. Segundo, garantizar la condición de Lipschitz es justamente la
+dificultad: en~\cite{Arjovsky2017} se acotan los pesos de la red a un
+conjunto compacto, lo que hace a todas las funciones $K$-Lipschitz para una
+constante $K$ que no se controla (y entonces se estima, a lo sumo,
+$K\,W_1$), y la alternativa más usada, penalizar en el objetivo la norma
+del gradiente de la función respecto de su argumento~\cite{Gulrajani2017},
+impone la restricción solo de manera aproximada. Volveremos sobre el cálculo
+efectivo de distancias de Wasserstein en el Capítulo~\ref{cap.Sinkhorn}.
 \end{obs}
 
 %──────────────────────────────────────────────────────────────────────────────
@@ -9403,6 +9560,32 @@ el Ejercicio~\ref{ejer.bar.no.convexa.geodesica}.
 \end{enumerate}
 \end{ejercicio}
 
+\begin{ejercicio}[Velocidad de convergencia en dimensión uno]\label{ejer.Wp.empirica.1D}
+Sea $\mu\in\mathcal P(\R)$ concentrada en $[-R,R]$, con función de
+distribución $F$, y sea $\mu_n$ la medida empírica de $n$ variables
+aleatorias independientes con ley $\mu$
+(Corolario~\ref{cor.Wp.empirica}), con función de distribución $F_n$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que, para cada $x\in\R$, $nF_n(x)$ tiene distribución binomial
+de parámetros $n$ y $F(x)$, y deducir que
+\[
+\E\,|F_n(x)-F(x)|\le\sqrt{\frac{F(x)\bigl(1-F(x)\bigr)}{n}}.
+\]
+\item Usando la fórmula del área del Ejemplo~\ref{ej.Wp.1D}, probar que
+\[
+\E\,W_1(\mu_n,\mu)\le\frac1{\sqrt n}\int_{-R}^R\sqrt{F(x)\bigl(1-F(x)\bigr)}\,dx
+\le\frac R{\sqrt n}.
+\]
+\item Calcular la constante para la distribución uniforme en $[0,1]$.
+\item Para $p>1$, probar la desigualdad
+\[
+W_p^p(\mu_n,\mu)\le(2R)^{p-1}\,W_1(\mu_n,\mu)
+\]
+y deducir que $\E\,W_p^p(\mu_n,\mu)\le C\,n^{-1/2}$. Comparar con el caso
+$d<2p$ de la Observación~\ref{obs.Wp.tasas}.
+\end{enumerate}
+\end{ejercicio}
+
 \subsection*{Ejercicios computacionales}
 
 Los ejercicios siguientes se resuelven con el cuaderno \emph{Distancias de
@@ -9452,6 +9635,20 @@ obtenidos con la función $1$-Lipschitz $\varphi$ de la Sección~6 del cuaderno:
 no tienen por qué coincidir (¿por qué?), pero el valor dual
 $\sum_ia_iu_i+\sum_jb_jv_j$ debe ser $W_1(\mu,\nu)$. ¿Es $v=-u$ sobre los
 puntos comunes a ambos soportes? ¿Por qué no necesariamente?
+\end{ejercicio}
+
+\begin{ejercicio}[Medidas empíricas y dimensión]\label{ejc.Wp.muestras}
+Sea $\mu$ la distribución uniforme en $[0,1]^d$. Para $d\in\{1,2,5,10\}$ y
+$n\in\{50,100,200,400,800\}$, generar dos muestras independientes de $n$
+puntos con ley $\mu$ y calcular la distancia $W_1$ entre sus medidas
+empíricas con \texttt{ot.emd2} y el costo euclídeo
+(\texttt{ot.dist(X, Y, metric='euclidean')}). Repetir el experimento al
+menos $10$ veces para cada par $(d,n)$, graficar en escala log-log la media
+en función de $n$, con barras de un desvío estándar, y estimar la pendiente
+de cada recta. Comparar con la Observación~\ref{obs.Wp.tasas}: ¿qué
+pendiente se espera para cada $d$? ¿Por qué es legítimo comparar dos
+muestras entre sí en lugar de una muestra con $\mu$? ¿Cuántos puntos harían
+falta en $d=10$ para reducir el error a la mitad?
 \end{ejercicio}
 
 \chapter{La desigualdad de Brunn--Minkowski}\label{cap.BM}
@@ -11109,6 +11306,130 @@ Proposición~\ref{prop:mejora-potenciales}, y el funcional dual entrópico
 lineal del Capítulo~\ref{cap.PL}: en la Sección~\ref{sec.eps.limites} veremos
 que cuando $\varepsilon\to0$ una cosa converge a la otra.
 
+\subsection*{Derivadas del costo entrópico}
+
+En las aplicaciones, $\mathrm{OT}_\varepsilon$ se usa a menudo como una
+función que se quiere \emph{optimizar} respecto de las posiciones de los
+puntos o de los pesos, y para eso hace falta derivarlo. Fijemos $a$, $b$ y
+$\varepsilon$, y miremos el costo entrópico y el plan entrópico como
+funciones de la matriz de costos:
+\[
+F(C)=\min_{\pi\in\Pi(a,b)}\Bigl\{\langle C,\pi\rangle+\varepsilon\,\mathrm{KL}(\pi\,|\,a\otimes b)\Bigr\},
+\qquad
+\pi^\varepsilon(C)=\text{el minimizador}.
+\]
+
+\begin{prop}[Derivadas del costo entrópico]\label{prop.OTeps.derivada}
+La función $F\colon\R^{n\times m}\to\R$ es cóncava y diferenciable, con
+\[
+\frac{\partial F}{\partial c_{ij}}(C)=\pi^\varepsilon_{ij}(C)
+\qquad\text{para todo }i,j.
+\]
+En consecuencia, si $c_{ij}=c(x_i,y_j)$ con $x_i,y_j\in\R^d$ y
+$c\colon\R^d\times\R^d\to\R$ de clase $C^1$ en la primera variable, entonces
+$\mathrm{OT}_\varepsilon(a,b)$ es una función diferenciable de las
+posiciones $x_1,\dots,x_n$, y
+\[
+\nabla_{x_i}\mathrm{OT}_\varepsilon(a,b)=\sum_{j=1}^m\pi^\varepsilon_{ij}\,\nabla_xc(x_i,y_j).
+\]
+En particular, para $c(x,y)=|x-y|^2$,
+\[
+\nabla_{x_i}\mathrm{OT}_\varepsilon(a,b)=2a_i\bigl(x_i-\widehat T(x_i)\bigr),
+\qquad
+\widehat T(x_i)=\frac1{a_i}\sum_{j=1}^m\pi^\varepsilon_{ij}\,y_j,
+\]
+donde $\widehat T(x_i)$, el promedio de los destinos de la masa que sale de
+$x_i$, es la \emph{proyección baricéntrica} del plan entrópico.
+\end{prop}
+
+\begin{proof}
+Escribamos $G_C(\pi)=\langle C,\pi\rangle+\varepsilon\mathrm{KL}(\pi\,|\,a\otimes b)$
+y $\pi_C=\pi^\varepsilon(C)$. Para cada $\pi$ fijo, $C\mapsto G_C(\pi)$ es
+afín, y $F$ es el ínfimo de esas funciones afines: es cóncava.
+
+\medskip
+\textbf{Paso 1: dos desigualdades.} Para matrices $C$, $C'$, comparando
+$\pi_{C'}$ con $\pi_C$ en el problema para $C'$,
+\[
+F(C')\le G_{C'}(\pi_C)=F(C)+\langle C'-C,\pi_C\rangle,
+\]
+y, intercambiando los papeles,
+$F(C)\le F(C')+\langle C-C',\pi_{C'}\rangle$. Juntando ambas,
+\[
+0\le F(C)+\langle C'-C,\pi_C\rangle-F(C')
+\le\langle C'-C,\pi_C-\pi_{C'}\rangle
+\le\|C'-C\|_\infty\,\|\pi_C-\pi_{C'}\|_1,
+\]
+donde $\|\cdot\|_1$ es la suma de los valores absolutos de las entradas.
+
+\medskip
+\textbf{Paso 2: continuidad del plan.} Si $C_k\to C$, la sucesión
+$\pi_{C_k}$ está en el compacto $\Pi(a,b)$. Si $\bar\pi$ es un punto límite
+a lo largo de una subsucesión, para todo $\pi\in\Pi(a,b)$ vale
+$G_{C_k}(\pi_{C_k})\le G_{C_k}(\pi)$, y pasando al límite (la entropía
+relativa es continua en $\Pi(a,b)$ por el Lema~\ref{lema.KL})
+$G_C(\bar\pi)\le G_C(\pi)$. Luego $\bar\pi$ es un minimizador para $C$, y
+por la unicidad (Proposición~\ref{prop.OTeps.existencia}) $\bar\pi=\pi_C$.
+Como todo punto límite es $\pi_C$, se tiene $\pi_{C_k}\to\pi_C$.
+
+\medskip
+\textbf{Paso 3: conclusión.} Por los pasos anteriores,
+$F(C')=F(C)+\langle C'-C,\pi_C\rangle+o(\|C'-C\|_\infty)$, que es la
+diferenciabilidad de $F$ en $C$ con derivadas parciales $(\pi_C)_{ij}$. La
+fórmula para las posiciones es la regla de la cadena aplicada a la
+composición de $F$ con $(x_1,\dots,x_n)\mapsto\bigl(c(x_i,y_j)\bigr)_{ij}$,
+que es de clase $C^1$; y para $c(x,y)=|x-y|^2$ es
+$\nabla_xc(x_i,y_j)=2(x_i-y_j)$, de modo que
+$\sum_j\pi^\varepsilon_{ij}\,2(x_i-y_j)=2\bigl(a_ix_i-\sum_j\pi^\varepsilon_{ij}y_j\bigr)$,
+pues $\sum_j\pi^\varepsilon_{ij}=a_i$.
+\end{proof}
+
+El argumento es el del llamado teorema de la envolvente (o de Danskin): la
+derivada de un mínimo respecto de un parámetro es la derivada parcial del
+funcional evaluada en el minimizador, siempre que este sea único y dependa
+continuamente del parámetro. Para el problema sin regularizar, la
+concavidad y la primera desigualdad del Paso 1 siguen valiendo, pero el plan
+óptimo puede no ser único y entonces $C\mapsto\mathrm{OT}(a,b)$ puede no ser
+diferenciable (Ejercicio~\ref{ejer.OTeps.derivadas}); la regularización
+entrópica, además de hacer el cálculo más rápido, hace al costo
+diferenciable. La derivada respecto de los pesos es el potencial entrópico
+$\varphi^\varepsilon$, salvo una constante (Ejercicio~\ref{ejer.OTeps.derivadas}).
+
+\begin{obs}[El algoritmo de soporte libre como paso de gradiente]\label{obs.soporte.libre}
+Consideremos el problema de baricentro del Capítulo~\ref{cap.baricentros}
+restringido a medidas con soporte en $n$ puntos libres $z_1,\dots,z_n\in\R^d$
+y pesos fijos $b_1,\dots,b_n$: dadas medidas discretas
+$\mu_k=\sum_ja^k_j\delta_{x^k_j}$, $k=1,\dots,N$, se buscan posiciones que
+minimicen
+\[
+G(z_1,\dots,z_n)=\sum_{k=1}^N\lambda_k\,\mathrm{OT}^{(k)}_\varepsilon,
+\]
+donde $\mathrm{OT}^{(k)}_\varepsilon$ es el costo entrópico entre
+$\sum_ib_i\delta_{z_i}$ y $\mu_k$ con el costo $|z-x|^2$. Si $\pi^k$ es el
+plan entrópico correspondiente y
+$\widehat T_k(z_i)=\frac1{b_i}\sum_j\pi^k_{ij}x^k_j$, la
+Proposición~\ref{prop.OTeps.derivada} da
+\[
+\nabla_{z_i}G=2b_i\Bigl(z_i-\sum_{k=1}^N\lambda_k\widehat T_k(z_i)\Bigr),
+\qquad\text{es decir,}\qquad
+\sum_{k=1}^N\lambda_k\widehat T_k(z_i)=z_i-\frac1{2b_i}\,\nabla_{z_i}G.
+\]
+Así, la actualización $z_i\leftarrow\sum_k\lambda_k\widehat T_k(z_i)$ del
+algoritmo de soporte libre (que el cuaderno \emph{Baricentros de
+Wasserstein} usa con planes exactos) es exactamente un paso de descenso por
+gradiente precondicionado, $z_i\leftarrow z_i-\frac1{2b_i}\nabla_{z_i}G$;
+equivalentemente, un paso de longitud $\frac12$ del método de gradiente
+para $G$ respecto del producto interno $\sum_ib_i\,u_i\cdot v_i$ (con pesos
+uniformes $b_i=1/n$, un paso de gradiente usual de longitud $n/2$). Sus
+puntos fijos son los puntos críticos de $G$: la versión
+discreta del criterio $\sum_k\lambda_kT_k=\id$ de la
+Proposición~\ref{prop.bar.criterio}. Con planes exactos ($\varepsilon=0$) la
+misma cuenta vale en los puntos donde los planes óptimos son únicos
+(Ejercicio~\ref{ejer.OTeps.derivadas}). Como $G$ no es convexa en las
+posiciones, distintas inicializaciones pueden llevar a distintos puntos
+fijos.
+\end{obs}
+
 %──────────────────────────────────────────────────────────────────────────────
 \section{El algoritmo de Sinkhorn}\label{sec.sinkhorn}
 %──────────────────────────────────────────────────────────────────────────────
@@ -11289,7 +11610,13 @@ que en la práctica se maneja combinando valores decrecientes de
 $\varepsilon$ y realizando los cálculos en el dominio logarítmico, es decir,
 directamente sobre $(\varphi,\psi)$ mediante \eqref{eq:sinkhorn.pot}, para
 evitar los desbordamientos numéricos de $e^{-c_{ij}/\varepsilon}$. Véase
-\cite[Chapter~4]{PeyreCuturi2019}.
+\cite[Chapter~4]{PeyreCuturi2019}. Si lo que se busca no es el plan
+entrópico sino aproximar $\mathrm{OT}(a,b)$ con un error aditivo prescripto,
+eligiendo $\varepsilon$ en función de ese error, Altschuler, Weed y
+Rigollet~\cite{AltschulerWeedRigollet2017} probaron que el algoritmo de
+Sinkhorn (seguido de un redondeo que lleva el plan aproximado a
+$\Pi(a,b)$) lo logra, para cada error fijo, en tiempo casi lineal en el
+tamaño de la matriz de costos.
 \end{obs}
 
 %──────────────────────────────────────────────────────────────────────────────
@@ -11394,6 +11721,21 @@ Todo punto límite de $\pi^\varepsilon$ es $\pi^0$; por compacidad,
 $\pi^\varepsilon\to\pi^0$.
 \end{proof}
 
+La diferencia del ítem 1 se descompone en dos términos que se comportan de
+manera muy distinta:
+$\mathrm{OT}_\varepsilon(a,b)-\mathrm{OT}(a,b)
+=\varepsilon\,\mathrm{KL}(\pi^\varepsilon\,|\,a\otimes b)
++\bigl(\langle C,\pi^\varepsilon\rangle-\mathrm{OT}(a,b)\bigr)$. Por el
+ítem 2 y la continuidad de la entropía relativa, el primer término es
+$\varepsilon\,\mathrm{KL}(\pi^0\,|\,a\otimes b)+o(\varepsilon)$; el segundo,
+en cambio, tiende a cero exponencialmente rápido en $1/\varepsilon$, porque
+$\pi^\varepsilon$ converge a $\pi^0$ exponencialmente rápido
+(Cominetti y San Martín~\cite{Cominetti1994}; véase \cite{Weed2018} para
+una versión con constantes explícitas). Así, el costo
+$\langle C,\pi^\varepsilon\rangle$ del plan entrópico aproxima
+$\mathrm{OT}(a,b)$ mucho mejor que el valor regularizado
+$\mathrm{OT}_\varepsilon(a,b)$.
+
 \begin{obs}[Los potenciales entrópicos convergen a potenciales de Kantorovich]\label{obs.potenciales.eps}
 El Teorema~\ref{teo.eps.cero} tiene una consecuencia para el problema dual
 que cierra el círculo con el Capítulo~\ref{cap.dual.discreto}. Normalicemos
@@ -11441,6 +11783,47 @@ marginales $a$ y $b$ en los tiempos inicial y final: este es el
 formulación de Kantorovich en más de una década. La relación entre ambos
 problemas y el límite $\varepsilon\to0$ como límite de temperatura cero
 están desarrollados en~\cite{Leonard2014}.
+\end{obs}
+
+\begin{obs}[El sesgo de $\mathrm{OT}_\varepsilon$ y la divergencia de
+Sinkhorn]\label{obs.divergencia.sinkhorn}
+En las aplicaciones, $\mathrm{OT}_\varepsilon$ suele usarse como medida de
+discrepancia entre dos medidas discretas, posiblemente soportadas en puntos
+distintos; escribimos $\mathrm{OT}_\varepsilon(\alpha,\beta)$, para
+$\alpha=\sum_ia_i\delta_{x_i}$ y $\beta=\sum_jb_j\delta_{y_j}$, con la
+matriz de costos $c(x_i,y_j)$. Para $\varepsilon>0$ no es una distancia: si
+$c(x,x)=0$ y $c(x,y)>0$ para $x\ne y$, entonces $\mathrm{OT}(\alpha,\alpha)=0$
+pero $\mathrm{OT}_\varepsilon(\alpha,\alpha)>0$ cuando $\alpha$ tiene al menos
+dos átomos (Ejercicio~\ref{ejer.sinkhorn.sesgo}), y en general el mínimo de
+$\beta\mapsto\mathrm{OT}_\varepsilon(\alpha,\beta)$ no se alcanza en
+$\beta=\alpha$. Ajustar un modelo minimizando $\mathrm{OT}_\varepsilon$
+produce entonces estimadores sesgados. La corrección usual es la
+\emph{divergencia de Sinkhorn}~\cite{GenevayPeyreCuturi2018,Feydy2019}
+\[
+S_\varepsilon(\alpha,\beta)
+=\mathrm{OT}_\varepsilon(\alpha,\beta)
+-\tfrac12\,\mathrm{OT}_\varepsilon(\alpha,\alpha)
+-\tfrac12\,\mathrm{OT}_\varepsilon(\beta,\beta),
+\]
+que se anula en $\beta=\alpha$. Feydy y
+coautores~\cite[Theorem~1]{Feydy2019} probaron que si las medidas están
+concentradas en un compacto de $\R^d$ y $c(x,y)=|x-y|$ o $c(x,y)=|x-y|^2$
+(más en general, bajo hipótesis sobre el núcleo $e^{-c/\varepsilon}$), entonces
+$S_\varepsilon(\alpha,\beta)\ge0$, con igualdad solo si $\alpha=\beta$;
+$S_\varepsilon$ es convexa en cada variable; y $S_\varepsilon(\alpha_n,\alpha)\to0$
+si y solo si $\alpha_n\rightharpoonup\alpha$ (el teorema se enuncia para
+medidas de probabilidad arbitrarias en el compacto, con la versión continua
+de $\mathrm{OT}_\varepsilon$). Además, $S_\varepsilon$ tiende al transporte
+óptimo cuando $\varepsilon\to0$ y, cuando $\varepsilon\to\infty$, a la cantidad
+\[
+\tfrac12\|\alpha-\beta\|_{-c}^2=\sum_{i,j}a_ib_jc(x_i,y_j)
+-\tfrac12\sum_{i,k}a_ia_kc(x_i,x_k)-\tfrac12\sum_{j,l}b_jb_lc(y_j,y_l),
+\]
+que es la mitad del cuadrado de una \emph{discrepancia máxima de medias}
+(MMD) con núcleo $-c$. Para $c(x,y)=|x-y|$ es la distancia de energía, que
+separa medidas; para $c(x,y)=|x-y|^2$ se reduce a $|m_\alpha-m_\beta|^2$, que
+solo compara las medias (véase el Ejercicio~\ref{ejer.sinkhorn.sesgo} para la
+cuenta de ambos límites en el caso discreto).
 \end{obs}
 
 %──────────────────────────────────────────────────────────────────────────────
@@ -11772,6 +12155,67 @@ aritmética?
 una grilla que contenga los cuatro candidatos $(\pm\frac12,\pm\frac12)$),
 probar que el baricentro entrópico es único para todo $\ve>0$ y simétrico
 respecto de los dos ejes, y describir su límite cuando $\ve\to0$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[Derivadas del costo de transporte]\label{ejer.OTeps.derivadas}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Sin regularizar.} Escribamos $\mathrm{OT}_C(a,b)$ para indicar la
+dependencia en la matriz de costos. Probar que, para $a,b$ fijos,
+$C\mapsto\mathrm{OT}_C(a,b)$ es cóncava y que, si $\pi^0$ es un plan óptimo para $C$,
+entonces $\mathrm{OT}_{C'}(a,b)\le\mathrm{OT}_C(a,b)+\langle C'-C,\pi^0\rangle$
+para toda $C'$. Probar que si el plan óptimo para $C$ es único, la función es
+diferenciable en $C$ con derivadas parciales $\pi^0_{ij}$. Para $n=m=2$,
+$a=b=(\frac12,\frac12)$, mostrar que
+$\mathrm{OT}_C(a,b)=\frac12\min\{c_{11}+c_{22},\,c_{12}+c_{21}\}$ y deducir que
+no es diferenciable en $C=0$.
+\item \emph{Respecto de los pesos.} Probar, sin usar la
+Proposición~\ref{prop.baricentro.entropico} y escribiendo
+$\mathrm{OT}_\ve(\cdot,b)$ como supremo de funciones afines, que, para $b$
+fijo, $a\mapsto\mathrm{OT}_\ve(a,b)$ es convexa en el conjunto de vectores de
+probabilidad con entradas positivas. Probar que si $h\in\R^n$ satisface
+$\sum_ih_i=0$, entonces
+\[
+\frac{d}{dt}\Big|_{t=0}\mathrm{OT}_\ve(a+th,b)=\sum_{i=1}^nh_i\varphi^\ve_i,
+\]
+es decir, el potencial entrópico $\varphi^\ve$ es el gradiente de
+$\mathrm{OT}_\ve$ respecto de $a$, salvo una constante (que no se ve en las
+direcciones con $\sum h_i=0$). \emph{Sugerencia:} el funcional dual
+$\mathcal D_\ve$ de \eqref{eq:dual.entropico} es afín en $a$ para
+$(\varphi,\psi)$ fijos; evaluarlo en los potenciales de $a$ y en los de
+$a+th$, como en el Paso 1 de la demostración de la
+Proposición~\ref{prop.OTeps.derivada}, y usar que $\sum_j\pi^\ve_{ij}=a_i$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[El sesgo entrópico]\label{ejer.sinkhorn.sesgo}
+Con la notación de la Observación~\ref{obs.divergencia.sinkhorn}, sea $c$
+un costo con $c(x,x)=0$ y $c(x,y)>0$ para $x\ne y$, y sea
+$\alpha=\sum_{i=1}^na_i\delta_{x_i}$ con $n\ge2$ puntos distintos y $a_i>0$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $0<\mathrm{OT}_\ve(\alpha,\alpha)\le\ve H(a)$, donde
+$H(a)=-\sum_ia_i\log a_i$. \emph{Sugerencia:} para la cota superior,
+comparar con el plan diagonal; para la inferior, usar que el plan entrópico
+tiene todas sus entradas positivas.
+\item Sean $\alpha=\frac12(\delta_{-1}+\delta_1)$ y
+$\beta_t=\frac12(\delta_{-t}+\delta_t)$ en $\R$, con $c(x,y)=|x-y|^2$.
+Usando la Proposición~\ref{prop.OTeps.derivada} (para la regla de la
+cadena basta la primera parte: las entradas de $C$ dependen de $t$) y la
+simetría del problema, probar que
+$\frac{d}{dt}\mathrm{OT}_\ve(\alpha,\beta_t)>0$ en $t=1$: el mínimo de
+$\beta\mapsto\mathrm{OT}_\ve(\alpha,\beta)$ no se alcanza en $\beta=\alpha$,
+y achicar el soporte de $\beta$ disminuye el costo.
+\item Probar que la divergencia de Sinkhorn $S_\ve$ no cambia si en su
+definición se reemplaza $\mathrm{OT}_\ve$ por el costo
+$\widetilde{\mathrm{OT}}_\ve$ con el regularizador de Peyré--Cuturi
+(Sección~\ref{sec.baricentros.entropicos}).
+\item Probar que $S_\ve(\alpha,\beta)\to\mathrm{OT}(\alpha,\beta)$ cuando
+$\ve\to0$, y que cuando $\ve\to\infty$
+\[
+S_\ve(\alpha,\beta)\to\sum_{i,j}a_ib_j\,c(x_i,y_j)
+-\frac12\sum_{i,k}a_ia_k\,c(x_i,x_k)-\frac12\sum_{j,l}b_jb_l\,c(y_j,y_l).
+\]
 \end{enumerate}
 \end{ejercicio}
 
@@ -13505,7 +13949,7 @@ Cuaderno & Capítulos & Ejercicios \\
 \emph{Monge y Kantorovich} & \ref{cap.intro}, \ref{cap.existencia} & \ref{ejc.MK.asignacion}--\ref{ejc.MK.debil} \\
 \emph{Dualidad} & \ref{cap.PL}--\ref{cap.dual} & \ref{ejc.dual.2x2}--\ref{ejc.dual.01} \\
 \emph{OT en dimensión uno} & \ref{cap.1D} & \ref{ejc.1D.explicitos}--\ref{ejc.1D.area} \\
-\emph{Distancias de Wasserstein} & \ref{cap.Wp} & \ref{ejc.Wp.escala}--\ref{ejc.Wp.KR} \\
+\emph{Distancias de Wasserstein} & \ref{cap.Wp} & \ref{ejc.Wp.escala}--\ref{ejc.Wp.muestras} \\
 \emph{Baricentros de Wasserstein} & \ref{cap.baricentros} & \ref{ejc.bar.1D}--\ref{ejc.bar.formas} \\
 \emph{Transporte entrópico y Sinkhorn} & \ref{cap.Sinkhorn} & \ref{ejc.eps.valores}--\ref{ejc.eps.unicidad} \\
 \hline

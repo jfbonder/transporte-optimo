@@ -374,6 +374,32 @@ el Ejercicio~\ref{N-ejer.bar.no.convexa.geodesica}.
 \end{enumerate}
 \end{ejercicio}
 
+\begin{ejercicio}[Velocidad de convergencia en dimensión uno]\label{ejer.Wp.empirica.1D}
+Sea $\mu\in\mathcal P(\R)$ concentrada en $[-R,R]$, con función de
+distribución $F$, y sea $\mu_n$ la medida empírica de $n$ variables
+aleatorias independientes con ley $\mu$
+(Corolario~\ref{N-cor.Wp.empirica}), con función de distribución $F_n$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que, para cada $x\in\R$, $nF_n(x)$ tiene distribución binomial
+de parámetros $n$ y $F(x)$, y deducir que
+\[
+\E\,|F_n(x)-F(x)|\le\sqrt{\frac{F(x)\bigl(1-F(x)\bigr)}{n}}.
+\]
+\item Usando la fórmula del área del Ejemplo~\ref{N-ej.Wp.1D}, probar que
+\[
+\E\,W_1(\mu_n,\mu)\le\frac1{\sqrt n}\int_{-R}^R\sqrt{F(x)\bigl(1-F(x)\bigr)}\,dx
+\le\frac R{\sqrt n}.
+\]
+\item Calcular la constante para la distribución uniforme en $[0,1]$.
+\item Para $p>1$, probar la desigualdad
+\[
+W_p^p(\mu_n,\mu)\le(2R)^{p-1}\,W_1(\mu_n,\mu)
+\]
+y deducir que $\E\,W_p^p(\mu_n,\mu)\le C\,n^{-1/2}$. Comparar con el caso
+$d<2p$ de la Observación~\ref{N-obs.Wp.tasas}.
+\end{enumerate}
+\end{ejercicio}
+
 \subsection*{Ejercicios computacionales}
 
 Los ejercicios siguientes se resuelven con el cuaderno \emph{Distancias de
@@ -423,6 +449,20 @@ obtenidos con la función $1$-Lipschitz $\varphi$ de la Sección~6 del cuaderno:
 no tienen por qué coincidir (¿por qué?), pero el valor dual
 $\sum_ia_iu_i+\sum_jb_jv_j$ debe ser $W_1(\mu,\nu)$. ¿Es $v=-u$ sobre los
 puntos comunes a ambos soportes? ¿Por qué no necesariamente?
+\end{ejercicio}
+
+\begin{ejercicio}[Medidas empíricas y dimensión]\label{ejc.Wp.muestras}
+Sea $\mu$ la distribución uniforme en $[0,1]^d$. Para $d\in\{1,2,5,10\}$ y
+$n\in\{50,100,200,400,800\}$, generar dos muestras independientes de $n$
+puntos con ley $\mu$ y calcular la distancia $W_1$ entre sus medidas
+empíricas con \texttt{ot.emd2} y el costo euclídeo
+(\texttt{ot.dist(X, Y, metric='euclidean')}). Repetir el experimento al
+menos $10$ veces para cada par $(d,n)$, graficar en escala log-log la media
+en función de $n$, con barras de un desvío estándar, y estimar la pendiente
+de cada recta. Comparar con la Observación~\ref{N-obs.Wp.tasas}: ¿qué
+pendiente se espera para cada $d$? ¿Por qué es legítimo comparar dos
+muestras entre sí en lugar de una muestra con $\mu$? ¿Cuántos puntos harían
+falta en $d=10$ para reducir el error a la mitad?
 \end{ejercicio}
 
 \bibliographystyle{plain}

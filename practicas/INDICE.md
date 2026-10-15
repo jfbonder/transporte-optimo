@@ -13,10 +13,10 @@ Generadas automáticamente desde `notas/Notas-TO.tex` con `herramientas/generar_
 | `practica-07.pdf` | Práctica 7 | Algunas interpretaciones y extensiones | 5 |
 | `practica-08.pdf` | Práctica 8 | Transporte óptimo en dimensión uno | 12 |
 | `practica-09.pdf` | Práctica 9 | El teorema de factorización polar de Brenier | 8 |
-| `practica-10.pdf` | Práctica 10 | Distancias de Wasserstein | 16 |
+| `practica-10.pdf` | Práctica 10 | Distancias de Wasserstein | 18 |
 | `practica-11.pdf` | Práctica 11 | La desigualdad de Brunn–Minkowski | 6 |
 | `practica-12.pdf` | Práctica 12 | Baricentros de Wasserstein | 13 |
-| `practica-13.pdf` | Práctica 13 | Transporte entrópico y el algoritmo de Sinkhorn | 12 |
+| `practica-13.pdf` | Práctica 13 | Transporte entrópico y el algoritmo de Sinkhorn | 14 |
 | `apendice-A.pdf` | Apéndice A | Complementos de teoría de la medida | 4 |
 | `apendice-B.pdf` | Apéndice B | El teorema de Fenchel–Rockafellar | 5 |
 | `apendice-C.pdf` | Apéndice C | Factorización polar de matrices inversibles | 3 |

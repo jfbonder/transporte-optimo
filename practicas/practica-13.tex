@@ -336,6 +336,67 @@ respecto de los dos ejes, y describir su límite cuando $\ve\to0$.
 \end{enumerate}
 \end{ejercicio}
 
+\begin{ejercicio}[Derivadas del costo de transporte]\label{ejer.OTeps.derivadas}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Sin regularizar.} Escribamos $\mathrm{OT}_C(a,b)$ para indicar la
+dependencia en la matriz de costos. Probar que, para $a,b$ fijos,
+$C\mapsto\mathrm{OT}_C(a,b)$ es cóncava y que, si $\pi^0$ es un plan óptimo para $C$,
+entonces $\mathrm{OT}_{C'}(a,b)\le\mathrm{OT}_C(a,b)+\langle C'-C,\pi^0\rangle$
+para toda $C'$. Probar que si el plan óptimo para $C$ es único, la función es
+diferenciable en $C$ con derivadas parciales $\pi^0_{ij}$. Para $n=m=2$,
+$a=b=(\frac12,\frac12)$, mostrar que
+$\mathrm{OT}_C(a,b)=\frac12\min\{c_{11}+c_{22},\,c_{12}+c_{21}\}$ y deducir que
+no es diferenciable en $C=0$.
+\item \emph{Respecto de los pesos.} Probar, sin usar la
+Proposición~\ref{N-prop.baricentro.entropico} y escribiendo
+$\mathrm{OT}_\ve(\cdot,b)$ como supremo de funciones afines, que, para $b$
+fijo, $a\mapsto\mathrm{OT}_\ve(a,b)$ es convexa en el conjunto de vectores de
+probabilidad con entradas positivas. Probar que si $h\in\R^n$ satisface
+$\sum_ih_i=0$, entonces
+\[
+\frac{d}{dt}\Big|_{t=0}\mathrm{OT}_\ve(a+th,b)=\sum_{i=1}^nh_i\varphi^\ve_i,
+\]
+es decir, el potencial entrópico $\varphi^\ve$ es el gradiente de
+$\mathrm{OT}_\ve$ respecto de $a$, salvo una constante (que no se ve en las
+direcciones con $\sum h_i=0$). \emph{Sugerencia:} el funcional dual
+$\mathcal D_\ve$ de \eqref{N-eq:dual.entropico} es afín en $a$ para
+$(\varphi,\psi)$ fijos; evaluarlo en los potenciales de $a$ y en los de
+$a+th$, como en el Paso 1 de la demostración de la
+Proposición~\ref{N-prop.OTeps.derivada}, y usar que $\sum_j\pi^\ve_{ij}=a_i$.
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}[El sesgo entrópico]\label{ejer.sinkhorn.sesgo}
+Con la notación de la Observación~\ref{N-obs.divergencia.sinkhorn}, sea $c$
+un costo con $c(x,x)=0$ y $c(x,y)>0$ para $x\ne y$, y sea
+$\alpha=\sum_{i=1}^na_i\delta_{x_i}$ con $n\ge2$ puntos distintos y $a_i>0$.
+\begin{enumerate}[label=(\alph*)]
+\item Probar que $0<\mathrm{OT}_\ve(\alpha,\alpha)\le\ve H(a)$, donde
+$H(a)=-\sum_ia_i\log a_i$. \emph{Sugerencia:} para la cota superior,
+comparar con el plan diagonal; para la inferior, usar que el plan entrópico
+tiene todas sus entradas positivas.
+\item Sean $\alpha=\frac12(\delta_{-1}+\delta_1)$ y
+$\beta_t=\frac12(\delta_{-t}+\delta_t)$ en $\R$, con $c(x,y)=|x-y|^2$.
+Usando la Proposición~\ref{N-prop.OTeps.derivada} (para la regla de la
+cadena basta la primera parte: las entradas de $C$ dependen de $t$) y la
+simetría del problema, probar que
+$\frac{d}{dt}\mathrm{OT}_\ve(\alpha,\beta_t)>0$ en $t=1$: el mínimo de
+$\beta\mapsto\mathrm{OT}_\ve(\alpha,\beta)$ no se alcanza en $\beta=\alpha$,
+y achicar el soporte de $\beta$ disminuye el costo.
+\item Probar que la divergencia de Sinkhorn $S_\ve$ no cambia si en su
+definición se reemplaza $\mathrm{OT}_\ve$ por el costo
+$\widetilde{\mathrm{OT}}_\ve$ con el regularizador de Peyré--Cuturi
+(Sección~\ref{N-sec.baricentros.entropicos}).
+\item Probar que $S_\ve(\alpha,\beta)\to\mathrm{OT}(\alpha,\beta)$ cuando
+$\ve\to0$, y que cuando $\ve\to\infty$
+\[
+S_\ve(\alpha,\beta)\to\sum_{i,j}a_ib_j\,c(x_i,y_j)
+-\frac12\sum_{i,k}a_ia_k\,c(x_i,x_k)-\frac12\sum_{j,l}b_jb_l\,c(y_j,y_l).
+\]
+\end{enumerate}
+\end{ejercicio}
+
 \subsection*{Ejercicios computacionales}
 
 Los ejercicios siguientes se resuelven con el cuaderno \emph{Transporte
