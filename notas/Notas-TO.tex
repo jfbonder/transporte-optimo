@@ -21,7 +21,15 @@
 \usepackage[T1]{fontenc}
 \usepackage[spanish]{babel}
 \usepackage{graphicx}
+\usepackage{array}
 \usepackage{tikz}
+
+%% Colores del Instituto de Cálculo y del Departamento de Matemática (portada y enlaces)
+\definecolor{icnavy}{HTML}{013274}
+\definecolor{iccyan}{HTML}{029BDF}
+\definecolor{icmag}{HTML}{E2017B}
+\definecolor{dmred}{HTML}{A8000C}
+\hypersetup{colorlinks=true,linkcolor=icnavy,citecolor=icnavy,urlcolor=icnavy}
 \usetikzlibrary{babel}
 
 \setlength{\textwidth}{15.5cm} 
@@ -168,53 +176,69 @@
 
 
 
+%%
+%% PORTADA (las ilustraciones las genera el script fig_portada.py)
+%%
 \thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  % banda lateral: azul, cian, magenta
+  \fill[icnavy] (current page.north west) rectangle ([xshift=0.95cm]current page.south west);
+  \fill[iccyan] ([xshift=0.95cm]current page.north west) rectangle ([xshift=1.25cm]current page.south west);
+  \fill[icmag]  ([xshift=1.25cm]current page.north west) rectangle ([xshift=1.45cm]current page.south west);
+  % título
+  \node[anchor=north west,align=left,text=icnavy,inner sep=0] at ([xshift=3.1cm,yshift=-3.0cm]current page.north west)
+    {\fontsize{36}{44}\fontfamily{lmr}\selectfont\bfseries Teoría de\\[8pt]
+     \fontsize{36}{44}\fontfamily{lmr}\selectfont\bfseries Transporte\\[2pt]
+     \fontsize{36}{44}\fontfamily{lmr}\selectfont\bfseries Óptimo};
+  % raya roja, autor
+  \fill[dmred] ([xshift=3.05cm,yshift=-8.85cm]current page.north west) rectangle ([xshift=-2.05cm,yshift=-8.97cm]current page.north east);
+  \node[anchor=north west,text=icnavy!75,inner sep=0] at ([xshift=3.1cm,yshift=-9.45cm]current page.north west)
+    {\Large Julián Fernández Bonder};
+  \node[anchor=north east,text=icnavy!60,inner sep=0] at ([xshift=-2.05cm,yshift=-9.55cm]current page.north east)
+    {\normalsize Notas de clase};
+  % una ilustración por bloque del curso, generadas con los cuadernos (POT)
+  \node[anchor=north west,inner sep=0] at ([xshift=3.05cm,yshift=-12.2cm]current page.north west)
+    {\begin{tabular}{@{}p{5.1cm}@{\hspace{0.3cm}}p{5.1cm}@{\hspace{0.3cm}}p{5.1cm}@{}}
+      \centering{\small\color{dmred}$T=F_\nu^{[-1]}\circ F_\mu$} &
+      \centering{\small\color{dmred}$\mu_t=\bigl((1-t)\id+tT\bigr)_\#\mu$} &
+      \centering\arraybackslash{\small\color{dmred}$\min_a\sum_k\lambda_k\,\mathrm{OT}_\ve(a,b^k)$}\\[6pt]
+      \centering\includegraphics[height=4.6cm,width=5.1cm,keepaspectratio]{portada-I} &
+      \centering\includegraphics[height=4.6cm,width=5.1cm,keepaspectratio]{portada-II} &
+      \centering\arraybackslash\includegraphics[height=4.6cm,width=5.1cm,keepaspectratio]{portada-III}\\[6pt]
+      \centering{\small\color{icnavy}\textsc{Capítulo 8}\newline Dimensión uno}\par\vspace{2pt}
+        {\scriptsize\color{icnavy!70}El mapa monótono empareja los cuantiles de $\mu$ con los de $\nu$: las líneas no se cruzan} &
+      \centering{\small\color{icnavy}\textsc{Capítulo 10}\newline Distancias de Wasserstein}\par\vspace{2pt}
+        {\scriptsize\color{icnavy!70}La interpolación por desplazamiento: la geodésica de $W_2$ entre $\mu$ y $\nu$} &
+      \centering\arraybackslash{\small\color{icnavy}\textsc{Capítulos 12--13}\newline Baricentros y Sinkhorn}\par\vspace{2pt}
+        {\scriptsize\color{icnavy!70}Baricentro entrópico de un disco, un cuadrado y un triángulo}
+    \end{tabular}};
+  % logos
+  \node[anchor=south] at ([xshift=-1.45cm,yshift=2.25cm]current page.south) {\includegraphics[height=1.9cm]{IC.jpeg}};
+  \node[anchor=south] at ([xshift=2.95cm,yshift=2.25cm]current page.south) {\includegraphics[height=1.9cm]{DM.png}};
+  \node[anchor=south,align=center,font=\small,text=icnavy!75] at ([xshift=0.75cm,yshift=1.15cm]current page.south)
+    {Instituto de Cálculo, FCEN--CONICET \quad$\cdot$\quad Departamento de Matemática, FCEN--UBA};
+\end{tikzpicture}
+\null
+\clearpage
 
-\begin{center}
-{\LARGE\sc Teoría de Transporte Óptimo}
-\medskip
-
-{\LARGE\bf(Notas de clase)}
-
-
-\vskip 1.5cm
-
-{\LARGE Julián Fernández Bonder}
-\medskip
-
-(2do cuatrimestre 2026)
-
-\end{center}
-
-\vskip 1cm
-
-\begin{center}
-\includegraphics[height=0.12\textwidth]{IC.jpeg}\hskip 1cm
-\includegraphics[height=0.12\textwidth]{DM.png}\hskip 1cm \\
-\end{center}
-
-\vskip 1cm
-
-\begin{center}
-\begin{tabular}{l}
+%% REVERSO DE LA PORTADA
+\thispagestyle{empty}
+\null\vfill
+\begin{flushleft}\small
+Julián Fernández Bonder\\
 Instituto de Cálculo, FCEN--CONICET\\
 Departamento de Matemática, FCEN--UBA\\
-Ciudad Universitaria, Pabellón 0+$\infty$  (1428),\\
-Buenos Aires, Argentina.
-\end{tabular}
-\end{center}
-
-
-\vskip 1.5 cm
-
-\begin{center}
-\begin{tabular}{l}
-{\it Correo:} {\tt jfbonder@dm.uba.ar}\\
-{\it URL:} {\tt https://sites.google.com/view/jfbonder/}
-\end{tabular}
-\end{center}
-
-\vfill
+Ciudad Universitaria, Pabellón 0+$\infty$ (1428), Buenos Aires, Argentina.\\[6pt]
+{\it Correo:} \href{mailto:jfbonder@dm.uba.ar}{\texttt{jfbonder@dm.uba.ar}}\\
+{\it URL:} \url{https://mate.dm.uba.ar/~jfbonder/}\\[12pt]
+Notas del curso \emph{Teoría de Transporte Óptimo}, optativa para las Licenciaturas en
+Matemática y en Ciencia de Datos y para el Doctorado en Matemática,
+FCEN--UBA, 2do cuatrimestre de 2026.\\[12pt]
+Sitio de la materia, con las guías de ejercicios y los cuadernos de cómputo:\\
+\url{https://jfbonder.github.io/transporte-optimo/}\\[12pt]
+Texto y figuras: licencia CC BY-NC-SA 4.0. Código: licencia MIT.
+\end{flushleft}
+\clearpage
 
 \cleardoublepage
 \chapter*{Prefacio}
