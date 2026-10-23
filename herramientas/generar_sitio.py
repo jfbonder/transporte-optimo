@@ -3,6 +3,11 @@
 partir de la tabla de contenidos de las notas (notas/Notas-TO.toc), de la tabla
 de cuadernos de comun.py y de las descripciones de abajo.
 
+Para agregar una nota al material extra: dejar el .tex en material-extra/,
+compilarlo (make extra) y agregar una entrada a EXTRA, más abajo. Si queda un
+.tex sin entrada, este script avisa y no lo publica; si una entrada apunta a un
+PDF que no existe, avisa y la saltea. Con EXTRA vacía la sección no aparece.
+
 Uso:  python3 herramientas/generar_sitio.py   (después de compilar las notas)
 """
 import html
@@ -42,6 +47,18 @@ RESUMEN = {
  'E': 'Los cuadernos de cómputo: POT, convenciones y tabla capítulo–cuaderno.',
 }
 
+EXTRA_DIR = RAIZ / 'material-extra'
+
+# Material extra: notas autocontenidas escritas para alguna clase, sobre temas
+# que las notas usan pero no desarrollan. Una entrada por archivo:
+# (nombre sin extensión en material-extra/, título, descripción en HTML).
+EXTRA = [
+    ('geodesicas', 'Introducción a las geodésicas en espacios métricos',
+     'Longitud de curvas, espacios de longitud, reparametrización por longitud de arco y el '
+     'teorema de Hopf–Rinow, con dos ejemplos sin compacidad local. Es el trasfondo métrico '
+     'que supone la última sección del Capítulo 10.'),
+]
+
 
 def practica(num):
     return ('practicas/apendice-%s.pdf' % num) if not num.isdigit() else ('practicas/practica-%02d.pdf' % int(num))
@@ -61,13 +78,38 @@ def leer_toc():
     return caps
 
 
-def paginas_pdf():
+def paginas_pdf(pdf=PDF_NOTAS):
     try:
-        out = subprocess.run(['pdfinfo', str(PDF_NOTAS)], capture_output=True, text=True, check=True).stdout
+        out = subprocess.run(['pdfinfo', str(pdf)], capture_output=True, text=True, check=True).stdout
         return re.search(r'Pages:\s+(\d+)', out).group(1)
     except (OSError, subprocess.CalledProcessError, AttributeError) as e:
-        print('aviso: no se pudo contar las páginas del PDF con pdfinfo (poppler-utils): %s' % e, file=sys.stderr)
+        print('aviso: no se pudo contar las páginas de %s con pdfinfo (poppler-utils): %s'
+              % (pdf.name, e), file=sys.stderr)
         return '—'
+
+
+def tarjetas_extra():
+    """Las tarjetas del material extra, y un aviso por cada .tex sin entrada en EXTRA."""
+    listados = {n for n, _, _ in EXTRA}
+    for tex in sorted(EXTRA_DIR.glob('*.tex')) if EXTRA_DIR.is_dir() else []:
+        if tex.stem not in listados:
+            print('aviso: material-extra/%s no figura en EXTRA (generar_sitio.py): '
+                  'no se publica en el sitio' % tex.name, file=sys.stderr)
+    tarjetas = []
+    for nombre, titulo, desc in EXTRA:
+        pdf = EXTRA_DIR / (nombre + '.pdf')
+        if not pdf.exists():
+            print('aviso: falta material-extra/%s.pdf (make extra): se saltea «%s»'
+                  % (nombre, titulo), file=sys.stderr)
+            continue
+        rel = 'material-extra/%s.pdf' % nombre
+        tarjetas.append('''      <article class="cuaderno">
+        <h3>%s</h3>
+        <p class="meta">PDF · %s páginas</p>
+        <p>%s</p>
+        <p class="enlaces"><a class="boton" href="%s">Leer</a> <a class="nw" href="%s/blob/main/material-extra/%s.tex">fuente LaTeX</a></p>
+      </article>''' % (html.escape(titulo), paginas_pdf(pdf), desc, rel, REPO, nombre))
+    return tarjetas
 
 
 def main():
@@ -101,10 +143,29 @@ def main():
         <p class="enlaces"><a class="boton" href="%s%s">Abrir en Colab</a> <a class="nw" href="%s/blob/main/cuadernos/%s">ver en GitHub</a></p>
       </article>''' % (html.escape(nom), meta, desc, COLAB, arch, REPO, arch))
 
+    extras = tarjetas_extra()
+    seccion_extra = nav_extra = ''
+    if extras:
+        nav_extra = '<a href="#extra">Material extra</a>'
+        seccion_extra = SECCION_EXTRA.substitute(tarjetas='\n'.join(extras))
+
     pagina = PAGINA.substitute(repo=REPO, pdf=PDF, paginas=paginas_pdf(),
-                               filas='\n'.join(filas), tarjetas='\n'.join(tarjetas))
+                               filas='\n'.join(filas), tarjetas='\n'.join(tarjetas),
+                               nav_extra=nav_extra, seccion_extra=seccion_extra)
     DEST.write_text(pagina, encoding='utf-8')
-    print('index.html generado;', len(filas), 'capítulos/apéndices')
+    print('index.html generado;', len(filas), 'capítulos/apéndices,',
+          len(extras), 'de material extra')
+
+
+SECCION_EXTRA = Template('''
+  <section id="extra">
+    <h2>Material extra</h2>
+    <p>Notas autocontenidas escritas para alguna clase en particular, sobre temas que las notas usan pero no desarrollan. No forman parte del programa ni tienen guía propia; se leen sueltas, cuando hacen falta.</p>
+    <div class="cuadernos">
+${tarjetas}
+    </div>
+  </section>
+''')
 
 
 PAGINA = Template('''<!DOCTYPE html>
@@ -155,7 +216,7 @@ PAGINA = Template('''<!DOCTYPE html>
   <h1>Teoría de Transporte Óptimo</h1>
   <p class="sub">Curso optativo para las licenciaturas en Matemática y en Ciencia de Datos y para el Doctorado en Matemática.<br>Departamento de Matemática, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.</p>
   <p class="sub autor">Julián Fernández Bonder · segundo cuatrimestre 2026 · Notas de clase, guías de ejercicios y cuadernos de cómputo</p>
-  <nav><a href="#notas">Notas</a><a href="#capitulos">Capítulos</a><a href="#cuadernos">Cuadernos</a><a href="#uso">Cómo usar el material</a><a href="${repo}">Repositorio</a></nav>
+  <nav><a href="#notas">Notas</a><a href="#capitulos">Capítulos</a><a href="#cuadernos">Cuadernos</a>${nav_extra}<a href="#uso">Cómo usar el material</a><a href="${repo}">Repositorio</a></nav>
 </header>
 <main>
   <section id="notas">
@@ -181,7 +242,7 @@ ${filas}
 ${tarjetas}
     </div>
   </section>
-
+${seccion_extra}
   <section id="uso">
     <h2>Cómo usar el material</h2>
     <p>Para estudiar por cuenta propia, el orden natural es el de los capítulos: leer el capítulo, hacer la guía, y en los capítulos que lo tienen, trabajar el cuaderno. Las guías son exactamente las secciones de ejercicios de las notas, con la misma numeración, generadas desde el mismo archivo fuente; las referencias a teoremas y proposiciones remiten a las notas. El archivo de <a href="practicas/sugerencias.pdf">sugerencias</a> reúne, para los ejercicios de todos los capítulos, una idea o el resultado que conviene usar, sin resolverlos.</p>
