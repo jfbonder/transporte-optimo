@@ -15226,6 +15226,11 @@ versión publicada del PDF de las notas en el repositorio del curso. Si se
 trabaja con una versión anterior o posterior de las notas, conviene
 identificar el resultado por su enunciado o por el capítulo en que aparece.
 
+%% Sin \backmatter, la bibliografía queda después de \appendix y amsbook la
+%% anota en el índice como un apéndice más («Apéndice Bibliografía»):
+%% \backmatter neutraliza \chaptername y la escribe como capítulo sin número.
+\backmatter
+
 \bibliographystyle{plain}
 \bibliography{biblio}
 
