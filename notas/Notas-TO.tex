@@ -1036,9 +1036,10 @@ Cuando esto ocurre, el plan óptimo de Kantorovich proporciona automáticamente 
     \foreach \x in {0.7,1.8,2.9} \draw[gray!30] (\x,0) -- (\x,3);
     \foreach \y in {0.9,2.3}     \draw[gray!30] (0,\y) -- (3.5,\y);
     % plan de Monge: T(x1)=y1, T(x2)=y2, T(x3)=y1
-    \fill[blue] (0.7,0.9) circle (3.5pt);
-    \fill[blue] (1.8,2.3) circle (3.5pt);
-    \fill[blue] (2.9,0.9) circle (3.5pt);
+    % masas a=(1/4,3/8,3/8); radios proporcionales a sqrt(a_i)
+    \fill[blue] (0.7,0.9) circle (3.72pt);
+    \fill[blue] (1.8,2.3) circle (4.55pt);
+    \fill[blue] (2.9,0.9) circle (4.55pt);
     \node[below=6pt,align=center] at (1.75,-0.55)
       {\small plan inducido por un mapa\\ \small $\pi_T=(\id,T)_\#\mu$};
   \end{scope}
@@ -1054,20 +1055,23 @@ Cuando esto ocurre, el plan óptimo de Kantorovich proporciona automáticamente 
     }
     \foreach \x in {0.7,1.8,2.9} \draw[gray!30] (\x,0) -- (\x,3);
     \foreach \y in {0.9,2.3}     \draw[gray!30] (0,\y) -- (3.5,\y);
-    % plan producto: todas las celdas con masa a_i b_j (radios ~ masa)
-    \fill[red!80!black] (0.7,0.9) circle (2.6pt);
-    \fill[red!80!black] (0.7,2.3) circle (2.0pt);
-    \fill[red!80!black] (1.8,0.9) circle (3.6pt);
-    \fill[red!80!black] (1.8,2.3) circle (2.8pt);
-    \fill[red!80!black] (2.9,0.9) circle (2.6pt);
-    \fill[red!80!black] (2.9,2.3) circle (2.0pt);
+    % plan producto: masa a_i b_j, con a=(1/4,3/8,3/8) y b=(5/8,3/8)
+    % (las mismas marginales que el panel izquierdo); radios ~ sqrt(masa)
+    \fill[red!80!black] (0.7,0.9) circle (2.94pt);
+    \fill[red!80!black] (0.7,2.3) circle (2.28pt);
+    \fill[red!80!black] (1.8,0.9) circle (3.60pt);
+    \fill[red!80!black] (1.8,2.3) circle (2.79pt);
+    \fill[red!80!black] (2.9,0.9) circle (3.60pt);
+    \fill[red!80!black] (2.9,2.3) circle (2.79pt);
     \node[below=6pt,align=center] at (1.75,-0.55)
       {\small plan que divide la masa\\ \small (por ejemplo, $\mu\otimes\nu$)};
   \end{scope}
 \end{tikzpicture}
-\caption{Dos planes de transporte entre $\mu=\sum_i a_i\delta_{x_i}$ y
-$\nu=\sum_j b_j\delta_{y_j}$, vistos como medidas en $X\times Y$; el área de
-cada punto es proporcional a la masa $\pi(\{(x_i,y_j)\})$. A la izquierda, un
+\caption{Dos planes de transporte entre las \emph{mismas} medidas
+$\mu=\sum_i a_i\delta_{x_i}$ y $\nu=\sum_j b_j\delta_{y_j}$, con
+$a=(\frac14,\frac38,\frac38)$ y $b=(\frac58,\frac38)$, vistos como medidas en
+$X\times Y$; el área de cada punto es proporcional a la masa
+$\pi(\{(x_i,y_j)\})$. A la izquierda, un
 plan inducido por un mapa: cada columna tiene un único punto, toda la masa de
 $x_i$ va a $T(x_i)$. A la derecha, un plan genuinamente de Kantorovich: la masa
 de cada $x_i$ se reparte entre varios destinos. Las marginales se leen sumando
@@ -3141,12 +3145,19 @@ Definimos
 \mathcal A_c
 \coloneqq
 \left\{
-(\varphi,\psi)\in L^1(\mu)\times L^1(\nu):
-\varphi(x)+\psi(y)\leq c(x,y)
-\quad\text{para todo }(x,y)\in X\times Y
+(\varphi,\psi):
+\begin{array}{l}
+\varphi\colon X\to\R\text{ y }\psi\colon Y\to\R\text{ borelianas},\\[2pt]
+\varphi\in L^1(\mu),\ \psi\in L^1(\nu),\\[2pt]
+\varphi(x)+\psi(y)\leq c(x,y)\ \text{ para todo }(x,y)\in X\times Y
+\end{array}
 \right\}.
 \]
 Llamaremos a $\mathcal A_c$ la \emph{clase admisible} asociada al costo $c$.
+Insistimos en que los elementos de $\mathcal A_c$ son funciones concretas y no
+clases de equivalencia módulo conjuntos nulos: la condición de integrabilidad
+se pide sobre la clase de $\varphi$ en $L^1(\mu)$, pero la desigualdad de
+admisibilidad se exige puntualmente. La observación que sigue explica por qué.
 
 \begin{obs}
 Es importante que la desigualdad de admisibilidad se exija en \emph{todo} punto
@@ -3208,6 +3219,25 @@ Por otra parte, el valor del supremo no cambia si se restringe la clase admisibl
 \]
 donde $\mathcal A_c\cap C_b = \mathcal A_c\cap(C_b(X)\times C_b(Y))$.
 \end{teo}
+
+\begin{obs}[Qué demostramos y qué enunciamos]\label{obs.alcance.pruebas}
+El teorema está enunciado en la generalidad en que lo vamos a usar, pero la
+demostración de la Sección~\ref{sec.demo.dualidad} cubre solamente el caso en
+que $X$ e $Y$ son compactos y $c$ es continua; la existencia del mínimo es,
+por su parte, el Teorema~\ref{teo.existencia.planes}, que se demuestra aparte.
+Esto es deliberado y ocurrirá varias veces a lo largo de estas notas: cuando
+la versión general requiere herramientas que exceden el programa del curso,
+enunciamos el resultado como se usa y demostramos un caso particular que
+contiene toda la idea, indicando siempre cuál es el caso demostrado y dónde
+encontrar la prueba completa. Los otros lugares donde procedemos así son la
+Proposición~\ref{prop.legendre.involucion} (caso $C^1$ del teorema de
+Fenchel--Moreau), los Pasos 2 y 3 del Teorema~\ref{teo.Brenier} (caso
+$u\in C^1$, cf.\ la Observación~\ref{obs.Brenier.general}) y la hipótesis de
+regularidad~(R) del Capítulo~\ref{cap.BM} (cf.\ la
+Observación~\ref{obs.BM.general}). El lector que quiera saber, al volver sobre
+un enunciado, qué parte quedó demostrada aquí, encontrará siempre la
+aclaración al comienzo de la demostración correspondiente.
+\end{obs}
 
 Antes de demostrar este resultado, resulta conveniente analizar sus consecuencias e interpretar el significado del problema dual. Esto permitirá comprender el papel de las funciones duales y motivará naturalmente la demostración que presentaremos más adelante.
 
@@ -3499,6 +3529,8 @@ m=m(\varphi,\psi)
 \inf_{(x,y)\in X\times Y}
 \{c(x,y)-\varphi(x)-\psi(y)\},
 \]
+—que es un número real: $m>-\infty$ porque $c\ge0$ y $\varphi,\psi$ son
+acotadas, y $m<+\infty$ porque suponemos $c\not\equiv+\infty$—
 consideremos
 \[
 \widetilde\varphi=\varphi+\frac m2,
@@ -3644,7 +3676,15 @@ argumento puede consultarse en \cite[Theorem~1.3]{Villani2003} o en
 \cite[Theorem~1.39]{Santambrogio}. La estrategia es en todos los casos la misma.
 
 La prueba se basa en un principio minimax proveniente del análisis convexo,
-conocido como el teorema de dualidad de Fenchel--Rockafellar.
+conocido como el teorema de dualidad de Fenchel--Rockafellar. La estructura
+es la siguiente: en el \textbf{Paso~0} se arma el marco (el espacio $E$, su
+dual $E^*$, los funcionales $\Theta$ y $\Xi$, y la verificación de las
+hipótesis del teorema de Fenchel--Rockafellar); en el \textbf{Paso~1} se
+calcula $\Theta^*$ y en el \textbf{Paso~2}, $\Xi^*$; en los
+\textbf{Pasos~3 y~4} se identifica cada miembro de la igualdad que
+proporciona el teorema con el problema de Kantorovich y con el dual
+restringido a funciones continuas; y en el \textbf{Paso~5} se pasa de
+$\mathcal A_c\cap C_b$ a $\mathcal A_c$.
 
 Sea $E$ un espacio normado y sea
 \[
@@ -3720,6 +3760,7 @@ el espacio de las medidas de Radon con signo,
 E^*=\mathcal M(X\times Y).
 \)
 
+\medskip\noindent\textbf{Paso 0: el marco.}
 Definimos ahora dos funcionales convexos sobre $E$.
 
 En primer lugar,
@@ -3783,10 +3824,14 @@ y por lo tanto
 \int_Y\psi\,d\nu.
 \]
 Además, las hipótesis del teorema de Fenchel--Rockafellar se satisfacen
-tomando, por ejemplo,
-\[
-u\equiv1.
-\]
+tomando, por ejemplo, $u\equiv1$. En efecto: $\Theta(1)=0$, porque
+$1\ge0\ge-c$ (aquí se usa $c\ge0$); $\Xi(1)<\infty$, tomando $\varphi\equiv1$
+y $\psi\equiv0$ en la definición de $\Xi$; y, lo que de verdad importa,
+$\Theta$ es \emph{continua} en $u\equiv1$, porque $\Theta\equiv0$ en la bola
+$\|u-1\|_\infty<\frac12$ (toda $u$ en esa bola verifica $u\ge\frac12>-c$). La
+hipótesis esencial del Teorema~\ref{teo.FR} es la continuidad de $\Theta$ en
+un punto donde ambas funciones son finitas, no sólo su finitud; aquí la
+obtenemos gratis gracias a que $c\ge0$.
 Por consiguiente,
 \[
 \inf_{u\in E}
@@ -3805,6 +3850,7 @@ Por consiguiente,
 Nuestro objetivo es calcular explícitamente las transformadas de
 Legendre--Fenchel de los funcionales $\Theta$ y $\Xi$.
 
+\medskip\noindent\textbf{Paso 1: cálculo de $\Theta^*$.}
 Comencemos con $\Theta$.
 
 Sea $\pi\in M(X\times Y)$. Entonces
@@ -3837,10 +3883,22 @@ Analicemos dos casos.
 \noindent
 \textbf{Caso 1.} $\pi\notin \mathcal M_+(X\times Y)$.
 
-Entonces existe una función continua $v\le0$ tal que
+Afirmamos que entonces existe una función continua $v\le0$ tal que
 \[
 \int_{X\times Y}v\,d\pi>0.
 \]
+Esto es el único paso no trivial del cálculo, y es donde se usa la
+regularidad de las medidas de Radon. En efecto, sea $\pi=\pi^+-\pi^-$ la
+descomposición de Jordan de $\pi$; como $\pi$ no es positiva, $\pi^-\neq0$.
+Por regularidad existe un compacto $K$ con $\pi^-(K)>0$, y refinándolo (las
+medidas $\pi^+$ y $\pi^-$ son mutuamente singulares) podemos suponer además
+$\pi^+(K)<\pi^-(K)$, es decir $\pi(K)<0$. Por el lema de Urysohn hay
+funciones continuas $v_n$ con $-1\le v_n\le0$ y $v_n\downarrow-\mathbf
+1_K$ puntualmente; por convergencia dominada,
+$\int v_n\,d\pi\to-\pi(K)>0$, de modo que $v=v_n$ sirve para $n$ grande.
+Dicho de otro modo: $\mathcal M_+(X\times Y)$ es el cono dual del cono de las
+funciones continuas no negativas, por el teorema de representación de
+Riesz--Markov.
 Como $v\le0$, para todo $\lambda>0$ se tiene
 \[
 \lambda v\le0\le c,
@@ -3905,6 +3963,7 @@ Resumiendo,
 \end{cases}
 \]
 
+\medskip\noindent\textbf{Paso 2: cálculo de $\Xi^*$.}
 Calculemos ahora la transformada de Legendre--Fenchel de $\Xi$.
 
 Por definición,
@@ -4008,6 +4067,7 @@ Legendre--Fenchel en el teorema de Fenchel--Rockafellar obtenemos
 \Bigr).
 \]
 
+\medskip\noindent\textbf{Paso 3: el miembro izquierdo.}
 Analicemos ambos miembros de esta igualdad.
 
 Por definición de $\Theta$ y $\Xi$, el miembro izquierdo vale
@@ -4041,6 +4101,7 @@ c(x,y)
 \right\}.
 \]
 
+\medskip\noindent\textbf{Paso 4: el miembro derecho.}
 Por otra parte, el miembro derecho es
 \[
 \max_{\pi\in M(X\times Y)}
@@ -4073,15 +4134,18 @@ y
 \begin{cases}
 0,
 &
-\pi\in\Pi(\mu,\nu),
+(\pp_1)_\#\pi=\mu\ \text{ y }\ (\pp_2)_\#\pi=\nu,
 \\
 +\infty,
 &
 \text{en otro caso},
 \end{cases}
 \]
-el máximo solo puede alcanzarse sobre medidas \emph{positivas} con marginales
-$\mu$ y $\nu$, es decir, sobre $\Pi(\mu,\nu)$, y resulta
+—nótese que aquí $\pi$ recorre $M(X\times Y)$, medidas con signo, de modo que
+la condición sobre las marginales no equivale todavía a
+$\pi\in\Pi(\mu,\nu)$: la positividad la aporta $\Theta^*$—, el máximo solo
+puede alcanzarse sobre medidas \emph{positivas} con marginales $\mu$ y $\nu$,
+es decir, sobre $\Pi(\mu,\nu)$, y resulta
 \[
 -\min_{\pi\in\Pi(\mu,\nu)}
 \int_{X\times Y}
@@ -4113,7 +4177,8 @@ nada sobre si el supremo del lado de las funciones se alcanza: esa es la
 cuestión de la existencia de potenciales de Kantorovich, que se resuelve en
 el Capítulo~\ref{cap.dual}.
 
-Para concluir, observemos que $C(X)\times C(Y)\cap\mathcal A_c\subset\mathcal A_c$,
+\medskip\noindent\textbf{Paso 5: de $\mathcal A_c\cap C_b$ a $\mathcal A_c$.}
+Para concluir, observemos que $\mathcal A_c\cap C_b\subset\mathcal A_c$,
 de modo que $\sup_{\mathcal A_c}\D$ es mayor o igual que el supremo anterior;
 y que, por la dualidad débil, $\sup_{\mathcal A_c}\D\le\min_{\Pi(\mu,\nu)}\mathcal K_c$.
 Por lo tanto los tres valores coinciden, lo que prueba simultáneamente la
@@ -4467,7 +4532,13 @@ para todo $i,j$.
 
 Esta es precisamente la condición de holgura complementaria de la programación
 lineal (Ejercicio~\ref{ejer.PL.holgura}); en el lenguaje del transporte la
-llamamos \emph{condición de saturación}.
+llamamos \emph{condición de saturación}. Es el caso discreto del
+Corolario~\ref{cor:saturacion}, que ya demostramos en general con el mismo
+argumento —el integrando es no negativo y su integral es nula—; lo rehacemos
+aquí porque en el caso discreto proviene directamente de la dualidad de la
+programación lineal, sin pasar por el teorema de dualidad del
+Capítulo~\ref{cap.dualidad}. Volveremos sobre ella, ya en términos del
+soporte del plan, en la Proposición~\ref{prop.soporte}.
 
 \subsection{El soporte de un plan óptimo}
 
@@ -4493,9 +4564,18 @@ Definamos
 \left\{
 (i,j):
 \varphi_i^*+\psi_j^*=c_{ij}
+\right\},
+\qquad
+\sop(\pi^*)
+=
+\left\{
+(i,j):\pi^*_{ij}>0
 \right\}.
 \]
-Entonces
+Aquí, y solo en este capítulo discreto, escribimos el soporte como un
+conjunto de índices; coincide con el soporte topológico de $\pi^*$ como
+medida en $X\times Y$ mediante la identificación
+$(i,j)\leftrightarrow(x_i,y_j)$. Entonces
 \[
 \sop(\pi^*)\subseteq\Gamma^*.
 \]
@@ -4855,27 +4935,12 @@ particular, la búsqueda de potenciales óptimos puede restringirse, como
 veremos más adelante, a funciones que sean \(c\)-cóncavas.
 
 \begin{prop}\label{prop:mejora-potenciales}
-Sea $(\varphi,\psi)$ un par admisible para el problema dual, es decir,
-\[
-\varphi(x)+\psi(y)\le c(x,y),
-\qquad
-(x,y)\in X\times Y.
-\]
-Entonces se verifican las siguientes propiedades.
+Se verifican las siguientes propiedades.
 
 \begin{enumerate}
-\item El par $(\varphi,\varphi^c)$ también es admisible y
-\[
-\varphi^c\ge\psi.
-\]
-En consecuencia,
-\[
-\int_Y\varphi^c\,d\nu
-\ge
-\int_Y\psi\,d\nu.
-\]
-
-\item El par $(\varphi^{c\bar c},\varphi^c)$ también es admisible y
+\item\label{item:mejora.toda} Sea $\varphi\colon X\to\R\cup\{-\infty\}$ con
+$\varphi\not\equiv-\infty$. Entonces los pares $(\varphi,\varphi^c)$ y
+$(\varphi^{c\bar c},\varphi^c)$ son admisibles y
 \[
 \varphi^{c\bar c}\ge\varphi.
 \]
@@ -4885,30 +4950,35 @@ En consecuencia,
 \ge
 \int_X\varphi\,d\mu.
 \]
+
+\item\label{item:mejora.par} Si además $(\varphi,\psi)$ es un par admisible
+para el problema dual, es decir,
+\[
+\varphi(x)+\psi(y)\le c(x,y),
+\qquad
+(x,y)\in X\times Y,
+\]
+entonces
+\[
+\varphi^c\ge\psi,
+\qquad\text{y por lo tanto}\qquad
+\int_Y\varphi^c\,d\nu
+\ge
+\int_Y\psi\,d\nu,
+\]
+de modo que
+$\D(\varphi^{c\bar c},\varphi^c)\ge\D(\varphi,\psi)$.
 \end{enumerate}
 \end{prop}
 
-\begin{proof}
-Como $(\varphi,\psi)$ es admisible,
-\[
-\psi(y)\le c(x,y)-\varphi(x),
-\]
-para todo $(x,y)\in X\times Y$.
+Obsérvese que el ítem~\ref{item:mejora.toda} vale para \emph{cualquier}
+función $\varphi$, sin suponer que forme parte de un par admisible; es en esa
+forma que lo usaremos la mayor parte de las veces. El ítem~\ref{item:mejora.par}
+es el que compara con un par dado y el que da la mejora del funcional dual.
 
-Tomando ínfimo respecto de $x$ obtenemos
-\[
-\psi(y)
-\le
-\inf_{x\in X}
-\{c(x,y)-\varphi(x)\}
-=
-\varphi^c(y),
-\]
-es decir,
-\[
-\psi\le\varphi^c.
-\]
-Además,
+\begin{proof}
+Demostremos primero el ítem~\ref{item:mejora.toda}, que no usa la existencia
+de $\psi$. Por la definición de $\varphi^c$,
 \[
 \varphi(x)+\varphi^c(y)
 =
@@ -4923,12 +4993,8 @@ c(x,y)-\varphi(x)
 =
 c(x,y),
 \]
-por lo que $(\varphi,\varphi^c)$ sigue siendo admisible.
-
-La desigualdad entre las integrales es inmediata, ya que
-$\varphi^c\ge\psi$.
-
-Para demostrar la segunda afirmación, observamos que
+para todo $(x,y)\in X\times Y$, por lo que $(\varphi,\varphi^c)$ es admisible.
+Observamos ahora que
 \[
 \varphi^{c\bar c}(x)
 =
@@ -4967,9 +5033,26 @@ por lo que el par
 $(\varphi^{c\bar c},\varphi^c)$
 también es admisible.
 
-La desigualdad entre las integrales se obtiene nuevamente a partir de la
-desigualdad puntual
-$\varphi^{c\bar c}\ge\varphi$.
+La desigualdad entre las integrales se obtiene a partir de la desigualdad
+puntual $\varphi^{c\bar c}\ge\varphi$. Esto prueba el
+ítem~\ref{item:mejora.toda}.
+
+Supongamos ahora que $(\varphi,\psi)$ es admisible. Entonces
+\[
+\psi(y)\le c(x,y)-\varphi(x),
+\]
+para todo $(x,y)\in X\times Y$ y, tomando ínfimo respecto de $x$,
+\[
+\psi(y)
+\le
+\inf_{x\in X}
+\{c(x,y)-\varphi(x)\}
+=
+\varphi^c(y),
+\]
+es decir, $\psi\le\varphi^c$. Integrando respecto de $\nu$ y combinando con la
+desigualdad del ítem~\ref{item:mejora.toda} se obtiene
+$\D(\varphi^{c\bar c},\varphi^c)\ge\D(\varphi,\psi)$.
 \end{proof}
 
 La proposición anterior muestra que, dado un par admisible
@@ -4996,12 +5079,23 @@ La siguiente proposición precisa esta observación y caracteriza
 exactamente las funciones para las cuales la doble transformación no
 produce ninguna mejora.
 
-\begin{prop}
-Una función $\varphi\colon X\to\R$ es $c$-cóncava si y solo si
+\begin{prop}\label{prop.cconcava.doble}
+Supongamos que $c$ es acotada. Una función $\varphi\colon X\to\R$ es
+$c$-cóncava si y solo si
 \[
 \varphi=\varphi^{c\bar c}.
 \]
 \end{prop}
+
+\begin{obs}
+La hipótesis de acotación de $c$ sirve únicamente para poder trabajar con
+funciones a valores finitos: si $c$ es acotada y $\zeta\colon Y\to\R$ es
+acotada, $\zeta^{\bar c}$ también lo es, de modo que en la
+Definición~\ref{def.cconcava} podemos tomar $\zeta$ a valores reales. Es el
+caso que usaremos siempre ($X$ e $Y$ compactos y $c$ continua). Sin esa
+hipótesis el enunciado sigue valiendo, pero hay que admitir el valor
+$-\infty$ en ambos lados, como en la Definición~\ref{def.cconcava}.
+\end{obs}
 
 \begin{proof}
 Observemos primero dos hechos generales. En primer lugar, para toda función
@@ -5032,7 +5126,8 @@ Por lo tanto,
 \varphi\geq\varphi^{c\bar c}.
 \]
 
-Por otra parte, por la proposición anterior, toda función $\varphi$ satisface
+Por otra parte, por el ítem~\ref{item:mejora.toda} de la
+Proposición~\ref{prop:mejora-potenciales}, toda función $\varphi$ satisface
 \[
 \varphi\leq\varphi^{c\bar c}.
 \]
@@ -5065,12 +5160,15 @@ normalización, el teorema de Ascoli--Arzelà proporciona la compacidad
 necesaria para extraer una subsucesión convergente de una sucesión
 maximizante.
 
-La equicontinuidad de las $c$-transformadas es el contenido del lema
-siguiente; la usaremos en la demostración del teorema principal de la
-sección, donde necesitaremos pasar al límite en una sucesión de
-$c$-transformadas.
+La equicontinuidad ya la tenemos: es la
+Proposición~\ref{prop.ctransf.modulo}. Necesitaremos además que la operación
+$\varphi\mapsto\varphi^c$ sea continua respecto de la norma uniforme, para
+poder pasar al límite en la relación $\psi_n=\varphi_n^c$ una vez extraída la
+subsucesión convergente. Ése es el contenido del lema siguiente, que es una
+propiedad distinta de la equicontinuidad: ésta se refiere a las funciones
+$\varphi^c$, y aquélla a la aplicación $\varphi\mapsto\varphi^c$.
 
-\begin{lema}\label{lema.ctranf.lip}
+\begin{lema}\label{lema.ctransf.contraccion}
 Supongamos que $X$ e $Y$ son espacios compactos y que
 $c\colon X\times Y\longrightarrow\R$ es continua.
 Entonces la aplicación
@@ -5177,6 +5275,17 @@ Consecuentemente,
 \end{teo}
 
 \begin{proof}
+Como $X\times Y$ es compacto y $c$ es continua, $c$ es uniformemente
+continua; fijemos un módulo de continuidad $\omega$ común a ambas variables,
+de modo que
+\[
+|c(x,y)-c(x',y')|\le\omega\bigl(d_X(x,x')+d_Y(y,y')\bigr).
+\]
+Esto es lo que permite aplicar la Proposición~\ref{prop.ctransf.modulo} tanto
+a las $c$-transformadas como a las $\bar c$-transformadas.
+
+\medskip\noindent\textbf{Paso 1: reducción a pares de la forma
+$(\varphi^{c\bar c},\varphi^c)$.}
 Sea
 \[
 (\varphi_n,\psi_n)\subset C_b(X)\times C_b(Y)
@@ -5201,10 +5310,11 @@ En consecuencia, podemos suponer que
 \varphi_n=\psi_n^{\bar c},
 \]
 para todo \(n\). En particular, todas las funciones
-\(\varphi_n\) y \(\psi_n\) poseen el mismo módulo de continuidad que el costo
-\(c\) (Proposición~\ref{prop.ctransf.modulo}).
+\(\varphi_n\) y \(\psi_n\) admiten el módulo de continuidad $\omega$ fijado al
+comienzo (Proposición~\ref{prop.ctransf.modulo}, aplicada en cada variable).
 
-Podemos además normalizar las funciones suponiendo
+\medskip\noindent\textbf{Paso 2: normalización y cotas uniformes.}
+Podemos normalizar las funciones suponiendo
 \[
 \min_X\varphi_n=0.
 \]
@@ -5251,6 +5361,7 @@ obtenemos
 \]
 para todo $y\in Y$.
 
+\medskip\noindent\textbf{Paso 3: Ascoli--Arzelà y paso al límite.}
 En consecuencia, las sucesiones
 $(\varphi_n)$ y $(\psi_n)$
 son uniformemente acotadas y equicontinuas. Por el teorema de
@@ -5287,6 +5398,8 @@ para todo $(x,y)\in X\times Y$.
 Por lo tanto, el par $(\varphi,\psi)$ es admisible y, como es el límite de
 una sucesión maximizante, resulta óptimo.
 
+\medskip\noindent\textbf{Paso 4: el límite satisface $\psi=\varphi^c$ y
+$\varphi=\psi^{\bar c}$.}
 Hasta el momento hemos demostrado que $(\varphi,\psi)$ es un par óptimo para
 el problema dual. Solo resta verificar que
 \[
@@ -5295,7 +5408,7 @@ el problema dual. Solo resta verificar que
 \varphi=\psi^{\bar c}.
 \]
 
-Por el Lema \ref{lema.ctranf.lip}, la $c$-transformada es continua respecto de la norma
+Por el Lema \ref{lema.ctransf.contraccion}, la $c$-transformada es continua respecto de la norma
 del supremo. Como
 \[
 \varphi_n\longrightarrow\varphi
@@ -5398,8 +5511,11 @@ Capítulo~\ref{cap.Brenier} el gradiente de una función convexa.}
  
 
 \begin{prop}\label{prop.soporte}
-Sean $\pi^*$ un plan óptimo para el problema de Kantorovich y
-$(\varphi^*,\psi^*)$ un par óptimo para el problema dual. Entonces
+Supongamos que vale la dualidad fuerte —es decir, que no hay brecha entre los
+valores óptimos del problema de Kantorovich y del dual, por ejemplo bajo las
+hipótesis del Teorema~\ref{teo.dualidad}— y sean $\pi^*$ un plan óptimo para
+el problema de Kantorovich y $(\varphi^*,\psi^*)$ un par óptimo para el
+problema dual. Entonces
 \[
 \varphi^*(x)+\psi^*(y)=c(x,y)
 \qquad
@@ -5602,7 +5718,7 @@ Sección~\ref{sec.demo.dualidad} y que se estudia en el
 Apéndice~\ref{ap.FR}; en este contexto escribimos $\bar u$ en lugar de $u^*$.
 Veamos algunas propiedades básicas de esta transformación.
 
-\begin{prop}
+\begin{prop}\label{prop.legendre.involucion}
 Sea $u\colon\mathbb R^d\to\mathbb R\cup\{+\infty\}$ propia, es decir, no
 idénticamente $+\infty$. Entonces $\bar u$ es convexa y toma valores en
 $\mathbb R\cup\{+\infty\}$ (si $u\equiv+\infty$, en cambio,
@@ -5611,6 +5727,9 @@ y propia, entonces
 \[
 \bar{\bar u}=u.
 \]
+(Demostramos aquí solamente el caso $u\in C^1(\R^d)$, suficiente para
+nuestros fines; el caso general es el teorema de Fenchel--Moreau,
+cf.~\cite{Rockafellar1970} y la Observación~\ref{obs.alcance.pruebas}.)
 \end{prop}
 
 \begin{proof}
@@ -5823,7 +5942,9 @@ Para concluir que esta igualdad vale $\mu$-c.t.p., usamos que la primera margina
 \[
 \pi^*(B\times\mathbb{R}^d)=\mu(B).
 \]
-En particular, tomando $B=\{x:T(x)\neq\nabla u(x)\}$,
+En particular, tomando $B=\{x:T(x)\neq\nabla u(x)\}$ —que es boreliano,
+porque $T$ lo es por hipótesis y $\nabla u$ es continua, al ser $u$ de clase
+$C^1$—,
 \[
 \mu\bigl(\{x:T(x)\neq\nabla u(x)\}\bigr)
 =
@@ -5837,9 +5958,17 @@ T(x)=\nabla u(x)
 \mu\text{-c.t.p.}
 \]
 
-Observemos que este argumento es condicional: asumimos que el plan óptimo tiene
-la forma de un mapa de transporte determinista. La existencia de tal mapa, y su
-unicidad, no están garantizadas en general por lo desarrollado hasta aquí.
+Observemos que este argumento es condicional en \emph{dos} hipótesis. La
+primera, que acabamos de usar, es que el plan óptimo tiene la forma de un
+mapa de transporte determinista: la existencia de tal mapa, y su unicidad, no
+están garantizadas por lo desarrollado hasta aquí. La segunda, introducida
+antes sin mayor comentario, es que $u$ sea de clase $C^1$, que es lo que
+permitió identificar $y=\nabla u(x)$. Las dos están relacionadas: la
+Observación~\ref{obs.ac.necesaria} explica por qué hace falta una hipótesis
+sobre $\mu$ para la primera, y la Observación~\ref{obs.Brenier.general}
+muestra cómo se elimina la segunda reemplazando el gradiente por el
+subdiferencial (Apéndice~\ref{ap.subdiferencial}), que es exactamente lo que hará
+el Capítulo~\ref{cap.Brenier}.
 
 Este fenómeno no es accidental. El teorema de Brenier~\cite{Brenier1991}
 mostrará que, bajo hipótesis adecuadas sobre las medidas (en particular, si
@@ -6728,9 +6857,16 @@ F^{[-1]}(t)\le x
 \iff
 F(x)\ge t.
 \end{equation}
-En efecto, si $F^{[-1]}(t)\le x$, entonces $x\in\{z\colon F(z)\ge t\}$ por la
-continuidad por la derecha de $F$, luego $F(x)\ge t$. El recíproco es inmediato
-por definición del ínfimo.
+En efecto, veamos las dos implicaciones por separado.
+
+($\Leftarrow$) Si $F(x)\ge t$, entonces $x$ pertenece al conjunto
+$\{z\colon F(z)\ge t\}$ cuyo ínfimo define $F^{[-1]}(t)$, y por lo tanto
+$F^{[-1]}(t)\le x$.
+
+($\Rightarrow$) Sea $x_t=F^{[-1]}(t)$. Como $F$ es continua por la derecha y
+no decreciente, el ínfimo que define $x_t$ es en realidad un mínimo: hay
+$z_n\downarrow x_t$ con $F(z_n)\ge t$, y $F(x_t)=\lim_nF(z_n)\ge t$. Si
+ahora $x_t\le x$, la monotonía de $F$ da $F(x)\ge F(x_t)\ge t$.
 
 \begin{prop}\label{prop:push-uniforme}
 Sea $\mu\in\mathcal P(\R)$ y sea $F_\mu$ su FDA. Entonces
@@ -7082,7 +7218,13 @@ $c$-cíclicamente monótono.
 \end{teo}
 \begin{proof}
 Sean $X=\sop(\mu)$ e $Y=\sop(\nu)$, que por hipótesis son compactos, y sea $c$
-continua en $X\times Y$. Por el teorema de existencia de potenciales de Kantorovich
+continua en $X\times Y$. Conviene observar, antes de empezar, que nada se
+pierde al restringirse a $X\times Y$: todo plan de $\Pi(\mu,\nu)$ está
+concentrado en $\sop(\mu)\times\sop(\nu)$, de modo que $\Pi(\mu,\nu)$ y el
+problema de Kantorovich son los mismos mirados en $X\times Y$ o en
+$\R\times\R$; y, al ser $X\times Y$ cerrado en $\R^2$, el soporte de
+$\gamma^*$ calculado como medida en $X\times Y$ coincide con el calculado en
+$\R^2$. Por el teorema de existencia de potenciales de Kantorovich
 del Capítulo~\ref{cap.dual}, existe un par óptimo $(\varphi,\psi)$ para el problema
 dual, con $\varphi\in C(X)$ y $\psi\in C(Y)$.
 
@@ -7135,14 +7277,16 @@ Este resultado, más delicado, no lo demostraremos aquí; puede consultarse en
 \end{obs}
 
 En dimensión uno, la $c$-monotonicidad cíclica tiene una consecuencia especialmente
-concreta. Cuando el costo satisface la \emph{condición de twist} (en la
-versión unidimensional; la versión en $\R^d$ aparece en la
-Sección~\ref{sec.Gangbo.McCann})
+concreta. Cuando el costo satisface la condición de tipo
+\emph{Spence--Mirrlees}
 \[
 \frac{\partial^2 c}{\partial x\,\partial y}(x,y)<0
 \quad
 \text{para todo }(x,y)\in\R\times\R,
 \]
+—que implica la \emph{condición de twist} de la
+Sección~\ref{sec.Gangbo.McCann}, donde la definimos en $\R^d$ como la
+inyectividad de $y\mapsto\nabla_xc(x,y)$—
 todo conjunto $c$-cíclicamente monótono es \emph{monótono} en el siguiente sentido:
 si contiene dos pares $(x,y)$ y $(x',y')$ con $x<x'$, entonces necesariamente
 $y\le y'$. En particular, el soporte de cualquier plan óptimo está contenido en el
@@ -7793,6 +7937,10 @@ y=\nabla u(x)
 \qquad
 \pi^*\text{-c.t.p.}
 \]
+Este último paso —de la igualdad en Fenchel--Young a $y=\nabla u(x)$— es
+exactamente el cálculo de la Sección~\ref{sec.costo.cuadratico}: la igualdad
+dice que $z\mapsto z\cdot y-u(z)$ alcanza su máximo en $z=x$, y comparando
+con la expansión de primer orden de $u$ en $x$ se obtiene $y=\nabla u(x)$.
 Definiendo $T=\nabla u$, lo anterior dice exactamente que
 $\pi^*(\Gamma_T)=1$.
 
@@ -7891,7 +8039,7 @@ boreliano. El Lema~\ref{lema.grafico} sigue siendo aplicable y los Pasos 4 a
 6 no se modifican.
 \end{obs}
 
-\begin{obs}[La hipótesis $\mu\ll\mathcal L^d$ es necesaria]\label{obs.ac.necesaria}
+\begin{obs}[La hipótesis sobre $\mu$ no puede suprimirse]\label{obs.ac.necesaria}
 Si $\mu$ tiene átomos, el plan óptimo puede no estar inducido por ningún mapa.
 El ejemplo más simple: sean $\mu=\delta_{x_0}$ y
 $\nu=\tfrac12\delta_{y_0}+\tfrac12\delta_{y_1}$ con $y_0\neq y_1$. El único
@@ -7912,6 +8060,15 @@ $\{y_0,y_1\}\subset\partial u(x_0)$ y, por la
 Proposición~\ref{prop.subdiferencial.gradiente}, el potencial $u$ \emph{no}
 es diferenciable en $x_0$. Esto muestra que la hipótesis $u\in C^1$ del teorema
 no es una restricción inocua: excluye exactamente los casos patológicos.
+
+Conviene ser preciso con el título de esta observación: lo que el ejemplo
+muestra es que la hipótesis sobre $\mu$ no puede suprimirse por completo, no
+que la continuidad absoluta sea \emph{necesaria}. De hecho no lo es: el
+teorema sigue valiendo bajo la hipótesis más débil de McCann, a saber, que
+$\mu$ no cargue conjuntos de dimensión de Hausdorff $d-1$ (en particular,
+conjuntos $(d-1)$-rectificables). Hay medidas singulares no atómicas
+—por ejemplo, $\mu$ uniforme sobre un segmento de $\R^2$ y $\nu$ un
+trasladado suyo— para las que el mapa de Brenier existe.
 \end{obs}
 
 \begin{obs}[Medidas de soporte no compacto]\label{obs.soporte.no.compacto}
@@ -7940,9 +8097,18 @@ Sean $\mu,\nu\in\mathcal P_2(\R^d)$ y sea $u\colon\R^d\to\R$ convexa (finita
 en todo $\R^d$) y diferenciable en $\mu$-casi todo punto; por ejemplo, $u$ de
 clase $C^1$, o $u$ convexa cualquiera si $\mu\ll\mathcal L^d$
 (Corolario~\ref{cor.convexa.ctp}). Si $T=\nabla u$ verifica $T_\#\mu=\nu$,
-entonces $T$ es el mapa de transporte óptimo entre $\mu$ y $\nu$ para el
-costo cuadrático, y $\pi=(\id,T)_\#\mu$ es un plan óptimo.
+entonces $T$ es un mapa de transporte óptimo entre $\mu$ y $\nu$ para el
+costo cuadrático, y $\pi=(\id,T)_\#\mu$ es un plan óptimo. Si además
+$\mu\ll\mathcal L^d$, es el único mapa óptimo y $\pi$ el único plan óptimo
+(Teorema~\ref{teo.Brenier}).
 \end{cor}
+
+\begin{obs}
+Sin la hipótesis $\mu\ll\mathcal L^d$ el criterio da optimalidad pero no
+unicidad: el Ejercicio~\ref{ejer.Brenier.KnottSmith} exhibe un par $\mu,\nu$
+con más de un plan óptimo. Por eso en el enunciado decimos \emph{un} mapa
+óptimo y no \emph{el}.
+\end{obs}
 
 \begin{proof}
 \textbf{Paso 1: integrabilidad.} Por la desigualdad de Fenchel--Young,
@@ -7972,7 +8138,9 @@ $\bar u\in L^1(\nu)$ (en particular, $\bar u<+\infty$ $\nu$-c.t.p.).
 
 \medskip
 \textbf{Paso 2: optimalidad.} Sea $\gamma\in\Pi(\mu,\nu)$ cualquiera. Como
-$|x-y|^2=|x|^2+|y|^2-2x\cdot y$ y $x\cdot y\in L^1(\gamma)$, integrando
+$|x-y|^2=|x|^2+|y|^2-2x\cdot y$ y $x\cdot y\in L^1(\gamma)$ —pues
+$|x\cdot y|\le\frac12(|x|^2+|y|^2)$, que es $\gamma$-integrable porque
+$\mu,\nu\in\mathcal P_2(\R^d)$—, integrando
 \eqref{eq:FY.criterio} respecto de $\gamma$,
 \[
 \int|x-y|^2\,d\gamma
@@ -8248,9 +8416,11 @@ Vale la pena aislar cuál es la propiedad estructural que hace funcionar el
 argumento. En la demostración de Brenier, el paso decisivo fue que la condición
 de saturación determinaba \emph{unívocamente} el punto $y$ a partir de $x$. En
 el caso general, ese paso se apoya en la llamada \emph{condición de twist}
-(en dimensión uno, la condición
-$\partial^2c/\partial x\,\partial y<0$ del Capítulo~\ref{cap.1D} la implica,
-pues entonces $y\mapsto\partial_xc(x,y)$ es estrictamente monótona): que
+(ésta es la definición; la condición de
+Spence--Mirrlees $\partial^2c/\partial x\,\partial y<0$ del
+Capítulo~\ref{cap.1D} la implica, pues entonces $y\mapsto\partial_xc(x,y)$ es
+estrictamente monótona, pero es estrictamente más fuerte: para el twist basta
+la inyectividad): que
 para cada $x$ fijo, la aplicación
 \[
 y\longmapsto\nabla_xc(x,y)
@@ -8487,8 +8657,9 @@ dar $+\infty$; por eso nos restringimos a ese espacio.
 Un plan $\pi\in\Pi(\mu,\nu)$ que realiza el mínimo se llama \emph{plan
 óptimo} para $W_p$; en general no es único (Capítulo~\ref{cap.1D},
 Observación tras la Proposición~\ref{prop:convexo-no-estricto}), aunque lo
-es, por ejemplo, para $p>1$ en dimensión uno o bajo las hipótesis del teorema
-de Brenier para $p=2$.
+es, por ejemplo, para $p>1$ en dimensión uno con soportes compactos
+(Teorema~\ref{teo:optimalidad}; el resultado vale en general) o bajo las
+hipótesis del teorema de Brenier para $p=2$.
 
 \begin{ejem}[Deltas de Dirac]\label{ej.Wp.diracs}
 Si $\mu=\delta_{x_0}$, el único plan admisible entre $\mu$ y cualquier $\nu$
@@ -8862,7 +9033,10 @@ finita de hiperplanos $\mu$-nulos, de modo que $\mu(\partial C_i)=0$.
 \medskip
 \textbf{Paso 2: discretización.} Elijamos un punto $z_i\in C_i$ en cada
 celda, y sea $Q$ la aplicación, definida en la unión de las celdas, que envía
-cada punto de $C_i$ a $z_i$. Para toda medida $\sigma$ concentrada en $K$, el
+cada punto de $C_i$ a $z_i$. Nótese que $K\subset\bigcup_iC_i$, por haber
+elegido $s^k_0<-R$ y $s^k_L>R$, de modo que $Q$ está definida en todo $K$; y
+que $Q$ es boreliana, por ser constante en cada celda $C_i$, que es
+boreliana. Para toda medida $\sigma$ concentrada en $K$, el
 plan $(\id,Q)_\#\sigma\in\Pi(\sigma,Q_\#\sigma)$ mueve cada punto menos de
 $\varepsilon$, de modo que
 \[
@@ -9064,8 +9238,12 @@ $\mu$ y a $\nu$—, $\pi\in\Pi(\mu,\nu)$. Finalmente, por la
 semicontinuidad inferior del funcional de Kantorovich
 (Teorema~\ref{teo.K.sci}),
 \[
-W_p(\mu,\nu)^p\le\int|x-y|^p\,d\pi\le\liminf_j\int|x-y|^p\,d\pi_{k_j}=\lim_kW_p(\mu,\nu_k)^p.
+W_p(\mu,\nu)^p\le\int|x-y|^p\,d\pi\le\liminf_j\int|x-y|^p\,d\pi_{k_j}
+=\liminf_{k\to\infty}W_p(\mu,\nu_k)^p,
 \]
+donde la última igualdad vale porque, por la elección de la primera
+subsucesión, $W_p(\mu,\nu_k)$ converge al $\liminf$ del enunciado y
+$(\pi_{k_j})$ es una subsucesión de ella.
 \end{proof}
 
 \begin{teo}[Completitud]\label{teo.Wp.completo}
@@ -9135,9 +9313,12 @@ verifica $W_p(\mu_R,\alpha)<\varepsilon$.
 
 \medskip
 \textbf{Paso 3: racionalizar los pesos.} Elegimos $q_i\in\Q_{\ge0}$ con
-$\sum_iq_i=1$ y $\sum_i|\mu_R(C_i)-q_i|<2\varepsilon^p/D^p$, donde $D$ es el
-diámetro de $\{z_1,\dots,z_N\}$ (esto es posible: se aproximan $N-1$ de los
-pesos por racionales y se ajusta el último para que la suma dé uno). Por el
+$\sum_iq_i=1$ y $\sum_i|\mu_R(C_i)-q_i|<2\varepsilon^p/(D+1)^p$, donde $D$ es
+el diámetro de $\{z_1,\dots,z_N\}$ (esto es posible: se aproximan $N-1$ de los
+pesos por racionales y se ajusta el último para que la suma dé uno;
+escribimos $D+1$ en lugar de $D$ para cubrir también el caso degenerado
+$N=1$, en el que $D=0$, $\alpha$ es una delta en un punto de $\Q^d$ y
+$\beta=\alpha$ sirve). Por el
 Lema~\ref{lema.Wp.finito}, la medida $\beta=\sum_iq_i\delta_{z_i}$ satisface
 $W_p(\alpha,\beta)<\varepsilon$.
 
@@ -9336,12 +9517,15 @@ $\varphi^c$ es $1$-Lipschitz, y por el mismo argumento
 $\widetilde\varphi\coloneqq\varphi^{c\bar c}$ es finita y $1$-Lipschitz. Por
 el ítem 1, $\widetilde\varphi^{\,c}=-\widetilde\varphi$.
 
-Ahora aplicamos la Proposición~\ref{prop:mejora-potenciales}: el par
-$(\widetilde\varphi,\varphi^c)$ es admisible con $\widetilde\varphi\ge\varphi$
-y $\varphi^c\ge\psi$; y aplicando el ítem 1 de la misma proposición al par
-admisible $(\widetilde\varphi,\varphi^c)$ obtenemos que
+Ahora aplicamos la Proposición~\ref{prop:mejora-potenciales}: por el
+ítem~\ref{item:mejora.toda}, el par $(\widetilde\varphi,\varphi^c)$ es
+admisible con $\widetilde\varphi\ge\varphi$, y por el
+ítem~\ref{item:mejora.par} aplicado a $(\varphi,\psi)$ vale $\varphi^c\ge\psi$;
+aplicando el ítem~\ref{item:mejora.toda} a $\widetilde\varphi$, el par
 $(\widetilde\varphi,\widetilde\varphi^{\,c})=(\widetilde\varphi,-\widetilde\varphi)$
-es admisible con $-\widetilde\varphi\ge\varphi^c\ge\psi$. Por lo tanto
+es admisible, y aplicando el ítem~\ref{item:mejora.par} al par admisible
+$(\widetilde\varphi,\varphi^c)$ resulta
+$-\widetilde\varphi=\widetilde\varphi^{\,c}\ge\varphi^c\ge\psi$. Por lo tanto
 \[
 \int\varphi\,d\mu+\int\psi\,d\nu
 \le\int\widetilde\varphi\,d\mu-\int\widetilde\varphi\,d\nu,
@@ -9859,8 +10043,11 @@ respectivos. Por la fórmula de cambio de variables para difeomorfismos
 =\frac1{|\Omega|}\int_E\bigl|\det DT^{-1}(y)\bigr|\,dy,
 \]
 mientras que $\nu(E)=|E|/|\Omega'|$. Como $E$ es arbitrario y el integrando es
-continuo, $|\det DT^{-1}(y)|=|\Omega|/|\Omega'|$ para todo $y\in\Omega'$, y
-componiendo con $T$, $|\det DT(x)|=|\Omega'|/|\Omega|$ para todo $x\in\Omega$.
+continuo, $|\det DT^{-1}(y)|=|\Omega|/|\Omega'|$ para todo $y\in\Omega'$: si
+las dos funciones continuas difirieran en un punto, por continuidad
+diferirían con el mismo signo en una bola de medida positiva, y las
+integrales sobre esa bola no coincidirían. Componiendo con $T$,
+$|\det DT(x)|=|\Omega'|/|\Omega|$ para todo $x\in\Omega$.
 Finalmente $DT=D^2u$ es simétrica y, por la convexidad de $u$, semidefinida
 positiva; como su determinante no se anula, es definida positiva y
 $\det D^2u>0$, lo que permite quitar el valor absoluto.
@@ -9902,6 +10089,15 @@ contiene a $A$, con $T=\nabla u$ un difeomorfismo de clase $C^1$ de
 $\operatorname{int}A$ sobre $\operatorname{int}B$.
 \end{quote}
 
+Conviene advertir que (R) es una hipótesis fuerte, y que no se satisface para
+cualquier par de compactos $A,B$: la teoría de regularidad de Caffarelli
+requiere, como mínimo, que el conjunto de llegada sea \emph{convexo}, y si
+$B$ no lo es el potencial de Brenier puede no ser siquiera de clase $C^1$.
+No se trata, entonces, de una hipótesis técnica genérica que uno pueda
+suponer sin costo: la Observación~\ref{obs.BM.general} no es un refinamiento
+cosmético del argumento que sigue, sino la forma en que el teorema se
+demuestra de verdad.
+
 \begin{proof}[Demostración del Teorema~\ref{teo.BM} bajo (R)]
 Por la Proposición~\ref{prop.BM.equivalencia} basta probar \eqref{eq:BM.t}
 para $t\in(0,1)$. Escribamos $\Omega=\operatorname{int}A$ y
@@ -9929,9 +10125,10 @@ DT_t(x)=(1-t)I+t\,D^2u(x),
 \]
 que es simétrica definida positiva porque $D^2u(x)$ es simétrica
 semidefinida positiva (convexidad de $u$) y $t<1$. En particular $T_t$ es un
-difeomorfismo de $\Omega$ sobre su imagen (es inyectiva por el Paso 1 y su
-diferencial es inversible en todo punto, luego es un homeomorfismo local
-$C^1$ por el teorema de la función inversa). Por el Lema~\ref{lema.MA},
+difeomorfismo de $\Omega$ sobre su imagen: por el teorema de la función
+inversa, $T_t$ es un difeomorfismo local $C^1$ —en particular $T_t(\Omega)$
+es abierto—, y siendo además inyectiva por el Paso 1, resulta un
+difeomorfismo global de $\Omega$ sobre $T_t(\Omega)$. Por el Lema~\ref{lema.MA},
 $\det D^2u(x)=|B|/|A|$ para todo $x\in\Omega$, y por el
 Lema~\ref{lema.det.concavo},
 \[
@@ -10285,7 +10482,8 @@ de Brenier se seguirá del Teorema~\ref{teo.bar.unicidad}.
 
 \begin{teo}[Existencia de baricentros]\label{teo.bar.existencia}
 Sean $\mu_1,\dots,\mu_N\in\mathcal P_2(\R^d)$ y $(\lambda_i)$ un vector de
-pesos. Entonces el funcional $\mathcal F$ alcanza su mínimo en
+pesos ($\lambda_i>0$, $\sum_i\lambda_i=1$, como en toda la sección; la
+demostración divide por $\lambda_1$). Entonces el funcional $\mathcal F$ alcanza su mínimo en
 $\mathcal P_2(\R^d)$: existe al menos un baricentro.
 \end{teo}
 
@@ -10490,8 +10688,10 @@ entonces $\mu$ es un baricentro de $(\mu_i,\lambda_i)$.
 \end{prop}
 
 \begin{proof}
-Fijemos $i$. Por el Corolario~\ref{cor.criterio.Brenier}, $T_i$ es el mapa
-óptimo entre $\mu$ y $\mu_i$. Consideremos el par
+Fijemos $i$. Por el Corolario~\ref{cor.criterio.Brenier}, $T_i$ es un mapa
+óptimo entre $\mu$ y $\mu_i$ (lo único que usaremos es que
+$W_2^2(\mu,\mu_i)=\int|x-T_i(x)|^2\,d\mu$, que no requiere unicidad).
+Consideremos el par
 \[
 \varphi_i(x)=|x|^2-2u_i(x),
 \qquad
@@ -10606,12 +10806,11 @@ como primera marginal, y podemos pegarlos a lo largo de ella: existe
 $\widetilde\gamma\in\mathcal P(\R^d\times(\R^d)^N)$ con
 $(\pp_0,\pp_i)_\#\widetilde\gamma=\pi_i$ para todo $i$, donde $\pp_0$ es la
 proyección sobre el primer factor. Esto es la versión con $N+1$ factores del
-Lema de pegado~\ref{lema.pegado}: se desintegra cada $\pi_i$ respecto de
-$\mu$, $\pi_i=\pi_i^y\otimes\mu$, y se define
-$\widetilde\gamma=\bigl(\bigotimes_i\pi_i^y\bigr)\otimes\mu$; la
-demostración de que esto define una medida con las marginales pedidas es
-palabra por palabra la del lema, y la dejamos como ejercicio
-(Ejercicio~\ref{ejer.pegado.N}). Sea
+Lema de pegado~\ref{lema.pegado}, y es el
+Corolario~\ref{cor.pegado.N} del Apéndice~\ref{ap.medida}: se desintegra
+cada $\pi_i$ respecto de $\mu$, $\pi_i=\pi_i^{x_0}\otimes\mu$ —donde $x_0$
+denota la variable de la marginal común—, y se define
+$\widetilde\gamma=\bigl(\bigotimes_i\pi_i^{x_0}\bigr)\otimes\mu$. Sea
 $\gamma=(\pp_1,\dots,\pp_N)_\#\widetilde\gamma\in\Pi(\mu_1,\dots,\mu_N)$.
 Por \eqref{eq:varianza.N} con $y=x_0$,
 \[
@@ -10757,7 +10956,11 @@ A_i=\Sigma^{-1/2}\bigl(\Sigma^{1/2}\Sigma_i\Sigma^{1/2}\bigr)^{1/2}\Sigma^{-1/2}
 \]
 que es simétrica definida positiva, de modo que $T_i=\nabla u_i$ con
 $u_i(x)=\tfrac12\langle A_ix,x\rangle$ convexa y $C^\infty$, y
-$(T_i)_\#\mu=\widetilde\mu_i$.
+$(T_i)_\#\mu=\widetilde\mu_i$. Se cumple además la hipótesis de la
+Proposición~\ref{prop.bar.criterio} sobre la transformada de Legendre: $A_i$
+es definida positiva, de modo que
+$\bar u_i(y)=\tfrac12\langle A_i^{-1}y,y\rangle$ es finita y de crecimiento
+cuadrático.
 
 \medskip
 \textbf{La condición de primer orden.} Por \eqref{eq:bar.gauss.puntofijo},
@@ -10831,16 +11034,18 @@ argumento del Teorema~\ref{teo.existencia.planes}).
 
 \begin{ejercicio}[Pegado de $N$ planes]\label{ejer.pegado.N}
 Sean $\mu,\mu_1,\dots,\mu_N\in\mathcal P(\R^d)$ y $\pi_i\in\Pi(\mu,\mu_i)$.
-Desintegrando $\pi_i=\pi_i^y\otimes\mu$ (Teorema~\ref{teo.desintegracion}),
-se define $\widetilde\gamma=\bigl(\bigotimes_{i=1}^N\pi_i^y\bigr)\otimes\mu$,
+Desintegrando $\pi_i=\pi_i^{x_0}\otimes\mu$
+(Teorema~\ref{teo.desintegracion}), se define
+$\widetilde\gamma=\bigl(\bigotimes_{i=1}^N\pi_i^{x_0}\bigr)\otimes\mu$,
 es decir
 \[
 \int\Phi\,d\widetilde\gamma
-=\int_{\R^d}\Bigl(\int_{(\R^d)^N}\Phi(y,x_1,\dots,x_N)\,d\pi_1^y(x_1)\cdots d\pi_N^y(x_N)\Bigr)d\mu(y).
+=\int_{\R^d}\Bigl(\int_{(\R^d)^N}\Phi(x_0,x_1,\dots,x_N)\,d\pi_1^{x_0}(x_1)\cdots d\pi_N^{x_0}(x_N)\Bigr)d\mu(x_0).
 \]
-Probar que $\widetilde\gamma$ es una medida de probabilidad bien definida
-(medibilidad en $y$ del integrando) y que $(\pp_0,\pp_i)_\#\widetilde\gamma=\pi_i$
-para todo $i$, siguiendo la demostración del Lema~\ref{lema.pegado}. Deducir
+Probar que $(\pp_0,\pp_i)_\#\widetilde\gamma=\pi_i$
+para todo $i$, siguiendo la demostración del Lema~\ref{lema.pegado} (la
+medibilidad, que es la parte técnica, está hecha en el
+Corolario~\ref{cor.pegado.N}). Deducir
 que $\gamma=(\pp_1,\dots,\pp_N)_\#\widetilde\gamma\in\Pi(\mu_1,\dots,\mu_N)$.
 \end{ejercicio}
 
@@ -11049,6 +11254,7 @@ con la convención $0\log0=0$.
 \end{defi}
 
 \begin{lema}\label{lema.KL}
+Supongamos, como en todo el capítulo, que $a_i>0$ y $b_j>0$ para todo $i,j$.
 La función $\pi\mapsto\mathrm{KL}(\pi\,|\,a\otimes b)$ es continua en $\Pi(a,b)$,
 estrictamente convexa, no negativa, y se anula únicamente en $\pi=a\otimes b$.
 \end{lema}
@@ -11096,8 +11302,11 @@ derivada de $t\mapsto\mathrm{KL}(\pi_t\,|\,a\otimes b)$ en $t=0^+$ es
 \[
 \sum_{ij}\bigl(a_ib_j-\pi^\varepsilon_{ij}\bigr)\Bigl(1+\log\frac{\pi^\varepsilon_{ij}}{a_ib_j}\Bigr),
 \]
-que vale $-\infty$ porque el término $(i_0,j_0)$ es $a_{i_0}b_{j_0}(1+\log0)=-\infty$
-y los demás son finitos. Luego el funcional decrece estrictamente al moverse
+que vale $-\infty$ porque el término $(i_0,j_0)$ es
+$a_{i_0}b_{j_0}(1+\log0)=-\infty$ y los demás son finitos o también
+$-\infty$ (si $\pi^\varepsilon$ tiene otras entradas nulas), pero en ningún
+caso $+\infty$: para $\pi^\varepsilon_{ij}>0$ el término es finito, y para
+$\pi^\varepsilon_{ij}=0$ vale $-\infty$. Luego el funcional decrece estrictamente al moverse
 de $\pi^\varepsilon$ hacia $a\otimes b$ para $t$ pequeño, contradiciendo la
 minimalidad.
 \end{proof}
@@ -11165,10 +11374,15 @@ diferenciable en un entorno de $\pi^\varepsilon$, con
 \[
 \frac{\partial G}{\partial\pi_{ij}}(\pi)=c_{ij}+\varepsilon\Bigl(1+\log\frac{\pi_{ij}}{a_ib_j}\Bigr).
 \]
-Las restricciones de marginales son lineales e independientes salvo por una
-relación (la suma de todas las filas y la de todas las columnas dan ambas
-$1$), y $\pi^\varepsilon$ es un punto interior del ortante. Por el teorema de
-los multiplicadores de Lagrange, existen $\alpha\in\R^n$ y $\beta\in\R^m$ tales
+Las $n+m$ restricciones de marginales son lineales, pero no independientes:
+la suma de todas las filas y la de todas las columnas dan ambas $1$, de modo
+que una cualquiera de ellas es consecuencia de las demás y la condición de
+cualificación estándar falla tal como se la enuncia habitualmente. Para
+evitarlo, descartamos una restricción —digamos la de la última columna—: las
+$n+m-1$ restantes sí tienen gradientes linealmente independientes, y el
+conjunto factible no cambia, porque la restricción descartada se deduce de
+las otras. Como además $\pi^\varepsilon$ es un punto interior del ortante, el
+teorema de los multiplicadores de Lagrange da la existencia de $\alpha\in\R^n$ y $\beta\in\R^m$ tales
 que
 \[
 c_{ij}+\varepsilon\Bigl(1+\log\frac{\pi^\varepsilon_{ij}}{a_ib_j}\Bigr)=\alpha_i+\beta_j
@@ -11183,7 +11397,11 @@ obtenemos \eqref{eq:plan.entropico}.
 \textbf{Paso 2: verificación directa y dualidad débil.}
 El Paso 1 da la \emph{existencia} de potenciales con los que el plan tiene la
 forma \eqref{eq:plan.entropico}; es el único lugar donde se usa el teorema de
-los multiplicadores de Lagrange. (Otra demostración de esa existencia, sin
+los multiplicadores de Lagrange. Conviene subrayar que el resto de la
+demostración es autosuficiente y no lo usa, de modo que el lector que
+prefiera evitar la cuestión de la cualificación de restricciones puede
+reemplazar el Paso 1 por el argumento del paréntesis siguiente y seguir
+leyendo sin pérdida. (Otra demostración de esa existencia, sin
 Lagrange, la da la convergencia del algoritmo de Sinkhorn: el
 Teorema~\ref{teo.sinkhorn.convergencia} produce un par $(\bar\varphi,\bar\psi)$
 cuyo plan asociado está en $\Pi(a,b)$, y por el Paso 2 ese plan es el
@@ -11519,11 +11737,15 @@ iterados de \eqref{eq:sinkhorn.pot}. Sea $\pi^{(k)}$ el plan
 \[
 \pi^{(k)}_{ij}=a_ib_j\exp\Bigl(\frac{\varphi^{(k)}_i+\psi^{(k)}_j-c_{ij}}{\varepsilon}\Bigr).
 \]
-Entonces $\pi^{(k)}\to\pi^\varepsilon$ cuando $k\to\infty$, y existe una
-sucesión de constantes $s_k\in\R$ tal que
-$(\varphi^{(k)}+s_k,\psi^{(k)}-s_k)\to(\varphi^\varepsilon,\psi^\varepsilon)$
-para una elección adecuada de la constante de normalización de los
-potenciales entrópicos.
+Normalizando $\varphi^{(k)}_1=\varphi^\varepsilon_1=0$ —lo cual no cambia ni
+$\pi^{(k)}$ ni $\pi^\varepsilon$, porque ambos son invariantes por
+$(\varphi,\psi)\mapsto(\varphi+s,\psi-s)$—, se tiene
+\[
+(\varphi^{(k)},\psi^{(k)})\longrightarrow(\varphi^\varepsilon,\psi^\varepsilon)
+\qquad\text{y}\qquad
+\pi^{(k)}\longrightarrow\pi^\varepsilon
+\]
+cuando $k\to\infty$.
 \end{teo}
 
 \begin{proof}
@@ -12615,7 +12837,9 @@ y la misma identidad vale para $f\in L^1(\pi)$.
 Escribiremos $\pi=\pi_x\otimes\mu$, o bien $d\pi(x,y)=d\pi_x(y)\,d\mu(x)$, para
 indicar que $\{\pi_x\}$ es la desintegración de $\pi$ respecto de su primera
 marginal. Naturalmente, intercambiando los roles de $X$ e $Y$ se obtiene la
-desintegración respecto de la segunda marginal.
+desintegración respecto de la segunda marginal. (Adviértase que escribimos
+primero el núcleo y después la marginal; otros textos, como~\cite{AGS2008}
+o~\cite{Santambrogio}, usan el orden inverso $\mu\otimes\pi_x$.)
 
 Que \eqref{eq:desint} implica \eqref{eq:desint.int} es un argumento estándar:
 la identidad vale para indicadoras de rectángulos, luego para indicadoras de
@@ -12827,6 +13051,42 @@ la desigualdad triangular de $W_p$ cualquier $\gamma$ con esas marginales
 sirve, así que esta elección canónica es todo lo que necesitamos.
 \end{obs}
 
+El Capítulo~\ref{cap.baricentros} necesita pegar no dos planes sino $N$, a lo
+largo de una marginal común. El enunciado es el siguiente.
+
+\begin{cor}[Pegado de $N$ planes]\label{cor.pegado.N}
+Sean $X_0,X_1,\dots,X_N$ espacios polacos, $\mu\in\mathcal P(X_0)$,
+$\mu_i\in\mathcal P(X_i)$ y $\pi_i\in\Pi(\mu,\mu_i)$ para $i=1,\dots,N$.
+Entonces existe
+$\widetilde\gamma\in\mathcal P(X_0\times X_1\times\dots\times X_N)$ tal que
+\[
+(\pp_0,\pp_i)_\#\widetilde\gamma=\pi_i
+\qquad\text{para todo }i=1,\dots,N.
+\]
+\end{cor}
+
+\begin{proof}
+Desintegrando $\pi_i$ respecto de su primera marginal
+(Teorema~\ref{teo.desintegracion}),
+$d\pi_i(x_0,x_i)=d\pi_i^{x_0}(x_i)\,d\mu(x_0)$ con
+$\pi_i^{x_0}\in\mathcal P(X_i)$ para $\mu$-c.t.p.\ $x_0$, se define
+\[
+\widetilde\gamma=\Bigl(\bigotimes_{i=1}^N\pi_i^{x_0}\Bigr)\otimes\mu,
+\]
+es decir, $x_1,\dots,x_N$ se eligen de manera condicionalmente independiente
+dado $x_0$. La verificación de que $\widetilde\gamma$ está bien definida
+—es decir, la medibilidad en $x_0$ de
+$x_0\mapsto\bigl(\bigotimes_i\pi_i^{x_0}\bigr)(E)$— es el argumento de
+clases monótonas de la demostración del Lema~\ref{lema.pegado}, iterado $N$
+veces: la clase de los borelianos $E\subset X_1\times\dots\times X_N$ para
+los que esa función es medible contiene a los rectángulos
+$A_1\times\dots\times A_N$ (donde vale
+$\prod_i\pi_i^{x_0}(A_i)$, producto finito de funciones medibles), es cerrada
+por uniones crecientes y por diferencias propias, y los rectángulos forman un
+$\pi$-sistema que genera los borelianos. La verificación de las marginales
+queda como ejercicio (Ejercicio~\ref{ejer.pegado.N}).
+\end{proof}
+
 \begin{obs}[Cuando uno de los planes es un mapa]\label{obs.pegado.mapa}
 Si $\pi_{23}=(\id,T)_\#\mu_2$ está inducido por un mapa $T\colon X_2\to X_3$,
 la desintegración es $\pi^{23}_{x_2}=\delta_{T(x_2)}$
@@ -12949,7 +13209,9 @@ particular que utilizaremos en estas notas. El tratamiento general de la teoría
 de dualidad convexa puede consultarse en el clásico texto de Rockafellar
 \cite{Rockafellar1970}.
 
-A lo largo de este apéndice, $E$ denotará un espacio de Banach real y $E^*$ su
+A lo largo de este apéndice, $E$ denotará un espacio normado real —la
+completitud no se usa en ninguna parte: todo lo que necesitamos es el teorema
+de Hahn--Banach de separación— y $E^*$ su
 dual topológico.
 
 \section{Transformada de Legendre--Fenchel}
@@ -13167,7 +13429,11 @@ m=\inf_{x\in E}\bigl(F(x)+G(x)\bigr).
 \]
 Como $F(x_0)+G(x_0)<+\infty$, se tiene $m<+\infty$. Si $m=-\infty$, la
 desigualdad \eqref{eq:FR.debil} muestra que $-F^*(-x^*)-G^*(x^*)=-\infty$ para
-todo $x^*$, y no hay nada que probar. Supondremos entonces que $m\in\R$.
+todo $x^*$: ambos miembros valen $-\infty$ y el máximo se alcanza
+trivialmente en cualquier $x^*$ (con la convención usual
+$-\infty-(+\infty)=-\infty$). Supondremos entonces que $m\in\R$, que es el
+único caso que usaremos: en la demostración del teorema de dualidad se aplica
+el teorema con $\inf(F+G)=-\sup\D\ge-\min\mathcal K_c>-\infty$.
 
 \medskip
 \textbf{Paso 1: los dos conjuntos convexos.}

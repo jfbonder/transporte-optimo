@@ -241,16 +241,18 @@ argumento del Teorema~\ref{N-teo.existencia.planes}).
 
 \begin{ejercicio}[Pegado de $N$ planes]\label{ejer.pegado.N}
 Sean $\mu,\mu_1,\dots,\mu_N\in\mathcal P(\R^d)$ y $\pi_i\in\Pi(\mu,\mu_i)$.
-Desintegrando $\pi_i=\pi_i^y\otimes\mu$ (Teorema~\ref{N-teo.desintegracion}),
-se define $\widetilde\gamma=\bigl(\bigotimes_{i=1}^N\pi_i^y\bigr)\otimes\mu$,
+Desintegrando $\pi_i=\pi_i^{x_0}\otimes\mu$
+(Teorema~\ref{N-teo.desintegracion}), se define
+$\widetilde\gamma=\bigl(\bigotimes_{i=1}^N\pi_i^{x_0}\bigr)\otimes\mu$,
 es decir
 \[
 \int\Phi\,d\widetilde\gamma
-=\int_{\R^d}\Bigl(\int_{(\R^d)^N}\Phi(y,x_1,\dots,x_N)\,d\pi_1^y(x_1)\cdots d\pi_N^y(x_N)\Bigr)d\mu(y).
+=\int_{\R^d}\Bigl(\int_{(\R^d)^N}\Phi(x_0,x_1,\dots,x_N)\,d\pi_1^{x_0}(x_1)\cdots d\pi_N^{x_0}(x_N)\Bigr)d\mu(x_0).
 \]
-Probar que $\widetilde\gamma$ es una medida de probabilidad bien definida
-(medibilidad en $y$ del integrando) y que $(\pp_0,\pp_i)_\#\widetilde\gamma=\pi_i$
-para todo $i$, siguiendo la demostración del Lema~\ref{N-lema.pegado}. Deducir
+Probar que $(\pp_0,\pp_i)_\#\widetilde\gamma=\pi_i$
+para todo $i$, siguiendo la demostración del Lema~\ref{N-lema.pegado} (la
+medibilidad, que es la parte técnica, está hecha en el
+Corolario~\ref{N-cor.pegado.N}). Deducir
 que $\gamma=(\pp_1,\dots,\pp_N)_\#\widetilde\gamma\in\Pi(\mu_1,\dots,\mu_N)$.
 \end{ejercicio}
 
