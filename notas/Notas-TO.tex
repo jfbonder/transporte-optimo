@@ -7417,6 +7417,49 @@ para toda permutación $\sigma$ de $\{1,\ldots,N\}$.
 Intuitivamente, la condición dice que no es posible reducir el costo total
 redistribuyendo los destinos entre los orígenes de ninguna manera.
 
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig, x=1.9cm, y=1cm]
+  %% dos copias de la recta real
+  \draw[black!45] (0.1,2) -- (5.9,2) node[rotulo, right] {$X$};
+  \draw[black!45] (0.1,0) -- (5.9,0) node[rotulo, right] {$Y$};
+  %% los tres origenes y los tres destinos
+  \foreach \x/\lbl in {0.6/x_1, 2.2/x_2, 4.1/x_3} {
+    \node[pt] at (\x,2) {};  \node[anota, above=2pt] at (\x,2) {$\lbl$};
+  }
+  \foreach \y/\lbl in {1.3/y_1, 3.0/y_2, 5.2/y_3} {
+    \node[pt] at (\y,0) {};  \node[anota, below=2pt] at (\y,0) {$\lbl$};
+  }
+  %% el emparejamiento sigma = id (el del soporte)
+  \draw[graf] (0.6,1.88) -- (1.3,0.12);
+  \draw[graf] (2.2,1.88) -- (3.0,0.12);
+  \draw[graf] (4.1,1.88) -- (5.2,0.12);
+  %% la permutacion ciclica x_1 -> y_2 -> ... (sigma = (2,3,1))
+  \draw[prohibido] (0.6,1.88) -- (3.0,0.12);
+  \draw[prohibido] (2.2,1.88) -- (5.2,0.12);
+  \draw[prohibido] (4.1,1.88) -- (1.3,0.12);
+  %% los dos costos
+  \node[figmain, anchor=west] at (6.25,1.35)
+    {$\displaystyle\sum_i c(x_i,y_i)=2{,}34$};
+  \node[figwarn, anchor=west] at (6.25,0.55)
+    {$\displaystyle\sum_i c(x_i,y_{\sigma(i)})=22{,}60$};
+\end{tikzpicture}
+\caption{La $c$-monotonicidad cíclica con $N=3$, para $c(x,y)=|x-y|^2$. Las
+tres líneas llenas son los pares $(x_i,y_i)$ del conjunto $\Gamma$; las
+punteadas, el emparejamiento que resulta de la permutación cíclica
+$\sigma=(2\,3\,1)$. La definición exige que \emph{ninguna} redistribución de
+los destinos entre los orígenes baje el costo total, y aquí el ciclo lo
+multiplica casi por diez. Conviene subrayar que la condición se pide para
+todo $N$, y no solo para $N=2$: para $N=2$ se reduce a la ausencia de cruces
+de la Figura~\ref{fig.soporte.monotono}, que en dimensión uno y para costos
+convexos ya alcanza (Proposición~\ref{prop:soporte-monotono}), pero en
+general es estrictamente más débil. Las seis permutaciones de este ejemplo
+dan $2{,}34$, $7{,}78$, $10{,}70$, $22{,}60$, $23{,}18$ y $29{,}64$: el
+mínimo es el emparejamiento comonótono, como debe ser.}
+\label{fig.cm.N3}
+\end{figure}
+
+
 El resultado fundamental es que el soporte de todo plan óptimo es $c$-cíclicamente
 monótono.
 
@@ -9368,6 +9411,57 @@ $\int|x|^p\,d\mu_n\to\int|x|^p\,d\mu$ con probabilidad $1$. El
 Teorema~\ref{teo.Wp.convergencia} en su versión general da entonces
 $W_p(\mu_n,\mu)\to0$ con probabilidad $1$.
 \end{obs}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig]
+  %% ejes (escala logarítmica en ambos)
+  \draw[eje] (-0.15,0) -- (5.22,0) node[rotulo,right] {$n$};
+  \draw[eje] (0,-0.15) -- (0,3.42);
+  \draw[black!60] (0.000,0.05) -- (0.000,-0.05) node[anota,below] {$50$};
+  \draw[black!60] (0.933,0.05) -- (0.933,-0.05) node[anota,below] {$100$};
+  \draw[black!60] (1.866,0.05) -- (1.866,-0.05) node[anota,below] {$200$};
+  \draw[black!60] (2.800,0.05) -- (2.800,-0.05) node[anota,below] {$400$};
+  \draw[black!60] (3.733,0.05) -- (3.733,-0.05) node[anota,below] {$800$};
+  \draw[black!60] (4.666,0.05) -- (4.666,-0.05) node[anota,below] {$1600$};
+  \draw[black!60] (0.05,0.217) -- (-0.05,0.217) node[anota,left] {$0{,}01$};
+  \draw[grilla] (0,0.217) -- (4.916,0.217);
+  \draw[black!60] (0.05,1.667) -- (-0.05,1.667) node[anota,left] {$0{,}1$};
+  \draw[grilla] (0,1.667) -- (4.916,1.667);
+  \draw[black!60] (0.05,3.117) -- (-0.05,3.117) node[anota,left] {$1$};
+  \draw[grilla] (0,3.117) -- (4.916,3.117);
+  \draw[aux] (0.000,1.334) -- (4.666,0.242);
+  \draw[aux] (0.000,2.972) -- (4.666,2.753);
+  % d = 1
+  \draw[figmain, thick] plot[mark=*, mark size=1.7pt] coordinates {(0.000,1.334) (0.933,1.178) (1.866,0.922) (2.800,0.700) (3.733,0.456) (4.666,0.272)};
+  \node[anota, figmain, anchor=west] at (4.766,0.272) {$d=1$};
+  % d = 2
+  \draw[figalt, thick] plot[mark=square*, mark size=1.7pt] coordinates {(0.000,1.833) (0.933,1.675) (1.866,1.482) (2.800,1.278) (3.733,1.100) (4.666,0.878)};
+  \node[anota, figalt, anchor=west] at (4.766,0.878) {$d=2$};
+  % d = 5
+  \draw[figacc, thick] plot[mark=triangle*, mark size=1.7pt] coordinates {(0.000,2.566) (0.933,2.460) (1.866,2.359) (2.800,2.257) (3.733,2.159) (4.666,2.062)};
+  \node[anota, figacc, anchor=west] at (4.766,2.062) {$d=5$};
+  % d = 10
+  \draw[figwarn, thick] plot[mark=diamond*, mark size=1.7pt] coordinates {(0.000,2.972) (0.933,2.921) (1.866,2.864) (2.800,2.808) (3.733,2.752) (4.666,2.699)};
+  \node[anota, figwarn, anchor=west] at (4.766,2.699) {$d=10$};
+  \node[anota, figgrey, anchor=north west] at (2.220,0.695) {pendiente $-\tfrac12$};
+  \node[anota, figgrey, anchor=north west] at (1.479,2.782) {pendiente $-\tfrac1{10}$};
+  \node[anota, anchor=south west] at (0.1,3.20)
+       {$\E\,W_1$ entre dos muestras de $n$ puntos uniformes en $[0,1]^d$};
+\end{tikzpicture}
+\caption{La maldición de la dimensión, en escala logarítmica en ambos ejes.
+Cada curva es el promedio de $W_1$ entre las medidas empíricas de dos muestras
+independientes de $n$ puntos uniformes en $[0,1]^d$ (sesenta réplicas para
+$d=1,2$ y veinte para $d=5,10$); las rectas grises punteadas tienen
+pendientes $-\tfrac12$ y $-\tfrac1{10}$. Las pendientes ajustadas son
+$-0{,}50$, $-0{,}44$, $-0{,}23$ y $-0{,}13$ para $d=1,2,5,10$, en acuerdo con
+las tasas $n^{-1/2}$ para $d<2p$ y $n^{-1/d}$ para $d>2p$ (aquí $p=1$, de modo
+que el caso crítico es $d=2$). Lo que la figura hace visible no es tanto la
+pendiente como la \emph{altura}: en $d=10$, con $1600$ puntos el error sigue
+siendo mayor que el que en $d=1$ se consigue con cincuenta. Éste es el
+cálculo del Ejercicio~\ref{ejc.Wp.muestras}.}
+\label{fig.Wp.tasas}
+\end{figure}
 
 \begin{obs}[Velocidad de convergencia y maldición de la
 dimensión]\label{obs.Wp.tasas}
@@ -12425,6 +12519,162 @@ $\varepsilon\to\infty$ domina la entropía y el plan tiende al producto
 $a\otimes b$; cuando $\varepsilon\to0$ domina el costo y el plan tiende a un
 plan óptimo del problema de Kantorovich. El segundo límite es el que hace
 del algoritmo de Sinkhorn un método para calcular transporte óptimo.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig]
+  % eps = 3
+  \begin{scope}[xshift=0.00cm]
+    \fill[figmain!27] (0.000,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!43] (0.330,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!11] (0.660,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!10] (0.990,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!48] (1.320,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!37] (1.650,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!29] (0.000,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!47] (0.330,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!12] (0.660,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!10] (0.990,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!53] (1.320,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!41] (1.650,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!37] (0.000,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!62] (0.330,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!16] (0.660,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!14] (0.990,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!74] (1.320,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!57] (1.650,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!11] (0.000,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!19] (0.330,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!5] (0.660,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!23] (1.320,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!18] (1.650,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!47] (0.000,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!80] (0.330,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!21] (0.660,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!19] (0.990,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!100] (1.320,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!78] (1.650,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!21] (0.000,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!36] (0.330,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!9] (0.660,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!8] (0.990,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!45] (1.320,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!35] (1.650,1.650) rectangle ++(0.330,0.330);
+    \draw[black!35] (0,0) rectangle (1.980,1.980);
+    \node[rotulo, below] at (0.990,-0.08) {$\ve=3$};
+  \end{scope}
+  % eps = 0.3
+  \begin{scope}[xshift=2.75cm]
+    \fill[figmain!38] (0.000,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!49] (0.330,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!12] (0.660,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!9] (0.990,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!25] (1.320,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!19] (1.650,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!39] (0.000,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!53] (0.330,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!13] (0.660,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!10] (0.990,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!32] (1.320,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!24] (1.650,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!31] (0.000,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!58] (0.330,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!15] (0.660,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!13] (0.990,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!64] (1.320,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!50] (1.650,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!7] (0.000,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!15] (0.330,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!22] (1.320,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!17] (1.650,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!23] (0.000,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!56] (0.330,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!15] (0.660,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!15] (0.990,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!100] (1.320,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!78] (1.650,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!10] (0.000,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!24] (0.330,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!6] (0.660,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!7] (0.990,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!45] (1.320,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!36] (1.650,1.650) rectangle ++(0.330,0.330);
+    \draw[black!35] (0,0) rectangle (1.980,1.980);
+    \node[rotulo, below] at (0.990,-0.08) {$\ve=0{,}3$};
+  \end{scope}
+  % eps = 0.03
+  \begin{scope}[xshift=5.50cm]
+    \fill[figmain!50] (0.000,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!39] (0.330,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!8] (0.660,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!36] (0.000,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!60] (0.330,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!13] (0.660,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!71] (0.330,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!21] (0.660,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!24] (0.990,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!45] (1.320,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!29] (1.650,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!24] (1.320,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!17] (1.650,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!100] (1.320,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!80] (1.650,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!45] (1.320,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!36] (1.650,1.650) rectangle ++(0.330,0.330);
+    \draw[black!35] (0,0) rectangle (1.980,1.980);
+    \node[rotulo, below] at (0.990,-0.08) {$\ve=0{,}03$};
+  \end{scope}
+  % eps = 0.003
+  \begin{scope}[xshift=8.25cm]
+    \fill[figmain!66] (0.000,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!18] (0.330,0.000) rectangle ++(0.330,0.330);
+    \fill[figmain!76] (0.330,0.330) rectangle ++(0.330,0.330);
+    \fill[figmain!71] (0.330,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!28] (0.660,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!25] (0.990,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!56] (1.320,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!5] (1.650,0.660) rectangle ++(0.330,0.330);
+    \fill[figmain!30] (1.320,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!11] (1.650,0.990) rectangle ++(0.330,0.330);
+    \fill[figmain!100] (1.320,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!88] (1.650,1.320) rectangle ++(0.330,0.330);
+    \fill[figmain!41] (1.320,1.650) rectangle ++(0.330,0.330);
+    \fill[figmain!44] (1.650,1.650) rectangle ++(0.330,0.330);
+    \draw[black!35] (0,0) rectangle (1.980,1.980);
+    \node[rotulo, below] at (0.990,-0.08) {$\ve=0{,}003$};
+  \end{scope}
+  %% el plan optimo del LP, para comparar
+  \begin{scope}[xshift=11.00cm]
+    \fill[figacc!61] (0.000,0.000) rectangle ++(0.330,0.330);
+    \fill[figacc!16] (0.330,0.000) rectangle ++(0.330,0.330);
+    \fill[figacc!70] (0.330,0.330) rectangle ++(0.330,0.330);
+    \fill[figacc!65] (0.330,0.660) rectangle ++(0.330,0.330);
+    \fill[figacc!26] (0.660,0.660) rectangle ++(0.330,0.330);
+    \fill[figacc!23] (0.990,0.660) rectangle ++(0.330,0.330);
+    \fill[figacc!52] (1.320,0.660) rectangle ++(0.330,0.330);
+    \fill[figacc!29] (1.320,0.990) rectangle ++(0.330,0.330);
+    \fill[figacc!100] (1.320,1.320) rectangle ++(0.330,0.330);
+    \fill[figacc!71] (1.650,1.320) rectangle ++(0.330,0.330);
+    \fill[figacc!57] (1.650,1.650) rectangle ++(0.330,0.330);
+    \draw[black!35] (0,0) rectangle (1.980,1.980);
+    \node[rotulo, below] at (0.990,-0.08) {$\ve=0$ (el LP)};
+  \end{scope}\end{tikzpicture}
+\caption{El plan entrópico $\pi^\ve$ para $\ve$ decreciente, en el ejemplo de
+$n=m=6$ puntos de la Sección~1 del cuaderno \emph{Transporte entrópico y
+Sinkhorn}; la intensidad de cada celda es proporcional a $\pi^\ve_{ij}$,
+normalizada por el máximo de cada panel. A la izquierda, $\ve$ grande: el plan
+es prácticamente el producto $a\otimes b$
+(Proposición~\ref{prop.eps.infinito}; medimos
+$\|\pi^\ve-a\otimes b\|_1=0{,}041$ para $\ve=3$). A medida que $\ve$ decrece,
+la masa se concentra sobre el soporte del plan óptimo del programa lineal, que
+es el panel de la derecha (Teorema~\ref{teo.eps.cero}). La convergencia es
+lenta: para $\ve=0{,}003$ el costo ya difiere del óptimo en menos de
+$10^{-4}$, pero $\|\pi^\ve-\pi^0\|_1$ todavía vale $0{,}17$, y hace falta
+bajar hasta $\ve=3\cdot10^{-4}$ para que esa distancia caiga a $0{,}014$. El
+plan del LP tiene $11=n+m-1$ celdas no nulas, por ser un vértice del
+politopo; los entrópicos tienen las $36$.}
+\label{fig.sinkhorn.eps}
+\end{figure}
 
 \begin{prop}[Límite $\varepsilon\to\infty$]\label{prop.eps.infinito}
 $\pi^\varepsilon\to a\otimes b$ cuando $\varepsilon\to\infty$.
