@@ -360,7 +360,10 @@ plan multimarginal óptimo del Teorema~\ref{N-teo.bar.multimarginal} es el
 comonótono (empareja los $k$-ésimos datos ordenados de cada medida) y que
 $A_\#\gamma^*$ es exactamente el promedio de cuantiles de la
 Proposición~\ref{N-prop.bar.1D}. Verificarlo resolviendo el programa lineal
-multimarginal para $n$ chico.
+multimarginal para $N=3$ o $4$ medidas con $n\le6$ átomos: el problema tiene
+$n^N$ variables, de modo que con $N=4$ y $n=6$ son $1296$, pero con $N=8$ y
+$n=4$ ya son $65\,536$ y la matriz densa de restricciones deja de entrar en
+memoria.
 \end{ejercicio}
 
 \begin{ejercicio}[Traslaciones]\label{ejc.bar.traslaciones}
@@ -384,13 +387,20 @@ segunda? Comparar con el Ejercicio~\ref{ejer.bar.no.convexa.geodesica}.
 
 \begin{ejercicio}[Baricentros de formas]\label{ejc.bar.formas}
 Discretizar dos o tres figuras planas (un disco, un cuadrado, un triángulo)
-como medidas uniformes sobre una grilla y calcular su baricentro con soporte
-fijo en la grilla resolviendo un programa lineal (\texttt{ot.lp.barycenter});
-comparar con la formulación multimarginal del
-Teorema~\ref{N-teo.bar.multimarginal}, que no fija el soporte de antemano.
-Observar cómo crece el tamaño del problema con
-la grilla; en el Capítulo~\ref{N-cap.Sinkhorn} se ve la versión entrópica, que
-escala mucho mejor.
+como medidas uniformes sobre una grilla de a lo sumo $30\times30$ y calcular
+su baricentro con soporte fijo en la grilla resolviendo un programa lineal
+(\texttt{ot.lp.barycenter}; con $900$ puntos de grilla tarda del orden de
+medio minuto). Medir cómo crece ese tiempo al pasar de $20\times20$ a
+$25\times25$ y a $30\times30$, y estimar el exponente.
+
+Resolver después la formulación multimarginal del
+Teorema~\ref{N-teo.bar.multimarginal} —que no fija el soporte de antemano— para
+tres medidas con \emph{cinco átomos cada una} ($5^3=125$ variables, como en la
+Sección~6 del cuaderno), y comprobar allí que los dos valores óptimos
+coinciden. Explicar por qué el multimarginal no se puede usar sobre la grilla
+de las formas: ¿cuántas variables tendría? En el
+Capítulo~\ref{N-cap.Sinkhorn} se ve la versión entrópica, que escala mucho
+mejor.
 \end{ejercicio}
 
 \end{document}

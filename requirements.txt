@@ -1,0 +1,7 @@
+# Versiones con las que se ejecutaron los cuadernos de cuadernos/ y se
+# guardaron sus salidas. `make cuadernos` las instala antes de reejecutarlos.
+pot==0.9.7
+numpy==2.5.3
+scipy==1.18.1
+matplotlib==3.11.2
+jupyter==1.1.1

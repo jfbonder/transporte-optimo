@@ -415,7 +415,13 @@ del cuaderno.
 \begin{ejercicio}[Convergencia de valores]\label{ejc.eps.valores}
 Graficar $\ve\mapsto\mathrm{OT}_\ve(a,b)-\mathrm{OT}(a,b)$ en escala
 logarítmica en ambos ejes para el ejemplo de la Sección~1 del cuaderno y
-estimar el orden de convergencia. ¿Es $O(\ve)$, como garantiza el
+estimar el orden de convergencia. Usar la implementación en el dominio
+logarítmico (la \texttt{sinkhorn\_log} de la Sección~2.2 del cuaderno, o
+\texttt{ot.sinkhorn(..., method='sinkhorn\_log')}): con $\ve$ chico la versión
+en términos de $(u,v)$ devuelve \texttt{nan}, como se ve en la Sección~2.3.
+Al elegir el rango de $\ve$, tener en cuenta que para $\ve$ muy chico la
+diferencia $\mathrm{OT}_\ve-\mathrm{OT}$ queda por debajo de la precisión con
+la que converge el algoritmo. ¿Es $O(\ve)$, como garantiza el
 Teorema~\ref{N-teo.eps.cero}, o mejor? Comparar la constante observada con
 $\log(1/\min_ia_i)$.
 \end{ejercicio}
@@ -429,9 +435,13 @@ Ejercicio~\ref{N-ejer.mejora.discreta}.
 \end{ejercicio}
 
 \begin{ejercicio}[Costo de cada iteración]\label{ejc.eps.costo}
-Medir el tiempo de una iteración de Sinkhorn para $n=m=500,1000,2000,4000$ y
-verificar el crecimiento $O(nm)$. Comparar con el tiempo del método exacto
-(\texttt{ot.emd}) para los mismos tamaños.
+Medir el tiempo de una iteración de Sinkhorn en el dominio logarítmico
+(Sección~2.2 del cuaderno) para $n=m=500,1000,2000,4000$ y verificar el
+crecimiento $O(nm)$. Comparar con el tiempo del método exacto
+(\texttt{ot.emd}) para $n=m=500,1000,2000$ —con $n=4000$ la matriz de costos
+sola ocupa $128$~MB y el simplex puede tardar varios minutos— y extrapolar:
+¿a partir de qué $n$ conviene el método entrópico? Prestar atención a que el
+tiempo de \texttt{ot.emd} depende también de los datos, y no solo de $n$.
 \end{ejercicio}
 
 \begin{ejercicio}[Un baricentro con $\ve\to0$]\label{ejc.eps.baricentro}
@@ -450,8 +460,12 @@ Verificar numéricamente que el baricentro entrópico del ejemplo de no
 unicidad de la Observación~\ref{N-obs.bar.no.unicidad} ($\mu_1$ con átomos en $(\pm1,0)$,
 $\mu_2$ con átomos en $(0,\pm1)$, sobre una grilla que contenga los cuatro
 candidatos) es \emph{único} y simétrico: la entropía rompe la degeneración
-eligiendo la combinación más «repartida». Comparar con el
-Ejercicio~\ref{ejer.bar.entropico}.
+eligiendo la combinación más «repartida». Como en la Sección~5.2 del
+cuaderno, conviene aplicar el núcleo separable en lugar de la matriz
+$K^\ve$ completa: sobre una grilla producto el costo de cada iteración pasa
+de $O(N^4)$ a $O(N^3)$. Alternativamente, alcanza con una grilla $15\times15$
+que contenga $(\pm1,0)$, $(0,\pm1)$ y $(\pm\tfrac12,\pm\tfrac12)$. Comparar
+con el Ejercicio~\ref{ejer.bar.entropico}.
 \end{ejercicio}
 
 \bibliographystyle{plain}

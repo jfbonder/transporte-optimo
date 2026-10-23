@@ -317,11 +317,16 @@ que el plan comonótono \emph{no} está inducido por un mapa y describirlo.
 \end{ejercicio}
 
 \begin{ejercicio}[Dominancia estocástica: cálculo numérico]\label{ejc.1D.dominancia}
-Para pares $(\mu,\nu)$ de muestras, verificar numéricamente la equivalencia
-entre $F_\mu\ge F_\nu$ y $T_{\mathrm{mon}}\ge\id$ del
-Ejercicio~\ref{ejer.1D.dominancia}: graficar ambas condiciones para
-$\mu=N(0,1)$ y $\nu=N(m,\sigma^2)$ con varios $(m,\sigma)$, y hallar la región
-del plano $(m,\sigma)$ donde valen.
+Para $\mu=N(0,1)$ y $\nu=N(m,\sigma^2)$, comprobar que
+$T_{\mathrm{mon}}(x)=m+\sigma x$ y deducir a mano para qué pares
+$(m,\sigma)$ vale $T_{\mathrm{mon}}\ge\id$ en todo $\R$; la respuesta es un
+conjunto mucho más chico de lo que uno esperaría. Verificarlo numéricamente
+evaluando $\min_x(T_{\mathrm{mon}}(x)-x)$ sobre una grilla de $(m,\sigma)$ y
+dibujando un mapa de calor. Observar que, si se restringe $x$ al rango de una
+muestra finita, la condición parece valer en una franja ancha alrededor de
+$\sigma=1$, y explicar por qué eso es un artefacto del rango muestral y no un
+resultado. Repetir con $\mu,\nu$ de la misma familia de escala ($\sigma=1$)
+para recuperar el enunciado del Ejercicio~\ref{ejer.1D.dominancia}.
 \end{ejercicio}
 
 \begin{ejercicio}[Cotas de Fréchet--Hoeffding: cálculo numérico]\label{ejc.1D.frechet}

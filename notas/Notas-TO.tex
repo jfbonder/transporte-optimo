@@ -2545,7 +2545,10 @@ nulas, y otro en el que tenga menos.
 Para $\mu=\nu=\frac12(\delta_0+\delta_1)$ y los costos $c=|x-y|^2$,
 $c=\mathbf 1_{\{x\ne y\}}$ y $c=-|x-y|^2$, graficar el costo como función del
 parámetro $t$ que recorre el segmento $\Pi(\mu,\nu)$ e identificar todos los
-planes óptimos en cada caso. ¿Para qué costo son óptimos todos los planes?
+planes óptimos en cada caso. Comprobar que en los tres el costo es afín en
+$t$ y no constante, de modo que el mínimo se alcanza en un extremo del
+segmento. ¿Qué condición sobre la matriz $(c_{ij})$ hace que \emph{todos} los
+planes sean óptimos? Exhibir un costo que la cumpla y que no sea constante.
 \end{ejercicio}
 
 \begin{ejercicio}[Birkhoff]\label{ejc.MK.birkhoff}
@@ -2555,14 +2558,23 @@ plan óptimo del programa lineal es una permutación y que $\langle C,M\rangle$
 es estrictamente mayor que el óptimo (salvo coincidencias). Implementar la
 descomposición de Birkhoff: encontrar una permutación $\sigma$ con
 $M_{i\sigma(i)}>0$ para todo $i$ (resolver un problema de asignación con costo
-$-\log M$), restar $t\,M(\sigma)$ con $t=\min_iM_{i\sigma(i)}$ y repetir hasta
+$-\log M_{ij}$, reemplazando los ceros por un valor finito grande, por
+ejemplo con
+\texttt{np.where(M > 0, -np.log(np.maximum(M, 1e-300)), 1e6)}: así el óptimo
+evita las entradas nulas siempre que exista una permutación admisible, cosa
+que el teorema de Birkhoff garantiza; con \texttt{inf} en cambio
+\texttt{scipy.optimize.linear\_sum\_assignment} falla), restar $t\,M(\sigma)$ con $t=\min_iM_{i\sigma(i)}$ y repetir hasta
 llegar a cero. ¿Cuántas permutaciones aparecen?
 \end{ejercicio}
 
 \begin{ejercicio}[Costos cóncavos]\label{ejc.MK.concavos}
 Con las dos densidades superpuestas de la Sección~5 del cuaderno, calcular la
-masa que el plan óptimo de $|x-y|^p$ deja en la diagonal $\{y=x\}$ como
-función de $p\in(0,2]$ y graficarla. Explicar el salto en $p=1$ usando la
+masa que el plan óptimo de $|x-y|^p$ deja en la celda diagonal de la
+discretización como función de $p$ y graficarla, para $p\in(0,1)\cup(1,2]$,
+marcando $p=1$ aparte: allí hay muchos planes óptimos y el valor que devuelve
+el método exacto no está determinado. Repetir con dos tamaños de grilla
+($N=100$ y $N=200$) para ver qué valores son estables y cuáles no; comparar
+con la masa común $\sum_i\min(a_i,b_i)$. Explicar el salto en $p=1$ usando la
 Proposición~\ref{prop:convexo-no-estricto} y el
 Ejercicio~\ref{ejer.1D.concavo}.
 \end{ejercicio}
@@ -6105,8 +6117,13 @@ calcular la fracción de la brecha
 dual $\mathcal D^*-\mathcal D(\varphi,\varphi^c)$ que cierra un paso de mejora
 $\varphi\mapsto\varphi^{c\bar c}$ (Proposición~\ref{prop:mejora-potenciales})
 y graficar su histograma. ¿Hay algún $\varphi$ inicial para el cual un solo
-paso alcance el óptimo? (\emph{Sugerencia:} partir de un potencial óptimo
-perturbado.) Comparar con el Ejercicio~\ref{ejer.mejora.discreta}.
+paso alcance el óptimo? (\emph{Sugerencia:} un paso alcanza el óptimo
+exactamente cuando $\varphi^c$ ya es un $\psi$ óptimo. Partir de un
+$\varphi^*$ óptimo y \emph{bajar} su valor en un índice $i$ que no realice
+ningún mínimo $\min_i(c_{ij}-\varphi^*_i)$. Comprobar, en cambio, que un
+$\varphi^*$ perturbado al azar no alcanza el óptimo ni con perturbaciones de
+tamaño $10^{-6}$: la mejora no es continua.) Comparar con el
+Ejercicio~\ref{ejer.mejora.discreta}.
 \end{ejercicio}
 
 \begin{ejercicio}[Costo $0$--$1$]\label{ejc.dual.01}
@@ -7659,11 +7676,16 @@ que el plan comonótono \emph{no} está inducido por un mapa y describirlo.
 \end{ejercicio}
 
 \begin{ejercicio}[Dominancia estocástica: cálculo numérico]\label{ejc.1D.dominancia}
-Para pares $(\mu,\nu)$ de muestras, verificar numéricamente la equivalencia
-entre $F_\mu\ge F_\nu$ y $T_{\mathrm{mon}}\ge\id$ del
-Ejercicio~\ref{ejer.1D.dominancia}: graficar ambas condiciones para
-$\mu=N(0,1)$ y $\nu=N(m,\sigma^2)$ con varios $(m,\sigma)$, y hallar la región
-del plano $(m,\sigma)$ donde valen.
+Para $\mu=N(0,1)$ y $\nu=N(m,\sigma^2)$, comprobar que
+$T_{\mathrm{mon}}(x)=m+\sigma x$ y deducir a mano para qué pares
+$(m,\sigma)$ vale $T_{\mathrm{mon}}\ge\id$ en todo $\R$; la respuesta es un
+conjunto mucho más chico de lo que uno esperaría. Verificarlo numéricamente
+evaluando $\min_x(T_{\mathrm{mon}}(x)-x)$ sobre una grilla de $(m,\sigma)$ y
+dibujando un mapa de calor. Observar que, si se restringe $x$ al rango de una
+muestra finita, la condición parece valer en una franja ancha alrededor de
+$\sigma=1$, y explicar por qué eso es un artefacto del rango muestral y no un
+resultado. Repetir con $\mu,\nu$ de la misma familia de escala ($\sigma=1$)
+para recuperar el enunciado del Ejercicio~\ref{ejer.1D.dominancia}.
 \end{ejercicio}
 
 \begin{ejercicio}[Cotas de Fréchet--Hoeffding: cálculo numérico]\label{ejc.1D.frechet}
@@ -9841,8 +9863,13 @@ El método exacto devuelve también potenciales duales
 (\texttt{ot.emd(a, b, M, log=True)}). Comparar los potenciales $(u,v)$ así
 obtenidos con la función $1$-Lipschitz $\varphi$ de la Sección~6 del cuaderno:
 no tienen por qué coincidir (¿por qué?), pero el valor dual
-$\sum_ia_iu_i+\sum_jb_jv_j$ debe ser $W_1(\mu,\nu)$. ¿Es $v=-u$ sobre los
-puntos comunes a ambos soportes? ¿Por qué no necesariamente?
+$\sum_ia_iu_i+\sum_jb_jv_j$ debe ser $W_1(\mu,\nu)$. ¿Es $v=-u$? La pregunta
+solo tiene sentido sobre puntos que estén en los dos soportes, y el ejemplo
+de la Sección~6 del cuaderno, con dos nubes de puntos al azar, no tiene
+ninguno. Construir una variante en la que $\mu$ y $\nu$ vivan sobre el
+\emph{mismo} conjunto de puntos (el mismo \texttt{X} para las dos, con pesos
+$a\neq b$) y comprobar allí si $v_j=-u_i$ cuando $x_i=y_j$. ¿Por qué no tiene
+por qué pasar, si $\varphi^c=-\varphi$ para el costo $|x-y|$?
 \end{ejercicio}
 
 \begin{ejercicio}[Medidas empíricas y dimensión]\label{ejc.Wp.muestras}
@@ -9850,7 +9877,10 @@ Sea $\mu$ la distribución uniforme en $[0,1]^d$. Para $d\in\{1,2,5,10\}$ y
 $n\in\{50,100,200,400,800\}$, generar dos muestras independientes de $n$
 puntos con ley $\mu$ y calcular la distancia $W_1$ entre sus medidas
 empíricas con \texttt{ot.emd2} y el costo euclídeo
-(\texttt{ot.dist(X, Y, metric='euclidean')}). Repetir el experimento al
+(\texttt{ot.dist(X, Y, metric='euclidean')}). Pasarle
+\texttt{numItermax=10\_000\_000} a \texttt{ot.emd2}, como hacen las funciones
+auxiliares del cuaderno: con el valor por omisión el simplex puede agotar las
+iteraciones y devolver un resultado no óptimo con un simple aviso. Repetir el experimento al
 menos $10$ veces para cada par $(d,n)$, graficar en escala log-log la media
 en función de $n$, con barras de un desvío estándar, y estimar la pendiente
 de cada recta. Comparar con la Observación~\ref{obs.Wp.tasas}: ¿qué
@@ -11153,7 +11183,10 @@ plan multimarginal óptimo del Teorema~\ref{teo.bar.multimarginal} es el
 comonótono (empareja los $k$-ésimos datos ordenados de cada medida) y que
 $A_\#\gamma^*$ es exactamente el promedio de cuantiles de la
 Proposición~\ref{prop.bar.1D}. Verificarlo resolviendo el programa lineal
-multimarginal para $n$ chico.
+multimarginal para $N=3$ o $4$ medidas con $n\le6$ átomos: el problema tiene
+$n^N$ variables, de modo que con $N=4$ y $n=6$ son $1296$, pero con $N=8$ y
+$n=4$ ya son $65\,536$ y la matriz densa de restricciones deja de entrar en
+memoria.
 \end{ejercicio}
 
 \begin{ejercicio}[Traslaciones]\label{ejc.bar.traslaciones}
@@ -11177,13 +11210,20 @@ segunda? Comparar con el Ejercicio~\ref{ejer.bar.no.convexa.geodesica}.
 
 \begin{ejercicio}[Baricentros de formas]\label{ejc.bar.formas}
 Discretizar dos o tres figuras planas (un disco, un cuadrado, un triángulo)
-como medidas uniformes sobre una grilla y calcular su baricentro con soporte
-fijo en la grilla resolviendo un programa lineal (\texttt{ot.lp.barycenter});
-comparar con la formulación multimarginal del
-Teorema~\ref{teo.bar.multimarginal}, que no fija el soporte de antemano.
-Observar cómo crece el tamaño del problema con
-la grilla; en el Capítulo~\ref{cap.Sinkhorn} se ve la versión entrópica, que
-escala mucho mejor.
+como medidas uniformes sobre una grilla de a lo sumo $30\times30$ y calcular
+su baricentro con soporte fijo en la grilla resolviendo un programa lineal
+(\texttt{ot.lp.barycenter}; con $900$ puntos de grilla tarda del orden de
+medio minuto). Medir cómo crece ese tiempo al pasar de $20\times20$ a
+$25\times25$ y a $30\times30$, y estimar el exponente.
+
+Resolver después la formulación multimarginal del
+Teorema~\ref{teo.bar.multimarginal} —que no fija el soporte de antemano— para
+tres medidas con \emph{cinco átomos cada una} ($5^3=125$ variables, como en la
+Sección~6 del cuaderno), y comprobar allí que los dos valores óptimos
+coinciden. Explicar por qué el multimarginal no se puede usar sobre la grilla
+de las formas: ¿cuántas variables tendría? En el
+Capítulo~\ref{cap.Sinkhorn} se ve la versión entrópica, que escala mucho
+mejor.
 \end{ejercicio}
 
 \chapter{Transporte entrópico y el algoritmo de Sinkhorn}\label{cap.Sinkhorn}
@@ -12475,7 +12515,13 @@ del cuaderno.
 \begin{ejercicio}[Convergencia de valores]\label{ejc.eps.valores}
 Graficar $\ve\mapsto\mathrm{OT}_\ve(a,b)-\mathrm{OT}(a,b)$ en escala
 logarítmica en ambos ejes para el ejemplo de la Sección~1 del cuaderno y
-estimar el orden de convergencia. ¿Es $O(\ve)$, como garantiza el
+estimar el orden de convergencia. Usar la implementación en el dominio
+logarítmico (la \texttt{sinkhorn\_log} de la Sección~2.2 del cuaderno, o
+\texttt{ot.sinkhorn(..., method='sinkhorn\_log')}): con $\ve$ chico la versión
+en términos de $(u,v)$ devuelve \texttt{nan}, como se ve en la Sección~2.3.
+Al elegir el rango de $\ve$, tener en cuenta que para $\ve$ muy chico la
+diferencia $\mathrm{OT}_\ve-\mathrm{OT}$ queda por debajo de la precisión con
+la que converge el algoritmo. ¿Es $O(\ve)$, como garantiza el
 Teorema~\ref{teo.eps.cero}, o mejor? Comparar la constante observada con
 $\log(1/\min_ia_i)$.
 \end{ejercicio}
@@ -12489,9 +12535,13 @@ Ejercicio~\ref{ejer.mejora.discreta}.
 \end{ejercicio}
 
 \begin{ejercicio}[Costo de cada iteración]\label{ejc.eps.costo}
-Medir el tiempo de una iteración de Sinkhorn para $n=m=500,1000,2000,4000$ y
-verificar el crecimiento $O(nm)$. Comparar con el tiempo del método exacto
-(\texttt{ot.emd}) para los mismos tamaños.
+Medir el tiempo de una iteración de Sinkhorn en el dominio logarítmico
+(Sección~2.2 del cuaderno) para $n=m=500,1000,2000,4000$ y verificar el
+crecimiento $O(nm)$. Comparar con el tiempo del método exacto
+(\texttt{ot.emd}) para $n=m=500,1000,2000$ —con $n=4000$ la matriz de costos
+sola ocupa $128$~MB y el simplex puede tardar varios minutos— y extrapolar:
+¿a partir de qué $n$ conviene el método entrópico? Prestar atención a que el
+tiempo de \texttt{ot.emd} depende también de los datos, y no solo de $n$.
 \end{ejercicio}
 
 \begin{ejercicio}[Un baricentro con $\ve\to0$]\label{ejc.eps.baricentro}
@@ -12510,8 +12560,12 @@ Verificar numéricamente que el baricentro entrópico del ejemplo de no
 unicidad de la Observación~\ref{obs.bar.no.unicidad} ($\mu_1$ con átomos en $(\pm1,0)$,
 $\mu_2$ con átomos en $(0,\pm1)$, sobre una grilla que contenga los cuatro
 candidatos) es \emph{único} y simétrico: la entropía rompe la degeneración
-eligiendo la combinación más «repartida». Comparar con el
-Ejercicio~\ref{ejer.bar.entropico}.
+eligiendo la combinación más «repartida». Como en la Sección~5.2 del
+cuaderno, conviene aplicar el núcleo separable en lugar de la matriz
+$K^\ve$ completa: sobre una grilla producto el costo de cada iteración pasa
+de $O(N^4)$ a $O(N^3)$. Alternativamente, alcanza con una grilla $15\times15$
+que contenga $(\pm1,0)$, $(0,\pm1)$ y $(\pm\tfrac12,\pm\tfrac12)$. Comparar
+con el Ejercicio~\ref{ejer.bar.entropico}.
 \end{ejercicio}
 
 \appendix
@@ -14303,6 +14357,21 @@ cuadernos, cuando importa el valor, se calcula
 $\langle C,\pi^\ve\rangle+\ve\,\mathrm{KL}(\pi^\ve\,|\,a\otimes b)$
 directamente a partir del plan.
 \end{enumerate}
+
+Los cuadernos se distribuyen ejecutados de principio a fin y con sus salidas
+guardadas, y todo en ellos es determinista (semillas fijas). Para que las
+salidas sean efectivamente reproducibles hace falta fijar también las
+versiones de las bibliotecas: la primera celda de cada cuaderno instala
+\texttt{pot==0.9.7} y la segunda imprime las versiones en uso, junto con un
+comentario que indica con cuáles se generaron las salidas versionadas. No es
+una precaución ociosa: hay resultados que dependen de la versión, como el
+vértice que devuelve el simplex de red ante empates (Secciones~7 y~8 del
+cuaderno \emph{Monge y Kantorovich}, Sección~4.2 de \emph{Transporte
+entrópico y Sinkhorn}), el representante del par dual que devuelve el
+solver de programación lineal, o la firma de
+\texttt{ot.gaussian.bures\_wasserstein\_barycenter}, que cambió entre
+versiones de POT. En la raíz del repositorio hay un \texttt{requirements.txt}
+con las versiones exactas.
 
 Los cuadernos citan los resultados y ejercicios de las notas por su número
 (por ejemplo, «Teorema~8.4.1» o «Ejercicio~8.5»); esa numeración es la de la

@@ -455,8 +455,13 @@ El método exacto devuelve también potenciales duales
 (\texttt{ot.emd(a, b, M, log=True)}). Comparar los potenciales $(u,v)$ así
 obtenidos con la función $1$-Lipschitz $\varphi$ de la Sección~6 del cuaderno:
 no tienen por qué coincidir (¿por qué?), pero el valor dual
-$\sum_ia_iu_i+\sum_jb_jv_j$ debe ser $W_1(\mu,\nu)$. ¿Es $v=-u$ sobre los
-puntos comunes a ambos soportes? ¿Por qué no necesariamente?
+$\sum_ia_iu_i+\sum_jb_jv_j$ debe ser $W_1(\mu,\nu)$. ¿Es $v=-u$? La pregunta
+solo tiene sentido sobre puntos que estén en los dos soportes, y el ejemplo
+de la Sección~6 del cuaderno, con dos nubes de puntos al azar, no tiene
+ninguno. Construir una variante en la que $\mu$ y $\nu$ vivan sobre el
+\emph{mismo} conjunto de puntos (el mismo \texttt{X} para las dos, con pesos
+$a\neq b$) y comprobar allí si $v_j=-u_i$ cuando $x_i=y_j$. ¿Por qué no tiene
+por qué pasar, si $\varphi^c=-\varphi$ para el costo $|x-y|$?
 \end{ejercicio}
 
 \begin{ejercicio}[Medidas empíricas y dimensión]\label{ejc.Wp.muestras}
@@ -464,7 +469,10 @@ Sea $\mu$ la distribución uniforme en $[0,1]^d$. Para $d\in\{1,2,5,10\}$ y
 $n\in\{50,100,200,400,800\}$, generar dos muestras independientes de $n$
 puntos con ley $\mu$ y calcular la distancia $W_1$ entre sus medidas
 empíricas con \texttt{ot.emd2} y el costo euclídeo
-(\texttt{ot.dist(X, Y, metric='euclidean')}). Repetir el experimento al
+(\texttt{ot.dist(X, Y, metric='euclidean')}). Pasarle
+\texttt{numItermax=10\_000\_000} a \texttt{ot.emd2}, como hacen las funciones
+auxiliares del cuaderno: con el valor por omisión el simplex puede agotar las
+iteraciones y devolver un resultado no óptimo con un simple aviso. Repetir el experimento al
 menos $10$ veces para cada par $(d,n)$, graficar en escala log-log la media
 en función de $n$, con barras de un desvío estándar, y estimar la pendiente
 de cada recta. Comparar con la Observación~\ref{N-obs.Wp.tasas}: ¿qué

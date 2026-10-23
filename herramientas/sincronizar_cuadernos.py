@@ -46,27 +46,53 @@ def leer_aux():
 MACROS_MATEMATICAS = [(r'\ve', r'\varepsilon'), (r'\R', r'{\mathbb R}'), (r'\LL', r'\mathcal L'),
                       (r'\id', r'\mathrm{id}')]
 
+# Comandos que MathJax entiende y que efectivamente aparecen hoy en los enunciados
+# computacionales. Sirve de red: si alguien usa en las notas una macro propia nueva,
+# el script avisa en vez de dejarla pasar y que el cuaderno la muestre en crudo.
+MATHJAX_CONOCIDAS = {
+    r'\mathbb', r'\mathcal', r'\mathrm', r'\varepsilon', r'\mu', r'\nu', r'\pi',
+    r'\lambda', r'\sigma', r'\Sigma', r'\varphi', r'\psi', r'\delta', r'\gamma',
+    r'\alpha', r'\beta', r'\theta', r'\tau', r'\Pi', r'\int', r'\sum', r'\min',
+    r'\max', r'\inf', r'\sup', r'\log', r'\exp', r'\sqrt', r'\frac', r'\tfrac',
+    r'\dfrac', r'\le', r'\leq', r'\ge', r'\geq', r'\ne', r'\neq', r'\to',
+    r'\mapsto', r'\times', r'\cdot', r'\pm', r'\cup', r'\cap', r'\subset',
+    r'\in', r'\notin', r'\bigl', r'\bigr', r'\Bigl', r'\Bigr', r'\left',
+    r'\right', r'\bigstar', r'\dots', r'\ldots', r'\cdots', r'\quad', r'\qquad',
+    r'\text', r'\textrm', r'\emph', r'\bar', r'\tilde', r'\widetilde', r'\hat',
+    r'\partial', r'\nabla', r'\infty', r'\ll', r'\approx', r'\sim', r'\circ',
+    r'\langle', r'\rangle', r'\lfloor', r'\rfloor', r'\lceil', r'\rceil',
+    r'\begin', r'\end', r'\\', r'\mathbf', r'\phi', r'\bmod', r'\varphi', r'\rho',
+    r'\omega', r'\Omega', r'\zeta', r'\chi', r'\xi', r'\eta', r'\det', r'\lim',
+    r'\liminf', r'\limsup', r'\operatorname', r'\colon', r'\ldots',
+}
+
 
 def a_markdown(tex, ref):
     """Convierte el texto de un enunciado (LaTeX de las notas) a Markdown de Jupyter."""
     s = re.sub(r'\\label\{[^}]*\}', '', tex)
     s = re.sub(r'(?m)%.*$', '', s)
     s = re.sub(r'\\(?:ref|eqref)\{([^}]*)\}', lambda m: ref(m.group(1)), s)
+    # Nota: estas dos sustituciones no admiten llaves anidadas (\emph{\texttt{x}} se
+    # rompería). Hoy no aparece en ninguna subsección computacional; si llegara a
+    # aparecer, hay que pasar a un parseo con llaves balanceadas.
     s = re.sub(r'\\emph\{([^{}]*)\}', r'*\1*', s)
     s = re.sub(r'\\texttt\{([^{}]*)\}', r'`\1`', s)
     s = re.sub(r'\s*\n\s*', ' ', s)                       # un solo párrafo
     s = s.replace('\\ ', ' ')                                 # cf.\ , etc.
     s = re.sub(r'\\\[(.*?)\\\]', lambda m: '$$' + m.group(1).strip() + '$$', s)
 
-    def mat(m):                                               # macros propias de las notas
-        t = m.group(0)
+    def mat(t):                                               # macros propias de las notas
         for macro, reemplazo in MACROS_MATEMATICAS:
             t = re.sub(re.escape(macro) + r'(?![A-Za-z])', lambda _, r=reemplazo: r, t)
+        desconocidas = set(re.findall(r'\\[A-Za-z]+', t)) - MATHJAX_CONOCIDAS
+        if desconocidas:
+            print('aviso: macros que MathJax podría no conocer en un enunciado: %s'
+                  % ', '.join(sorted(desconocidas)), file=sys.stderr)
         return t
     partes = re.split(r'(\$\$.*?\$\$|\$[^$]*\$)', s)
     for k in range(len(partes)):
         if k % 2:
-            partes[k] = mat(re.match(r'.*', partes[k], flags=re.S))
+            partes[k] = mat(partes[k])
         else:                                                 # texto: ~ y -- tipográficos
             partes[k] = partes[k].replace('~', ' ').replace('---', '—').replace('--', '–')
     s = ''.join(partes)
@@ -127,6 +153,10 @@ def main():
             nuevo = MARCA.sub(lambda m: ref(m.group(2)) + '<!--ref:%s-->' % m.group(2), texto)
             if nuevo != texto:
                 c['source'] = lineas(nuevo)
+        # Reescribimos el JSON a mano, con indent=1, que es el formato de nbformat. No
+        # usamos nbformat.read/write para no agregar una dependencia; la contrapartida es
+        # que no se preservaría el campo `id` de nbformat 4.5 si Jupyter llegara a
+        # agregarlo (hoy no está en ninguno de los seis cuadernos).
         if json.dumps(nb, ensure_ascii=False) != original:
             pendientes.append(arch)
             if not verificar:

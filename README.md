@@ -26,9 +26,9 @@ Cada cuaderno se abre directamente en Google Colab (no requiere instalar nada; h
 | Baricentros de Wasserstein | 12 | [abrir](https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/05-baricentros-wasserstein.ipynb) |
 | Transporte entrópico y Sinkhorn | 13 | [abrir](https://colab.research.google.com/github/jfbonder/transporte-optimo/blob/main/cuadernos/06-transporte-entropico-sinkhorn.ipynb) |
 
-Para ejecutarlos localmente: `pip install pot numpy scipy matplotlib jupyter` (la primera celda de código de cada cuaderno instala POT con `%pip`). Requieren NumPy 2.0 o posterior (usan `np.trapezoid`); se probaron con Python 3.13, NumPy 2.5, SciPy 1.18, Matplotlib 3.11 y POT 0.9.7.
+Para ejecutarlos localmente: `pip install pot numpy scipy matplotlib jupyter` (la primera celda de código de cada cuaderno instala POT con `%pip`). Requieren NumPy 2.0 o posterior (usan `np.trapezoid`). Las versiones exactas con las que se generaron las salidas versionadas están en [`requirements.txt`](requirements.txt) y las imprime la segunda celda de cada cuaderno: Python 3.13.16, NumPy 2.5.3, SciPy 1.18.1, Matplotlib 3.11.2 y POT 0.9.7.
 
-Los cuadernos se versionan **con sus salidas**, ejecutados de principio a fin; `make cuadernos` los vuelve a ejecutar y guarda las salidas nuevas. Todo es determinista (semillas fijas). Tiempos aproximados en una CPU de dos núcleos, incluida la instalación de POT: entre 10 y 25 s cada uno, salvo *Transporte entrópico y Sinkhorn*, que tarda alrededor de un minuto.
+Los cuadernos se versionan **con sus salidas**, ejecutados de principio a fin; `make cuadernos` los vuelve a ejecutar y guarda las salidas nuevas, después de instalar las versiones de `requirements.txt` y de sincronizar los enunciados con las notas. Todo es determinista: cada sección fija su propia semilla, de modo que las celdas pueden reejecutarse en cualquier orden sin cambiar las salidas. Tiempos aproximados en una CPU de dos núcleos, incluida la instalación de POT: entre 10 y 25 s cada uno, salvo *Transporte entrópico y Sinkhorn*, que tarda alrededor de un minuto.
 
 ## Cómo se construye el material
 

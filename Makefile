@@ -5,7 +5,8 @@
 #   make practicas  regenera y compila las guías y sugerencias.pdf (compila antes las notas si hace falta)
 #   make sitio      regenera index.html (compila antes las notas si hace falta)
 #   make sincronizar  actualiza en los cuadernos los ejercicios computacionales y los números de las citas a las notas
-#   make cuadernos  ejecuta los seis cuadernos y guarda sus salidas (requiere jupyter y pot)
+#   make cuadernos  sincroniza, instala requirements.txt y ejecuta los seis cuadernos
+#                   guardando sus salidas (requiere jupyter y pot)
 #   make limpiar    borra los auxiliares de LaTeX
 #
 # Los PDF son reproducibles: la fecha que se graba en ellos es la del último
@@ -45,7 +46,8 @@ sitio: aux
 sincronizar: aux
 	python3 herramientas/sincronizar_cuadernos.py
 
-cuadernos:
+cuadernos: sincronizar
+	python3 -m pip install -r requirements.txt
 	for f in cuadernos/*.ipynb; do \
 	  jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=1200 "$$f" || exit 1; \
 	done

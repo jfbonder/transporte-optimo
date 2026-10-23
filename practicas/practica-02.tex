@@ -343,7 +343,10 @@ nulas, y otro en el que tenga menos.
 Para $\mu=\nu=\frac12(\delta_0+\delta_1)$ y los costos $c=|x-y|^2$,
 $c=\mathbf 1_{\{x\ne y\}}$ y $c=-|x-y|^2$, graficar el costo como función del
 parámetro $t$ que recorre el segmento $\Pi(\mu,\nu)$ e identificar todos los
-planes óptimos en cada caso. ¿Para qué costo son óptimos todos los planes?
+planes óptimos en cada caso. Comprobar que en los tres el costo es afín en
+$t$ y no constante, de modo que el mínimo se alcanza en un extremo del
+segmento. ¿Qué condición sobre la matriz $(c_{ij})$ hace que \emph{todos} los
+planes sean óptimos? Exhibir un costo que la cumpla y que no sea constante.
 \end{ejercicio}
 
 \begin{ejercicio}[Birkhoff]\label{ejc.MK.birkhoff}
@@ -353,14 +356,23 @@ plan óptimo del programa lineal es una permutación y que $\langle C,M\rangle$
 es estrictamente mayor que el óptimo (salvo coincidencias). Implementar la
 descomposición de Birkhoff: encontrar una permutación $\sigma$ con
 $M_{i\sigma(i)}>0$ para todo $i$ (resolver un problema de asignación con costo
-$-\log M$), restar $t\,M(\sigma)$ con $t=\min_iM_{i\sigma(i)}$ y repetir hasta
+$-\log M_{ij}$, reemplazando los ceros por un valor finito grande, por
+ejemplo con
+\texttt{np.where(M > 0, -np.log(np.maximum(M, 1e-300)), 1e6)}: así el óptimo
+evita las entradas nulas siempre que exista una permutación admisible, cosa
+que el teorema de Birkhoff garantiza; con \texttt{inf} en cambio
+\texttt{scipy.optimize.linear\_sum\_assignment} falla), restar $t\,M(\sigma)$ con $t=\min_iM_{i\sigma(i)}$ y repetir hasta
 llegar a cero. ¿Cuántas permutaciones aparecen?
 \end{ejercicio}
 
 \begin{ejercicio}[Costos cóncavos]\label{ejc.MK.concavos}
 Con las dos densidades superpuestas de la Sección~5 del cuaderno, calcular la
-masa que el plan óptimo de $|x-y|^p$ deja en la diagonal $\{y=x\}$ como
-función de $p\in(0,2]$ y graficarla. Explicar el salto en $p=1$ usando la
+masa que el plan óptimo de $|x-y|^p$ deja en la celda diagonal de la
+discretización como función de $p$ y graficarla, para $p\in(0,1)\cup(1,2]$,
+marcando $p=1$ aparte: allí hay muchos planes óptimos y el valor que devuelve
+el método exacto no está determinado. Repetir con dos tamaños de grilla
+($N=100$ y $N=200$) para ver qué valores son estables y cuáles no; comparar
+con la masa común $\sum_i\min(a_i,b_i)$. Explicar el salto en $p=1$ usando la
 Proposición~\ref{N-prop:convexo-no-estricto} y el
 Ejercicio~\ref{N-ejer.1D.concavo}.
 \end{ejercicio}
