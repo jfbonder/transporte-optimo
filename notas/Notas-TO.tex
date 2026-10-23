@@ -426,8 +426,13 @@ posible escribir, en un cuatrimestre, un material más completo del que
 hubiera sido posible de otro modo; también obliga a una advertencia: la
 responsabilidad por los errores que hayan quedado es exclusivamente del
 autor, y agradeceré que me los señalen.
-
-\bigskip
+%% La firma cerraba el prefacio sola al principio de una página. La bajamos al
+%% final de la anterior: \nobreak impide el corte en el salto vertical, y
+%% \enlargethispage le da a esa página el espacio que falta.
+\enlargethispage{3.2\baselineskip}
+\par\nobreak
+\medskip
+\nobreak
 \noindent Buenos Aires, septiembre de 2026.
 \hfill Julián Fernández Bonder
 }
