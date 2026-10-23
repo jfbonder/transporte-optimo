@@ -4,6 +4,7 @@
 #   make notas      compila notas/Notas-TO.pdf
 #   make practicas  regenera y compila las guías y sugerencias.pdf (compila antes las notas si hace falta)
 #   make sitio      regenera index.html (compila antes las notas si hace falta)
+#   make extra      compila el material extra (material-extra/*.tex)
 #   make sincronizar  actualiza en los cuadernos los ejercicios computacionales y los números de las citas a las notas
 #   make cuadernos  sincroniza, instala requirements.txt y ejecuta los seis cuadernos
 #                   guardando sus salidas (requiere jupyter y pot)
@@ -21,9 +22,12 @@ export FORCE_SOURCE_DATE = 1
 
 FIGURAS = $(wildcard notas/*.jpg notas/*.jpeg notas/*.png)
 
-.PHONY: todo notas practicas sitio sincronizar cuadernos limpiar aux
+.PHONY: todo notas practicas sitio sincronizar cuadernos extra limpiar aux
 
-todo: notas practicas sitio sincronizar
+EXTRA_TEX = $(wildcard material-extra/*.tex)
+EXTRA_PDF = $(EXTRA_TEX:.tex=.pdf)
+
+todo: notas practicas sitio sincronizar extra
 
 notas: notas/Notas-TO.pdf
 
@@ -52,6 +56,13 @@ cuadernos: sincronizar
 	  jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=1200 "$$f" || exit 1; \
 	done
 
+# notas autocontenidas que se usaron en clase; no se derivan de las notas
+extra: $(EXTRA_PDF)
+
+material-extra/%.pdf: material-extra/%.tex
+	cd material-extra && $(LATEXMK) $*.tex
+
 limpiar:
 	cd notas && latexmk -c -quiet; rm -f *.bbl *.run.xml
 	cd practicas && latexmk -c -quiet; rm -f *.bbl
+	cd material-extra && latexmk -c -quiet

@@ -11,6 +11,7 @@ Material del curso *Teoría de Transporte Óptimo* (FCEN–UBA, segundo cuatrime
 | [`notas/`](notas/) | Las notas completas: [`Notas-TO.pdf`](notas/Notas-TO.pdf) y su fuente LaTeX (`Notas-TO.tex`, `biblio.bib`). |
 | [`practicas/`](practicas/) | Una guía de ejercicios por capítulo (`practica-NN.pdf`) y por apéndice (`apendice-X.pdf`). Se generan automáticamente a partir de las secciones de ejercicios de las notas, con la misma numeración. Ver [`practicas/INDICE.md`](practicas/INDICE.md). Además, [`sugerencias.pdf`](practicas/sugerencias.pdf) reúne sugerencias para los ejercicios de todos los capítulos. |
 | [`cuadernos/`](cuadernos/) | Seis cuadernos de Python (Jupyter) que acompañan las notas, con la biblioteca [POT](https://pythonot.github.io/). Cada uno termina con los ejercicios computacionales del capítulo correspondiente. |
+| [`material-extra/`](material-extra/) | Notas autocontenidas escritas para alguna clase en particular, sobre temas que las notas usan pero no desarrollan. Hoy: [`geodesicas.pdf`](material-extra/geodesicas.pdf), una introducción a la longitud de curvas, los espacios de longitud y el teorema de Hopf–Rinow, que es el trasfondo métrico que supone el capítulo 10. No se generan a partir de las notas; se compilan con `make extra`. |
 | [`herramientas/`](herramientas/) | Los scripts que generan las guías, las sugerencias y el sitio (`comun.py` contiene el código compartido y la tabla capítulo–cuaderno). |
 
 ## Cuadernos
@@ -38,6 +39,7 @@ La fuente única es `notas/Notas-TO.tex`. Las guías, el sitio y la sección fin
 make notas       # compila las notas (latexmk)
 make practicas   # regenera practicas/*.tex y sugerencias.tex desde las notas y los compila
 make sitio       # regenera index.html a partir del índice de las notas
+make extra       # compila el material extra (material-extra/*.tex)
 make sincronizar # actualiza en los cuadernos los ejercicios computacionales y los números de las citas
 make             # todo lo anterior
 make cuadernos   # ejecuta los seis cuadernos y guarda sus salidas
