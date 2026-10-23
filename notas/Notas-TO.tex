@@ -76,12 +76,6 @@
 }
 \newcommand{\figpanelsep}{6cm}   % separación única entre paneles de una figura
 
-%% En el índice de figuras, amsbook reserva 1.5pc para el número, que no alcanza
-%% para «P.1» o «8.4» y pega el número contra el título. Lo ensanchamos.
-\makeatletter
-\renewcommand{\l@figure}{\@tocline{0}{3pt plus2pt}{0pt}{3pc}{}}
-\makeatother
-
 \setlength{\textwidth}{15.5cm} 
 \setlength{\textheight}{23cm}
 \setlength{\oddsidemargin}{0cm}
@@ -322,7 +316,7 @@ ecuaciones en derivadas parciales y la optimización.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.75\textwidth]{fig-monge-arena.jpg}
-\caption[El problema original de Monge]{El problema original de Monge: transportar una distribución de masa
+\caption{El problema original de Monge: transportar una distribución de masa
 $\mu$ sobre $X$ hacia otra distribución $\nu$ sobre $Y$, minimizando el costo
 total de transporte.}
 \label{fig.prefacio.monge}
@@ -342,7 +336,7 @@ total de transporte.}
 \includegraphics[height=3.6cm]{retrato-brenier.jpg}\\[3pt]
 {\small Yann Brenier (1957--)\\ Teorema de factorización polar (1987)}
 \end{minipage}
-\caption[Tres nombres en la historia del transporte óptimo]{Tres nombres en la historia del transporte óptimo.}
+\caption{Tres nombres en la historia del transporte óptimo.}
 \label{fig.prefacio.retratos}
 \end{figure}
 
@@ -356,7 +350,7 @@ profundo y modelos generativos (Figura~\ref{fig.prefacio.aplicaciones}).
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{fig-aplicaciones.jpg}
-\caption[Aplicaciones contemporáneas]{Algunas aplicaciones contemporáneas del transporte óptimo y de la
+\caption{Algunas aplicaciones contemporáneas del transporte óptimo y de la
 distancia de Wasserstein.}
 \label{fig.prefacio.aplicaciones}
 \end{figure}
@@ -438,10 +432,7 @@ autor, y agradeceré que me los señalen.
 \hfill Julián Fernández Bonder
 }
 \cleardoublepage
-\tableofcontents
-
-\cleardoublepage
-\listoffigures
+\tableofcontents 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1120,7 +1111,7 @@ Cuando esto ocurre, el plan óptimo de Kantorovich proporciona automáticamente 
       {plan que divide la masa\\ (por ejemplo, $\mu\otimes\nu$)};
   \end{scope}
 \end{tikzpicture}
-\caption[Un plan inducido por un mapa y un plan que divide la masa]{Dos planes de transporte entre las \emph{mismas} medidas
+\caption{Dos planes de transporte entre las \emph{mismas} medidas
 $\mu=\sum_i a_i\delta_{x_i}$ y $\nu=\sum_j b_j\delta_{y_j}$, con
 $a=(\frac14,\frac38,\frac38)$ y $b=(\frac58,\frac38)$, vistos como medidas en
 $X\times Y$; el área de cada punto es proporcional a la masa
@@ -5562,7 +5553,7 @@ está contenido en él.
   \node[pt,figgrey,minimum size=3.6pt] at (3.8,1.05) {};
   \node[anota, right] at (3.9,1.05) {$\pi^*$ no carga masa aquí};
 \end{tikzpicture}
-\caption[La geometría de la condición de saturación]{La geometría de la condición de saturación. El par dual admisible
+\caption{La geometría de la condición de saturación. El par dual admisible
 $(\varphi,\psi)$ verifica $\varphi(x)+\psi(y)\le c(x,y)$ en todo $X\times Y$;
 el conjunto de saturación $\Gamma_{\varphi,\psi}$ es la curva azul donde vale la
 igualdad. Si $\pi^*$ y $(\varphi,\psi)$ son ambos óptimos, la
@@ -5940,7 +5931,7 @@ u(x)+\bar u(y)=x\cdot y
   \node[anota, figacc, below right] at (\px-1.3,{\py*(\px-1.3)-\ubar})
        {pendiente $y$};
 \end{tikzpicture}
-\caption[La transformada de Legendre y la recta soporte]{Interpretación geométrica de la transformada de Legendre en
+\caption{Interpretación geométrica de la transformada de Legendre en
 dimensión uno. Para una pendiente $y$ fija, $\bar u(y)=\sup_z\{z\cdot y-u(z)\}$
 es el menor desplazamiento hacia abajo que hay que dar a la recta
 $z\mapsto z\cdot y$ para que quede por debajo del gráfico de $u$: la recta
@@ -6758,7 +6749,7 @@ F_\mu^{[-1]}(t)=2t,\qquad t\in(0,1).
     \node[rotulo,below] at (0.5,-0.5) {$F_\mu^{[-1]}$};
   \end{scope}
 \end{tikzpicture}
-\caption[FDA y pseudoinversa de una medida uniforme]{Medida uniforme en $[0,2]$: su función de distribución acumulada
+\caption{Medida uniforme en $[0,2]$: su función de distribución acumulada
 (izquierda) y su pseudoinversa (derecha). Como $F_\mu$ es continua y
 estrictamente creciente donde no es constante, la pseudoinversa es la inversa
 usual y no hay saltos ni tramos planos en ninguna de las dos.}
@@ -6841,7 +6832,7 @@ $(F_\mu^{[-1]})_\#\mathcal L^1|_{(0,1)}=\mu$.
     \node[rotulo,below] at (0.5,-0.5) {$F_\mu^{[-1]}$};
   \end{scope}
 \end{tikzpicture}
-\caption[FDA y pseudoinversa de una medida discreta]{Medida discreta $\frac13(\delta_0+\delta_1+\delta_2)$. Los saltos de
+\caption{Medida discreta $\frac13(\delta_0+\delta_1+\delta_2)$. Los saltos de
 $F_\mu$ (izquierda) se corresponden con los tramos planos de $F_\mu^{[-1]}$
 (derecha). Los círculos llenos marcan el valor que la función toma en el punto
 y los vacíos el valor que no toma; en el panel derecho, los extremos $t=0$ y
@@ -6929,7 +6920,7 @@ $F_\mu^{[-1]}$ en $(1/2,1)$.
     \node[rotulo,below] at (0.5,-0.5) {$F_\mu^{[-1]}$};
   \end{scope}
 \end{tikzpicture}
-\caption[FDA y pseudoinversa de una medida mixta]{Medida mixta $\frac12\mathcal L^1|_{[0,1]}+\frac12\delta_2$: una
+\caption{Medida mixta $\frac12\mathcal L^1|_{[0,1]}+\frac12\delta_2$: una
 parte con densidad y un átomo. El tramo plano de $F_\mu$ en $[1,2)$ produce el
 salto de $F_\mu^{[-1]}$ en $t=\frac12$, y el salto de $F_\mu$ en $x=2$ produce
 el tramo plano de $F_\mu^{[-1]}$ en $(\frac12,1)$: los dos fenómenos de las dos
@@ -7211,7 +7202,7 @@ Entonces $\gamma=\gamma_{mon}$.
       {$x<x'$ pero $y>y'$:\\ un \emph{cruce}, prohibido};
   \end{scope}
 \end{tikzpicture}
-\caption[Monotonía del soporte y el argumento del cruce]{La condición de monotonía del soporte y la demostración de la
+\caption{La condición de monotonía del soporte y la demostración de la
 Proposición~\ref{prop:soporte-monotono}. A la izquierda, un soporte que
 satisface la condición: al recorrerlo de izquierda a derecha nunca se baja.
 A la derecha, el argumento por el absurdo: si tanto
@@ -14089,7 +14080,7 @@ $\partial u(x)=\{\operatorname{sgn}x\}$ si $x\neq0$.
     \node[rotulo,below, align=center] at (0,-1.45) {$\partial u(x_0)=\{u'(x_0)\}=\{1\}$};
   \end{scope}
 \end{tikzpicture}
-\caption[El subdiferencial de $u(z)=|z|$]{El subdiferencial de $u(z)=|z|$. En el punto anguloso $x=0$
+\caption{El subdiferencial de $u(z)=|z|$. En el punto anguloso $x=0$
 (izquierda) hay infinitas rectas soporte, una por cada pendiente $y\in[-1,1]$:
 todas pasan por el origen y quedan por debajo del gráfico. En un punto
 $x_0\neq0$ donde $u$ es diferenciable (derecha) la única recta soporte es la
