@@ -1,0 +1,15 @@
+Este repositorio contiene material con dos licencias distintas.
+
+1. CÓDIGO (carpetas cuadernos/ y herramientas/, Makefile, requirements.txt y los
+   demás archivos de configuración): licencia MIT. Ver el archivo LICENSE-code.
+
+2. TEXTO Y FIGURAS (carpetas notas/, practicas/ y material-extra/): licencia
+   Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional
+   (CC BY-NC-SA 4.0). Ver el archivo LICENSE-texto.
+
+Las imágenes de terceros (logotipos institucionales y retratos en notas/) no
+están cubiertas por ninguna de estas licencias y conservan los derechos de sus
+titulares.
+
+Los cuadernos usan la biblioteca POT (https://pythonot.github.io/, licencia
+MIT), que no forma parte de este repositorio.

@@ -63,4 +63,4 @@ Abrir un *issue* o un *pull request*, o escribir a <jfbonder@dm.uba.ar>.
 
 ## Licencia
 
-[CC BY-NC-SA 4.0](LICENSE.md). Se puede copiar, redistribuir y adaptar el material con atribución, sin fines comerciales y bajo la misma licencia.
+Texto y figuras: [CC BY-NC-SA 4.0](LICENSE-texto). Se puede copiar, redistribuir y adaptar con atribución, sin fines comerciales y bajo la misma licencia. Código (`cuadernos/`, `herramientas/`): [MIT](LICENSE-code). Las imágenes de terceros (logotipos y retratos en `notas/`) no están cubiertas por estas licencias.

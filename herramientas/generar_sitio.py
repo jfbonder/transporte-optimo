@@ -250,7 +250,7 @@ ${seccion_extra}
   </section>
 </main>
 <footer>
-  <p>© 2026 Julián Fernández Bonder. Este material se distribuye bajo licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">CC BY-NC-SA 4.0</a>: se puede copiar, redistribuir y adaptar con atribución, sin fines comerciales y compartiendo bajo la misma licencia.</p>
+  <p>© 2026 Julián Fernández Bonder. El texto y las figuras se distribuyen bajo licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">CC BY-NC-SA 4.0</a>: se pueden copiar, redistribuir y adaptar con atribución, sin fines comerciales y compartiendo bajo la misma licencia. El código (cuadernos y herramientas) tiene licencia MIT. Las imágenes de terceros no están cubiertas por estas licencias.</p>
   <p>Instituto de Cálculo (IC–CONICET) y Departamento de Matemática (FCEN–UBA).</p>
 </footer>
 </body>

@@ -1,0 +1,26 @@
+Teoría de Transporte Óptimo — notas de clase, guías de ejercicios y material
+© 2026 Julián Fernández Bonder (Instituto de Cálculo, IC–CONICET; Departamento
+de Matemática, FCEN–UBA)
+
+El texto y las figuras (carpetas notas/, practicas/ y material-extra/) se
+distribuyen bajo la licencia Creative Commons Atribución-NoComercial-CompartirIgual
+4.0 Internacional (CC BY-NC-SA 4.0).
+
+Esto significa que se puede copiar, redistribuir, adaptar y construir sobre
+este material, siempre que:
+  - se dé el crédito correspondiente al autor, con un enlace a la licencia e
+    indicando si se hicieron cambios (Atribución);
+  - no se use con fines comerciales (NoComercial);
+  - las obras derivadas se distribuyan con la misma licencia (CompartirIgual).
+
+Texto legal completo: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.es
+Resumen: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+
+Forma sugerida de citar:
+  J. Fernández Bonder, "Teoría de Transporte Óptimo. Notas de clase",
+  Departamento de Matemática, FCEN-UBA, 2026.
+  https://github.com/jfbonder/transporte-optimo
+
+Excepciones: las imágenes de terceros (logotipos institucionales y retratos en
+notas/) no están cubiertas por esta licencia y conservan los derechos de sus
+titulares; el código tiene licencia MIT (ver LICENSE-code).
