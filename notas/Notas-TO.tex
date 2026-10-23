@@ -7002,6 +7002,78 @@ de Lebesgue.
 
 \section{El mapa de transporte monótono}
 
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig,
+   declare function={
+     Fmu(\z)    = 1/(1+exp(-2.6*(\z-1.6)));   % FDA de mu (tipo logística)
+     Fnuinv(\s) = -0.585*ln(1-\s);            % pseudoinversa de nu (exponencial)
+   }]
+  %% ------------- panel izquierdo: F_mu -------------
+  \begin{scope}
+    \draw[eje] (-0.15,0) -- (3.6,0) node[rotulo,right] {$x$};
+    \draw[eje] (0,-0.15) -- (0,3.25) node[rotulo,above] {$F_\mu(x)$};
+    \draw[black!60] (0.05,2.8) -- (-0.05,2.8) node[anota,left] {$1$};
+    \draw[graf, domain=0.05:3.4, samples=100] plot (\x,{2.8*Fmu(\x)});
+    \pgfmathsetmacro{\px}{2.05}
+    \pgfmathsetmacro{\pt}{Fmu(\px)}
+    \draw[aux] (\px,0) -- (\px,{2.8*\pt}) -- (0,{2.8*\pt});
+    \node[pt, figacc] at (\px,{2.8*\pt}) {};
+    \node[anota, below] at (\px,-0.05) {$x$};
+    \node[anota, left]  at (-0.08,{2.8*\pt}) {$t$};
+  \end{scope}
+  %% ------------- panel central: la composición -------------
+  \begin{scope}[xshift=4.7cm]
+    \draw[eje] (-0.15,0) -- (3.6,0) node[rotulo,right] {$x$};
+    \draw[eje] (0,-0.15) -- (0,3.25) node[rotulo,above] {$T_{\mathrm{mon}}(x)$};
+    \draw[graf, domain=0.05:3.4, samples=120] plot (\x,{Fnuinv(Fmu(\x))});
+    \pgfmathsetmacro{\px}{2.05}
+    \pgfmathsetmacro{\py}{Fnuinv(Fmu(\px))}
+    \draw[aux] (\px,0) -- (\px,\py) -- (0,\py);
+    \node[pt, figacc] at (\px,\py) {};
+    \node[anota, below] at (\px,-0.05) {$x$};
+    \node[anota, anchor=south west] at (0.06,{\py+0.04}) {$T_{\mathrm{mon}}(x)$};
+    \node[rotulo, figmain, anchor=north west] at (0.1,3.12)
+         {$T_{\mathrm{mon}}=F_\nu^{[-1]}\circ F_\mu$};
+  \end{scope}
+  %% ------------- panel derecho: F_nu^{[-1]} -------------
+  \begin{scope}[xshift=9.4cm]
+    \draw[eje] (-0.15,0) -- (3.3,0) node[rotulo,right] {$t$};
+    \draw[eje] (0,-0.15) -- (0,3.25) node[rotulo,above] {$F_\nu^{[-1]}(t)$};
+    \draw[black!60] (2.8,0.05) -- (2.8,-0.05) node[anota,below] {$1$};
+    \draw[grafalt, domain=0.02:2.74, samples=110]
+       plot (\x,{Fnuinv(\x/2.8)});
+    \pgfmathsetmacro{\pt}{Fmu(2.05)}
+    \pgfmathsetmacro{\py}{Fnuinv(\pt)}
+    \draw[aux] ({2.8*\pt},0) -- ({2.8*\pt},\py) -- (0,\py);
+    \node[pt, figacc] at ({2.8*\pt},\py) {};
+    \node[anota, below] at ({2.8*\pt},-0.05) {$t$};
+    \node[anota, anchor=south west] at (0.06,{\py+0.04}) {$T_{\mathrm{mon}}(x)$};
+  \end{scope}
+  %% ------------- la trayectoria x -> t -> T(x) -------------
+  \draw[->, figacc, thick, dotted] (2.15,-0.72) to[bend right=6] (11.20,-0.72);
+  \node[anota, figacc] at (6.7,-0.56)
+       {$x\;\longmapsto\;t=F_\mu(x)$};
+  \draw[->, figacc, thick, dotted] (11.20,-1.70) to[bend right=6] (6.80,-1.70);
+  \node[anota, figacc] at (9.0,-2.02)
+       {$t\;\longmapsto\;F_\nu^{[-1]}(t)=T_{\mathrm{mon}}(x)$};
+\end{tikzpicture}
+\caption{El mapa monótono como composición. A la izquierda, la función de
+distribución $F_\mu$ lleva el punto $x$ al nivel $t=F_\mu(x)$, que es la masa
+que $\mu$ deja a la izquierda de $x$. A la derecha, la pseudoinversa
+$F_\nu^{[-1]}$ devuelve el punto que deja esa misma masa $t$ a la izquierda,
+ahora para $\nu$; las flechas punteadas siguen esa trayectoria. En el centro,
+la composición de las dos, que es el mapa
+$T_{\mathrm{mon}}=F_\nu^{[-1]}\circ F_\mu$ del
+Teorema~\ref{teo:mapa-monotono}: es no decreciente por serlo las dos
+funciones que lo componen. La identidad
+$F_\mu(x)=F_\nu(T_{\mathrm{mon}}(x))$ dice que el mapa iguala las áreas: la
+masa que $\mu$ deja a la izquierda de $x$ es la que $\nu$ deja a la izquierda
+de su imagen. En el dibujo, $\mu$ es una logística y $\nu$ una exponencial,
+de modo que $T_{\mathrm{mon}}$ no es afín.}
+\label{fig.mapa.monotono}
+\end{figure}
+
 \begin{teo}[Mapa monótono]\label{teo:mapa-monotono}
 Sean $\mu,\nu\in\mathcal P(\R)$ con $\mu$ sin átomos. Entonces existe un
 mapa medible monótono no decreciente $T_\text{mon}\colon\R\to\R$ tal que
@@ -9377,6 +9449,99 @@ y el miembro derecho tiende a cero cuando $n\to\infty$ porque la sucesión es
 de Cauchy.
 \end{proof}
 
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig]
+  %% ---------------- Paso 1: truncar ----------------
+  \begin{scope}
+    % nube de densidad, con cola que se escapa
+    \foreach \x/\y/\r in {%
+      1.55/1.55/0.52, 1.20/1.80/0.40, 1.90/1.25/0.40, 1.25/1.25/0.34,
+      1.95/1.90/0.34, 0.85/1.60/0.26, 2.25/1.50/0.26, 1.55/0.95/0.26,
+      1.60/2.20/0.24} {
+      \fill[figmain, opacity=0.16] (\x,\y) circle (\r);
+    }
+    % masa exterior
+    \foreach \x/\y/\r in {3.05/2.60/0.20, 0.35/0.40/0.17, 2.95/0.55/0.15,
+                          0.30/2.75/0.14} {
+      \fill[figwarn, opacity=0.40] (\x,\y) circle (\r);
+    }
+    \draw[graf] (1.55,1.55) circle (1.25);
+    \node[anota, figmain, anchor=south] at (1.55,2.86) {$\overline{B(0,R)}$};
+    % flechas de la masa exterior al origen
+    \foreach \x/\y in {3.05/2.60, 0.35/0.40, 2.95/0.55, 0.30/2.75} {
+      \draw[->, figwarn, thin] (\x,\y) to[bend left=18] (1.62,1.62);
+    }
+    \node[pt, figwarn, minimum size=4.4pt] at (1.55,1.55) {};
+    \node[anota, figwarn, anchor=north west] at (1.72,1.52) {$\delta_0$};
+    \node[rotulo, below, align=center] at (1.55,-0.35)
+      {\textbf{1. truncar}\\[1pt] $W_p(\mu,\mu_R)<\varepsilon$};
+  \end{scope}
+  %% ---------------- Paso 2: discretizar ----------------
+  \begin{scope}[xshift=4.9cm]
+    \foreach \x/\y/\r in {%
+      1.55/1.55/0.52, 1.20/1.80/0.40, 1.90/1.25/0.40, 1.25/1.25/0.34,
+      1.95/1.90/0.34, 0.85/1.60/0.26, 2.25/1.50/0.26, 1.55/0.95/0.26,
+      1.60/2.20/0.24} {
+      \fill[figmain, opacity=0.13] (\x,\y) circle (\r);
+    }
+    \begin{scope}
+      \clip (1.55,1.55) circle (1.25);
+      \draw[black!30, very thin] (0.3,0.3) grid[step=0.5] (2.9,2.9);
+    \end{scope}
+    \draw[graf] (1.55,1.55) circle (1.25);
+    % un punto z_i en el centro de cada celda que corta a la bola
+    \foreach \p in {%
+      (1.05,0.55),(1.55,0.55),(2.05,0.55),
+      (0.55,1.05),(1.05,1.05),(1.55,1.05),(2.05,1.05),(2.55,1.05),
+      (0.55,1.55),(1.05,1.55),(2.05,1.55),(2.55,1.55),
+      (0.55,2.05),(1.05,2.05),(1.55,2.05),(2.05,2.05),(2.55,2.05),
+      (1.05,2.55),(1.55,2.55),(2.05,2.55)} {
+      \node[pt, figacc, minimum size=2.4pt] at \p {};
+    }
+    % una celda destacada, con la masa yendo a su punto
+    \draw[regionA, draw=figacc, thin] (1.3,1.3) rectangle (1.8,1.8);
+    \foreach \a/\b in {1.41/1.71, 1.71/1.69, 1.69/1.39} {
+      \draw[->, figacc, thin] (\a,\b) -- (1.58,1.58);
+    }
+    \node[pt, figacc, minimum size=3.4pt] at (1.55,1.55) {};
+    \node[anota, figacc, anchor=west] at (2.05,0.95) {$z_i$};
+    \draw[figacc, thin] (2.03,0.98) -- (1.62,1.50);
+    \node[anota, figacc, anchor=north] at (1.55,1.24) {$C_i$};
+    \node[rotulo, below, align=center] at (1.55,-0.35)
+      {\textbf{2. discretizar}\\[1pt] $W_p(\mu_R,\alpha)<\varepsilon$};
+  \end{scope}
+  %% ---------------- Paso 3: racionalizar ----------------
+  \begin{scope}[xshift=9.8cm, yshift=0.35cm]
+    \draw[eje] (-0.1,0) -- (3.3,0);
+    \foreach \i/\h/\hq in {0/1.55/1.38, 1/0.80/0.92, 2/2.05/2.18, 3/1.15/1.06,
+                           4/0.55/0.62} {
+      \pgfmathsetmacro{\xc}{0.35+0.62*\i}
+      \fill[figacc, opacity=0.75] (\xc-0.19,0) rectangle (\xc-0.02,\h);
+      \fill[figalt, opacity=0.85] (\xc+0.02,0) rectangle (\xc+0.19,\hq);
+      \node[anota, below] at (\xc,-0.02) {$z_{\the\numexpr\i+1\relax}$};
+    }
+    \node[anota, figacc,  anchor=south west] at (0.05,2.45) {$\mu_R(C_i)$};
+    \node[anota, figalt, anchor=south west] at (1.70,2.45) {$q_i\in\Q$};
+    \node[rotulo, below, align=center] at (1.6,-0.70)
+      {\textbf{3. racionalizar}\\[1pt] $W_p(\alpha,\beta)<\varepsilon$};
+  \end{scope}
+\end{tikzpicture}
+\caption{Los tres pasos de la demostración del Teorema~\ref{teo.Wp.separable},
+cada uno de los cuales cuesta $\varepsilon$. \textbf{(1)} Se trunca: la masa
+que $\mu$ tiene fuera de la bola $\overline{B(0,R)}$ se lleva al origen, lo
+que es barato porque $\mu\in\mathcal P_p(\R^d)$ y esa masa está lejos pero es
+poca. \textbf{(2)} Se discretiza: la bola se parte en celdas $C_i$ de diámetro
+menor que $\varepsilon$ y toda la masa de cada celda se lleva a un punto
+racional $z_i$ de la celda, lo que mueve cada punto menos de $\varepsilon$.
+\textbf{(3)} Se racionalizan los pesos: se reemplazan las masas $\mu_R(C_i)$
+por racionales $q_i$ cercanos, lo que mueve poca masa sobre un conjunto
+acotado. La medida resultante $\beta=\sum_iq_i\delta_{z_i}$ pertenece al
+conjunto numerable del enunciado y está a distancia menor que $3\varepsilon$
+de $\mu$.}
+\label{fig.separabilidad}
+\end{figure}
+
 \begin{teo}[Separabilidad]\label{teo.Wp.separable}
 El espacio métrico $(\mathcal P_p(\R^d),W_p)$ es separable. Más precisamente,
 el conjunto de medidas de la forma $\sum_{i=1}^Nq_i\delta_{z_i}$ con $N\in\N$,
@@ -10176,6 +10341,65 @@ Brenier~\ref{teo.Brenier} existe una función convexa $u\colon\R^d\to\R$ tal
 que $T=\nabla u$ satisface $T_\#\mu_A=\mu_B$, y por la
 Observación~\ref{obs.geodesica.McCann}, la interpolación de McCann
 $T_t=(1-t)\id+tT$ describe la geodésica de $W_2$ que une $\mu_A$ con $\mu_B$.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig]
+  %% --- A y B, los datos ---
+  \coordinate (A1) at (0.15,0.30); \coordinate (A2) at (1.45,0.05);
+  \coordinate (A3) at (1.80,1.30); \coordinate (A4) at (0.95,1.95);
+  \coordinate (A5) at (0.00,1.35);
+  \draw[regionA, draw=figmain, thick] (A1)--(A2)--(A3)--(A4)--(A5)--cycle;
+  \node[anota, figmain] at (0.88,0.95) {$A$};
+
+  \begin{scope}[xshift=2.9cm, yshift=0.25cm]
+    \coordinate (B1) at (0.20,0.10); \coordinate (B2) at (1.60,0.45);
+    \coordinate (B3) at (1.25,1.55); \coordinate (B4) at (0.05,1.05);
+    \draw[fill=figalt!18, draw=figalt, thick] (B1)--(B2)--(B3)--(B4)--cycle;
+    \node[anota, figalt] at (0.80,0.80) {$B$};
+  \end{scope}
+
+
+  %% --- (1-t)A + tB, con T_t(A) adentro ---
+  \begin{scope}[xshift=6.4cm, yshift=-0.35cm]
+    % la suma de Minkowski (1-t)A + tB, con t = 1/2: polígono más grande
+    \draw[fill=black!7, draw=black!45]
+      (0.10,0.45)--(0.95,0.05)--(2.05,0.30)--(2.95,1.05)--(2.70,2.15)--
+      (1.60,2.75)--(0.45,2.35)--(0.00,1.40)--cycle;
+    % la imagen T_t(A): un subconjunto propio
+    \draw[fill=figacc!18, draw=figacc, thick]
+      (0.72,0.80)--(1.70,0.62)--(2.35,1.40)--(1.85,2.25)--(0.78,2.05)--cycle;
+    \node[anota, figacc] at (1.55,1.45) {$T_t(A)$};
+    \node[anota, anchor=south west] at (0.02,2.55) {$(1-t)A+tB$};
+  \end{scope}
+
+  %% --- flechas x -> T_t(x) ---
+  \draw[->, figacc, thin, opacity=0.8] (0.95,1.95) to[bend left=24] (7.30,2.00);
+  \draw[->, figacc, thin, opacity=0.8] (1.78,1.30) to[bend left=20] (8.30,1.35);
+  \draw[->, figacc, thin, opacity=0.8] (1.45,0.08) to[bend right=22] (8.05,0.35);
+  \draw[->, figacc, thin, opacity=0.8] (0.18,0.32) to[bend right=18] (7.10,0.52);
+  \node[anota, figacc, align=center] at (4.6,-0.95)
+    {$x\mapsto T_t(x)=(1-t)x+tT(x)$};
+
+  %% --- las dos leyendas ---
+  \node[rotulo, anchor=north west, align=left] at (0.0,-1.55)
+    {\textbf{Paso 1:} $T_t(\Omega)\subset(1-t)A+tB$, y la inclusión es estricta.};
+  \node[rotulo, anchor=north west, align=left] at (0.0,-2.10)
+    {\textbf{Pasos 2--3:} $|T_t(\Omega)|=\int_\Omega\det DT_t$, y el integrando
+     se acota con el Lema~\ref{lema.det.concavo}.};
+\end{tikzpicture}
+\caption{El esquema de la demostración de Brunn--Minkowski por transporte
+óptimo. El mapa de Brenier $T$ lleva la medida uniforme de $A$ a la de $B$, y
+su interpolación $T_t=(1-t)\id+tT$ lleva cada punto $x\in A$ a lo largo del
+segmento que lo une con $T(x)$. Como $x\in A$ y $T(x)\in B$, el punto
+$T_t(x)$ pertenece a $(1-t)A+tB$: ése es el Paso~1, y por lo tanto
+$|(1-t)A+tB|\ge|T_t(A)|$. El Paso~2 calcula $|T_t(A)|$ con el Jacobiano de
+$T_t$ y el Paso~3 lo acota con la concavidad del determinante. Conviene
+observar que la inclusión $T_t(A)\subset(1-t)A+tB$ es en general
+\emph{estricta}, como sugiere el dibujo: de ahí que la desigualdad de
+Brunn--Minkowski no sea, en general, una igualdad.}
+\label{fig.BM.transporte}
+\end{figure}
 
 La idea de la demostración es la siguiente: $T_t$ envía (casi todo) $A$
 dentro de $(1-t)A+tB$, de modo que el volumen de este último conjunto está
@@ -13101,6 +13325,87 @@ dos primeros factores y sobre los dos últimos sean $\pi_{12}$ y $\pi_{23}$,
 respectivamente. La idea es transparente si pensamos probabilísticamente:
 condicionamos ambos planes al valor de la variable intermedia $x_2$ y, dado
 $x_2$, elegimos $x_1$ y $x_3$ de manera independiente.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig]
+  %% =========== arriba: la idea probabilística ===========
+  \begin{scope}[yshift=4.0cm, xshift=1.9cm]
+    \foreach \x/\lbl in {0/X_1, 2.7/X_2, 5.4/X_3} {
+      \draw[black!45] (\x,-0.1) -- (\x,2.9);
+      \node[rotulo, above] at (\x,2.9) {$\lbl$};
+    }
+    \node[pt, figacc, minimum size=4.4pt] at (2.7,1.4) {};
+    \node[anota, figacc, anchor=south west] at (2.84,1.46) {$x_2$};
+    \foreach \y in {0.3,0.8,1.3,1.85,2.45} {
+      \draw[->, figmain, thin, opacity=0.85] (2.62,1.4) -- (0.08,\y);
+      \node[pt, figmain, minimum size=2.6pt] at (0,\y) {};
+    }
+    \foreach \y in {0.45,1.05,1.7,2.3} {
+      \draw[->, figalt, thin, opacity=0.95] (2.78,1.4) -- (5.32,\y);
+      \node[pt, figalt, minimum size=2.6pt] at (5.4,\y) {};
+    }
+    \node[anota, figmain, anchor=south east] at (1.35,2.12) {$\pi^{12}_{x_2}$};
+    \node[anota, figalt,  anchor=south west] at (4.05,1.98) {$\pi^{23}_{x_2}$};
+    \node[rotulo, below, align=center] at (2.7,-0.25)
+      {dado $x_2$, se eligen $x_1$ y $x_3$ de manera \emph{independiente};\\
+       eso define $\gamma\in\mathcal P(X_1\times X_2\times X_3)$};
+  \end{scope}
+  %% =========== abajo: los tres cuadrados en fila ===========
+  \begin{scope}[yshift=0cm]
+    % X_1 x X_2
+    \begin{scope}[xshift=0.6cm]
+      \draw[region] (0,0) rectangle (1.9,1.9);
+      \draw[black!40] (0,0) rectangle (1.9,1.9);
+      \draw[graf] plot[smooth,tension=0.8]
+        coordinates {(0.2,0.35) (0.8,0.8) (1.4,1.45) (1.72,1.72)};
+      \node[anota, anchor=north west] at (0.06,1.85) {$\pi_{12}$};
+      \node[anota, below] at (0.95,-0.08) {$X_1$};
+      \node[anota, left]  at (-0.08,0.95) {$X_2$};
+    \end{scope}
+    % X_2 x X_3
+    \begin{scope}[xshift=3.3cm]
+      \draw[region] (0,0) rectangle (1.9,1.9);
+      \draw[black!40] (0,0) rectangle (1.9,1.9);
+      \draw[grafalt] plot[smooth,tension=0.8]
+        coordinates {(0.22,1.65) (0.8,1.15) (1.35,0.6) (1.75,0.25)};
+      \node[anota, anchor=south west] at (0.06,0.08) {$\pi_{23}$};
+      \node[anota, below] at (0.95,-0.08) {$X_2$};
+      \node[anota, left]  at (-0.08,0.95) {$X_3$};
+    \end{scope}
+    % flecha
+    \draw[->, figgrey, thick] (5.50,0.95) -- (6.70,0.95);
+    \node[anota, above, align=center] at (6.10,1.08)
+      {pegar y\\ proyectar};
+    % X_1 x X_3
+    \begin{scope}[xshift=7.8cm]
+      \draw[region] (0,0) rectangle (1.9,1.9);
+      \draw[black!40] (0,0) rectangle (1.9,1.9);
+      \foreach \x/\y/\r in {0.5/1.4/0.30, 0.85/1.05/0.26, 1.25/0.68/0.24,
+                            0.68/1.22/0.19, 1.05/0.86/0.19} {
+        \fill[figacc, opacity=0.22] (\x,\y) circle (\r);
+      }
+      \node[anota, figacc, anchor=south west] at (0.06,0.08) {$\pi_{13}$};
+      \node[anota, below] at (0.95,-0.08) {$X_1$};
+      \node[anota, left]  at (-0.08,0.95) {$X_3$};
+    \end{scope}
+    \node[anota, below] at (8.75,-0.52) {$\pi_{13}=(\pp_1,\pp_3)_\#\gamma$};
+  \end{scope}
+\end{tikzpicture}
+\caption{El lema de pegado. Arriba, la idea probabilística, que la
+demostración por clases monótonas deja algo escondida: se desintegran
+$\pi_{12}$ y $\pi_{23}$ respecto de su marginal común $\mu_2$ y, dado un punto
+$x_2$, se sortea $x_1$ con la ley $\pi^{12}_{x_2}$ y $x_3$ con la ley
+$\pi^{23}_{x_2}$, \emph{independientemente uno del otro}. Eso define una
+medida $\gamma$ sobre $X_1\times X_2\times X_3$ cuyas proyecciones a los dos
+primeros y a los dos últimos factores son $\pi_{12}$ y $\pi_{23}$. Abajo, el
+efecto: de dos acoplamientos que comparten una marginal se obtiene uno entre
+$\mu_1$ y $\mu_3$, proyectando $\gamma$ sobre el primer y el tercer factor. El
+acoplamiento resultante no suele estar concentrado sobre una curva, aunque los
+dos de partida lo estén. Es el mecanismo con el que se demuestra la
+desigualdad triangular de $W_p$ (Teorema~\ref{teo.Wp.distancia}).}
+\label{fig.pegado}
+\end{figure}
 
 \begin{lema}[Lema de pegado]\label{lema.pegado}
 Sean $X_1,X_2,X_3$ espacios polacos, $\mu_i\in\mathcal P(X_i)$ para $i=1,2,3$,
