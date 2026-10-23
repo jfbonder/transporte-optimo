@@ -35,6 +35,50 @@
 \hypersetup{colorlinks=true,linkcolor=icnavy,citecolor=icnavy,urlcolor=icnavy}
 \usetikzlibrary{babel}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ESTILO COMÚN DE LAS FIGURAS TikZ
+%% Todas las figuras se declaran con [fig] y no llevan scale=: el tamaño se
+%% controla con las coordenadas, para que el texto de las etiquetas salga
+%% siempre del mismo tamaño. La paleta deriva de los colores institucionales,
+%% de modo que las figuras quedan en la misma gama que la portada y los
+%% hipervínculos.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{arrows.meta,positioning,calc,patterns}
+
+\colorlet{figmain}{icnavy}        % objeto principal (gráficos de funciones)
+\colorlet{figacc}{icmag}          % objeto destacado (recta soporte, soporte del plan)
+\colorlet{figalt}{iccyan}         % objeto secundario (pseudoinversa, segundo panel)
+\colorlet{figwarn}{dmred}         % contraejemplos, lo que no puede pasar
+\colorlet{figgrey}{black!55}      % anotaciones, construcciones auxiliares
+\colorlet{figbg}{icnavy!6}        % fondo de las regiones X x Y
+\colorlet{figfill}{iccyan!15}     % relleno de regiones destacadas
+
+\tikzset{
+  fig/.style={
+    scale=1,
+    line cap=round, line join=round,
+    every node/.append style={font=\footnotesize},
+    >={Stealth[length=5pt,width=4pt]},
+  },
+  eje/.style      ={->, thin, black!75},
+  rotulo/.style   ={font=\footnotesize},
+  anota/.style    ={font=\scriptsize, figgrey},
+  graf/.style     ={very thick, figmain},
+  grafalt/.style  ={very thick, figalt},
+  soporte/.style  ={thick, figacc},
+  destaca/.style  ={line width=3pt, figacc, line cap=round},
+  aux/.style      ={dashed, thin, figgrey},
+  grilla/.style   ={very thin, black!18},
+  region/.style   ={fill=figbg},
+  regionA/.style  ={fill=figfill},
+  regionB/.style  ={fill=figwarn!12},
+  prohibido/.style={thick, dotted, figwarn},
+  pt/.style       ={circle, fill, inner sep=0pt, minimum size=3.6pt},
+  ptvacio/.style  ={circle, draw, thick, fill=white, inner sep=0pt, minimum size=3.6pt},
+  ptmasa/.style   ={circle, fill=figacc, inner sep=0pt},
+}
+\newcommand{\figpanelsep}{6cm}   % separación única entre paneles de una figura
+
 
 
 \parskip 3pt
