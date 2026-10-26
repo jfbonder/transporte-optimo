@@ -1825,7 +1825,7 @@ Para aplicar el método directo es necesario determinar cuándo una sucesión de
 
 La importancia de esta noción radica en el siguiente resultado, debido a Prokhorov, que caracteriza la compacidad relativa para la topología débil.
 
-\begin{defi}[Familia ajustada]
+\begin{defi}[Familia ajustada]\label{def.ajustada}
 Sea \(X\) un espacio métrico y sea \(\mathcal F\subset\mathcal P(X)\). Se dice que \(\mathcal F\) es una familia ajustada si para todo \(\varepsilon>0\) existe un conjunto compacto \(K\subset X\) tal que
 \[
 \mu(K)\ge 1-\varepsilon
@@ -11243,10 +11243,30 @@ por \eqref{eq:Wp.momento} y la desigualdad triangular,
 con $M$ independiente de $n$.
 
 \medskip
-\textbf{Compacidad.} Por la desigualdad de Markov, $\nu_n(B(0,R)^c)\le M^2/R^2$
-para todo $n$, de modo que $(\nu_n)$ es ajustada y, por el Teorema de
-Prokhorov~\ref{teo.Prokhorov}, una subsucesión —que seguimos llamando
-$(\nu_n)$— converge débilmente a cierta $\nu\in\mathcal P(\R^d)$.
+\textbf{Compacidad.} Veamos que la familia $(\nu_n)$ es ajustada
+(Definición~\ref{def.ajustada}). Fijemos $R>0$. En el conjunto
+$\{|x|>R\}$ vale $1<|x|^2/R^2$, de modo que
+\[
+\nu_n\bigl(\{|x|>R\}\bigr)=\int_{\{|x|>R\}}1\,d\nu_n
+\le\int_{\{|x|>R\}}\frac{|x|^2}{R^2}\,d\nu_n
+\le\frac1{R^2}\int_{\R^d}|x|^2\,d\nu_n\le\frac{M^2}{R^2},
+\]
+donde la segunda desigualdad vale porque el integrando es no negativo y se
+agranda el dominio. Dado $\varepsilon>0$, elijamos $R_\varepsilon$ con
+$R_\varepsilon>M/\sqrt\varepsilon$; en particular $R_\varepsilon>0$ y
+$M^2/R_\varepsilon^2<\varepsilon$. El conjunto
+$K_\varepsilon=\overline B(0,R_\varepsilon)$ es compacto y, tomando
+complemento en la cota anterior,
+\[
+\nu_n(K_\varepsilon)=1-\nu_n\bigl(\{|x|>R_\varepsilon\}\bigr)
+\ge1-\frac{M^2}{R_\varepsilon^2}>1-\varepsilon
+\qquad\text{para todo }n.
+\]
+Como $\varepsilon>0$ era arbitrario y el compacto $K_\varepsilon$ no depende
+de $n$, la familia es ajustada. Por el Teorema de
+Prokhorov~\ref{teo.Prokhorov} —aplicable porque $\R^d$ es completo y
+separable—, una subsucesión, que seguimos llamando $(\nu_n)$, converge
+débilmente a cierta $\nu\in\mathcal P(\R^d)$.
 
 \medskip
 \textbf{Semicontinuidad inferior.} Para cada $i$, el Lema~\ref{lema.Wp.sci}
