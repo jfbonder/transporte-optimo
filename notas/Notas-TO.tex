@@ -10371,7 +10371,66 @@ $A$ es un cubo y $B$ un segmento cualquiera de longitud positiva,
 $A+B$ tiene volumen estrictamente mayor que $|A|$ aunque $|B|=0$: agregar un
 conjunto de medida nula puede aumentar el volumen. En este caso la
 desigualdad solo da $|A+B|\ge|A|$ y no detecta ese aumento; es una cota
-inferior, que puede estar lejos de ser exacta.
+inferior, que puede estar lejos de ser exacta. La
+Figura~\ref{fig.BM.cubo.segmento} muestra la situación en el plano.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig, scale=1.15]
+  % ---------- panel izquierdo: los dos sumandos ----------
+  \begin{scope}
+    \draw[eje] (-0.35,0) -- (3.0,0);
+    \draw[eje] (0,-0.35) -- (0,2.4);
+    \fill[region] (0,0) rectangle (1,1);
+    \draw[graf] (0,0) rectangle (1,1);
+    % S arranca en el origen: 0\in S, de modo que Q=Q+0\subset Q+S
+    \draw[soporte] (0,0) -- (1.4,0.8);
+    \node[pt, figacc] at (0,0) {};
+    \node[pt, figacc] at (1.4,0.8) {};
+    \node[rotulo, figacc, anchor=south west] at (1.42,0.78) {$v$};
+    \node[rotulo, figmain] at (0.3,0.82) {$Q$};
+    \node[rotulo, figacc, anchor=north west] at (1.16,0.60) {$S$};
+    \node[rotulo,below=6pt] at (1.45,-0.45) {$Q=[0,1]^2$ \quad y \quad $S=\{tv:\ t\in[0,1]\}$};
+  \end{scope}
+  % ---------- panel derecho: los sumandos y la suma ----------
+  \begin{scope}[xshift=\figpanelsep]
+    \draw[eje] (-0.35,0) -- (3.0,0);
+    \draw[eje] (0,-0.35) -- (0,2.4);
+    \fill[figacc!12] (0,0) -- (1,0) -- (2.4,0.8) -- (2.4,1.8) -- (1.4,1.8) -- (0,1) -- cycle;
+    % las copias Q+tv que barren el hexágono, incluida la del extremo t=1
+    \foreach \a/\b in {0.35/0.2, 0.7/0.4, 1.05/0.6, 1.4/0.8}
+      \draw[aux, black!25] (\a,\b) rectangle ++(1,1);
+    \draw[very thick, figacc] (0,0) -- (1,0) -- (2.4,0.8) -- (2.4,1.8) -- (1.4,1.8) -- (0,1) -- cycle;
+    \foreach \p in {(0,0),(1,0),(2.4,0.8),(2.4,1.8),(1.4,1.8),(0,1)} \node[pt, figacc] at \p {};
+    % los mismos Q y S del panel izquierdo, en su posición original. Q va sin
+    % su relleno propio: el sombreado de Q+S tiene que verse también adentro
+    % de Q, que es parte de la suma (la copia t=0).
+    \draw[graf] (0,0) rectangle (1,1);
+    \draw[soporte] (0,0) -- (1.4,0.8);
+    \node[pt, figacc] at (0,0) {};
+    \node[pt, figacc] at (1.4,0.8) {};
+    \node[rotulo, figmain] at (0.3,0.82) {$Q$};
+    \node[rotulo, figacc, anchor=north west] at (1.16,0.60) {$S$};
+    \node[rotulo, figacc] at (1.85,1.45) {$Q+S$};
+    \node[rotulo,below=6pt] at (1.45,-0.45) {$Q+S=\bigcup_{t\in[0,1]}(Q+tv)$};
+  \end{scope}
+\end{tikzpicture}
+\caption{La suma de Minkowski del cuadrado $Q=[0,1]^2$ y el segmento
+$S=\{tv:\ t\in[0,1]\}$, con $v=(1{,}4;\,0{,}8)$. A la izquierda, los dos
+sumandos; a la derecha, los mismos $Q$ y $S$ en su posición original junto
+con la suma, sombreada. Cada punto $tv$
+de $S$ traslada una copia entera de $Q$ (en gris, cuatro de ellas, la última
+la del extremo $t=1$) y la unión de todas es $Q+S$. Como $0\in S$, la copia
+correspondiente a $t=0$ es el propio $Q$, de modo que $Q\subset Q+S$; un
+segmento que no pasara por el origen daría el mismo hexágono trasladado.
+Los lados del hexágono son los del cuadrado y el del segmento: las direcciones
+de las caras de ambos sumandos sobreviven en la suma. El hexágono se parte en
+el cuadrado y dos paralelogramos, uno generado por el lado derecho de $Q$ y
+$v$, de área $|v_1|$, y otro por el lado superior y $v$, de área $|v_2|$, de
+modo que $|Q+S|=1+|v_1|+|v_2|=3{,}2$ mientras que $|S|=0$. Brunn--Minkowski
+solo afirma aquí que $|Q+S|\ge|Q|=1$.}
+\label{fig.BM.cubo.segmento}
+\end{figure}
 
 La desigualdad admite una formulación equivalente en términos de combinaciones
 convexas de conjuntos, que es la que la demostración por transporte produce
@@ -10402,10 +10461,42 @@ $A+B=2\bigl(\tfrac12A+\tfrac12B\bigr)$,
 La forma \eqref{eq:BM.t} dice que la función $t\mapsto|(1-t)A+tB|^{1/d}$ es
 mayor o igual que la interpolación lineal entre sus valores en los extremos.
 Si $A$ y $B$ son además \emph{convexos}, esa función es \emph{cóncava} en
-$[0,1]$ (desigualdad de Brunn): llamando $X_s=(1-s)A+sB$, la convexidad da
-$(1-\lambda)X_s+\lambda X_r=X_{(1-\lambda)s+\lambda r}$, pues
-$\alpha K+\beta K=(\alpha+\beta)K$ para todo convexo $K$ y $\alpha,\beta\ge0$,
-y basta aplicar \eqref{eq:BM.t} a los compactos $X_s$ y $X_r$. Para conjuntos
+$[0,1]$: es la \emph{desigualdad de Brunn}. Veámoslo, escribiendo
+$X_s=(1-s)A+sB$ para $s\in[0,1]$. El ingrediente es que
+\begin{equation}\label{eq:BM.suma.convexo}
+\alpha K+\beta K=(\alpha+\beta)K
+\qquad\text{para todo convexo $K$ y todos $\alpha,\beta\ge0$.}
+\end{equation}
+La inclusión $\supset$ vale para cualquier conjunto, pues
+$(\alpha+\beta)k=\alpha k+\beta k$. La otra usa la convexidad: si
+$\alpha+\beta>0$ y $k_1,k_2\in K$, entonces
+\[
+\alpha k_1+\beta k_2
+=(\alpha+\beta)\Bigl(\tfrac{\alpha}{\alpha+\beta}k_1
+  +\tfrac{\beta}{\alpha+\beta}k_2\Bigr)\in(\alpha+\beta)K,
+\]
+porque el punto entre paréntesis es una combinación convexa de $k_1$ y $k_2$
+(el caso $\alpha=\beta=0$ es trivial). Ahora, dados $s,r,\lambda\in[0,1]$,
+desarrollando y reagrupando —la suma de Minkowski es asociativa y
+conmutativa— y aplicando \eqref{eq:BM.suma.convexo} una vez a $A$ y otra a
+$B$, que son convexos,
+\begin{align*}
+(1-\lambda)X_s+\lambda X_r
+&=(1-\lambda)(1-s)A+(1-\lambda)sB+\lambda(1-r)A+\lambda rB\\
+&=\bigl[(1-\lambda)(1-s)+\lambda(1-r)\bigr]A
+ +\bigl[(1-\lambda)s+\lambda r\bigr]B
+ =X_{(1-\lambda)s+\lambda r},
+\end{align*}
+donde la última igualdad es porque
+$(1-\lambda)(1-s)+\lambda(1-r)=1-\bigl[(1-\lambda)s+\lambda r\bigr]$. Como
+$X_s$ y $X_r$ son compactos (y convexos), \eqref{eq:BM.t} aplicada a ellos
+con parámetro $\lambda$ da
+\[
+\bigl|X_{(1-\lambda)s+\lambda r}\bigr|^{1/d}
+=\bigl|(1-\lambda)X_s+\lambda X_r\bigr|^{1/d}
+\ge(1-\lambda)|X_s|^{1/d}+\lambda|X_r|^{1/d},
+\]
+que es exactamente la concavidad de $t\mapsto|X_t|^{1/d}$. Para conjuntos
 no convexos solo vale la inclusión
 $(1-\lambda)X_s+\lambda X_r\supset X_{(1-\lambda)s+\lambda r}$, que va en el
 sentido equivocado, y la concavidad puede fallar: por ejemplo, en $\R$, con
