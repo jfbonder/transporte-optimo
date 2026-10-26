@@ -11221,9 +11221,8 @@ de Brenier se seguirá del Teorema~\ref{teo.bar.unicidad}.
 %──────────────────────────────────────────────────────────────────────────────
 
 \begin{teo}[Existencia de baricentros]\label{teo.bar.existencia}
-Sean $\mu_1,\dots,\mu_N\in\mathcal P_2(\R^d)$ y $(\lambda_i)$ un vector de
-pesos ($\lambda_i>0$, $\sum_i\lambda_i=1$, como en toda la sección; la
-demostración divide por $\lambda_1$). Entonces el funcional $\mathcal F$ alcanza su mínimo en
+Sean $\mu_1,\dots,\mu_N\in\mathcal P_2(\R^d)$ y pesos $\lambda_i>0$ con
+$\sum_i\lambda_i=1$. Entonces el funcional $\mathcal F$ alcanza su mínimo en
 $\mathcal P_2(\R^d)$: existe al menos un baricentro.
 \end{teo}
 
@@ -11261,6 +11260,12 @@ $\lambda_i>0$,
 \]
 Luego $\nu$ es un baricentro.
 \end{proof}
+
+De la positividad de los pesos, la demostración solo usa la de uno: en el
+primer paso se divide por $\lambda_1$ para acotar los segundos momentos, y
+cualquier otro índice con $\lambda_i>0$ habría servido. Un peso nulo no es
+una restricción real: la medida correspondiente no interviene en
+$\mathcal F$ y puede descartarse.
 
 Cuando las medidas tienen soporte compacto, el baricentro también lo tiene, y
 podemos localizarlo.
