@@ -50,6 +50,7 @@
 \newtheorem{observacion}[teorema]{Observación}
 
 \renewcommand{\proofname}{Demostración}
+\renewcommand{\refname}{Referencias}
 \renewcommand{\figurename}{Figura}
 
 \newcommand{\Bc}{\overline{B}}
@@ -71,10 +72,20 @@
   \vspace{3pt}
   {\color{icnavy!60}\small Instituto de Cálculo, FCEN--CONICET \quad$\cdot$\quad Departamento de Matemática, FCEN--UBA\par}
 \end{flushleft}
-\vspace{1.2cm}
+\vspace{0.6cm}
+
+\begin{center}
+\begin{minipage}{0.88\textwidth}
+\small
+\textsc{Resumen.} Estas notas introducen la noción de geodésica en un espacio métrico arbitrario. Se define la longitud de una curva mediante poligonales inscriptas y se prueban sus propiedades básicas: aditividad, continuidad de la longitud acumulada y semicontinuidad inferior. Luego se introducen los espacios de longitud y la métrica intrínseca $d_L$ inducida por una métrica $d$, y se estudia la reparametrización por longitud de arco. El resultado central es el teorema de Hopf--Rinow para espacios métricos: todo espacio de longitud propio es geodésico. Para mostrar el papel de la compacidad, se analizan dos ejemplos sin compacidad local, uno geodésico (un espacio de Hilbert) y otro que no lo es (un grafo con infinitas aristas). La única herramienta externa es el teorema de Arzelà--Ascoli, que se enuncia en la forma que se necesita.
+\end{minipage}
+\end{center}
+\vspace{0.6cm}
 
 
 \section{Longitud de curvas}
+
+El enfoque de estas notas (longitud de curvas definida por poligonales inscriptas, espacios de longitud, métrica intrínseca y existencia de geodésicas por compacidad) es el de la geometría métrica; las referencias generales son~\cite{BBI}, Capítulo~2, \cite{BH}, Capítulo~I.1 y \cite{Gromov}, Capítulo~1.
 
 Sea $(X,d)$ un espacio métrico y sea $\gamma\colon[a,b]\to X$ una curva continua. La \emph{longitud} de $\gamma$ se define por
 \[
@@ -103,9 +114,16 @@ Cada suma de la definición es la longitud de la ``poligonal'' que une los punto
 Por la desigualdad triangular, toda curva que une $x$ con $y$ satisface $d(x,y)\le L(\gamma)$. Más en general, si $s\le t$, entonces $d(\gamma(s),\gamma(t))\le L(\gamma|_{[s,t]})$.
 
 \begin{ejemplo}[Arcos de circunferencia]\label{ej:arco}
-Sea $S^1=\{z\in\mathbb R^2:|z|=1\}$ con la distancia euclídea $d(z,w)=|z-w|$, y sea $\gamma(t)=(\cos t,\sin t)$ para $t\in[0,\theta]$, con $0<\theta\le2\pi$. Veamos que $L(\gamma)=\theta$, es decir, que la definición de longitud da la longitud de arco usual.
+Sea $\mathbb S^1=\{z\in\mathbb R^2:|z|=1\}$ con la distancia euclídea $d(z,w)=|z-w|$, y sea $\gamma(t)=(\cos t,\sin t)$ para $t\in[0,\theta]$, con $0<\theta\le2\pi$. Veamos que $L(\gamma)=\theta$, es decir, que la definición de longitud da la longitud de arco usual.
 
-Para $s\le t$, la cuerda entre $\gamma(s)$ y $\gamma(t)$ mide
+Para $s\le t$, calculamos la cuerda entre $\gamma(s)$ y $\gamma(t)$:
+\begin{align*}
+|\gamma(t)-\gamma(s)|^2
+&=(\cos t-\cos s)^2+(\sin t-\sin s)^2\\
+&=\cos^2t+\sin^2t+\cos^2s+\sin^2s-2(\cos t\cos s+\sin t\sin s)\\
+&=2-2\cos(t-s)=4\sin^2\Big(\frac{t-s}{2}\Big),
+\end{align*}
+donde usamos $\cos(t-s)=\cos t\cos s+\sin t\sin s$ y $1-\cos u=2\sin^2(u/2)$. Como $0\le\frac{t-s}{2}\le\pi$, se tiene $\sin\big(\frac{t-s}{2}\big)\ge0$, y entonces
 \[
 |\gamma(t)-\gamma(s)|=2\sin\Big(\frac{t-s}{2}\Big)\le t-s,
 \]
@@ -140,22 +158,45 @@ Si $a\le c\le b$, entonces $L(\gamma)=L(\gamma|_{[a,c]})+L(\gamma|_{[c,b]})$.
 Si $P$ es una partición de $[a,b]$, agregarle el punto $c$ no disminuye la suma correspondiente (desigualdad triangular), y la partición resultante se separa en una de $[a,c]$ y una de $[c,b]$. Luego la suma de $P$ es a lo sumo $L(\gamma|_{[a,c]})+L(\gamma|_{[c,b]})$, y tomando supremo sale ``$\le$''. Recíprocamente, juntando una partición de $[a,c]$ con una de $[c,b]$ se obtiene una de $[a,b]$, cuya suma es la suma de ambas; tomando supremos por separado sale ``$\ge$''.
 \end{proof}
 
+\begin{definicion}[Longitud acumulada]\label{def:ell}
+Sea $\gamma\colon[a,b]\to X$ una curva rectificable. La \emph{longitud acumulada} de $\gamma$ es la función $\ell\colon[a,b]\to[0,L(\gamma)]$ dada por
+\[
+\ell(t):=L\big(\gamma|_{[a,t]}\big),\qquad \ell(a)=0.
+\]
+\end{definicion}
+
+Por el Lema~\ref{lem:aditividad}, para $a\le s\le t\le b$ se tiene $\ell(t)=\ell(s)+L(\gamma|_{[s,t]})$, es decir,
+\begin{equation}\label{eq:ell-dif}
+\ell(t)-\ell(s)=L\big(\gamma|_{[s,t]}\big)\ge0 .
+\end{equation}
+En particular, $\ell$ es no decreciente, $\ell(b)=L(\gamma)$ y todos los valores de $\ell$ son finitos.
+
 \begin{lema}[Continuidad de la longitud acumulada]\label{lem:continuidad}
-Sea $\gamma\colon[a,b]\to X$ rectificable y $\ell(t):=L(\gamma|_{[a,t]})$. Entonces $\ell$ es continua y no decreciente, con $\ell(a)=0$ y $\ell(b)=L(\gamma)$.
+Si $\gamma\colon[a,b]\to X$ es rectificable, su longitud acumulada $\ell$ es continua.
 \end{lema}
 
 \begin{proof}
-La monotonía es consecuencia del Lema~\ref{lem:aditividad}, que además da $\ell(t)-\ell(s)=L(\gamma|_{[s,t]})$ para $s\le t$. Veamos la continuidad por derecha en $t_0\in[a,b)$; la continuidad por izquierda es análoga.
+Como $\ell$ es no decreciente, basta ver que es continua por derecha en cada $t_0\in[a,b)$ y por izquierda en cada $t_0\in(a,b]$. Sea $\varepsilon>0$.
 
-Sea $\varepsilon>0$. Elegimos una partición $t_0<t_1<\dots<t_n=b$ de $[t_0,b]$ con
+\emph{Continuidad por derecha en $t_0\in[a,b)$.} Por la definición de supremo existe una partición $t_0=s_0<s_1<\dots<s_n=b$ de $[t_0,b]$ tal que
 \[
-\sum_{i=1}^n d(\gamma(t_{i-1}),\gamma(t_i)) > L(\gamma|_{[t_0,b]})-\varepsilon.
+\sum_{i=1}^n d\big(\gamma(s_{i-1}),\gamma(s_i)\big)>L\big(\gamma|_{[t_0,b]}\big)-\varepsilon.
 \]
-Por continuidad de $\gamma$, existe $t\in(t_0,t_1)$ con $d(\gamma(t_0),\gamma(t))<\varepsilon$. Agregando $t$ a la partición la suma no disminuye, de modo que
+Por continuidad de $\gamma$ en $t_0$, existe $\delta\in(0,s_1-t_0)$ tal que $d(\gamma(t_0),\gamma(t))<\varepsilon$ para todo $t\in(t_0,t_0+\delta)$. Fijemos un tal $t$. Por la desigualdad triangular, $d(\gamma(t_0),\gamma(s_1))\le d(\gamma(t_0),\gamma(t))+d(\gamma(t),\gamma(s_1))$. Como $t<s_1$, los puntos $t<s_1<\dots<s_n$ forman una partición de $[t,b]$, de modo que
 \[
-L(\gamma|_{[t_0,b]})-\varepsilon < d(\gamma(t_0),\gamma(t)) + d(\gamma(t),\gamma(t_1)) + \sum_{i=2}^n d(\gamma(t_{i-1}),\gamma(t_i)) \le \varepsilon + L(\gamma|_{[t,b]}).
+L\big(\gamma|_{[t_0,b]}\big)-\varepsilon<d(\gamma(t_0),\gamma(t))+\Big[d(\gamma(t),\gamma(s_1))+\sum_{i=2}^n d(\gamma(s_{i-1}),\gamma(s_i))\Big]<\varepsilon+L\big(\gamma|_{[t,b]}\big).
 \]
-Como todas las longitudes son finitas, por aditividad $\ell(t)-\ell(t_0)=L(\gamma|_{[t_0,b]})-L(\gamma|_{[t,b]})<2\varepsilon$. Por monotonía lo mismo vale para todo $t'\in(t_0,t]$, lo que prueba la continuidad por derecha.
+Todas las longitudes son finitas, así que por aditividad $L(\gamma|_{[t_0,t]})=L(\gamma|_{[t_0,b]})-L(\gamma|_{[t,b]})<2\varepsilon$. Por~\eqref{eq:ell-dif}, $0\le\ell(t)-\ell(t_0)<2\varepsilon$ para todo $t\in(t_0,t_0+\delta)$.
+
+\emph{Continuidad por izquierda en $t_0\in(a,b]$.} Existe una partición $a=s_0<\dots<s_n=t_0$ de $[a,t_0]$ con
+\[
+\sum_{i=1}^n d\big(\gamma(s_{i-1}),\gamma(s_i)\big)>\ell(t_0)-\varepsilon.
+\]
+Por continuidad de $\gamma$ en $t_0$, existe $\delta\in(0,t_0-s_{n-1})$ tal que $d(\gamma(t),\gamma(t_0))<\varepsilon$ para todo $t\in(t_0-\delta,t_0)$. Fijemos un tal $t$. Como $s_{n-1}<t$, los puntos $s_0<\dots<s_{n-1}<t$ forman una partición de $[a,t]$, y por la desigualdad triangular $d(\gamma(s_{n-1}),\gamma(t_0))\le d(\gamma(s_{n-1}),\gamma(t))+d(\gamma(t),\gamma(t_0))$. Luego
+\[
+\ell(t_0)-\varepsilon<\sum_{i=1}^{n-1}d\big(\gamma(s_{i-1}),\gamma(s_i)\big)+d(\gamma(s_{n-1}),\gamma(t))+d(\gamma(t),\gamma(t_0))<\ell(t)+\varepsilon.
+\]
+Por la monotonía, $0\le\ell(t_0)-\ell(t)<2\varepsilon$ para todo $t\in(t_0-\delta,t_0)$.
 \end{proof}
 
 \begin{lema}[Semicontinuidad inferior]\label{lem:sci}
@@ -172,10 +213,6 @@ Para una partición $a=t_0<\dots<t_k=b$ fija, por continuidad de $d$,
 \]
 Tomando supremo sobre las particiones se obtiene el resultado.
 \end{proof}
-
-\begin{observacion}
-En el Lema~\ref{lem:sci} alcanza con convergencia \emph{puntual}; en particular vale para convergencia uniforme, que es la que aparece en la demostración del Teorema~\ref{thm:HR}.
-\end{observacion}
 
 \section{Espacios de longitud}
 
@@ -202,29 +239,29 @@ $d_L$ es una métrica en $X$ y $d\le d_L$.
 La finitud de $d_L$ es exactamente la hipótesis de que todo par de puntos se une con una curva rectificable; sin ella, $d_L$ sería una métrica extendida (con valores en $[0,\infty]$). Como $d(x,y)\le L_d(\gamma)$ para toda curva que une $x$ con $y$, tomando ínfimo se obtiene $d\le d_L$; en particular, $d_L(x,y)=0$ implica $x=y$. La simetría sale de que la curva recorrida al revés tiene la misma longitud. Para la desigualdad triangular, si $\gamma_1$ une $x$ con $y$ y $\gamma_2$ une $y$ con $z$, su concatenación une $x$ con $z$ y, por el Lema~\ref{lem:aditividad}, tiene longitud $L_d(\gamma_1)+L_d(\gamma_2)$. Tomando ínfimos, $d_L(x,z)\le d_L(x,y)+d_L(y,z)$.
 \end{proof}
 
-\begin{observacion}
-Como $d\le d_L$, la topología de $d_L$ es más fina o igual que la de $d$, y en general puede ser estrictamente más fina.
+\begin{observacion}\label{obs:sucesiones}
+Como $d\le d_L$, si una sucesión converge para $d_L$, entonces converge para $d$ y al mismo límite: de $d_L(x_n,x)\to0$ se deduce $d(x_n,x)\le d_L(x_n,x)\to0$. La recíproca puede fallar: puede haber sucesiones que convergen para $d$ y no convergen para $d_L$ (Ejemplo~\ref{ej:peine}).
 \end{observacion}
 
 \begin{ejemplo}[La circunferencia y la esfera]\label{ej:esfera}
-Volvamos a $S^1\subset\mathbb R^2$ con la distancia euclídea $d(z,w)=|z-w|$. Dados $z,w\in S^1$, sea $\theta\in[0,\pi]$ el ángulo entre ellos, es decir, $\cos\theta=\langle z,w\rangle$. Entonces:
+Volvamos a $\mathbb S^1\subset\mathbb R^2$ con la distancia euclídea $d(z,w)=|z-w|$. Dados $z,w\in \mathbb S^1$, sea $\theta\in[0,\pi]$ el ángulo entre ellos, es decir, $\cos\theta=\langle z,w\rangle$. Entonces:
 
 \begin{itemize}
 \item La distancia euclídea es la longitud de la cuerda: $d(z,w)=2\sin(\theta/2)$.
 \item La distancia intrínseca es la longitud del arco más corto: $d_L(z,w)=\theta$.
 \end{itemize}
 
-Para la segunda afirmación, el arco más corto tiene longitud $\theta$ por el Ejemplo~\ref{ej:arco}, así que $d_L(z,w)\le\theta$. Recíprocamente, toda curva $\gamma$ en $S^1$ de $z$ a $w$ se puede escribir como $\gamma(t)=(\cos\varphi(t),\sin\varphi(t))$ con $\varphi$ continua (el argumento continuo), y $|\varphi(1)-\varphi(0)|\ge\theta$. Tomando particiones finas, donde las cuerdas $2\sin(|\Delta\varphi_i|/2)$ son casi iguales a los incrementos $|\Delta\varphi_i|$, se obtiene $L(\gamma)\ge\sum_i|\Delta\varphi_i|\ge\theta$, salvo un error arbitrariamente chico. Luego $d_L(z,w)=\theta$.
+Para la segunda afirmación, el arco más corto tiene longitud $\theta$ por el Ejemplo~\ref{ej:arco}, así que $d_L(z,w)\le\theta$. Recíprocamente, toda curva $\gamma$ en $\mathbb S^1$ de $z$ a $w$ se puede escribir como $\gamma(t)=(\cos\varphi(t),\sin\varphi(t))$ con $\varphi$ continua (el argumento continuo), y $|\varphi(1)-\varphi(0)|\ge\theta$. Tomando particiones finas, donde las cuerdas $2\sin(|\Delta\varphi_i|/2)$ son casi iguales a los incrementos $|\Delta\varphi_i|$, se obtiene $L(\gamma)\ge\sum_i|\Delta\varphi_i|\ge\theta$, salvo un error arbitrariamente chico. Luego $d_L(z,w)=\theta$.
 
-Como $2\sin(\theta/2)<\theta$ para $\theta>0$, el espacio $(S^1,d)$ \emph{no} es de longitud: la cuerda que realiza la distancia euclídea se sale de la circunferencia, y toda curva dentro de $S^1$ es más larga (Figura~\ref{fig:esfera}, izquierda).
+Como $2\sin(\theta/2)<\theta$ para $\theta>0$, el espacio $(\mathbb S^1,d)$ \emph{no} es de longitud: la cuerda que realiza la distancia euclídea se sale de la circunferencia, y toda curva dentro de $\mathbb S^1$ es más larga (Figura~\ref{fig:esfera}, izquierda).
 
 Sin embargo, las dos métricas son \emph{equivalentes}. Como $\sin$ es cóncava en $[0,\pi/2]$, vale $\sin u\ge\frac{2}{\pi}u$ para $u\in[0,\frac\pi2]$; con $u=\theta/2$ se obtiene $\theta\le\frac\pi2\cdot2\sin(\theta/2)$. Es decir,
 \[
-d(z,w)\le d_L(z,w)\le\frac{\pi}{2}\,d(z,w)\qquad(z,w\in S^1).
+d(z,w)\le d_L(z,w)\le\frac{\pi}{2}\,d(z,w)\qquad(z,w\in \mathbb S^1).
 \]
 La constante $\frac\pi2$ es óptima: se alcanza en puntos antipodales, donde $d=2$ y $d_L=\pi$. En particular, $d$ y $d_L$ tienen las mismas sucesiones convergentes y las mismas sucesiones de Cauchy.
 
-Lo mismo ocurre en la esfera $S^2\subset\mathbb R^3$ (Figura~\ref{fig:esfera}, derecha). Si $\theta\in[0,\pi]$ es el ángulo entre $z$ y $w$, la distancia euclídea es otra vez $2\sin(\theta/2)$, y la distancia intrínseca es $\theta$: es la longitud del arco más corto del \emph{círculo máximo} que pasa por $z$ y $w$ (la intersección de $S^2$ con el plano que contiene a $0$, $z$ y $w$). Que ningún otro camino sobre la esfera sea más corto es un hecho clásico que aceptamos sin demostración. La desigualdad $d\le d_L\le\frac\pi2 d$ vale con la misma cuenta.
+Lo mismo ocurre en la esfera $\mathbb S^2\subset\mathbb R^3$ (Figura~\ref{fig:esfera}, derecha). Si $\theta\in[0,\pi]$ es el ángulo entre $z$ y $w$, la distancia euclídea es otra vez $2\sin(\theta/2)$, y la distancia intrínseca es $\theta$: es la longitud del arco más corto del \emph{círculo máximo} que pasa por $z$ y $w$ (la intersección de $\mathbb S^2$ con el plano que contiene a $0$, $z$ y $w$). Que ningún otro camino sobre la esfera sea más corto es un hecho clásico que aceptamos sin demostración. La desigualdad $d\le d_L\le\frac\pi2 d$ vale con la misma cuenta.
 \end{ejemplo}
 
 \begin{figure}[htbp]
@@ -261,7 +298,7 @@ Lo mismo ocurre en la esfera $S^2\subset\mathbb R^3$ (Figura~\ref{fig:esfera}, d
     \end{scope}
   \end{scope}
 \end{tikzpicture}
-\caption{Izquierda: en $S^1$, la distancia euclídea es la longitud de la cuerda (magenta) y la distancia intrínseca es la del arco más corto (cian). Derecha: en $S^2$, el arco más corto es un arco de círculo máximo.}
+\caption{Izquierda: en $\mathbb S^1$, la distancia euclídea es la longitud de la cuerda (magenta) y la distancia intrínseca es la del arco más corto (cian). Derecha: en $\mathbb S^2$, el arco más corto es un arco de círculo máximo.}
 \label{fig:esfera}
 \end{figure}
 
@@ -326,7 +363,7 @@ Esto justifica llamar a $d_L$ la \emph{métrica intrínseca} inducida por $d$: a
 \section{Reparametrización por longitud de arco}
 
 \begin{proposicion}\label{prop:reparam}
-Sea $\gamma\colon[0,1]\to X$ una curva rectificable de longitud $L>0$ y sea $\ell(t):=L(\gamma|_{[0,t]})$. Existe una curva $\tilde\gamma\colon[0,1]\to X$, con los mismos extremos y la misma imagen que $\gamma$, tal que $\gamma=\tilde\gamma\circ(\ell/L)$ y
+Sea $\gamma\colon[0,1]\to X$ una curva rectificable de longitud $L>0$ y sea $\ell$ su longitud acumulada (Definición~\ref{def:ell}). Existe una curva $\tilde\gamma\colon[0,1]\to X$, con los mismos extremos y la misma imagen que $\gamma$, tal que $\gamma=\tilde\gamma\circ(\ell/L)$ y
 \[
 d\big(\tilde\gamma(s),\tilde\gamma(t)\big)\le L|t-s|,\qquad L\big(\tilde\gamma|_{[s,t]}\big)=L(t-s)\qquad(0\le s\le t\le1).
 \]
@@ -356,7 +393,7 @@ El espacio $(X,d)$ es un \emph{espacio geodésico} si todo par de puntos está u
 
 Toda geodésica entre $x$ e $y$ tiene longitud $d(x,y)$. Recíprocamente, si una curva rectificable $\gamma$ une $x$ con $y$ y $L(\gamma)=d(x,y)$, su reparametrización por longitud de arco es una geodésica. En particular, todo espacio geodésico es un espacio de longitud, en el que además el ínfimo de la definición se alcanza.
 
-Por ejemplo, $(S^1,d_L)$ y $(S^2,d_L)$ son espacios geodésicos: las geodésicas son los arcos más cortos de círculo máximo, recorridos a velocidad constante. En cambio, con la distancia euclídea, $S^1$ y $S^2$ no tienen geodésicas entre puntos distintos (Ejemplo~\ref{ej:esfera}).
+Por ejemplo, $(\mathbb S^1,d_L)$ y $(\mathbb S^2,d_L)$ son espacios geodésicos: las geodésicas son los arcos más cortos de círculo máximo, recorridos a velocidad constante. En cambio, con la distancia euclídea, $\mathbb S^1$ y $\mathbb S^2$ no tienen geodésicas entre puntos distintos (Ejemplo~\ref{ej:esfera}).
 
 \begin{ejemplo}[Las geodésicas no tienen por qué ser únicas]\label{ej:l1}
 En $\mathbb R^2$ con la distancia euclídea, la única geodésica entre dos puntos es el segmento que los une. Pero si consideramos la distancia
@@ -386,6 +423,21 @@ En efecto, si $s\le\frac12\le t$, entonces $d_1(\gamma(s),\gamma(t))=(1-2s)+(2t-
 
 Un espacio métrico es \emph{propio} si sus bolas cerradas son compactas o, equivalentemente, si sus subconjuntos cerrados y acotados son compactos. Todo espacio propio es completo y localmente compacto.
 
+En la demostración del teorema de Hopf--Rinow (Teorema~\ref{thm:HR}) vamos a usar el teorema de Arzelà--Ascoli, pero no en la versión habitual de los cursos de Análisis, que es para funciones a valores reales. Como acá las curvas toman valores en un espacio métrico cualquiera, enunciamos a continuación la versión que vamos a usar, para tenerla a mano y poder referirnos a ella más adelante.
+
+\begin{teorema}[Arzelà--Ascoli]\label{thm:AA}
+Sean $(K,d_K)$ un espacio métrico compacto, $(Y,d_Y)$ un espacio métrico y $f_n\colon K\to Y$ una sucesión de funciones continuas que cumple:
+\begin{enumerate}[label=(\roman*)]
+\item (\emph{equicontinuidad}) para todo $\varepsilon>0$ existe $\delta>0$ tal que, si $d_K(x,x')<\delta$, entonces $d_Y(f_n(x),f_n(x'))<\varepsilon$ para todo $n$;
+\item (\emph{imágenes en un compacto}) existe un subconjunto compacto $C\subset Y$ tal que $f_n(K)\subset C$ para todo $n$.
+\end{enumerate}
+Entonces existe una subsucesión $(f_{n_k})$ que converge uniformemente a una función continua $f\colon K\to Y$.
+\end{teorema}
+
+La versión que suele verse en los cursos de Análisis es el caso $Y=\mathbb R$, donde la condición (ii) se pide como equiacotación: $|f_n(x)|\le M$ para todo $n$ y todo $x$, es decir, $C=[-M,M]$. Como en $\mathbb R$ los compactos son los cerrados y acotados, ambas formulaciones coinciden. Cuando el espacio de llegada es un espacio métrico general, la acotación ya no alcanza (por ejemplo, en un espacio de Hilbert de dimensión infinita la bola unidad cerrada no es compacta, Ejemplo~\ref{ej:hilbert}), y hay que pedir que las imágenes caigan en un mismo compacto. Una referencia es~\cite{BBI}, Sección~2.5, donde el teorema se enuncia en una forma más general (alcanza con que, para cada $x\in K$, la clausura de $\{f_n(x)\}$ sea compacta); también puede consultarse~\cite{Munkres}, Sección~47.
+
+El siguiente resultado es la versión métrica del teorema de Hopf y Rinow~\cite{HR}, que lo probaron para superficies (completitud implica existencia de geodésicas minimizantes), y de su extensión por Cohn-Vossen~\cite{CV} a espacios de longitud localmente compactos. El enunciado en espacios métricos puede verse en~\cite{BBI}, Capítulo~2, y~\cite{BH}, Capítulo~I.3.
+
 \begin{teorema}[Hopf--Rinow para espacios métricos]\label{thm:HR}
 Todo espacio de longitud propio es un espacio geodésico. Es decir, para todo $x,y\in X$ existe una geodésica $\gamma\colon[0,1]\to X$ entre $x$ e $y$; en particular, $L(\gamma)=d(x,y)$.
 \end{teorema}
@@ -403,7 +455,7 @@ d(x,\tilde\gamma_n(t))\le L\big(\tilde\gamma_n|_{[0,t]}\big)\le L_n\le D+1,
 \]
 de modo que todas las imágenes están contenidas en la bola cerrada $\Bc(x,D+1)$, que es compacta por hipótesis.
 
-Por el teorema de Arzelà--Ascoli (aplicado a funciones de $[0,1]$ en el compacto $\Bc(x,D+1)$), existe una subsucesión $\tilde\gamma_{n_k}$ que converge uniformemente a una curva continua $\gamma\colon[0,1]\to X$, con $\gamma(0)=x$ y $\gamma(1)=y$ (Figura~\ref{fig:HR}). Por el Lema~\ref{lem:sci},
+Por el Teorema~\ref{thm:AA}, aplicado con $K=[0,1]$, $Y=X$ y $C=\Bc(x,D+1)$, existe una subsucesión $\tilde\gamma_{n_k}$ que converge uniformemente a una curva continua $\gamma\colon[0,1]\to X$, con $\gamma(0)=x$ y $\gamma(1)=y$ (Figura~\ref{fig:HR}). Como la convergencia uniforme implica la convergencia puntual, y el Lema~\ref{lem:sci} sólo pide convergencia puntual, resulta
 \[
 L(\gamma)\le\liminf_{k\to\infty}L(\tilde\gamma_{n_k})=\lim_{k\to\infty}L_{n_k}=D.
 \]
@@ -435,7 +487,7 @@ de donde $d(\gamma(s),\gamma(t))\ge D(t-s)$. Luego $d(\gamma(s),\gamma(t))=D|t-s
 \end{figure}
 
 \begin{observacion}
-El enunciado clásico de Hopf--Rinow--Cohn-Vossen pide que $X$ sea un espacio de longitud completo y localmente compacto, y prueba que entonces $X$ es propio; en ese contexto, el Teorema~\ref{thm:HR} es la parte que asegura la existencia de geodésicas. Acá tomamos directamente la propiedad como hipótesis, que es lo único que usa la demostración.
+El enunciado clásico de Hopf--Rinow--Cohn-Vossen~\cite{HR,CV} pide que $X$ sea un espacio de longitud completo y localmente compacto, y prueba que entonces $X$ es propio; en ese contexto, el Teorema~\ref{thm:HR} es la parte que asegura la existencia de geodésicas. Acá tomamos directamente la propiedad como hipótesis, que es lo único que usa la demostración.
 \end{observacion}
 
 \subsection{Dos ejemplos sin compacidad local}\label{sec:ejemplos}
@@ -547,5 +599,21 @@ En el Ejemplo~\ref{ej:grafo}, las curvas $\gamma_n$ que recorren $e_n$ forman un
 
 La diferencia con el Ejemplo~\ref{ej:hilbert} no es que allí haya más compacidad en la topología de la métrica: en ninguno de los dos casos la hay. En el espacio de Hilbert las geodésicas existen por una razón distinta (allí se pueden escribir explícitamente). Más en general, para encontrar geodésicas en espacios que no son localmente compactos, una estrategia habitual es extraer límites de sucesiones minimizantes usando compacidad en una topología \emph{más débil} que la de la métrica, para la cual la longitud (o el costo que se quiera minimizar) siga siendo semicontinua inferiormente. Esta idea va a reaparecer en los espacios de Wasserstein.
 \end{observacion}
+
+\begin{thebibliography}{99}
+
+\bibitem{BBI} D.~Burago, Yu.~Burago, S.~Ivanov, \emph{A Course in Metric Geometry}, Graduate Studies in Mathematics \textbf{33}, American Mathematical Society, Providence, RI, 2001.
+
+\bibitem{BH} M.~R.~Bridson, A.~Haefliger, \emph{Metric Spaces of Non-Positive Curvature}, Grundlehren der mathematischen Wissenschaften \textbf{319}, Springer-Verlag, Berlin, 1999.
+
+\bibitem{CV} S.~Cohn-Vossen, Kürzeste Wege und Totalkrümmung auf Flächen, \emph{Compositio Math.} \textbf{2} (1935), 69--133.
+
+\bibitem{Gromov} M.~Gromov, \emph{Metric Structures for Riemannian and Non-Riemannian Spaces}, Progress in Mathematics \textbf{152}, Birkhäuser, Boston, 1999.
+
+\bibitem{HR} H.~Hopf, W.~Rinow, Über den Begriff der vollständigen differentialgeometrischen Fläche, \emph{Comment. Math. Helv.} \textbf{3} (1931), 209--225.
+
+\bibitem{Munkres} J.~R.~Munkres, \emph{Topology}, 2nd ed., Prentice Hall, Upper Saddle River, NJ, 2000.
+
+\end{thebibliography}
 
 \end{document}
