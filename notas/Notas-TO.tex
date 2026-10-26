@@ -11180,17 +11180,24 @@ $W_2(\mu_0,\mu)=t\,W_2(\mu_0,\mu_1)$ y $W_2(\mu,\mu_1)=(1-t)\,W_2(\mu_0,\mu_1)$.
 
 \begin{proof}
 Escribamos $W=W_2(\mu_0,\mu_1)$ y, para $\mu\in\mathcal P_2(\R^d)$,
-$a=W_2(\mu_0,\mu)$ y $b=W_2(\mu,\mu_1)$. Por la desigualdad triangular,
-$a+b\ge W$. Por la desigualdad de Cauchy--Schwarz,
+$a=W_2(\mu_0,\mu)$ y $b=W_2(\mu,\mu_1)$, de modo que
+$\mathcal F(\mu)=(1-t)a^2+tb^2$. Por la desigualdad triangular, $a+b\ge W$.
+
+Todo sale de una identidad: para $a,b\in\R$,
+\begin{equation}\label{eq:bar.dos.cuadrados}
+(1-t)a^2+tb^2=\bigl((1-t)a-tb\bigr)^2+t(1-t)(a+b)^2.
+\end{equation}
+Es \eqref{eq:varianza} en $\R$ para los puntos $x_1=0$ y $x_2=a+b$ con pesos
+$(1-t,t)$, evaluada en $x=a$: el baricentro es $\bar x=t(a+b)$ y
+$a-\bar x=(1-t)a-tb$. (También se comprueba desarrollando los dos miembros.)
+Como el primer sumando de \eqref{eq:bar.dos.cuadrados} es no negativo y
+$a+b\ge W$,
 \[
-\begin{aligned}
-W&\le a+b
-=\sqrt{1-t}\,a\cdot\frac{1}{\sqrt{1-t}}+\sqrt t\,b\cdot\frac1{\sqrt t}\\
-&\le\sqrt{(1-t)a^2+tb^2}\;\sqrt{\frac1{1-t}+\frac1t}
-=\frac{\sqrt{(1-t)a^2+tb^2}}{\sqrt{t(1-t)}},
-\end{aligned}
+\mathcal F(\mu)\ \ge\ t(1-t)(a+b)^2\ \ge\ t(1-t)W^2
+\qquad\text{para toda }\mu,
 \]
-de donde $\mathcal F(\mu)=(1-t)a^2+tb^2\ge t(1-t)W^2$ para toda $\mu$.
+y hay igualdad si y solo si $(1-t)a=tb$ y $a+b=W$, es decir, si y solo si
+$a=tW$ y $b=(1-t)W$.
 
 Por otra parte, el Teorema~\ref{teo.Wp.geodesica} da
 $W_2(\mu_0,\mu_t)=tW$ y $W_2(\mu_t,\mu_1)=(1-t)W$, de modo que
@@ -11199,11 +11206,8 @@ $W_2(\mu_0,\mu_t)=tW$ y $W_2(\mu_t,\mu_1)=(1-t)W$, de modo que
 \]
 y $\mu_t$ realiza el mínimo.
 
-Finalmente, si $\mu$ realiza el mínimo, en la cadena de desigualdades
-anterior valen todas las igualdades. La igualdad en Cauchy--Schwarz fuerza
-que los vectores $(\sqrt{1-t}\,a,\sqrt t\,b)$ y $(1/\sqrt{1-t},1/\sqrt t)$ sean
-proporcionales, es decir, $(1-t)a=tb$; junto con $a+b=W$ resulta $a=tW$,
-$b=(1-t)W$.
+Finalmente, si $\mu$ realiza el mínimo, $\mathcal F(\mu)=t(1-t)W^2$ y
+estamos en el caso de igualdad ya analizado: $a=tW$ y $b=(1-t)W$.
 \end{proof}
 
 Así, para dos medidas el baricentro es un punto de la geodésica que las une,
