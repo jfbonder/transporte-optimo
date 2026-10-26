@@ -11023,13 +11023,42 @@ ver \cite[Sec.~5.5]{Santambrogio}.
 %──────────────────────────────────────────────────────────────────────────────
 
 En un espacio euclídeo, el baricentro de puntos $x_1,\dots,x_N$ con pesos
-$\lambda_1,\dots,\lambda_N$ es el punto $\bar x=\sum_i\lambda_ix_i$, que se
-caracteriza variacionalmente como el minimizador de
-$x\mapsto\sum_i\lambda_i|x-x_i|^2$. Esta caracterización tiene sentido en
-cualquier espacio métrico, y en particular en $(\mathcal P_2(\R^d),W_2)$: dado
-un conjunto de medidas $\mu_1,\dots,\mu_N$, su \emph{baricentro de
-Wasserstein} es la medida que minimiza la suma ponderada de los cuadrados de
-las distancias $W_2$ a cada una de ellas.
+$\lambda_i>0$ de suma $1$ es el punto $\bar x=\sum_i\lambda_ix_i$, y admite
+una caracterización variacional: $\bar x$ es el único minimizador de
+\[
+x\longmapsto\sum_{i=1}^N\lambda_i|x-x_i|^2.
+\]
+En efecto, esa función es estrictamente convexa y su gradiente es
+$2\sum_i\lambda_i(x-x_i)=2(x-\bar x)$, que se anula solo en $\bar x$.
+
+Escrita así, la caracterización ya no usa la estructura lineal: en un espacio
+métrico $(X,d)$ cualquiera tiene sentido buscar los minimizadores de
+\[
+x\longmapsto\sum_{i=1}^N\lambda_i\,d(x,x_i)^2,
+\]
+y a ellos se los llama \emph{medias de Fréchet} de los $x_i$. El exponente
+$2$ no es inocente: es el que devuelve el promedio lineal en $\R^d$. Con
+$d(x,x_i)^p$ se obtiene una noción de centro igualmente razonable pero
+distinta; por ejemplo, minimizar $\sum_i\lambda_i|x-x_i|$ en $\R$ da la
+mediana ponderada de los $x_i$ y no su promedio. Es la misma elección de
+exponente que distingue a $W_2$ entre las $W_p$: la que da el teorema de
+Brenier (Capítulo~\ref{cap.Brenier}).
+
+Conviene además no leer de más en «tiene sentido»: ese funcional
+está bien definido, pero su mínimo puede no
+alcanzarse y, cuando se alcanza, puede no ser único. En el círculo de
+longitud $2\pi$ con la distancia de arco, dos puntos antipodales con pesos
+$\tfrac12$ dan, para un punto a distancia $\theta\in[0,\pi]$ del primero,
+el valor $\tfrac12\theta^2+\tfrac12(\pi-\theta)^2$, que se minimiza en
+$\theta=\pi/2$: hay exactamente dos medias de Fréchet, y ninguna razón para
+preferir una.
+
+En $(\mathcal P_2(\R^d),W_2)$, esta receta define el
+\emph{baricentro de Wasserstein} de $\mu_1,\dots,\mu_N$: la medida que
+minimiza la suma ponderada de los cuadrados de las distancias $W_2$ a cada
+una de ellas. Que ese mínimo se alcance, y cuándo es único, es lo que
+discuten las Secciones~\ref{sec.bar.existencia}
+y~\ref{sec.bar.unicidad}.
 
 El concepto, introducido por Agueh y Carlier~\cite{AguehCarlier2011}, es la
 respuesta que da el transporte óptimo a una pregunta muy natural: ¿cómo
