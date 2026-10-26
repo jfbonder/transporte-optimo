@@ -9755,8 +9755,10 @@ una \emph{geodésica de velocidad constante} entre $e_0$ y $e_1$ si
 \]
 En $\R^d$ las geodésicas son los segmentos $x_t=(1-t)x_0+tx_1$. La
 construcción que sigue traslada esa idea a $\mathcal P_p(\R^d)$: en lugar de
-interpolar linealmente las medidas —lo que daría la mezcla $(1-t)\mu+t\nu$,
-que \emph{no} es una geodésica— interpolamos linealmente las \emph{posiciones}
+interpolar linealmente las medidas —lo que daría la \emph{mezcla}
+$(1-t)\mu+t\nu$, es decir, la combinación convexa de $\mu$ y $\nu$ como
+medidas, la que a cada boreliano $A$ le asigna $(1-t)\mu(A)+t\nu(A)$, y que
+\emph{no} es una geodésica— interpolamos linealmente las \emph{posiciones}
 de las partículas a lo largo de un plan óptimo.
 
 \begin{defi}[Interpolación por desplazamiento]\label{def.desplazamiento}
@@ -11392,8 +11394,10 @@ compacto.
 %──────────────────────────────────────────────────────────────────────────────
 
 El funcional $\mathcal F$ es convexo respecto de la estructura \emph{lineal}
-de las medidas —es decir, a lo largo de mezclas—, lo cual es la clave para
-la unicidad.
+de las medidas, es decir, a lo largo de \emph{mezclas}: la mezcla de $\mu$ y
+$\nu$ con peso $s$ es la combinación convexa $(1-s)\mu+s\nu$, la medida que a
+cada boreliano $A$ le asigna $(1-s)\mu(A)+s\nu(A)$. Esa convexidad es la
+clave para la unicidad.
 
 \begin{lema}[Convexidad de $W_2^2$ en mezclas]\label{lema.W2.convexo}
 Sean $\nu,\mu_a,\mu_b\in\mathcal P_2(\R^d)$ y $s\in[0,1]$. Entonces
@@ -11405,26 +11409,43 @@ de baricentros de $(\mu_i,\lambda_i)$ es convexo.
 \end{lema}
 
 \begin{proof}
-Sean $\pi_a\in\Pi(\mu_a,\nu)$ y $\pi_b\in\Pi(\mu_b,\nu)$ óptimos. La mezcla
-$\pi=(1-s)\pi_a+s\pi_b$ es una medida de probabilidad con marginales
-$(1-s)\mu_a+s\mu_b$ y $\nu$, es decir, un plan admisible, y su costo es
-$(1-s)\int|x-y|^2d\pi_a+s\int|x-y|^2d\pi_b$. La desigualdad se sigue
-tomando $W_2^2$ como ínfimo sobre planes admisibles. Las consecuencias son
-inmediatas.
+Sean $\pi_a\in\Pi(\mu_a,\nu)$ y $\pi_b\in\Pi(\mu_b,\nu)$ planes óptimos, y
+sea $\pi=(1-s)\pi_a+s\pi_b$. Es una medida de probabilidad, y sus marginales
+son las mezclas de las marginales: para $A\subset\R^d$ boreliano,
+$\pi(A\times\R^d)=(1-s)\mu_a(A)+s\mu_b(A)$ y
+$\pi(\R^d\times A)=(1-s)\nu(A)+s\nu(A)=\nu(A)$. Es decir,
+$\pi\in\Pi\bigl((1-s)\mu_a+s\mu_b,\,\nu\bigr)$. Por linealidad de la integral
+su costo es
+\[
+\int|x-y|^2\,d\pi=(1-s)\int|x-y|^2\,d\pi_a+s\int|x-y|^2\,d\pi_b
+=(1-s)W_2^2(\mu_a,\nu)+s\,W_2^2(\mu_b,\nu),
+\]
+y como $W_2^2$ de la mezcla es el ínfimo del costo sobre todos los planes
+admisibles, en particular no supera al de $\pi$. Esa es la desigualdad.
+
+Sumando con los pesos $\lambda_i$ la desigualdad aplicada a $\nu=\mu_i$ se
+obtiene
+$\mathcal F\bigl((1-s)\mu_a+s\mu_b\bigr)\le(1-s)\mathcal F(\mu_a)+s\,\mathcal F(\mu_b)$,
+que es la convexidad de $\mathcal F$ a lo largo de mezclas. Y si $\mu_a$ y
+$\mu_b$ son baricentros, el miembro derecho vale $\min\mathcal F$, de modo
+que $(1-s)\mu_a+s\mu_b$ también es un baricentro: el conjunto de baricentros
+es convexo.
 \end{proof}
 
 \begin{teo}[Unicidad]\label{teo.bar.unicidad}
-Supongamos que las medidas $\mu_1,\dots,\mu_N$ tienen soporte compacto y que
-al menos una de ellas, digamos $\mu_1$, es absolutamente continua respecto de
-la medida de Lebesgue. Entonces el baricentro de $(\mu_i,\lambda_i)$ es único.
+Supongamos que al menos una de las medidas $\mu_1,\dots,\mu_N$, digamos
+$\mu_1$, es absolutamente continua respecto de la medida de Lebesgue.
+Entonces el baricentro de $(\mu_i,\lambda_i)$ es único.
 \end{teo}
 
-Como en capítulos anteriores, la hipótesis de soporte compacto está para poder
-invocar el Teorema de Brenier tal como lo demostramos; el resultado vale para
-$\mu_i\in\mathcal P_2(\R^d)$ con una de ellas absolutamente continua, véase
-\cite[Proposition~3.5]{AguehCarlier2011}.
+Siguiendo el criterio del Capítulo~\ref{cap.Brenier}, lo demostramos bajo la
+hipótesis adicional de que todas las $\mu_i$ tengan soporte compacto. No es
+una limitación del enunciado sino de nuestras herramientas, y se ve dónde:
+el soporte compacto se usa una sola vez, en el Paso~3, para poder invocar el
+Teorema de Brenier~\ref{teo.Brenier} en la forma en que lo demostramos. El
+enunciado general es la Proposición~3.5 de \cite{AguehCarlier2011}.
 
-\begin{proof}
+\begin{proof}[Demostración del Teorema~\ref{teo.bar.unicidad} con soporte compacto]
 Sean $\mu_a$ y $\mu_b$ dos baricentros y supongamos, por el absurdo, que
 $\mu_a\neq\mu_b$. Sea $m=\min\mathcal F=\mathcal F(\mu_a)=\mathcal F(\mu_b)$ y
 $\mu_c=\tfrac12(\mu_a+\mu_b)$.
