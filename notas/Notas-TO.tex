@@ -11296,15 +11296,79 @@ Entonces todo baricentro $\mu$ de $(\mu_i,\lambda_i)$ satisface $\mu(K)=1$.
 \end{lema}
 
 \begin{proof}
-Sea $P\colon\R^d\to K$ la proyección ortogonal sobre $K$, que está bien
-definida y es $1$-Lipschitz por ser $K$ convexo cerrado, y sea $\mu$ un
-baricentro. Recordemos la desigualdad variacional que caracteriza a $P$:
-$(x-Px)\cdot(y-Px)\le0$ para todo $y\in K$. Entonces, para $x\in\R^d$ e
+Sea $\mu$ un baricentro. Dado $x\in\R^d$, llamemos $Px$ al punto de $K$ más
+cercano a $x$. Existe: si $y_0\in K$ y $r=|x-y_0|$, minimizar $|x-\cdot|$
+sobre $K$ es lo mismo que minimizarla sobre $K\cap\overline B(x,r)$, que es
+compacto y no vacío. Y es único: si $y_1\ne y_2$ realizaran ambos la
+distancia, el punto medio estaría en $K$ por convexidad y, por
+\eqref{eq:varianza} con pesos $\tfrac12,\tfrac12$,
+\[
+\Bigl|x-\tfrac{y_1+y_2}2\Bigr|^2
+=\tfrac12|x-y_1|^2+\tfrac12|x-y_2|^2-\tfrac14|y_1-y_2|^2,
+\]
+estrictamente menor que la distancia mínima, absurdo.
+
+La convexidad de $K$ da además la \emph{desigualdad variacional}
+\begin{equation}\label{eq:proy.variacional}
+(x-Px)\cdot(y-Px)\le0\qquad\text{para todo }y\in K,
+\end{equation}
+que dice que el ángulo en $Px$ entre $x$ y cualquier punto de $K$ es obtuso
+(Figura~\ref{fig.bar.proyeccion}). En efecto, dados $y\in K$ y $t\in(0,1]$,
+el punto $Px+t(y-Px)$ está en $K$ por convexidad, de modo que
+\[
+|x-Px|^2\le\bigl|x-Px-t(y-Px)\bigr|^2
+=|x-Px|^2-2t\,(x-Px)\cdot(y-Px)+t^2|y-Px|^2,
+\]
+es decir $(x-Px)\cdot(y-Px)\le\tfrac t2|y-Px|^2$; haciendo $t\to0^+$ se
+obtiene \eqref{eq:proy.variacional}. Entonces, para $x\in\R^d$ e
 $y\in K$,
 \[
 |x-y|^2=|x-Px|^2+|Px-y|^2+2\,(x-Px)\cdot(Px-y)\ge|x-Px|^2+|Px-y|^2,
 \]
-de modo que $|Px-y|\le|x-y|$, con desigualdad estricta si $x\notin K$.
+de modo que $|Px-y|\le|x-y|$, con desigualdad estricta si $x\notin K$. Es el
+hecho elemental de que, en un triángulo, al ángulo más grande se le opone el
+lado más grande: el ángulo en $Px$ es obtuso, así que $|x-y|$ es el lado
+mayor.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig, scale=1.25]
+%% K es el polígono convexo de vértices (0.3,0.4) (3.2,0.2) (4.4,2) (2.6,3.2)
+%% (0.6,2.4); x=(4.88,0.38) proyecta sobre Px=(3.8,1.1), interior de la arista
+%% (3.2,0.2)-(4.4,2). Con y=(3.4,2.6) el ángulo en Px mide 138.6 grados, y
+%% |x-y|=2.67 contra |Px-y|=1.55 (calculado, ver el mensaje del commit).
+  \fill[region] (0.3,0.4) -- (3.2,0.2) -- (4.4,2) -- (2.6,3.2) -- (0.6,2.4) -- cycle;
+  \draw[graf] (0.3,0.4) -- (3.2,0.2) -- (4.4,2) -- (2.6,3.2) -- (0.6,2.4) -- cycle;
+  \node[rotulo, figmain] at (1.5,1.5) {$K$};
+%% la recta de apoyo: la arista prolongada, perpendicular a x-Px
+  \draw[aux] (2.746,-0.481) -- (4.549,2.223);
+%% el ángulo recto entre x-Px y esa recta
+  \draw[thin, black!55] (3.678,0.917) -- (3.861,0.795) -- (3.983,0.978);
+%% el triángulo x, Px, y
+  \draw[soporte] (3.8,1.1) -- (4.88,0.38);
+  \draw[graf, thin] (3.8,1.1) -- (3.4,2.6);
+  \draw[grafalt, thin] (4.88,0.38) -- (3.4,2.6);
+%% el ángulo obtuso en Px
+  \draw[figacc, thin] (4.3,0.823) arc (-33.69:104.93:0.5);
+  \node[anota, figacc] at (4.62,1.46) {$\ge\pi/2$};
+  \node[pt, figacc] at (4.88,0.38) {};
+  \node[pt, figacc] at (3.8,1.1) {};
+  \node[pt, figmain] at (3.4,2.6) {};
+  \node[rotulo, figacc, anchor=west] at (4.95,0.34) {$x$};
+  \node[rotulo, figacc, anchor=east] at (3.62,0.95) {$Px$};
+  \node[rotulo, figmain, anchor=south east] at (3.36,2.66) {$y$};
+\end{tikzpicture}
+\caption{La desigualdad variacional \eqref{eq:proy.variacional} en $\R^d$,
+sin más herramienta que la geometría del plano. $Px$ es el punto de $K$ más
+cercano a $x$; la recta punteada es la perpendicular a $x-Px$ por $Px$, y la
+convexidad obliga a $K$ a quedar de un solo lado de ella. Por eso, para todo
+$y\in K$ el ángulo en $Px$ entre $x$ e $y$ es mayor o igual que $\pi/2$, que
+es lo que dice $(x-Px)\cdot(y-Px)\le0$. En el triángulo $x$, $Px$, $y$ —cuyo
+tercer lado se dibuja en celeste— ese
+ángulo es el mayor, de modo que el lado que se le opone, $|x-y|$, es el más
+largo: $|Px-y|\le|x-y|$, que es la desigualdad que usa la demostración.}
+\label{fig.bar.proyeccion}
+\end{figure}
 
 Sea $\pi_i\in\Pi(\mu,\mu_i)$ un plan óptimo. Como $\mu_i(K)=1$, se tiene
 $y\in K$ para $\pi_i$-c.t.p.\ $(x,y)$. El plan $(P,\id)_\#\pi_i$ pertenece a
