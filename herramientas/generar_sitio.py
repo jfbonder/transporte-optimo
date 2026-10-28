@@ -60,6 +60,12 @@ EXTRA = [
      'Longitud de curvas, espacios de longitud, reparametrización por longitud de arco y el '
      'teorema de Hopf–Rinow, con dos ejemplos sin compacidad local. Es el trasfondo métrico '
      'que supone la última sección del Capítulo 10.'),
+    ('baricentros', 'html', 'Baricentros de Wasserstein',
+     'Dos aplicaciones. La primera: N registros de una misma señal, cada uno corrido y '
+     'reescalado al azar; el promedio puntual ensancha el pico y el baricentro devuelve el '
+     'patrón con la posición y la escala promediadas, que es la Proposición 12.6.1 aplicada '
+     'a imágenes afines. La segunda: promediar tres figuras, con los pesos en un triángulo '
+     'que se puede arrastrar, resuelto con el Sinkhorn convolucional del Capítulo 13.'),
     ('brunn-minkowski', 'html', 'Brunn–Minkowski en el plano',
      'La suma de Minkowski de dos rectángulos, uno rotado respecto del otro, con la curva '
      '|(1−t)A+tB|<sup>1/2</sup> dibujándose al lado de la cota (1−t)|A|<sup>1/2</sup>+t|B|<sup>1/2</sup>. '
