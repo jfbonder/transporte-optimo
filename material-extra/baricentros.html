@@ -156,7 +156,7 @@
     </p>
 
     <div class="mandos">
-      <button id="play1" aria-pressed="false">▶ Animar deriva</button>
+      <button id="play1" aria-pressed="false">▶ Animar la deriva</button>
       <div class="campo">
         <label for="disp">deriva de b<sub>i</sub></label>
         <input type="range" id="disp" min="0" max="1.6" step="0.01" value="0.75">
@@ -475,20 +475,23 @@
     dibujar1();
   });
 
-  var and1 = false, sent1 = 1, ult1 = 0;
+  var and1 = false, sent1 = 1, ult1 = 0, tau = 0.47;
   function cuadro1(ahora) {
     if (!and1) return;
     var dt = ult1 ? (ahora - ult1) / 1000 : 0; ult1 = ahora;
-    var v = parseFloat($("disp").value) + sent1 * dt * 0.42;
-    if (v >= 1.6) { v = 1.6; sent1 = -1; }
-    if (v <= 0) { v = 0; sent1 = 1; }
-    $("disp").value = v; $("dispOut").textContent = num(v);
+    tau += sent1 * dt * 0.26;
+    if (tau >= 1) { tau = 1; sent1 = -1; }
+    if (tau <= 0) { tau = 0; sent1 = 1; }
+    var vb = 1.6 * tau, va = 0.5 * tau;
+    $("disp").value = vb; $("dispOut").textContent = num(vb);
+    if (!soloCorrimientos) { $("esc").value = va; $("escOut").textContent = num(va); }
     dibujar1(); requestAnimationFrame(cuadro1);
   }
   $("play1").addEventListener("click", function () {
     and1 = !and1; this.setAttribute("aria-pressed", and1 ? "true" : "false");
-    this.textContent = and1 ? "❚❚ Pausa" : "▶ Animar deriva";
-    ult1 = 0; if (and1) requestAnimationFrame(cuadro1);
+    this.textContent = and1 ? "❚❚ Pausa" : "▶ Animar la deriva";
+    ult1 = 0; tau = parseFloat($("disp").value) / 1.6;
+    if (and1) requestAnimationFrame(cuadro1);
   });
 
   /* ======================= 2. promediar formas ======================= */
