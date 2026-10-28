@@ -10,13 +10,13 @@
 
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-  /* Dos demos apiladas, cada una con su barra de mandos propia y sus paneles
-     en grilla. Paleta y tipografía del sitio del curso; los colores de los
-     objetos matemáticos son los de las figuras de las notas (IC y DM). */
+  /* La página avanza por pasos: cada uno agrega una curva al mismo gráfico y el
+     texto que la justifica. Paleta y tipografía del sitio del curso; los colores
+     de los objetos matemáticos son los de las figuras de las notas (IC y DM). */
   :root {
     --tinta:#1d1d1f; --gris:#5b5b60; --linea:#e3e3e6;
     --fondo:#fbfbf9; --tarjeta:#ffffff; --panel:#f4f4f1;
-    --navy:#013274; --cyan:#029BDF; --mag:#E2017B; --rojo:#A8000C;
+    --navy:#013274; --cyan:#029BDF; --mag:#E2017B;
     --bar:#013274; --mez:#8a8a90; --patron:#E2017B; --obs:#029BDF;
     --serif: Georgia, "Times New Roman", Times, serif;
     --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -25,7 +25,7 @@
     :root:not([data-theme="light"]) {
       --tinta:#ececec; --gris:#a8a8ae; --linea:#33333a;
       --fondo:#141416; --tarjeta:#1c1c20; --panel:#202026;
-      --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0; --rojo:#ff8a80;
+      --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0;
       --bar:#7fb3ff; --mez:#94949c; --patron:#ff6bb0; --obs:#56c7f5;
       color-scheme: dark;
     }
@@ -33,59 +33,69 @@
   :root[data-theme="dark"] {
     --tinta:#ececec; --gris:#a8a8ae; --linea:#33333a;
     --fondo:#141416; --tarjeta:#1c1c20; --panel:#202026;
-    --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0; --rojo:#ff8a80;
+    --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0;
     --bar:#7fb3ff; --mez:#94949c; --patron:#ff6bb0; --obs:#56c7f5;
     color-scheme: dark;
   }
 
   body { background: var(--fondo); color: var(--tinta);
     font-family: var(--serif); font-size: 16px; line-height: 1.55; }
-  .hoja { max-width: 1060px; margin: 0 auto;
+  .hoja { max-width: 940px; margin: 0 auto;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: 28px 44px; }
+    padding-block: 28px 48px; }
   h1 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem); font-weight: normal;
     margin: 0 0 2px; text-wrap: balance; }
-  h2 { font-size: clamp(1.15rem, 1rem + .7vw, 1.4rem); font-weight: normal;
-    margin: 0 0 4px; text-wrap: balance; }
-  .sub { color: var(--gris); font-size: .95rem; margin: 0 0 18px; }
+  h2 { font-size: clamp(1.1rem, 1rem + .6vw, 1.3rem); font-weight: normal;
+    margin: 0 0 6px; text-wrap: balance; }
+  .sub { color: var(--gris); font-size: .95rem; margin: 0 0 20px; }
   p { margin: 0 0 12px; max-width: 68ch; }
-  section { margin-top: 38px; padding-top: 26px; border-top: 1px solid var(--linea); }
-  .guia { font-family: var(--sans); font-size: .76rem; letter-spacing: .09em;
-    text-transform: uppercase; color: var(--mag); margin: 0 0 6px; }
-
   .formula { font-style: italic; background: var(--panel);
     border-left: 3px solid var(--navy); padding: 10px 14px; margin: 0 0 14px;
     border-radius: 0 5px 5px 0; overflow-x: auto; max-width: 100%; }
+  .guia { font-family: var(--sans); font-size: .76rem; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--mag); margin: 0 0 6px; }
+
+  .relato { background: var(--tarjeta); border: 1px solid var(--linea);
+    border-radius: 10px; padding: 16px 18px; margin: 0 0 16px; }
+  .pasos { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    font-family: var(--sans); font-size: .9rem; margin-top: 14px; }
+  .puntos { display: flex; gap: 6px; margin-left: auto; }
+  .punto { width: 10px; height: 10px; border-radius: 50%; background: var(--linea);
+    border: none; padding: 0; cursor: pointer; }
+  .punto[aria-current="true"] { background: var(--mag); }
+
+  button { font: inherit; font-family: var(--sans); cursor: pointer;
+    background: var(--tarjeta); color: var(--navy);
+    border: 1px solid var(--navy); border-radius: 6px; padding: 6px 13px; }
+  button:hover:not(:disabled) { background: color-mix(in srgb, var(--navy) 10%, transparent); }
+  button:disabled { color: var(--gris); border-color: var(--linea); cursor: default; }
+  button:focus-visible, input:focus-visible, canvas:focus-visible {
+    outline: 2px solid var(--cyan); outline-offset: 2px; }
+  button[aria-pressed="true"] { background: var(--navy); color: var(--fondo); }
+  #siguiente:not(:disabled) { background: var(--navy); color: var(--fondo); }
 
   .mandos { display: flex; flex-wrap: wrap; align-items: center; gap: 11px 16px;
     background: var(--tarjeta); border: 1px solid var(--linea);
     border-radius: 10px; padding: 12px 14px; margin: 0 0 16px;
     font-family: var(--sans); font-size: .9rem; }
-  button { font: inherit; font-family: var(--sans); cursor: pointer;
-    background: var(--tarjeta); color: var(--navy);
-    border: 1px solid var(--navy); border-radius: 6px; padding: 6px 13px; }
-  button:hover { background: color-mix(in srgb, var(--navy) 10%, transparent); }
-  button:focus-visible, input:focus-visible, canvas:focus-visible {
-    outline: 2px solid var(--cyan); outline-offset: 2px; }
-  button[aria-pressed="true"] { background: var(--navy); color: var(--fondo); }
-  .campo { display: flex; align-items: center; gap: 9px; flex: 1 1 215px; min-width: 0; }
+  .campo { display: flex; align-items: center; gap: 9px; flex: 1 1 200px; min-width: 0; }
   .campo label { color: var(--gris); white-space: nowrap; }
   .campo input[type="range"] { flex: 1 1 auto; min-width: 0; accent-color: var(--navy); }
   .campo output { font-variant-numeric: tabular-nums; min-width: 3.1em; text-align: right; }
 
-  .paneles { display: grid; gap: 16px; grid-template-columns: 1fr; }
-  .paneles.tres { grid-template-columns: 220px 1fr 1fr; align-items: start; }
-  @media (max-width: 860px) { .paneles.tres { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 560px) { .paneles.tres { grid-template-columns: 1fr; } }
   .panel { background: var(--tarjeta); border: 1px solid var(--linea);
-    border-radius: 10px; padding: 12px; min-width: 0; }
+    border-radius: 10px; padding: 12px; min-width: 0; margin: 0 0 16px; }
   .panel h3 { font-family: var(--sans); font-size: .84rem; font-weight: 600;
     color: var(--gris); margin: 0 0 8px; }
   canvas { display: block; width: 100%; max-width: 100%; height: auto; }
-  canvas.pesos { cursor: crosshair; touch-action: none; }
 
-  .cifras { margin: 16px 0 0; display: grid; gap: 10px;
+  .leyenda { font-family: var(--sans); font-size: .82rem; color: var(--gris);
+    display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 0 0; }
+  .leyenda span { display: inline-flex; align-items: center; gap: 6px; }
+  .llave { width: 16px; height: 3px; border-radius: 2px; display: inline-block; }
+
+  .cifras { margin: 0 0 16px; display: grid; gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); font-family: var(--sans); }
   .cifra { background: var(--panel); border-radius: 8px; padding: 9px 12px;
     border-left: 3px solid var(--linea); }
@@ -94,169 +104,81 @@
   .cifra.destacada { border-left-color: var(--mag); }
   .cifra.destacada .v { color: var(--mag); }
   .nota { color: var(--gris); font-size: .93rem; }
-  .leyenda { font-family: var(--sans); font-size: .82rem; color: var(--gris);
-    display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 0 0; }
-  .leyenda span { display: inline-flex; align-items: center; gap: 6px; }
-  .llave { width: 16px; height: 3px; border-radius: 2px; display: inline-block; }
 </style>
 
 <div class="hoja">
-  <h1>Baricentros de Wasserstein</h1>
+  <h1>Un pico que el promedio parte en dos</h1>
   <p class="sub">Teoría de Transporte Óptimo · FCEN–UBA · Capítulo 12</p>
-  <p>
-    Promediar distribuciones con la estructura lineal —la mezcla
-    <i>Σ λ<sub>i</sub> μ<sub>i</sub></i>— superpone las observaciones. El baricentro de Wasserstein
-    promedia <i>dónde está la masa</i>, no cuánta masa hay en cada punto. Las dos demos
-    de abajo son dos lugares donde esa diferencia hace el trabajo.
-  </p>
 
-  <section id="s1" style="border-top:none; padding-top:0">
-    <p class="guia">Primera aplicación</p>
-    <h2>Un pico que el promedio parte en dos</h2>
-    <p>
-      Un laboratorio pasa <i>N</i> veces la misma muestra por el cromatógrafo. Cada corrida
-      devuelve una curva: cuánta masa sale de la columna en cada instante. Debería ser siempre
-      la misma, pero el tiempo de retención deriva de una corrida a la otra —la temperatura, el
-      caudal, una columna que envejece—, y la corrección estándar para alinear dos corridas es
-      afín, <i>t ↦ a t + b</i>. O sea que la corrida <i>i</i>-ésima es
-      <i>μ<sub>i</sub> = (a<sub>i</sub>t + b<sub>i</sub>)<sub>#</sub>μ</i>, donde <i>μ</i> es el
-      perfil verdadero del compuesto, que nadie observa.
-    </p>
-    <p>
-      Para informar «el» perfil hay que promediar las <i>N</i> corridas. Promediarlas punto a
-      punto —la mezcla— da una curva más ancha y más baja que cualquiera de las corridas, y si
-      los corrimientos se agrupan, con dos jorobas: un artefacto que se lee como dos compuestos
-      donde hay uno solo. El baricentro de Wasserstein devuelve, en cambio, el perfil intacto.
-    </p>
-
-    <p class="formula">
-      F<sub>μ̄</sub><sup>−1</sup> = (1/N) Σ<sub>i</sub> F<sub>μ<sub>i</sub></sub><sup>−1</sup>
-      = ā F<sub>μ</sub><sup>−1</sup> + b̄ &nbsp;⟹&nbsp;
-      μ̄ = (ā t + b̄)<sub>#</sub> μ
-    </p>
-    <p>
-      La Proposición 12.6.1 dice que en la recta el baricentro sale promediando pseudoinversas,
-      y una imagen afín actúa sobre la pseudoinversa de manera afín:
-      F<sub>μ<sub>i</sub></sub><sup>−1</sup> = a<sub>i</sub>F<sub>μ</sub><sup>−1</sup> + b<sub>i</sub>.
-      Promediar en esas coordenadas, entonces, solo promedia <i>a</i> y <i>b</i>: el baricentro
-      es el patrón con el tiempo de retención y la escala promediados, y no una curva de forma
-      nueva. El segundo panel es ese enunciado dibujado — ahí el baricentro es, literalmente,
-      el promedio punto a punto de las observaciones.
-    </p>
-    <p>
-      Conviene comparar las dos curvas sabiendo qué es cada una. La mezcla no es un promedio
-      ingenuo: es el baricentro de Fréchet para la distancia <i>L²</i> entre densidades, igual
-      que el de Wasserstein lo es para <i>W₂</i>. Promediar densidades punto a punto es el
-      promedio correcto en una geometría donde mover masa de un lugar a otro no cuesta
-      distancia: cuesta borrarla de un lado y crearla del otro. Las dos curvas son promedios,
-      y la pregunta es cuál de las dos geometrías describe lo que pasó en la columna. Lo que
-      pasó fue que el pico se movió. Las cifras de abajo miden eso: a qué distancia queda cada
-      una del perfil verdadero, y cuánto vale en cada una el funcional
-      <i>F(ν) = Σ λ<sub>i</sub> W₂²(ν, μ<sub>i</sub>)</i> que el baricentro minimiza.
-    </p>
-
-    <div class="mandos">
-      <button id="play1" aria-pressed="false">▶ Animar la deriva</button>
-      <div class="campo">
-        <label for="disp">deriva de b<sub>i</sub></label>
-        <input type="range" id="disp" min="0" max="1.6" step="0.01" value="0.75">
-        <output for="disp" id="dispOut">0,75</output>
-      </div>
-      <div class="campo">
-        <label for="esc">deriva de a<sub>i</sub></label>
-        <input type="range" id="esc" min="0" max="0.5" step="0.01" value="0.2">
-        <output for="esc" id="escOut">0,20</output>
-      </div>
-      <div class="campo">
-        <label for="ene">N</label>
-        <input type="range" id="ene" min="2" max="40" step="1" value="12">
-        <output for="ene" id="eneOut">12</output>
-      </div>
-      <button type="button" id="soloCorr" aria-pressed="false">Solo corrimientos</button>
-      <button type="button" id="remuestrear">Otra muestra</button>
+  <div class="relato">
+    <p class="guia" id="rotulo">Paso 1 de 4</p>
+    <h2 id="titulo">El problema</h2>
+    <div id="texto"></div>
+    <div class="pasos">
+      <button type="button" id="atras">◀ Atrás</button>
+      <button type="button" id="siguiente">Siguiente ▶</button>
+      <span class="nota" id="queSigue"></span>
+      <span class="puntos">
+        <button class="punto" type="button" data-paso="0" aria-label="Paso 1"></button>
+        <button class="punto" type="button" data-paso="1" aria-label="Paso 2"></button>
+        <button class="punto" type="button" data-paso="2" aria-label="Paso 3"></button>
+        <button class="punto" type="button" data-paso="3" aria-label="Paso 4"></button>
+      </span>
     </div>
+  </div>
 
-    <div class="paneles" style="grid-template-columns:1fr 1fr" id="panel1">
-      <div class="panel">
-        <h3>Las N corridas, su mezcla y su baricentro</h3>
-        <canvas id="g1" width="620" height="420" role="img"
-          aria-label="Las curvas observadas, la mezcla ensanchada y el baricentro, que conserva la forma del perfil."></canvas>
-      </div>
-      <div class="panel">
-        <h3>Las mismas curvas en coordenadas de cuantiles</h3>
-        <canvas id="g2" width="620" height="420" role="img"
-          aria-label="Las pseudoinversas: rectas paralelas cuyo promedio es exactamente la del baricentro."></canvas>
-      </div>
+  <div class="mandos">
+    <button id="play1" aria-pressed="false">▶ Animar la deriva</button>
+    <div class="campo">
+      <label for="disp">deriva de b<sub>i</sub></label>
+      <input type="range" id="disp" min="0" max="1.6" step="0.01" value="0.75">
+      <output for="disp" id="dispOut">0,75</output>
     </div>
+    <div class="campo">
+      <label for="esc">deriva de a<sub>i</sub></label>
+      <input type="range" id="esc" min="0" max="0.5" step="0.01" value="0.2">
+      <output for="esc" id="escOut">0,20</output>
+    </div>
+    <div class="campo">
+      <label for="ene">N</label>
+      <input type="range" id="ene" min="2" max="40" step="1" value="12">
+      <output for="ene" id="eneOut">12</output>
+    </div>
+    <button type="button" id="soloCorr" aria-pressed="false">Solo corrimientos</button>
+    <button type="button" id="remuestrear">Otra muestra</button>
+  </div>
+
+  <div class="panel">
+    <h3 id="tituloPanel">Las N corridas</h3>
+    <canvas id="g1" width="820" height="430" role="img" aria-label="Las curvas observadas."></canvas>
     <div class="leyenda">
       <span><i class="llave" style="background:var(--obs)"></i> las N corridas</span>
-      <span><i class="llave" style="background:var(--mez)"></i> mezcla (promedio puntual)</span>
-      <span><i class="llave" style="background:var(--bar)"></i> baricentro</span>
-      <span><i class="llave" style="background:var(--patron); height:0; border-top:3px dashed var(--patron)"></i> perfil verdadero μ</span>
+      <span id="llaveMez" hidden><i class="llave" style="background:var(--mez)"></i> mezcla</span>
+      <span id="llaveBar" hidden><i class="llave" style="background:var(--bar)"></i> baricentro</span>
+      <span id="llavePat" hidden><i class="llave" style="background:var(--patron); height:0; border-top:3px dashed var(--patron)"></i> perfil verdadero μ</span>
     </div>
+  </div>
 
-    <div class="cifras">
-      <div class="cifra"><span class="k">desvío del perfil μ</span><span class="v" id="sdPat">—</span></div>
-      <div class="cifra"><span class="k">del baricentro</span><span class="v" id="sdBar">—</span></div>
-      <div class="cifra"><span class="k">de la mezcla</span><span class="v" id="sdMez">—</span></div>
-      <div class="cifra destacada"><span class="k">la mezcla ensancha</span><span class="v" id="factor">—</span></div>
-    </div>
-    <div class="cifras" style="margin-top:10px">
-      <div class="cifra"><span class="k">W₂(baricentro, μ)</span><span class="v" id="wBar">—</span></div>
-      <div class="cifra"><span class="k">W₂(mezcla, μ)</span><span class="v" id="wMez">—</span></div>
-      <div class="cifra"><span class="k">F en el baricentro</span><span class="v" id="fBar">—</span></div>
-      <div class="cifra destacada"><span class="k">F en la mezcla</span><span class="v" id="fMez">—</span></div>
-    </div>
-    <p class="nota" id="nota1" style="margin-top:14px"></p>
-    <p class="nota" id="nota2"></p>
-  </section>
+  <div class="cifras" id="cifras1" hidden>
+    <div class="cifra"><span class="k">desvío de una corrida</span><span class="v" id="sdPat">—</span></div>
+    <div class="cifra"><span class="k">desvío de la mezcla</span><span class="v" id="sdMez">—</span></div>
+    <div class="cifra destacada"><span class="k">la mezcla ensancha</span><span class="v" id="factor">—</span></div>
+  </div>
 
-  <section id="s2">
-    <p class="guia">Segunda aplicación</p>
-    <h2>Promediar formas</h2>
-    <p>
-      Una figura vista como distribución de masa uniforme sobre ella. Promediar tres figuras
-      con la mezcla da las tres fantasmas superpuestas; el baricentro da una figura, que
-      además se deforma de modo continuo al mover los pesos. Arrastrá el punto dentro del
-      triángulo: su posición son los pesos <i>λ<sub>1</sub>, λ<sub>2</sub>, λ<sub>3</sub></i>
-      en coordenadas baricéntricas.
-    </p>
+  <div class="cifras" id="cifras2" hidden>
+    <div class="cifra"><span class="k">W₂(mezcla, μ)</span><span class="v" id="wMez">—</span></div>
+    <div class="cifra"><span class="k">W₂(baricentro, μ)</span><span class="v" id="wBar">—</span></div>
+    <div class="cifra"><span class="k">F en la mezcla</span><span class="v" id="fMez">—</span></div>
+    <div class="cifra destacada"><span class="k">F en el baricentro</span><span class="v" id="fBar">—</span></div>
+  </div>
 
-    <div class="mandos">
-      <button id="play2" aria-pressed="false">▶ Recorrer los pesos</button>
-      <div class="campo">
-        <label for="eps">suavizado</label>
-        <input type="range" id="eps" min="0.6" max="2.6" step="0.1" value="1.3">
-        <output for="eps" id="epsOut">1,3</output>
-      </div>
-      <span class="nota" id="pesosTxt" style="font-family:var(--sans); font-size:.86rem"></span>
-    </div>
+  <div class="panel" id="panelQ" hidden>
+    <h3>Las mismas curvas en coordenadas de cuantiles (pasá el mouse)</h3>
+    <canvas id="g2" width="820" height="430" role="img"
+      aria-label="Las pseudoinversas: un abanico de curvas cuyo promedio punto a punto es la del baricentro."></canvas>
+  </div>
 
-    <div class="paneles tres">
-      <div class="panel">
-        <h3>Pesos</h3>
-        <canvas id="tri" class="pesos" width="420" height="380" tabindex="0"
-          role="application" aria-label="Triángulo de pesos: arrastrá el punto para cambiar las proporciones."></canvas>
-      </div>
-      <div class="panel">
-        <h3>Mezcla Σ λ<sub>i</sub> μ<sub>i</sub></h3>
-        <canvas id="cmez" width="320" height="320" role="img"
-          aria-label="La mezcla: las tres figuras superpuestas con distinta intensidad."></canvas>
-      </div>
-      <div class="panel">
-        <h3>Baricentro de Wasserstein</h3>
-        <canvas id="cbar" width="320" height="320" role="img"
-          aria-label="El baricentro: una única figura que interpola las tres."></canvas>
-      </div>
-    </div>
-    <p class="nota" style="margin-top:14px">
-      El baricentro se calcula con el algoritmo de Sinkhorn en su versión convolucional
-      (Capítulo 13), donde cada iteración es un desenfoque gaussiano: es el baricentro del
-      problema <em>entrópico</em>, no el exacto. Por eso aparece difuminado. El deslizador es
-      el ancho de ese desenfoque, que es lo que hace el papel de ε: al bajarlo los bordes se
-      afilan, y al subirlo la figura se redondea.
-    </p>
-  </section>
+  <p class="nota" id="pie"></p>
 </div>
 
 <script>
@@ -275,11 +197,10 @@
     return { w: w, h: h };
   }
 
-  /* ======================= 1. el patrón desalineado ======================= */
+  /* ---------------- el modelo ---------------- */
   var X0 = -4, X1 = 4, M = 720, dx = (X1 - X0) / (M - 1);
   var malla = new Float64Array(M), patron = new Float64Array(M), i;
   for (i = 0; i < M; i++) malla[i] = X0 + i * dx;
-
   function gauss(x, m, s) { return Math.exp(-0.5 * Math.pow((x - m) / s, 2)) / (s * Math.sqrt(2 * Math.PI)); }
   function fPatron(x) { return 0.72 * gauss(x, -0.18, 0.2) + 0.28 * gauss(x, 0.42, 0.4); }
   for (i = 0; i < M; i++) patron[i] = fPatron(malla[i]);
@@ -287,22 +208,22 @@
   var NS = 160, ese = new Float64Array(NS);
   for (i = 0; i < NS; i++) ese[i] = (i + 0.5) / NS;
 
-  function cuantiles(y) {                 // pseudoinversa sobre la grilla de s
+  function cuantiles(y) {
     var C = new Float64Array(M), acc = 0, j, k, q = new Float64Array(NS);
     for (j = 0; j < M; j++) { acc += y[j] * dx; C[j] = acc; }
     for (j = 0; j < M; j++) C[j] /= acc;
     k = 0;
-    for (i = 0; i < NS; i++) {
-      while (k < M - 1 && C[k] < ese[i]) k++;
-      if (k === 0) q[i] = malla[0];
+    for (j = 0; j < NS; j++) {
+      while (k < M - 1 && C[k] < ese[j]) k++;
+      if (k === 0) q[j] = malla[0];
       else {
-        var t = (ese[i] - C[k - 1]) / Math.max(C[k] - C[k - 1], 1e-12);
-        q[i] = malla[k - 1] + t * dx;
+        var t = (ese[j] - C[k - 1]) / Math.max(C[k] - C[k - 1], 1e-12);
+        q[j] = malla[k - 1] + t * dx;
       }
     }
     return q;
   }
-  function momentos(y) {                  // media y desvío de una densidad en la grilla
+  function momentos(y) {
     var m0 = 0, m1 = 0, m2 = 0, j;
     for (j = 0; j < M; j++) { m0 += y[j] * dx; m1 += malla[j] * y[j] * dx; m2 += malla[j] * malla[j] * y[j] * dx; }
     var m = m1 / m0, v = m2 / m0 - m * m;
@@ -310,7 +231,7 @@
   }
   var qPatron = cuantiles(patron), momPatron = momentos(patron);
 
-  var semilla = 7, soloCorrimientos = false;
+  var semilla = 7, soloCorrimientos = false, sGuia = 0.5, paso = 0;
   function azar() { semilla = (semilla * 1103515245 + 12345) & 0x7fffffff; return semilla / 0x7fffffff; }
   var As = [], Bs = [];
   function muestrear(n) {
@@ -318,7 +239,7 @@
     for (var k = 0; k < n; k++) { As.push(2 * azar() - 1); Bs.push(2 * azar() - 1); }
   }
 
-  function estado1() {
+  function estado() {
     var n = parseInt($("ene").value, 10),
         sb = parseFloat($("disp").value),
         sa = soloCorrimientos ? 0 : parseFloat($("esc").value);
@@ -340,13 +261,14 @@
       bar[j] = fPatron((malla[j] - bMed) / aMed) / aMed;
     }
     for (j = 0; j < NS; j++) qBar[j] = aMed * qPatron[j] + bMed;
-    var mediasVar = 0, mm = 0;
+    var mm = 0, mediasVar = 0;
     for (k = 0; k < n; k++) mm += (aa[k] * momPatron.media + bb[k]) / n;
     for (k = 0; k < n; k++) mediasVar += Math.pow(aa[k] * momPatron.media + bb[k] - mm, 2) / n;
     return { n: n, obs: obs, qObs: qObs, mez: mez, bar: bar, qBar: qBar,
              aMed: aMed, bMed: bMed, a2: a2, mediasVar: mediasVar };
   }
 
+  /* ---------------- dibujo ---------------- */
   function ejes(ct, d, iz, de, ar, ab, x0, x1, y0, y1, marcasX, marcasY) {
     var W = d.w - iz - de, H = d.h - ar - ab;
     var px = function (x) { return iz + (x - x0) / (x1 - x0) * W; };
@@ -379,104 +301,207 @@
     ct.stroke(); ct.restore();
   }
 
-  function dibujar1() {
-    var e = estado1(), j, k;
+  var PIES = ["", "", "", ""];
 
-    /* --- panel de densidades --- */
-    var cv = $("g1"), ct = cv.getContext("2d"), d = preparar(cv, ct, 420 / 620);
+  function dibujar() {
+    var e = estado(), j, k;
+    var cv = $("g1"), ct = cv.getContext("2d"), d = preparar(cv, ct, 430 / 820);
     var ymax = 0;
-    for (j = 0; j < M; j++) ymax = Math.max(ymax, e.bar[j], e.mez[j], patron[j]);
+    for (j = 0; j < M; j++) ymax = Math.max(ymax, e.mez[j], patron[j], e.bar[j]);
     for (k = 0; k < e.n; k++) for (j = 0; j < M; j++) ymax = Math.max(ymax, e.obs[k][j]);
     ymax *= 1.08;
-    var A = ejes(ct, d, 14, 12, 12, 28, X0, X1, 0, ymax,
+    var A = ejes(ct, d, 14, 12, 12, 30, X0, X1, 0, ymax,
       [[-4, "−4"], [-2, "−2"], [0, "0"], [2, "2"], [4, "4"]], []);
-    var alfa = Math.max(0.13, 0.5 / Math.sqrt(e.n));
-    for (k = 0; k < e.n; k++) curva(ct, malla, e.obs[k], A.px, A.py, color("--obs"), 1.2, null, alfa);
-    curva(ct, malla, e.mez, A.px, A.py, color("--mez"), 2.6);
-    curva(ct, malla, e.bar, A.px, A.py, color("--bar"), 2.8);
-    curva(ct, malla, patron, A.px, A.py, color("--patron"), 1.6, [6, 4]);
+    var alfa = paso === 0 ? Math.max(0.3, 0.95 / Math.sqrt(e.n)) : Math.max(0.13, 0.5 / Math.sqrt(e.n));
+    for (k = 0; k < e.n; k++) curva(ct, malla, e.obs[k], A.px, A.py, color("--obs"), 1.3, null, alfa);
+    if (paso >= 1) curva(ct, malla, e.mez, A.px, A.py, color("--mez"), 2.8);
+    if (paso >= 2) {
+      curva(ct, malla, e.bar, A.px, A.py, color("--bar"), 2.8);
+      curva(ct, malla, patron, A.px, A.py, color("--patron"), 1.6, [6, 4]);
+    }
     ct.fillStyle = color("--gris"); ct.font = "12px " + css.getPropertyValue("--sans");
     ct.textAlign = "right"; ct.textBaseline = "top";
-    ct.fillText("tiempo de retención", d.w - 14, d.h - 40);
+    ct.fillText("tiempo de retención", d.w - 14, d.h - 42);
 
-    /* --- panel de cuantiles --- */
-    var cv2 = $("g2"), c2 = cv2.getContext("2d"), d2 = preparar(cv2, c2, 420 / 620);
-    var qMez = cuantiles(e.mez), lo = Infinity, hi = -Infinity;
-    for (j = 0; j < NS; j++) {
-      lo = Math.min(lo, e.qBar[j], qMez[j]); hi = Math.max(hi, e.qBar[j], qMez[j]);
-      for (k = 0; k < e.n; k++) { lo = Math.min(lo, e.qObs[k][j]); hi = Math.max(hi, e.qObs[k][j]); }
-    }
-    var pad = 0.08 * (hi - lo);
-    var B = ejes(c2, d2, 34, 12, 12, 28, 0, 1, lo - pad, hi + pad,
-      [[0, "0"], [0.5, "0,5"], [1, "1"]],
-      [[Math.round(lo), String(Math.round(lo))], [0, "0"], [Math.round(hi), String(Math.round(hi))]]);
-    for (k = 0; k < e.n; k++) curva(c2, ese, e.qObs[k], B.px, B.py, color("--obs"), 1.3, null, Math.max(0.2, alfa + 0.08));
-    curva(c2, ese, qMez, B.px, B.py, color("--mez"), 2.6);
-    curva(c2, ese, e.qBar, B.px, B.py, color("--bar"), 2.8);
-    curva(c2, ese, qPatron, B.px, B.py, color("--patron"), 1.6, [6, 4]);
-    c2.fillStyle = color("--gris"); c2.font = "12px " + css.getPropertyValue("--sans");
-    c2.textAlign = "right"; c2.textBaseline = "top";
-    c2.fillText("s", d2.w - 14, d2.h - 40);
-    c2.textAlign = "left";
-    c2.fillText("F⁻¹(s)", 38, 14);
+    var qMez = cuantiles(e.mez);
+    if (paso >= 3) {
+      var cv2 = $("g2"), c2 = cv2.getContext("2d"), d2 = preparar(cv2, c2, 430 / 820);
+      var lo = Infinity, hi = -Infinity;
+      for (j = 0; j < NS; j++) {
+        lo = Math.min(lo, e.qBar[j], qMez[j]); hi = Math.max(hi, e.qBar[j], qMez[j]);
+        for (k = 0; k < e.n; k++) { lo = Math.min(lo, e.qObs[k][j]); hi = Math.max(hi, e.qObs[k][j]); }
+      }
+      var pad = 0.08 * (hi - lo);
+      var B = ejes(c2, d2, 34, 12, 12, 30, 0, 1, lo - pad, hi + pad,
+        [[0, "0"], [0.5, "0,5"], [1, "1"]], [[0, "0"], [Math.round(hi), String(Math.round(hi))]]);
+      for (k = 0; k < e.n; k++)
+        curva(c2, ese, e.qObs[k], B.px, B.py, color("--obs"), 1.3, null, Math.max(0.22, alfa + 0.08));
+      curva(c2, ese, qMez, B.px, B.py, color("--mez"), 2.6);
+      curva(c2, ese, e.qBar, B.px, B.py, color("--bar"), 2.8);
+      curva(c2, ese, qPatron, B.px, B.py, color("--patron"), 1.6, [6, 4]);
 
-    /* --- cifras y comentario --- */
-    function w2c(q1, q2) {
-      var su = 0, r, z;
-      for (z = 0; z < NS; z++) { r = q1[z] - q2[z]; su += r * r; }
-      return su / NS;
+      var ig = Math.min(NS - 1, Math.max(0, Math.round(sGuia * NS - 0.5)));
+      c2.save();
+      c2.strokeStyle = color("--gris"); c2.lineWidth = 1; c2.setLineDash([3, 3]);
+      c2.beginPath(); c2.moveTo(B.px(ese[ig]), 12); c2.lineTo(B.px(ese[ig]), 12 + B.H); c2.stroke();
+      c2.restore();
+      for (k = 0; k < e.n; k++) {
+        c2.beginPath(); c2.arc(B.px(ese[ig]), B.py(e.qObs[k][ig]), 3, 0, 2 * Math.PI);
+        c2.fillStyle = color("--obs"); c2.fill();
+      }
+      c2.beginPath(); c2.arc(B.px(ese[ig]), B.py(qMez[ig]), 4.4, 0, 2 * Math.PI);
+      c2.fillStyle = color("--mez"); c2.fill();
+      c2.beginPath(); c2.arc(B.px(ese[ig]), B.py(e.qBar[ig]), 5, 0, 2 * Math.PI);
+      c2.fillStyle = color("--bar"); c2.fill();
+      c2.strokeStyle = color("--tarjeta"); c2.lineWidth = 1.5; c2.stroke();
+
+      c2.fillStyle = color("--gris"); c2.font = "12px " + css.getPropertyValue("--sans");
+      c2.textAlign = "right"; c2.textBaseline = "top";
+      c2.fillText("s = fracción de la masa", d2.w - 14, d2.h - 42);
+      c2.textAlign = "left";
+      c2.fillText("tiempo de retención", 38, 14);
+      var sx = B.px(ese[ig]) + 7, der = sx > d2.w - 200;
+      c2.textAlign = der ? "right" : "left"; c2.fillStyle = color("--bar");
+      c2.fillText("s = " + num(ese[ig]) + ": el punto azul es", der ? sx - 14 : sx, 34);
+      c2.fillText("el promedio de los celestes", der ? sx - 14 : sx, 50);
     }
-    function funcional(q) {
-      var su = 0, z;
-      for (z = 0; z < e.n; z++) su += w2c(q, e.qObs[z]) / e.n;
-      return su;
-    }
-    var fB = funcional(e.qBar), fM = funcional(qMez);
-    $("wBar").textContent = num(Math.sqrt(w2c(e.qBar, qPatron)), 3);
-    $("wMez").textContent = num(Math.sqrt(w2c(qMez, qPatron)), 3);
-    $("fBar").textContent = num(fB, 3);
-    $("fMez").textContent = num(fM, 3) + " (+" + num(100 * (fM / fB - 1), 0) + " %)";
-    var mB = momentos(e.bar), mM = momentos(e.mez);
-    $("sdPat").textContent = num(momPatron.desvio);
-    $("sdBar").textContent = num(mB.desvio);
+
+    function w2c(q1, q2) { var su = 0, r, z; for (z = 0; z < NS; z++) { r = q1[z] - q2[z]; su += r * r; } return su / NS; }
+    function funcional(q) { var su = 0, z; for (z = 0; z < e.n; z++) su += w2c(q, e.qObs[z]) / e.n; return su; }
+    var mM = momentos(e.mez), sdCorrida = e.aMed * momPatron.desvio;
+    $("sdPat").textContent = num(sdCorrida);
     $("sdMez").textContent = num(mM.desvio);
-    $("factor").textContent = "×" + num(mM.desvio / mB.desvio);
-    $("nota1").textContent =
-      "Acá el baricentro es el perfil con ā = " + num(e.aMed) + " y b̄ = " + num(e.bMed) +
-      ", así que su desvío es exactamente ā veces el del perfil: " + num(e.aMed) + " × " +
-      num(momPatron.desvio) + " = " + num(e.aMed * momPatron.desvio) + ". La forma no cambió.";
+    $("factor").textContent = "×" + num(mM.desvio / sdCorrida);
+    var fB = funcional(e.qBar), fM = funcional(qMez);
+    $("wMez").textContent = num(Math.sqrt(w2c(qMez, qPatron)), 3);
+    $("wBar").textContent = num(Math.sqrt(w2c(e.qBar, qPatron)), 3);
+    $("fMez").textContent = num(fM, 3);
+    $("fBar").textContent = num(fB, 3) + " (−" + num(100 * (1 - fB / fM), 0) + " %)";
+
     var vDentro = e.a2 * momPatron.desvio * momPatron.desvio;
-    $("nota2").textContent = soloCorrimientos
+    PIES[1] = soloCorrimientos
       ? ("Con aᵢ = 1 la mezcla es exactamente la convolución del perfil con la ley de los "
-         + "corrimientos, de modo que su varianza es la del perfil más la de los bᵢ: "
+         + "corrimientos: su varianza es la del perfil más la de los bᵢ, "
          + num(momPatron.desvio * momPatron.desvio, 3) + " + " + num(e.mediasVar, 3) + " = "
-         + num(momPatron.desvio * momPatron.desvio + e.mediasVar, 3)
-         + ". El baricentro, en cambio, solo se traslada: su varianza sigue siendo la del perfil.")
-      : ("La varianza de la mezcla se parte en dos (varianza total): lo que aportan las corridas, "
-         + "en promedio, más lo que aporta la dispersión de sus centros: "
-         + num(vDentro, 3) + " + " + num(e.mediasVar, 3) + " = " + num(vDentro + e.mediasVar, 3)
-         + ". El segundo sumando es puro artefacto del desalineado, y es el que el baricentro no "
-         + "paga: el suyo es ā² veces la varianza del perfil.");
+         + num(momPatron.desvio * momPatron.desvio + e.mediasVar, 3) + ".")
+      : ("La varianza de la mezcla se parte en dos (varianza total): lo que aporta cada corrida, en "
+         + "promedio, más la dispersión de sus centros: " + num(vDentro, 3) + " + " + num(e.mediasVar, 3)
+         + " = " + num(vDentro + e.mediasVar, 3) + ". El segundo sumando es puro artefacto del desalineado.");
+    PIES[2] = "El baricentro es el perfil con ā = " + num(e.aMed) + " y b̄ = " + num(e.bMed)
+      + ": la forma no cambió, solo se promediaron la posición y la escala. Si las derivas estuvieran "
+      + "centradas en a = 1 y b = 0, con N grande caería exactamente sobre μ.";
+    $("pie").textContent = PIES[paso] || "";
   }
 
+  /* ---------------- el relato ---------------- */
+  var ETAPAS = [
+    { titulo: "El problema",
+      panel: "Las N corridas",
+      sigue: "sigue: el promedio de siempre",
+      texto: '<p>Un laboratorio pasa <i>N</i> veces la misma muestra por el cromatógrafo. Cada corrida '
+        + 'devuelve una curva: cuánta masa sale de la columna en cada instante. Debería ser siempre la '
+        + 'misma, pero el tiempo de retención deriva de una corrida a la otra —la temperatura, el caudal, '
+        + 'una columna que envejece—, y la corrección estándar para alinear dos corridas es afín, '
+        + '<i>t ↦ a t + b</i>. O sea que la corrida <i>i</i>-ésima es '
+        + '<i>μ<sub>i</sub> = (a<sub>i</sub>t + b<sub>i</sub>)<sub>#</sub>μ</i>, con <i>μ</i> el perfil '
+        + 'verdadero del compuesto.</p>'
+        + '<p>Abajo están las <i>N</i> corridas, y nada más: <i>μ</i> no está dibujado porque en el '
+        + 'laboratorio nadie lo ve. La pregunta es qué informar como «el» perfil del compuesto.</p>' },
+    { titulo: "El promedio que se hace siempre",
+      panel: "Las N corridas y su mezcla",
+      sigue: "sigue: el baricentro",
+      texto: '<p>Lo natural es promediar las curvas punto a punto: en cada instante, el promedio de lo que '
+        + 'marcaron las <i>N</i> corridas. Eso es la mezcla <i>Σ λ<sub>i</sub> μ<sub>i</sub></i>, en gris.</p>'
+        + '<p>Y no sirve, por una razón que está a la vista: es más ancha y más baja que cualquiera de las '
+        + 'corridas, y le aparecen jorobas que ninguna corrida tiene. El ensanchamiento no es del compuesto, '
+        + 'es del desalineado; las jorobas son grupos de corridas que cayeron cerca. Un informe con esa curva '
+        + 'diría que el compuesto sale lento y disperso, o que hay dos compuestos donde hay uno. Y no es '
+        + 'cuestión de medir más: subí la deriva y miralo empeorar, que con cualquier <i>N</i> la mezcla '
+        + 'sigue sin parecerse al perfil.</p>' },
+    { titulo: "El baricentro",
+      panel: "Las N corridas, su mezcla y su baricentro",
+      sigue: "sigue: por qué funciona",
+      texto: '<p>En azul, el baricentro de Wasserstein de las <i>N</i> corridas: el minimizador de '
+        + '<i>F(ν) = Σ λ<sub>i</sub> W₂²(ν, μ<sub>i</sub>)</i>. Y en punteado, recién ahora, el perfil '
+        + 'verdadero <i>μ</i>, que la simulación conoce y el laboratorio no. Se superponen.</p>'
+        + '<p>No es casualidad ni es numérico. La Proposición 12.6.1 dice que en la recta el baricentro sale '
+        + 'promediando pseudoinversas, y la de una imagen afín es '
+        + '<i>a<sub>i</sub>F<sub>μ</sub><sup>−1</sup> + b<sub>i</sub></i>, de modo que promediarlas solo '
+        + 'promedia <i>a</i> y <i>b</i>:</p>'
+        + '<p class="formula">F<sub>μ̄</sub><sup>−1</sup> = (1/N) Σ<sub>i</sub> '
+        + 'F<sub>μ<sub>i</sub></sub><sup>−1</sup> = ā F<sub>μ</sub><sup>−1</sup> + b̄ &nbsp;⟹&nbsp; '
+        + 'μ̄ = (ā t + b̄)<sub>#</sub> μ</p>'
+        + '<p>Las cifras miden las dos curvas contra el perfil verdadero, y en el funcional que el baricentro '
+        + 'minimiza.</p>' },
+    { titulo: "Por qué funciona",
+      panel: "Las N corridas, su mezcla y su baricentro",
+      sigue: "",
+      texto: '<p>Conviene comparar las dos curvas sabiendo qué es cada una. La mezcla no es un promedio '
+        + 'ingenuo: es el baricentro de Fréchet para la distancia <i>L²</i> entre densidades, igual que el de '
+        + 'Wasserstein lo es para <i>W₂</i>. Las dos son promedios, cada uno en su geometría, y la pregunta es '
+        + 'cuál describe lo que pasó en la columna. Lo que pasó fue que el pico se movió.</p>'
+        + '<p>El panel de abajo lo muestra. El eje horizontal ya no es tiempo sino <i>s</i>, la fracción de la '
+        + 'masa; el vertical sí es tiempo. La curva <i>F<sup>−1</sup>(s)</i> contesta «¿a qué tiempo ya salió '
+        + 'el <i>s</i> por ciento del compuesto?»: el mismo cromatograma visto desde el lado de la masa, plano '
+        + 'donde la densidad es alta y empinado donde es baja. Las corridas, que son '
+        + '<i>a<sub>i</sub>F<sub>μ</sub><sup>−1</sup> + b<sub>i</sub></i>, forman un abanico de copias estiradas '
+        + 'y corridas de una sola curva.</p>'
+        + '<p>Y como en la recta <i>W₂</i> es la distancia <i>L²</i> entre pseudoinversas, el baricentro es el '
+        + 'promedio en estas coordenadas: para cada <i>s</i>, el punto azul está en el promedio de los celestes. '
+        + 'El de la mezcla, no — esa promedia las <i>F</i>, no las <i>F<sup>−1</sup></i>.</p>' }
+  ];
+
+  function mostrar() {
+    var et = ETAPAS[paso];
+    $("rotulo").textContent = "Paso " + (paso + 1) + " de " + ETAPAS.length;
+    $("titulo").textContent = et.titulo;
+    $("texto").innerHTML = et.texto;
+    $("tituloPanel").textContent = et.panel;
+    $("queSigue").textContent = et.sigue;
+    $("atras").disabled = paso === 0;
+    $("siguiente").disabled = paso === ETAPAS.length - 1;
+    $("llaveMez").hidden = paso < 1;
+    $("llaveBar").hidden = paso < 2;
+    $("llavePat").hidden = paso < 2;
+    $("cifras1").hidden = paso < 1;
+    $("cifras2").hidden = paso < 2;
+    $("panelQ").hidden = paso < 3;
+    Array.prototype.forEach.call(document.querySelectorAll(".punto"), function (b) {
+      b.setAttribute("aria-current", String(parseInt(b.dataset.paso, 10) === paso));
+    });
+    dibujar();
+  }
+  function ir(p) { paso = Math.min(ETAPAS.length - 1, Math.max(0, p)); mostrar(); }
+  $("siguiente").addEventListener("click", function () { ir(paso + 1); });
+  $("atras").addEventListener("click", function () { ir(paso - 1); });
+  Array.prototype.forEach.call(document.querySelectorAll(".punto"), function (b) {
+    b.addEventListener("click", function () { ir(parseInt(b.dataset.paso, 10)); });
+  });
+
+  /* ---------------- mandos ---------------- */
   ["disp", "esc", "ene"].forEach(function (id) {
     $(id).addEventListener("input", function () {
       $(id + "Out").textContent = id === "ene" ? this.value : num(parseFloat(this.value));
-      dibujar1();
+      dibujar();
     });
   });
   $("remuestrear").addEventListener("click", function () {
-    semilla = (Date.now() % 100000) | 1; As = []; dibujar1();
+    semilla = (Date.now() % 100000) | 1; As = []; dibujar();
   });
   $("soloCorr").addEventListener("click", function () {
     soloCorrimientos = !soloCorrimientos;
     this.setAttribute("aria-pressed", soloCorrimientos ? "true" : "false");
     $("esc").disabled = soloCorrimientos;
-    dibujar1();
+    dibujar();
+  });
+  $("g2").addEventListener("pointermove", function (ev) {
+    var r = this.getBoundingClientRect(), W = r.width - 46;
+    sGuia = Math.min(0.995, Math.max(0.005, (ev.clientX - r.left - 34) / W));
+    dibujar();
   });
 
   var and1 = false, sent1 = 1, ult1 = 0, tau = 0.47;
-  function cuadro1(ahora) {
+  function cuadro(ahora) {
     if (!and1) return;
     var dt = ult1 ? (ahora - ult1) / 1000 : 0; ult1 = ahora;
     tau += sent1 * dt * 0.26;
@@ -485,208 +510,21 @@
     var vb = 1.6 * tau, va = 0.5 * tau;
     $("disp").value = vb; $("dispOut").textContent = num(vb);
     if (!soloCorrimientos) { $("esc").value = va; $("escOut").textContent = num(va); }
-    dibujar1(); requestAnimationFrame(cuadro1);
+    dibujar(); requestAnimationFrame(cuadro);
   }
   $("play1").addEventListener("click", function () {
     and1 = !and1; this.setAttribute("aria-pressed", and1 ? "true" : "false");
     this.textContent = and1 ? "❚❚ Pausa" : "▶ Animar la deriva";
     ult1 = 0; tau = parseFloat($("disp").value) / 1.6;
-    if (and1) requestAnimationFrame(cuadro1);
+    if (and1) requestAnimationFrame(cuadro);
   });
 
-  /* ======================= 2. promediar formas ======================= */
-  var G = 88, NG = G * G;
-  var figuras = [], nombres = ["disco", "cruz", "anillo"];
-
-  function rasterizar(dibujo) {
-    var cv = document.createElement("canvas"); cv.width = cv.height = G;
-    var c = cv.getContext("2d");
-    c.fillStyle = "#000"; dibujo(c, G);
-    var d = c.getImageData(0, 0, G, G).data, f = new Float64Array(NG), s = 0, k;
-    for (k = 0; k < NG; k++) { f[k] = d[4 * k + 3] / 255; s += f[k]; }
-    for (k = 0; k < NG; k++) f[k] = f[k] / s + 1e-9;
-    return f;
-  }
-  figuras.push(rasterizar(function (c, n) {
-    c.beginPath(); c.arc(n * 0.5, n * 0.5, n * 0.3, 0, 2 * Math.PI); c.fill();
-  }));
-  figuras.push(rasterizar(function (c, n) {
-    var a = n * 0.16, L = n * 0.38;
-    c.fillRect(n / 2 - L, n / 2 - a, 2 * L, 2 * a);
-    c.fillRect(n / 2 - a, n / 2 - L, 2 * a, 2 * L);
-  }));
-  figuras.push(rasterizar(function (c, n) {
-    c.beginPath(); c.arc(n * 0.5, n * 0.5, n * 0.38, 0, 2 * Math.PI);
-    c.arc(n * 0.5, n * 0.5, n * 0.2, 0, 2 * Math.PI, true); c.fill("evenodd");
-  }));
-
-  function desenfoque(u, sig) {           // núcleo de calor: gaussiana separable
-    var r = Math.max(1, Math.ceil(3 * sig)), k = new Float64Array(2 * r + 1), s = 0, j, x, y, q, acc;
-    for (j = -r; j <= r; j++) { k[j + r] = Math.exp(-j * j / (2 * sig * sig)); s += k[j + r]; }
-    for (j = 0; j < k.length; j++) k[j] /= s;
-    var t = new Float64Array(NG), o = new Float64Array(NG);
-    for (y = 0; y < G; y++) for (x = 0; x < G; x++) {
-      acc = 0;
-      for (j = -r; j <= r; j++) { q = x + j; if (q < 0) q = 0; else if (q >= G) q = G - 1;
-        acc += k[j + r] * u[y * G + q]; }
-      t[y * G + x] = acc;
-    }
-    for (y = 0; y < G; y++) for (x = 0; x < G; x++) {
-      acc = 0;
-      for (j = -r; j <= r; j++) { q = y + j; if (q < 0) q = 0; else if (q >= G) q = G - 1;
-        acc += k[j + r] * t[q * G + x]; }
-      o[y * G + x] = acc;
-    }
-    return o;
-  }
-
-  function baricentro(ps, lam, sig, iter) {   // Sinkhorn convolucional
-    var n = ps.length, v = [], w = [], d = [], mu = new Float64Array(NG), k, j, it, lg;
-    for (k = 0; k < n; k++) { v.push(new Float64Array(NG).fill(1)); w.push(null); d.push(null); }
-    for (it = 0; it < iter; it++) {
-      lg = new Float64Array(NG);
-      for (k = 0; k < n; k++) {
-        var hv = desenfoque(v[k], sig);
-        w[k] = new Float64Array(NG);
-        for (j = 0; j < NG; j++) w[k][j] = ps[k][j] / Math.max(hv[j], 1e-30);
-        var hw = desenfoque(w[k], sig);
-        d[k] = new Float64Array(NG);
-        for (j = 0; j < NG; j++) {
-          d[k][j] = Math.max(v[k][j] * hw[j], 1e-30);
-          lg[j] += lam[k] * Math.log(d[k][j]);
-        }
-      }
-      for (j = 0; j < NG; j++) mu[j] = Math.exp(lg[j]);
-      for (k = 0; k < n; k++) for (j = 0; j < NG; j++) v[k][j] = v[k][j] * mu[j] / d[k][j];
-    }
-    return mu;
-  }
-
-  function pintarCampo(cv, f) {
-    var ct = cv.getContext("2d"), d = preparar(cv, ct, 1), mx = 0, k;
-    for (k = 0; k < NG; k++) mx = Math.max(mx, f[k]);
-    var off = document.createElement("canvas"); off.width = off.height = G;
-    var oc = off.getContext("2d"), im = oc.createImageData(G, G);
-    var oscuro = matchMedia("(prefers-color-scheme: dark)").matches
-      || document.documentElement.getAttribute("data-theme") === "dark";
-    var base = oscuro ? [127, 179, 255] : [1, 50, 116];
-    for (k = 0; k < NG; k++) {
-      var a = mx > 0 ? Math.pow(f[k] / mx, 0.62) : 0;
-      im.data[4 * k] = base[0]; im.data[4 * k + 1] = base[1];
-      im.data[4 * k + 2] = base[2]; im.data[4 * k + 3] = Math.round(235 * Math.min(1, a));
-    }
-    oc.putImageData(im, 0, 0);
-    ct.imageSmoothingEnabled = true;
-    ct.drawImage(off, 0, 0, d.w, d.h);
-  }
-
-  var V = [[0.5, 0.08], [0.06, 0.9], [0.94, 0.9]];   // vértices del triángulo
-  var pesoPt = [0.5, 0.62], pendiente = null;
-
-  function pesos() {
-    var x = pesoPt[0], y = pesoPt[1];
-    var det = (V[1][1] - V[2][1]) * (V[0][0] - V[2][0]) + (V[2][0] - V[1][0]) * (V[0][1] - V[2][1]);
-    var l1 = ((V[1][1] - V[2][1]) * (x - V[2][0]) + (V[2][0] - V[1][0]) * (y - V[2][1])) / det;
-    var l2 = ((V[2][1] - V[0][1]) * (x - V[2][0]) + (V[0][0] - V[2][0]) * (y - V[2][1])) / det;
-    var l = [Math.max(0, l1), Math.max(0, l2), Math.max(0, 1 - l1 - l2)];
-    var s = l[0] + l[1] + l[2];
-    return [l[0] / s, l[1] / s, l[2] / s];
-  }
-
-  function dibujarTriangulo() {
-    var cv = $("tri"), ct = cv.getContext("2d"), d = preparar(cv, ct, 380 / 420);
-    var px = function (p) { return [12 + p[0] * (d.w - 24), 14 + p[1] * (d.h - 40)]; };
-    ct.beginPath();
-    var a = px(V[0]), b = px(V[1]), c = px(V[2]);
-    ct.moveTo(a[0], a[1]); ct.lineTo(b[0], b[1]); ct.lineTo(c[0], c[1]); ct.closePath();
-    ct.fillStyle = color("--panel"); ct.fill();
-    ct.strokeStyle = color("--linea"); ct.lineWidth = 1.5; ct.stroke();
-    var l = pesos();
-    ct.font = "600 12px " + css.getPropertyValue("--sans");
-    ct.fillStyle = color("--gris"); ct.textAlign = "center";
-    ct.textBaseline = "bottom"; ct.fillText(nombres[0], a[0], a[1] - 5);
-    ct.textBaseline = "top";
-    ct.fillText(nombres[1], b[0] + 10, b[1] + 6);
-    ct.fillText(nombres[2], c[0] - 10, c[1] + 6);
-    var p = px(pesoPt);
-    ct.beginPath(); ct.arc(p[0], p[1], 7, 0, 2 * Math.PI);
-    ct.fillStyle = color("--mag"); ct.fill();
-    ct.strokeStyle = color("--tarjeta"); ct.lineWidth = 2; ct.stroke();
-    $("pesosTxt").textContent = "λ = (" + num(l[0]) + ", " + num(l[1]) + ", " + num(l[2]) + ")";
-  }
-
-  var pendienteCalc = null;
-  function recalcular2(rapido) {
-    var l = pesos(), sig = parseFloat($("eps").value);
-    var mez = new Float64Array(NG), k, j;
-    for (j = 0; j < NG; j++) { var s = 0; for (k = 0; k < 3; k++) s += l[k] * figuras[k][j]; mez[j] = s; }
-    pintarCampo($("cmez"), mez);
-    var mu = baricentro(figuras, l, sig, rapido ? 16 : 40);
-    pintarCampo($("cbar"), mu);
-  }
-  function pedirCalculo(rapido) {
-    if (pendienteCalc) cancelAnimationFrame(pendienteCalc);
-    pendienteCalc = requestAnimationFrame(function () { pendienteCalc = null; dibujarTriangulo(); recalcular2(rapido); });
-  }
-
-  function desdeEvento(ev) {
-    var cv = $("tri"), r = cv.getBoundingClientRect();
-    var x = (ev.clientX - r.left - 12) / (r.width - 24);
-    var y = (ev.clientY - r.top - 14) / (r.height - 40);
-    pesoPt = [Math.min(1, Math.max(0, x)), Math.min(1, Math.max(0, y))];
-  }
-  $("tri").addEventListener("pointerdown", function (ev) {
-    this.setPointerCapture(ev.pointerId); pendiente = true; desdeEvento(ev); pedirCalculo(true);
-  });
-  $("tri").addEventListener("pointermove", function (ev) {
-    if (!pendiente) return; desdeEvento(ev); pedirCalculo(true);
-  });
-  $("tri").addEventListener("pointerup", function (ev) {
-    pendiente = false; this.releasePointerCapture(ev.pointerId); pedirCalculo(false);
-  });
-  $("tri").addEventListener("keydown", function (ev) {
-    var p = 0.03, usado = true;
-    if (ev.key === "ArrowLeft") pesoPt[0] -= p;
-    else if (ev.key === "ArrowRight") pesoPt[0] += p;
-    else if (ev.key === "ArrowUp") pesoPt[1] -= p;
-    else if (ev.key === "ArrowDown") pesoPt[1] += p;
-    else usado = false;
-    if (usado) { ev.preventDefault(); pedirCalculo(false); }
-  });
-  $("eps").addEventListener("input", function () {
-    $("epsOut").textContent = num(parseFloat(this.value), 1); pedirCalculo(true);
-  });
-  $("eps").addEventListener("change", function () { pedirCalculo(false); });
-
-  var and2 = false, fase = 0, ult2 = 0;
-  function cuadro2(ahora) {
-    if (!and2) return;
-    var dt = ult2 ? (ahora - ult2) / 1000 : 0; ult2 = ahora;
-    fase = (fase + dt * 0.14) % 1;
-    var u = fase * 3, seg = Math.floor(u), f = u - seg;
-    var A = V[seg % 3], B = V[(seg + 1) % 3];
-    pesoPt = [A[0] + f * (B[0] - A[0]), A[1] + f * (B[1] - A[1])];
-    dibujarTriangulo(); recalcular2(true);
-    requestAnimationFrame(cuadro2);
-  }
-  $("play2").addEventListener("click", function () {
-    and2 = !and2; this.setAttribute("aria-pressed", and2 ? "true" : "false");
-    this.textContent = and2 ? "❚❚ Pausa" : "▶ Recorrer los pesos";
-    ult2 = 0;
-    if (and2) requestAnimationFrame(cuadro2); else pedirCalculo(false);
-  });
-
-  window.addEventListener("resize", function () { dibujar1(); dibujarTriangulo(); recalcular2(true); });
+  window.addEventListener("resize", dibujar);
   if (window.matchMedia) {
     var mq = matchMedia("(prefers-color-scheme: dark)");
-    if (mq.addEventListener) mq.addEventListener("change", function () {
-      dibujar1(); dibujarTriangulo(); recalcular2(false);
-    });
+    if (mq.addEventListener) mq.addEventListener("change", dibujar);
   }
-
-  dibujar1();
-  dibujarTriangulo();
-  recalcular2(false);
+  mostrar();
 })();
 </script>
 
