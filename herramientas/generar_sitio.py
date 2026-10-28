@@ -64,8 +64,9 @@ EXTRA = [
      'N corridas de cromatografía del mismo compuesto, cada una con su deriva del tiempo de '
      'retención. La página avanza por pasos: primero las corridas, después el promedio punto a '
      'punto —que ensancha el pico y puede partirlo en dos— y recién entonces el baricentro, que '
-     'devuelve el perfil intacto. El último paso lo explica en coordenadas de cuantiles, donde '
-     'el baricentro es literalmente el promedio de las corridas (Proposición 12.6.1).'),
+     'devuelve el perfil intacto. Después lo explica en coordenadas de cuantiles, donde el '
+     'baricentro es literalmente el promedio de las corridas (Proposición 12.6.1), y termina '
+     'rompiendo el modelo afín con una perturbación para ver qué queda en pie.'),
     ('brunn-minkowski', 'html', 'Brunn–Minkowski en el plano',
      'La suma de Minkowski de dos rectángulos, uno rotado respecto del otro, con la curva '
      '|(1−t)A+tB|<sup>1/2</sup> dibujándose al lado de la cota (1−t)|A|<sup>1/2</sup>+t|B|<sup>1/2</sup>. '

@@ -123,6 +123,7 @@
         <button class="punto" type="button" data-paso="1" aria-label="Paso 2"></button>
         <button class="punto" type="button" data-paso="2" aria-label="Paso 3"></button>
         <button class="punto" type="button" data-paso="3" aria-label="Paso 4"></button>
+        <button class="punto" type="button" data-paso="4" aria-label="Paso 5"></button>
       </span>
     </div>
   </div>
@@ -143,6 +144,11 @@
       <label for="ene">N</label>
       <input type="range" id="ene" min="2" max="40" step="1" value="12">
       <output for="ene" id="eneOut">12</output>
+    </div>
+    <div class="campo" id="campoDesaj" hidden>
+      <label for="desaj">perturbación</label>
+      <input type="range" id="desaj" min="0" max="0.5" step="0.01" value="0.3">
+      <output for="desaj" id="desajOut">0,30</output>
     </div>
     <button type="button" id="soloCorr" aria-pressed="false">Solo corrimientos</button>
     <button type="button" id="remuestrear">Otra muestra</button>
@@ -231,6 +237,7 @@
       xs[j] = q[j];
       fs[j] = dq > 1e-9 ? (ese[i1] - ese[i0]) / dq : 0;
     }
+    fs[0] = 0; fs[NS - 1] = 0;          // que cierre en cero y no con un escalón
     k = 0;
     for (j = 0; j < M; j++) {
       var x = malla[j];
@@ -251,23 +258,47 @@
 
   var semilla = 7, soloCorrimientos = false, sGuia = 0.5, paso = 0;
   function azar() { semilla = (semilla * 1103515245 + 12345) & 0x7fffffff; return semilla / 0x7fffffff; }
-  var As = [], Bs = [];
+  var As = [], Bs = [], Cs = [];
   function muestrear(n) {
-    As = []; Bs = [];
-    for (var k = 0; k < n; k++) { As.push(2 * azar() - 1); Bs.push(2 * azar() - 1); }
+    As = []; Bs = []; Cs = [];
+    for (var k = 0; k < n; k++) {
+      As.push(2 * azar() - 1); Bs.push(2 * azar() - 1); Cs.push(2 * azar() - 1);
+    }
   }
 
   function estado() {
     var n = parseInt($("ene").value, 10),
         sb = parseFloat($("disp").value),
-        sa = soloCorrimientos ? 0 : parseFloat($("esc").value);
+        sa = soloCorrimientos ? 0 : parseFloat($("esc").value),
+        sc = paso >= 4 ? parseFloat($("desaj").value) : 0;
     if (As.length !== n) muestrear(n);
     var obs = [], qObs = [], aa = [], bb = [], aMed = 0, bMed = 0, a2 = 0, k, j;
     for (k = 0; k < n; k++) {
-      var a = 1 + sa * As[k], b = sb * Bs[k];
+      var a = 1 + sa * As[k], b = sb * Bs[k], c = sc * (0.55 + 0.45 * Cs[k]);
       aa.push(a); bb.push(b); aMed += a / n; bMed += b / n; a2 += a * a / n;
-      var y = new Float64Array(M);
-      for (j = 0; j < M; j++) y[j] = fPatron((malla[j] - b) / a) / a;
+      var y;
+      if (c === 0) {
+        /* el modelo afín vale exactamente: la densidad se escribe sola */
+        y = new Float64Array(M);
+        for (j = 0; j < M; j++) y[j] = fPatron((malla[j] - b) / a) / a;
+      } else {
+        /* la corrida es T_i # mu con T_i(t) = a t + b + c sen(...), que ya no es afín.
+           Como T_i es creciente, su pseudoinversa es T_i compuesta con la de mu. */
+        var qw = new Float64Array(NS), w = 0.35;
+        for (j = 0; j < NS; j++) {
+          var t0 = qPatron[j];
+          qw[j] = a * t0 + b + c * w * Math.log(1 + Math.exp((t0 + 0.1) / w));
+        }
+        y = densidadDeCuantiles(qw);
+        /* ruido del detector: rompe hasta la estructura de imagen directa */
+        var f1 = 1.7 + 2 * Cs[k], f2 = 3.3 + 2 * As[k], su0 = 0;
+        for (j = 0; j < M; j++) {
+          var eta = 0.22 * sc * (Math.sin(f1 * malla[j] + 3 * Bs[k]) + Math.sin(f2 * malla[j])) / 2;
+          y[j] = Math.max(0, y[j] * (1 + eta));
+          su0 += y[j] * dx;
+        }
+        for (j = 0; j < M; j++) y[j] /= su0;
+      }
       obs.push(y); qObs.push(cuantiles(y));
     }
     var mez = new Float64Array(M), qBar = new Float64Array(NS);
@@ -286,10 +317,12 @@
     var bar = densidadDeCuantiles(qBar);
     var brecha = 0;
     for (j = 0; j < NS; j++) brecha = Math.max(brecha, Math.abs(qBar[j] - (aMed * qPatron[j] + bMed)));
+    var desajuste = sc;
     var mm = 0, mediasVar = 0;
     for (k = 0; k < n; k++) mm += (aa[k] * momPatron.media + bb[k]) / n;
     for (k = 0; k < n; k++) mediasVar += Math.pow(aa[k] * momPatron.media + bb[k] - mm, 2) / n;
     return { n: n, obs: obs, qObs: qObs, mez: mez, bar: bar, qBar: qBar, brecha: brecha,
+             desajuste: desajuste,
              aMed: aMed, bMed: bMed, a2: a2, mediasVar: mediasVar };
   }
 
@@ -412,12 +445,27 @@
       : ("La varianza de la mezcla se parte en dos (varianza total): lo que aporta cada corrida, en "
          + "promedio, más la dispersión de sus centros: " + num(vDentro, 3) + " + " + num(e.mediasVar, 3)
          + " = " + num(vDentro + e.mediasVar, 3) + ". El segundo sumando es puro artefacto del desalineado.");
-    PIES[2] = "La curva azul se calcula solo con las N corridas: se promedian sus pseudoinversas y se "
-      + "vuelve a la densidad, sin usar a\u1d62, b\u1d62 ni μ, que el laboratorio no conoce. Da el perfil "
-      + "con ā = " + num(e.aMed) + " y b̄ = " + num(e.bMed) + ", como anuncia la proposición: la mayor "
-      + "diferencia entre la pseudoinversa calculada y ā F⁻¹ + b̄ es " + num(e.brecha, 4)
-      + ", que es error de la grilla. Si las derivas estuvieran centradas en a = 1 y b = 0, con N grande "
-      + "el baricentro caería exactamente sobre μ.";
+    PIES[4] = e.desajuste === 0
+      ? "Con la perturbación en cero las corridas vuelven a cumplir el modelo exactamente, y el baricentro "
+        + "vuelve a caer sobre el perfil. Subila para ver qué pasa cuando no."
+      : ("Las corridas ya no son imágenes afines de μ, ni imágenes de μ. El baricentro ya no cae sobre el "
+         + "perfil: está a W₂ = " + num(Math.sqrt(w2c(e.qBar, qPatron)), 3) + " de él, contra "
+         + num(Math.sqrt(w2c(qMez, qPatron)), 3) + " de la mezcla. Pero el error que le queda no es "
+         + "desalineado sino la parte sistemática de la perturbación: el baricentro saca lo que varía al "
+         + "azar entre corridas y se queda con la deformación promedio, que ninguna cantidad de corridas "
+         + "va a cancelar. El método no usa el modelo para calcularse; el modelo es lo que permitía decir "
+         + "que recupera μ.");
+    PIES[2] = e.desajuste === 0
+      ? ("La curva azul se calcula solo con las N corridas: se promedian sus pseudoinversas y se vuelve "
+         + "a la densidad, sin usar a\u1d62, b\u1d62 ni μ, que el laboratorio no conoce. Da el perfil con "
+         + "ā = " + num(e.aMed) + " y b̄ = " + num(e.bMed) + ", como anuncia la proposición: la mayor "
+         + "diferencia entre la pseudoinversa calculada y ā F⁻¹ + b̄ es " + num(e.brecha, 4)
+         + ", que es error de la grilla.")
+      : ("Las corridas ya no son imágenes afines de μ: el desajuste les mete una deformación no lineal, "
+         + "y el modelo que justifica la fórmula deja de valer. El baricentro ya no cae sobre el perfil "
+         + "—está a W₂ = " + num(Math.sqrt(w2c(e.qBar, qPatron)), 3) + " de él— pero sigue mucho más cerca "
+         + "que la mezcla, que está a " + num(Math.sqrt(w2c(qMez, qPatron)), 3) + ". El baricentro no usa "
+         + "el modelo para calcularse; el modelo es lo que permitía decir que recupera μ exactamente.");
     $("pie").textContent = PIES[paso] || "";
   }
 
@@ -430,7 +478,8 @@
         + 'devuelve una curva: cuánta masa sale de la columna en cada instante. Debería ser siempre la '
         + 'misma, pero el tiempo de retención deriva de una corrida a la otra —la temperatura, el caudal, '
         + 'una columna que envejece—, y la corrección estándar para alinear dos corridas es afín, '
-        + '<i>t ↦ a t + b</i>. O sea que la corrida <i>i</i>-ésima es '
+        + '<i>t ↦ a t + b</i> — una hipótesis sobre el instrumento, no un hecho. O sea que la corrida '
+        + '<i>i</i>-ésima es '
         + '<i>μ<sub>i</sub> = (a<sub>i</sub>t + b<sub>i</sub>)<sub>#</sub>μ</i>, con <i>μ</i> el perfil '
         + 'verdadero del compuesto.</p>'
         + '<p>Abajo están las <i>N</i> corridas. Lo que se quiere es inferir <i>μ</i>.</p>' },
@@ -465,7 +514,7 @@
         + 'minimiza.</p>' },
     { titulo: "Por qué funciona",
       panel: "Las N corridas, su mezcla y su baricentro",
-      sigue: "",
+      sigue: "sigue: y si el modelo no vale",
       texto: '<p>Conviene comparar las dos curvas sabiendo qué es cada una. La mezcla tampoco es un '
         + 'promedio ingenuo: es el minimizador de '
         + '<i>Σ λ<sub>i</sub> ‖ν − μ<sub>i</sub>‖²</i> en <i>L²</i>, es decir, el promedio que corresponde '
@@ -480,7 +529,22 @@
         + 'y corridas de una sola curva.</p>'
         + '<p>Y como en la recta <i>W₂</i> es la distancia <i>L²</i> entre pseudoinversas, el baricentro es el '
         + 'promedio en estas coordenadas: para cada <i>s</i>, el punto azul está en el promedio de los celestes. '
-        + 'El de la mezcla, no — esa promedia las <i>F</i>, no las <i>F<sup>−1</sup></i>.</p>' }
+        + 'El de la mezcla, no — esa promedia las <i>F</i>, no las <i>F<sup>−1</sup></i>.</p>' },
+    { titulo: "Y si el modelo no vale",
+      panel: "Corridas perturbadas, su mezcla y su baricentro",
+      sigue: "",
+      texto: '<p>Hasta acá la simulación generaba las corridas exactamente como dice el modelo, '
+        + '<i>μ<sub>i</sub> = (a<sub>i</sub>t + b<sub>i</sub>)<sub>#</sub>μ</i>, y el baricentro caía sobre '
+        + '<i>μ</i> como anuncia la fórmula. Pero <i>t ↦ a t + b</i> es una hipótesis sobre el instrumento, '
+        + 'y en una columna real no se cumple: la deriva no es exactamente afín y el detector tiene '
+        + 'ruido.</p>'
+        + '<p>El deslizador <i>perturbación</i> lo rompe. A cada corrida se le aplica, además de la parte '
+        + 'afín, un estiramiento creciente hacia la derecha —la cola que aparece a medida que la columna se '
+        + 'usa— de magnitud distinta en cada una, y se le suma ruido multiplicativo, que ya no es una '
+        + 'deformación del eje sino otra cosa. Las corridas dejan de ser imágenes afines de <i>μ</i>, y ni '
+        + 'siquiera imágenes de <i>μ</i>.</p>'
+        + '<p>El cálculo no cambia en nada: se promedian las pseudoinversas de lo que se observa. Lo que '
+        + 'cambia es qué significa el resultado. Mirá las cifras y el pie.</p>' }
   ];
 
   function mostrar() {
@@ -498,6 +562,7 @@
     $("cifras1").hidden = paso < 1;
     $("cifras2").hidden = paso < 2;
     $("panelQ").hidden = paso < 3;
+    $("campoDesaj").hidden = paso < 4;
     Array.prototype.forEach.call(document.querySelectorAll(".punto"), function (b) {
       b.setAttribute("aria-current", String(parseInt(b.dataset.paso, 10) === paso));
     });
@@ -511,7 +576,7 @@
   });
 
   /* ---------------- mandos ---------------- */
-  ["disp", "esc", "ene"].forEach(function (id) {
+  ["disp", "esc", "ene", "desaj"].forEach(function (id) {
     $(id).addEventListener("input", function () {
       $(id + "Out").textContent = id === "ene" ? this.value : num(parseFloat(this.value));
       dibujar();
