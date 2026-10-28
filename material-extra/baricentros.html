@@ -435,10 +435,12 @@
     { titulo: "Por qué funciona",
       panel: "Las N corridas, su mezcla y su baricentro",
       sigue: "",
-      texto: '<p>Conviene comparar las dos curvas sabiendo qué es cada una. La mezcla no es un promedio '
-        + 'ingenuo: es el baricentro de Fréchet para la distancia <i>L²</i> entre densidades, igual que el de '
-        + 'Wasserstein lo es para <i>W₂</i>. Las dos son promedios, cada uno en su geometría, y la pregunta es '
-        + 'cuál describe lo que pasó en la columna. Lo que pasó fue que el pico se movió.</p>'
+      texto: '<p>Conviene comparar las dos curvas sabiendo qué es cada una. La mezcla tampoco es un '
+        + 'promedio ingenuo: es el minimizador de '
+        + '<i>Σ λ<sub>i</sub> ‖ν − μ<sub>i</sub>‖²</i> en <i>L²</i>, es decir, el promedio que corresponde '
+        + 'a medir distancias entre densidades punto a punto, del mismo modo que el baricentro es el que '
+        + 'corresponde a medirlas con <i>W₂</i>. Las dos son promedios, cada uno en su geometría, y la '
+        + 'pregunta es cuál describe lo que pasó en la columna. Lo que pasó fue que el pico se movió.</p>'
         + '<p>El panel de abajo lo muestra. El eje horizontal ya no es tiempo sino <i>s</i>, la fracción de la '
         + 'masa; el vertical sí es tiempo. La curva <i>F<sup>−1</sup>(s)</i> contesta «¿a qué tiempo ya salió '
         + 'el <i>s</i> por ciento del compuesto?»: el mismo cromatograma visto desde el lado de la masa, plano '
