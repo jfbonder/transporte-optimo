@@ -61,11 +61,12 @@ EXTRA = [
      'teorema de Hopf–Rinow, con dos ejemplos sin compacidad local. Es el trasfondo métrico '
      'que supone la última sección del Capítulo 10.'),
     ('baricentros', 'html', 'Baricentros de Wasserstein',
-     'Dos aplicaciones. La primera: N registros de una misma señal, cada uno corrido y '
-     'reescalado al azar; el promedio puntual ensancha el pico y el baricentro devuelve el '
-     'patrón con la posición y la escala promediadas, que es la Proposición 12.6.1 aplicada '
-     'a imágenes afines. La segunda: promediar tres figuras, con los pesos en un triángulo '
-     'que se puede arrastrar, resuelto con el Sinkhorn convolucional del Capítulo 13.'),
+     'Dos aplicaciones. La primera: N corridas de cromatografía del mismo compuesto, cada una '
+     'con su deriva del tiempo de retención; promediarlas punto a punto ensancha el pico y '
+     'puede partirlo en dos, mientras que el baricentro devuelve el perfil intacto. Un panel '
+     'muestra lo mismo en coordenadas de cuantiles, donde el baricentro es literalmente el '
+     'promedio (Proposición 12.6.1). La segunda: promediar tres figuras, con los pesos en un '
+     'triángulo que se puede arrastrar, resuelto con el Sinkhorn convolucional del Capítulo 13.'),
     ('brunn-minkowski', 'html', 'Brunn–Minkowski en el plano',
      'La suma de Minkowski de dos rectángulos, uno rotado respecto del otro, con la curva '
      '|(1−t)A+tB|<sup>1/2</sup> dibujándose al lado de la cota (1−t)|A|<sup>1/2</sup>+t|B|<sup>1/2</sup>. '

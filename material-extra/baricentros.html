@@ -112,34 +112,47 @@
 
   <section id="s1" style="border-top:none; padding-top:0">
     <p class="guia">Primera aplicación</p>
-    <h2>Un patrón desalineado</h2>
+    <h2>Un pico que el promedio parte en dos</h2>
     <p>
-      Se observa <i>N</i> veces una misma señal —un espectro, una curva de crecimiento, un
-      perfil de disparo— pero cada registro llega corrido y reescalado al azar:
-      <i>μ<sub>i</sub> = (a<sub>i</sub>x + b<sub>i</sub>)<sub>#</sub>μ</i>, con <i>μ</i> el patrón
-      desconocido. Como la pseudoinversa de una imagen afín es
-      <i>a<sub>i</sub>F<sub>μ</sub><sup>−1</sup> + b<sub>i</sub></i>, la Proposición 12.6.1 da el
-      baricentro promediando pseudoinversas:
+      Un laboratorio pasa <i>N</i> veces la misma muestra por el cromatógrafo. Cada corrida
+      devuelve una curva: cuánta masa sale de la columna en cada instante. Debería ser siempre
+      la misma, pero el tiempo de retención deriva de una corrida a la otra —la temperatura, el
+      caudal, una columna que envejece—, y la corrección estándar para alinear dos corridas es
+      afín, <i>t ↦ a t + b</i>. O sea que la corrida <i>i</i>-ésima es
+      <i>μ<sub>i</sub> = (a<sub>i</sub>t + b<sub>i</sub>)<sub>#</sub>μ</i>, donde <i>μ</i> es el
+      perfil verdadero del compuesto, que nadie observa.
     </p>
+    <p>
+      Para informar «el» perfil hay que promediar las <i>N</i> corridas. Promediarlas punto a
+      punto —la mezcla— da una curva más ancha y más baja que cualquiera de las corridas, y si
+      los corrimientos se agrupan, con dos jorobas: un artefacto que se lee como dos compuestos
+      donde hay uno solo. El baricentro de Wasserstein devuelve, en cambio, el perfil intacto.
+    </p>
+
     <p class="formula">
-      F<sub>μ̄</sub><sup>−1</sup> = ā F<sub>μ</sub><sup>−1</sup> + b̄, &nbsp; es decir &nbsp;
-      μ̄ = (ā x + b̄)<sub>#</sub> μ.
+      F<sub>μ̄</sub><sup>−1</sup> = (1/N) Σ<sub>i</sub> F<sub>μ<sub>i</sub></sub><sup>−1</sup>
+      = ā F<sub>μ</sub><sup>−1</sup> + b̄ &nbsp;⟹&nbsp;
+      μ̄ = (ā t + b̄)<sub>#</sub> μ
     </p>
     <p>
-      El baricentro es el patrón intacto, con la posición y la escala promediadas. La mezcla,
-      en cambio, no tiene la forma de <i>μ</i>: es una superposición de copias corridas, y
-      cuanto más dispersos los corrimientos, más se ensancha y se aplasta.
+      La Proposición 12.6.1 dice que en la recta el baricentro sale promediando pseudoinversas,
+      y una imagen afín actúa sobre la pseudoinversa de manera afín:
+      F<sub>μ<sub>i</sub></sub><sup>−1</sup> = a<sub>i</sub>F<sub>μ</sub><sup>−1</sup> + b<sub>i</sub>.
+      Promediar en esas coordenadas, entonces, solo promedia <i>a</i> y <i>b</i>: el baricentro
+      es el patrón con el tiempo de retención y la escala promediados, y no una curva de forma
+      nueva. El segundo panel es ese enunciado dibujado — ahí el baricentro es, literalmente,
+      el promedio punto a punto de las observaciones.
     </p>
 
     <div class="mandos">
-      <button id="play1" aria-pressed="false">▶ Animar dispersión</button>
+      <button id="play1" aria-pressed="false">▶ Animar deriva</button>
       <div class="campo">
-        <label for="disp">dispersión de b<sub>i</sub></label>
+        <label for="disp">deriva de b<sub>i</sub></label>
         <input type="range" id="disp" min="0" max="1.6" step="0.01" value="0.75">
         <output for="disp" id="dispOut">0,75</output>
       </div>
       <div class="campo">
-        <label for="esc">dispersión de a<sub>i</sub></label>
+        <label for="esc">deriva de a<sub>i</sub></label>
         <input type="range" id="esc" min="0" max="0.5" step="0.01" value="0.2">
         <output for="esc" id="escOut">0,20</output>
       </div>
@@ -148,28 +161,37 @@
         <input type="range" id="ene" min="2" max="40" step="1" value="12">
         <output for="ene" id="eneOut">12</output>
       </div>
+      <button type="button" id="soloCorr" aria-pressed="false">Solo corrimientos</button>
       <button type="button" id="remuestrear">Otra muestra</button>
     </div>
 
-    <div class="panel">
-      <h3>Las N observaciones, su mezcla y su baricentro</h3>
-      <canvas id="g1" width="1000" height="430" role="img"
-        aria-label="Las densidades observadas, la mezcla ensanchada y el baricentro, que conserva la forma del patrón."></canvas>
-      <div class="leyenda">
-        <span><i class="llave" style="background:var(--obs)"></i> observaciones</span>
-        <span><i class="llave" style="background:var(--mez)"></i> mezcla (promedio puntual)</span>
-        <span><i class="llave" style="background:var(--bar)"></i> baricentro</span>
-        <span><i class="llave" style="background:var(--patron); height:0; border-top:3px dashed var(--patron)"></i> patrón μ</span>
+    <div class="paneles" style="grid-template-columns:1fr 1fr" id="panel1">
+      <div class="panel">
+        <h3>Las N corridas, su mezcla y su baricentro</h3>
+        <canvas id="g1" width="620" height="420" role="img"
+          aria-label="Las curvas observadas, la mezcla ensanchada y el baricentro, que conserva la forma del perfil."></canvas>
       </div>
+      <div class="panel">
+        <h3>Las mismas curvas en coordenadas de cuantiles</h3>
+        <canvas id="g2" width="620" height="420" role="img"
+          aria-label="Las pseudoinversas: rectas paralelas cuyo promedio es exactamente la del baricentro."></canvas>
+      </div>
+    </div>
+    <div class="leyenda">
+      <span><i class="llave" style="background:var(--obs)"></i> las N corridas</span>
+      <span><i class="llave" style="background:var(--mez)"></i> mezcla (promedio puntual)</span>
+      <span><i class="llave" style="background:var(--bar)"></i> baricentro</span>
+      <span><i class="llave" style="background:var(--patron); height:0; border-top:3px dashed var(--patron)"></i> perfil verdadero μ</span>
     </div>
 
     <div class="cifras">
-      <div class="cifra"><span class="k">ancho a media altura del patrón</span><span class="v" id="anchoPat">—</span></div>
-      <div class="cifra"><span class="k">del baricentro</span><span class="v" id="anchoBar">—</span></div>
-      <div class="cifra"><span class="k">de la mezcla</span><span class="v" id="anchoMez">—</span></div>
+      <div class="cifra"><span class="k">desvío del perfil μ</span><span class="v" id="sdPat">—</span></div>
+      <div class="cifra"><span class="k">del baricentro</span><span class="v" id="sdBar">—</span></div>
+      <div class="cifra"><span class="k">de la mezcla</span><span class="v" id="sdMez">—</span></div>
       <div class="cifra destacada"><span class="k">la mezcla ensancha</span><span class="v" id="factor">—</span></div>
     </div>
     <p class="nota" id="nota1" style="margin-top:14px"></p>
+    <p class="nota" id="nota2"></p>
   </section>
 
   <section id="s2">
@@ -236,8 +258,8 @@
     return { w: w, h: h };
   }
 
-  /* ======================= 1. patrón desalineado ======================= */
-  var X0 = -4, X1 = 4, M = 640, dx = (X1 - X0) / (M - 1);
+  /* ======================= 1. el patrón desalineado ======================= */
+  var X0 = -4, X1 = 4, M = 720, dx = (X1 - X0) / (M - 1);
   var malla = new Float64Array(M), patron = new Float64Array(M), i;
   for (i = 0; i < M; i++) malla[i] = X0 + i * dx;
 
@@ -245,7 +267,33 @@
   function fPatron(x) { return 0.72 * gauss(x, -0.18, 0.2) + 0.28 * gauss(x, 0.42, 0.4); }
   for (i = 0; i < M; i++) patron[i] = fPatron(malla[i]);
 
-  var semilla = 7;
+  var NS = 160, ese = new Float64Array(NS);
+  for (i = 0; i < NS; i++) ese[i] = (i + 0.5) / NS;
+
+  function cuantiles(y) {                 // pseudoinversa sobre la grilla de s
+    var C = new Float64Array(M), acc = 0, j, k, q = new Float64Array(NS);
+    for (j = 0; j < M; j++) { acc += y[j] * dx; C[j] = acc; }
+    for (j = 0; j < M; j++) C[j] /= acc;
+    k = 0;
+    for (i = 0; i < NS; i++) {
+      while (k < M - 1 && C[k] < ese[i]) k++;
+      if (k === 0) q[i] = malla[0];
+      else {
+        var t = (ese[i] - C[k - 1]) / Math.max(C[k] - C[k - 1], 1e-12);
+        q[i] = malla[k - 1] + t * dx;
+      }
+    }
+    return q;
+  }
+  function momentos(y) {                  // media y desvío de una densidad en la grilla
+    var m0 = 0, m1 = 0, m2 = 0, j;
+    for (j = 0; j < M; j++) { m0 += y[j] * dx; m1 += malla[j] * y[j] * dx; m2 += malla[j] * malla[j] * y[j] * dx; }
+    var m = m1 / m0, v = m2 / m0 - m * m;
+    return { media: m, desvio: Math.sqrt(Math.max(v, 0)) };
+  }
+  var qPatron = cuantiles(patron), momPatron = momentos(patron);
+
+  var semilla = 7, soloCorrimientos = false;
   function azar() { semilla = (semilla * 1103515245 + 12345) & 0x7fffffff; return semilla / 0x7fffffff; }
   var As = [], Bs = [];
   function muestrear(n) {
@@ -253,86 +301,130 @@
     for (var k = 0; k < n; k++) { As.push(2 * azar() - 1); Bs.push(2 * azar() - 1); }
   }
 
-  function anchoMedia(y) {               // ancho a media altura, en unidades de x
-    var mx = 0, k;
-    for (k = 0; k < M; k++) mx = Math.max(mx, y[k]);
-    if (mx <= 0) return 0;
-    var a = -1, b = -1;
-    for (k = 0; k < M; k++) if (y[k] >= mx / 2) { a = k; break; }
-    for (k = M - 1; k >= 0; k--) if (y[k] >= mx / 2) { b = k; break; }
-    return (b - a) * dx;
-  }
-
   function estado1() {
     var n = parseInt($("ene").value, 10),
-        sb = parseFloat($("disp").value), sa = parseFloat($("esc").value);
+        sb = parseFloat($("disp").value),
+        sa = soloCorrimientos ? 0 : parseFloat($("esc").value);
     if (As.length !== n) muestrear(n);
-    var obs = [], aMed = 0, bMed = 0, k, j, a, b;
+    var obs = [], qObs = [], aa = [], bb = [], aMed = 0, bMed = 0, a2 = 0, k, j;
     for (k = 0; k < n; k++) {
-      a = 1 + sa * As[k]; b = sb * Bs[k];
-      aMed += a / n; bMed += b / n;
-      var y = new Float64Array(M);
+      var a = 1 + sa * As[k], b = sb * Bs[k];
+      aa.push(a); bb.push(b); aMed += a / n; bMed += b / n; a2 += a * a / n;
+      var y = new Float64Array(M), qo = new Float64Array(NS);
       for (j = 0; j < M; j++) y[j] = fPatron((malla[j] - b) / a) / a;
-      obs.push(y);
+      for (j = 0; j < NS; j++) qo[j] = a * qPatron[j] + b;
+      obs.push(y); qObs.push(qo);
     }
-    var mez = new Float64Array(M), bar = new Float64Array(M);
+    var mez = new Float64Array(M), bar = new Float64Array(M), qBar = new Float64Array(NS);
     for (j = 0; j < M; j++) {
-      var s = 0;
-      for (k = 0; k < n; k++) s += obs[k][j];
-      mez[j] = s / n;
+      var su = 0;
+      for (k = 0; k < n; k++) su += obs[k][j];
+      mez[j] = su / n;
       bar[j] = fPatron((malla[j] - bMed) / aMed) / aMed;
     }
-    return { n: n, obs: obs, mez: mez, bar: bar, aMed: aMed, bMed: bMed };
+    for (j = 0; j < NS; j++) qBar[j] = aMed * qPatron[j] + bMed;
+    var mediasVar = 0, mm = 0;
+    for (k = 0; k < n; k++) mm += (aa[k] * momPatron.media + bb[k]) / n;
+    for (k = 0; k < n; k++) mediasVar += Math.pow(aa[k] * momPatron.media + bb[k] - mm, 2) / n;
+    return { n: n, obs: obs, qObs: qObs, mez: mez, bar: bar, qBar: qBar,
+             aMed: aMed, bMed: bMed, a2: a2, mediasVar: mediasVar };
+  }
+
+  function ejes(ct, d, iz, de, ar, ab, x0, x1, y0, y1, marcasX, marcasY) {
+    var W = d.w - iz - de, H = d.h - ar - ab;
+    var px = function (x) { return iz + (x - x0) / (x1 - x0) * W; };
+    var py = function (y) { return ar + H - (y - y0) / (y1 - y0) * H; };
+    ct.strokeStyle = color("--linea"); ct.lineWidth = 1;
+    ct.beginPath(); ct.moveTo(iz, ar); ct.lineTo(iz, ar + H); ct.lineTo(iz + W, ar + H); ct.stroke();
+    ct.fillStyle = color("--gris"); ct.font = "12px " + css.getPropertyValue("--sans");
+    ct.textAlign = "center"; ct.textBaseline = "top";
+    marcasX.forEach(function (v) {
+      ct.beginPath(); ct.moveTo(px(v[0]), ar + H); ct.lineTo(px(v[0]), ar + H + 4); ct.stroke();
+      ct.fillText(v[1], px(v[0]), ar + H + 7);
+    });
+    ct.textAlign = "right"; ct.textBaseline = "middle";
+    marcasY.forEach(function (v) {
+      ct.beginPath(); ct.moveTo(iz - 4, py(v[0])); ct.lineTo(iz, py(v[0])); ct.stroke();
+      ct.fillText(v[1], iz - 7, py(v[0]));
+    });
+    return { px: px, py: py, W: W, H: H };
+  }
+  function curva(ct, xs, ys, px, py, col, ancho, raya, alfa) {
+    ct.save();
+    if (alfa !== undefined) ct.globalAlpha = alfa;
+    ct.strokeStyle = col; ct.lineWidth = ancho;
+    if (raya) ct.setLineDash(raya);
+    ct.beginPath();
+    for (var q = 0; q < ys.length; q++) {
+      var X = px(xs[q]), Y = py(ys[q]);
+      if (q === 0) ct.moveTo(X, Y); else ct.lineTo(X, Y);
+    }
+    ct.stroke(); ct.restore();
   }
 
   function dibujar1() {
-    var e = estado1(), cv = $("g1"), ct = cv.getContext("2d");
-    var d = preparar(cv, ct, 430 / 1000);
-    var iz = 10, de = 10, ar = 12, ab = 26;
-    var W = d.w - iz - de, H = d.h - ar - ab, j, k;
+    var e = estado1(), j, k;
+
+    /* --- panel de densidades --- */
+    var cv = $("g1"), ct = cv.getContext("2d"), d = preparar(cv, ct, 420 / 620);
     var ymax = 0;
-    for (j = 0; j < M; j++) { ymax = Math.max(ymax, e.bar[j], e.mez[j], patron[j]); }
+    for (j = 0; j < M; j++) ymax = Math.max(ymax, e.bar[j], e.mez[j], patron[j]);
     for (k = 0; k < e.n; k++) for (j = 0; j < M; j++) ymax = Math.max(ymax, e.obs[k][j]);
     ymax *= 1.08;
-    var px = function (x) { return iz + (x - X0) / (X1 - X0) * W; };
-    var py = function (y) { return ar + H - y / ymax * H; };
-
-    ct.strokeStyle = color("--linea"); ct.lineWidth = 1;
-    ct.beginPath(); ct.moveTo(iz, ar + H); ct.lineTo(iz + W, ar + H); ct.stroke();
+    var A = ejes(ct, d, 14, 12, 12, 28, X0, X1, 0, ymax,
+      [[-4, "−4"], [-2, "−2"], [0, "0"], [2, "2"], [4, "4"]], []);
+    var alfa = Math.max(0.13, 0.5 / Math.sqrt(e.n));
+    for (k = 0; k < e.n; k++) curva(ct, malla, e.obs[k], A.px, A.py, color("--obs"), 1.2, null, alfa);
+    curva(ct, malla, e.mez, A.px, A.py, color("--mez"), 2.6);
+    curva(ct, malla, e.bar, A.px, A.py, color("--bar"), 2.8);
+    curva(ct, malla, patron, A.px, A.py, color("--patron"), 1.6, [6, 4]);
     ct.fillStyle = color("--gris"); ct.font = "12px " + css.getPropertyValue("--sans");
-    ct.textAlign = "center"; ct.textBaseline = "top";
-    for (var v = -4; v <= 4; v += 2) {
-      ct.beginPath(); ct.moveTo(px(v), ar + H); ct.lineTo(px(v), ar + H + 4); ct.stroke();
-      ct.fillText(String(v), px(v), ar + H + 7);
-    }
+    ct.textAlign = "right"; ct.textBaseline = "top";
+    ct.fillText("tiempo de retención", d.w - 14, d.h - 40);
 
-    function traza(y, col, ancho, raya) {
-      ct.save(); ct.strokeStyle = col; ct.lineWidth = ancho;
-      if (raya) ct.setLineDash(raya);
-      ct.beginPath();
-      for (var q = 0; q < M; q++) {
-        var X = px(malla[q]), Y = py(y[q]);
-        if (q === 0) ct.moveTo(X, Y); else ct.lineTo(X, Y);
-      }
-      ct.stroke(); ct.restore();
+    /* --- panel de cuantiles --- */
+    var cv2 = $("g2"), c2 = cv2.getContext("2d"), d2 = preparar(cv2, c2, 420 / 620);
+    var qMez = cuantiles(e.mez), lo = Infinity, hi = -Infinity;
+    for (j = 0; j < NS; j++) {
+      lo = Math.min(lo, e.qBar[j], qMez[j]); hi = Math.max(hi, e.qBar[j], qMez[j]);
+      for (k = 0; k < e.n; k++) { lo = Math.min(lo, e.qObs[k][j]); hi = Math.max(hi, e.qObs[k][j]); }
     }
-    ct.globalAlpha = Math.max(0.14, 0.5 / Math.sqrt(e.n));
-    for (k = 0; k < e.n; k++) traza(e.obs[k], color("--obs"), 1.2);
-    ct.globalAlpha = 1;
-    traza(e.mez, color("--mez"), 2.6);
-    traza(e.bar, color("--bar"), 2.8);
-    traza(patron, color("--patron"), 1.6, [6, 4]);
+    var pad = 0.08 * (hi - lo);
+    var B = ejes(c2, d2, 34, 12, 12, 28, 0, 1, lo - pad, hi + pad,
+      [[0, "0"], [0.5, "0,5"], [1, "1"]],
+      [[Math.round(lo), String(Math.round(lo))], [0, "0"], [Math.round(hi), String(Math.round(hi))]]);
+    for (k = 0; k < e.n; k++) curva(c2, ese, e.qObs[k], B.px, B.py, color("--obs"), 1.3, null, Math.max(0.2, alfa + 0.08));
+    curva(c2, ese, qMez, B.px, B.py, color("--mez"), 2.6);
+    curva(c2, ese, e.qBar, B.px, B.py, color("--bar"), 2.8);
+    curva(c2, ese, qPatron, B.px, B.py, color("--patron"), 1.6, [6, 4]);
+    c2.fillStyle = color("--gris"); c2.font = "12px " + css.getPropertyValue("--sans");
+    c2.textAlign = "right"; c2.textBaseline = "top";
+    c2.fillText("s", d2.w - 14, d2.h - 40);
+    c2.textAlign = "left";
+    c2.fillText("F⁻¹(s)", 38, 14);
 
-    var ap = anchoMedia(patron), ab2 = anchoMedia(e.bar), am = anchoMedia(e.mez);
-    $("anchoPat").textContent = num(ap);
-    $("anchoBar").textContent = num(ab2);
-    $("anchoMez").textContent = num(am);
-    $("factor").textContent = ab2 > 0 ? "×" + num(am / ab2) : "—";
+    /* --- cifras y comentario --- */
+    var mB = momentos(e.bar), mM = momentos(e.mez);
+    $("sdPat").textContent = num(momPatron.desvio);
+    $("sdBar").textContent = num(mB.desvio);
+    $("sdMez").textContent = num(mM.desvio);
+    $("factor").textContent = "×" + num(mM.desvio / mB.desvio);
     $("nota1").textContent =
-      "El baricentro es el patrón con ā = " + num(e.aMed) + " y b̄ = " + num(e.bMed) +
-      ", de modo que su ancho a media altura es exactamente ā veces el del patrón. " +
-      "La mezcla no es una copia de μ: con esta dispersión su ancho es " +
-      (ab2 > 0 ? num(am / ab2) : "—") + " veces el del baricentro.";
+      "Acá el baricentro es el perfil con ā = " + num(e.aMed) + " y b̄ = " + num(e.bMed) +
+      ", así que su desvío es exactamente ā veces el del perfil: " + num(e.aMed) + " × " +
+      num(momPatron.desvio) + " = " + num(e.aMed * momPatron.desvio) + ". La forma no cambió.";
+    var vDentro = e.a2 * momPatron.desvio * momPatron.desvio;
+    $("nota2").textContent = soloCorrimientos
+      ? ("Con aᵢ = 1 la mezcla es exactamente la convolución del perfil con la ley de los "
+         + "corrimientos, de modo que su varianza es la del perfil más la de los bᵢ: "
+         + num(momPatron.desvio * momPatron.desvio, 3) + " + " + num(e.mediasVar, 3) + " = "
+         + num(momPatron.desvio * momPatron.desvio + e.mediasVar, 3)
+         + ". El baricentro, en cambio, solo se traslada: su varianza sigue siendo la del perfil.")
+      : ("La varianza de la mezcla se parte en dos (varianza total): lo que aportan las corridas, "
+         + "en promedio, más lo que aporta la dispersión de sus centros: "
+         + num(vDentro, 3) + " + " + num(e.mediasVar, 3) + " = " + num(vDentro + e.mediasVar, 3)
+         + ". El segundo sumando es puro artefacto del desalineado, y es el que el baricentro no "
+         + "paga: el suyo es ā² veces la varianza del perfil.");
   }
 
   ["disp", "esc", "ene"].forEach(function (id) {
@@ -343,6 +435,12 @@
   });
   $("remuestrear").addEventListener("click", function () {
     semilla = (Date.now() % 100000) | 1; As = []; dibujar1();
+  });
+  $("soloCorr").addEventListener("click", function () {
+    soloCorrimientos = !soloCorrimientos;
+    this.setAttribute("aria-pressed", soloCorrimientos ? "true" : "false");
+    $("esc").disabled = soloCorrimientos;
+    dibujar1();
   });
 
   var and1 = false, sent1 = 1, ult1 = 0;
@@ -357,7 +455,7 @@
   }
   $("play1").addEventListener("click", function () {
     and1 = !and1; this.setAttribute("aria-pressed", and1 ? "true" : "false");
-    this.textContent = and1 ? "❚❚ Pausa" : "▶ Animar dispersión";
+    this.textContent = and1 ? "❚❚ Pausa" : "▶ Animar deriva";
     ult1 = 0; if (and1) requestAnimationFrame(cuadro1);
   });
 
