@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brunn–Minkowski en el plano</title>
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Dos paneles lado a lado (apilados en pantalla angosta): a la izquierda los
+     conjuntos, a la derecha la curva. Barra de controles arriba de los dos.
+     Paleta y tipografía tomadas del sitio del curso; los colores de los objetos
+     matemáticos son los de las figuras de las notas (IC y DM). */
+  :root {
+    --tinta:#1d1d1f; --gris:#5b5b60; --linea:#e3e3e6;
+    --fondo:#fbfbf9; --tarjeta:#ffffff; --panel:#f4f4f1;
+    --navy:#013274; --cyan:#029BDF; --mag:#E2017B; --rojo:#A8000C;
+    --conjA:#013274; --conjB:#E2017B; --suma:#029BDF;
+    --serif: Georgia, "Times New Roman", Times, serif;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --tinta:#ececec; --gris:#a8a8ae; --linea:#33333a;
+      --fondo:#141416; --tarjeta:#1c1c20; --panel:#202026;
+      --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0; --rojo:#ff8a80;
+      --conjA:#7fb3ff; --conjB:#ff6bb0; --suma:#56c7f5;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --tinta:#ececec; --gris:#a8a8ae; --linea:#33333a;
+    --fondo:#141416; --tarjeta:#1c1c20; --panel:#202026;
+    --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0; --rojo:#ff8a80;
+    --conjA:#7fb3ff; --conjB:#ff6bb0; --suma:#56c7f5;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--fondo); color: var(--tinta);
+    font-family: var(--serif); font-size: 16px; line-height: 1.55;
+  }
+  .hoja {
+    max-width: 1060px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 28px 44px;
+  }
+  h1 {
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem); font-weight: normal;
+    letter-spacing: .01em; margin: 0 0 2px; text-wrap: balance;
+  }
+  .sub { color: var(--gris); font-size: .95rem; margin: 0 0 18px; }
+  p { margin: 0 0 12px; max-width: 68ch; }
+  .formula {
+    font-family: var(--serif); font-style: italic;
+    background: var(--panel); border-left: 3px solid var(--navy);
+    padding: 10px 14px; margin: 0 0 16px; border-radius: 0 5px 5px 0;
+    overflow-x: auto; max-width: 100%;
+  }
+  .formula b { font-style: normal; font-weight: normal; }
+
+  .mandos {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px;
+    background: var(--tarjeta); border: 1px solid var(--linea);
+    border-radius: 10px; padding: 12px 14px; margin: 0 0 16px;
+    font-family: var(--sans); font-size: .9rem;
+  }
+  button {
+    font: inherit; font-family: var(--sans); cursor: pointer;
+    background: var(--tarjeta); color: var(--navy);
+    border: 1px solid var(--navy); border-radius: 6px; padding: 6px 13px;
+  }
+  button:hover { background: color-mix(in srgb, var(--navy) 10%, transparent); }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  button[aria-pressed="true"] { background: var(--navy); color: var(--fondo); }
+  #play { min-width: 7.5em; }
+  .campo { display: flex; align-items: center; gap: 9px; flex: 1 1 230px; min-width: 0; }
+  .campo label { color: var(--gris); white-space: nowrap; }
+  .campo input[type="range"] { flex: 1 1 auto; min-width: 0; accent-color: var(--navy); }
+  .campo output { font-variant-numeric: tabular-nums; min-width: 3.6em; text-align: right; }
+  .presets { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .paneles { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .paneles { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--tarjeta); border: 1px solid var(--linea);
+    border-radius: 10px; padding: 12px; min-width: 0;
+  }
+  .panel h2 {
+    font-family: var(--sans); font-size: .84rem; font-weight: 600;
+    letter-spacing: .01em; color: var(--gris); margin: 0 0 8px;
+  }
+  canvas { display: block; width: 100%; max-width: 100%; height: auto; }
+
+  .cifras {
+    margin: 16px 0 0; display: grid; gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    font-family: var(--sans);
+  }
+  .cifra {
+    background: var(--panel); border-radius: 8px; padding: 9px 12px;
+    border-left: 3px solid var(--linea);
+  }
+  .cifra .k { display: block; font-size: .78rem; letter-spacing: .01em;
+    color: var(--gris); }
+  .cifra .v { font-size: 1.22rem; font-variant-numeric: tabular-nums; }
+  .cifra.destacada { border-left-color: var(--mag); }
+  .cifra.destacada .v { color: var(--mag); }
+
+  .pie { margin-top: 22px; color: var(--gris); font-size: .93rem; }
+  .pie a { color: var(--navy); }
+</style>
+
+<div class="hoja">
+  <h1>Brunn–Minkowski en el plano</h1>
+  <p class="sub">Teoría de Transporte Óptimo · FCEN–UBA · Capítulo 11</p>
+
+  <p class="formula">
+    |(1−t)A + tB|<sup>1/d</sup> ≥ (1−t)|A|<sup>1/d</sup> + t|B|<sup>1/d</sup>
+  </p>
+
+  <p>
+    Con <i>A</i> y <i>B</i> convexos la función de la izquierda es además cóncava en <i>t</i>
+    (desigualdad de Brunn), y hay igualdad en todo el intervalo si y solo si <i>B</i> es un
+    homotético de <i>A</i>. Acá <i>d</i> = 2, <i>A</i> es un rectángulo 4×1 y <i>B</i> es el
+    mismo rectángulo rotado: como <i>|A|</i> = <i>|B|</i>, la cota de la derecha es constante
+    y la curva se despega de una recta horizontal.
+  </p>
+
+  <div class="mandos">
+    <button id="play" aria-pressed="false">▶ Animar</button>
+    <div class="campo">
+      <label for="t">t</label>
+      <input type="range" id="t" min="0" max="1" step="0.002" value="0">
+      <output for="t" id="tOut">0,000</output>
+    </div>
+    <div class="campo">
+      <label for="ang">ángulo de B</label>
+      <input type="range" id="ang" min="0" max="90" step="1" value="60">
+      <output for="ang" id="angOut">60°</output>
+    </div>
+    <div class="presets">
+      <button type="button" data-ang="0">0°</button>
+      <button type="button" data-ang="60">60°</button>
+      <button type="button" data-ang="90">90°</button>
+      <button type="button" id="homo" aria-pressed="false">B = ½A</button>
+    </div>
+  </div>
+
+  <div class="paneles">
+    <div class="panel">
+      <h2>A, B y la suma (1−t)A + tB</h2>
+      <canvas id="lienzo" width="900" height="680" role="img"
+        aria-label="Los rectángulos A y B y el polígono (1−t)A+tB, que crece y cambia de forma al mover t."></canvas>
+    </div>
+    <div class="panel">
+      <h2>|(1−t)A + tB|<sup>1/2</sup> contra la cota</h2>
+      <canvas id="grafico" width="900" height="680" role="img"
+        aria-label="La curva de la raíz del área, siempre por encima de la recta que une sus valores en los extremos."></canvas>
+    </div>
+  </div>
+
+  <div class="cifras">
+    <div class="cifra"><span class="k">|(1−t)A + tB|</span><span class="v" id="area">—</span></div>
+    <div class="cifra"><span class="k">su raíz cuadrada</span><span class="v" id="raiz">—</span></div>
+    <div class="cifra"><span class="k">cota de B–M</span><span class="v" id="cota">—</span></div>
+    <div class="cifra destacada"><span class="k">exceso sobre la cota</span><span class="v" id="exceso">—</span></div>
+  </div>
+
+  <p class="pie" id="comentario"></p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- geometría ---------- */
+  function rect(a, b, deg) {
+    var th = deg * Math.PI / 180, c = Math.cos(th), s = Math.sin(th), i,
+        v = [[-a / 2, -b / 2], [a / 2, -b / 2], [a / 2, b / 2], [-a / 2, b / 2]], r = [];
+    for (i = 0; i < 4; i++) r.push([v[i][0] * c - v[i][1] * s, v[i][0] * s + v[i][1] * c]);
+    return r;
+  }
+  function capsula(P) {               // cierre convexo (cadena monótona de Andrew)
+    var p = P.slice().sort(function (u, v) { return u[0] - v[0] || u[1] - v[1]; }), i, h;
+    function media(pts) {
+      var k = [];
+      for (i = 0; i < pts.length; i++) {
+        while (k.length >= 2 && cruz(k[k.length - 2], k[k.length - 1], pts[i]) <= 0) k.pop();
+        k.push(pts[i]);
+      }
+      return k;
+    }
+    function cruz(o, a, b) { return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]); }
+    var inf = media(p), sup = media(p.slice().reverse());
+    h = inf.slice(0, inf.length - 1).concat(sup.slice(0, sup.length - 1));
+    return h;
+  }
+  function suma(A, B, t) {            // (1-t)A + tB, convexos: cierre de las sumas de vértices
+    var P = [], i, j;
+    for (i = 0; i < A.length; i++) for (j = 0; j < B.length; j++)
+      P.push([(1 - t) * A[i][0] + t * B[j][0], (1 - t) * A[i][1] + t * B[j][1]]);
+    return capsula(P);
+  }
+  function area(P) {
+    var s = 0, i, j;
+    for (i = 0; i < P.length; i++) { j = (i + 1) % P.length; s += P[i][0] * P[j][1] - P[j][0] * P[i][1]; }
+    return Math.abs(s) / 2;
+  }
+
+  /* ---------- estado ---------- */
+  var LADO_A = 4, LADO_B = 1, N = 240;
+  var A = rect(LADO_A, LADO_B, 0), B = rect(LADO_A, LADO_B, 60);
+  var t = 0, animando = false, sentido = 1, ultimo = 0, homotetico = false;
+  var curva = [], recta = [], radio = 1, yTope = 1;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var lienzo = $("lienzo"), grafico = $("grafico");
+  var cl = lienzo.getContext("2d"), cg = grafico.getContext("2d");
+  var css = getComputedStyle(document.documentElement);
+  function color(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+
+  function recalcular() {
+    var i, k, P, m = 0;
+    curva = []; recta = [];
+    var rA = Math.sqrt(area(A)), rB = Math.sqrt(area(B));
+    for (i = 0; i <= N; i++) {
+      k = i / N;
+      P = suma(A, B, k);
+      curva.push(Math.sqrt(area(P)));
+      recta.push((1 - k) * rA + k * rB);
+      for (var j = 0; j < P.length; j++) m = Math.max(m, Math.abs(P[j][0]), Math.abs(P[j][1]));
+    }
+    radio = m * 1.08;
+    yTope = Math.max.apply(null, curva) * 1.16;
+  }
+
+  /* ---------- dibujo ---------- */
+  function preparar(cv, ctx) {
+    var r = window.devicePixelRatio || 1, w = cv.clientWidth || 440, h = w * 680 / 900;
+    if (cv.width !== Math.round(w * r) || cv.height !== Math.round(h * r)) {
+      cv.width = Math.round(w * r); cv.height = Math.round(h * r);
+      cv.style.height = h + "px";
+    }
+    ctx.setTransform(r, 0, 0, r, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    return { w: w, h: h };
+  }
+  function poligono(ctx, P, px, py) {
+    ctx.beginPath();
+    for (var i = 0; i < P.length; i++) {
+      var x = px(P[i][0]), y = py(P[i][1]);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  }
+
+  function dibujarConjuntos() {
+    var d = preparar(lienzo, cl), m = 18;
+    var esc = Math.min((d.w - 2 * m) / (2 * radio), (d.h - 2 * m) / (2 * radio));
+    var cx = d.w / 2, cy = d.h / 2;
+    var px = function (x) { return cx + x * esc; }, py = function (y) { return cy - y * esc; };
+
+    cl.lineWidth = 1; cl.strokeStyle = color("--linea");
+    cl.beginPath(); cl.moveTo(m, cy); cl.lineTo(d.w - m, cy);
+    cl.moveTo(cx, m); cl.lineTo(cx, d.h - m); cl.stroke();
+
+    var S = suma(A, B, t);
+    poligono(cl, S, px, py);
+    cl.fillStyle = color("--suma") + "2e"; cl.fill();
+    cl.lineWidth = 2.6; cl.strokeStyle = color("--suma"); cl.stroke();
+
+    cl.setLineDash([5, 4]); cl.lineWidth = 1.8;
+    poligono(cl, A, px, py); cl.strokeStyle = color("--conjA"); cl.stroke();
+    poligono(cl, B, px, py); cl.strokeStyle = color("--conjB"); cl.stroke();
+    cl.setLineDash([]);
+
+    cl.font = "600 13px " + css.getPropertyValue("--sans");
+    cl.fillStyle = color("--conjA"); cl.fillText("A", px(LADO_A / 2) + 6, py(0) - 6);
+    cl.fillStyle = color("--conjB");
+    cl.fillText("B", px(B[2][0]) + 6, py(B[2][1]) - 4);
+    cl.fillStyle = color("--suma");
+    cl.fillText("(1−t)A + tB", m + 2, m + 12);
+  }
+
+  function dibujarGrafico() {
+    var d = preparar(grafico, cg);
+    var iz = 46, de = 14, ar = 18, ab = 34;
+    var W = d.w - iz - de, H = d.h - ar - ab;
+    var px = function (k) { return iz + k * W; };
+    var py = function (v) { return ar + H - (v / yTope) * H; };
+
+    cg.strokeStyle = color("--linea"); cg.lineWidth = 1;
+    cg.beginPath(); cg.moveTo(iz, ar); cg.lineTo(iz, ar + H); cg.lineTo(iz + W, ar + H); cg.stroke();
+
+    cg.fillStyle = color("--gris");
+    cg.font = "12px " + css.getPropertyValue("--sans");
+    cg.textAlign = "right"; cg.textBaseline = "middle";
+    for (var v = 0; v <= yTope; v += 0.5) {
+      if (v > yTope - 0.1) break;
+      cg.beginPath(); cg.moveTo(iz - 4, py(v)); cg.lineTo(iz, py(v)); cg.stroke();
+      cg.fillText(v.toFixed(1).replace(".", ","), iz - 8, py(v));
+    }
+    cg.textAlign = "center"; cg.textBaseline = "top";
+    [0, 0.5, 1].forEach(function (k) {
+      cg.beginPath(); cg.moveTo(px(k), ar + H); cg.lineTo(px(k), ar + H + 4); cg.stroke();
+      cg.fillText(k === 0 ? "0" : (k === 1 ? "1" : "0,5"), px(k), ar + H + 8);
+    });
+    cg.fillText("t", px(1) + 8, ar + H + 8);
+
+    cg.setLineDash([6, 5]); cg.lineWidth = 1.8; cg.strokeStyle = color("--gris");
+    cg.beginPath(); cg.moveTo(px(0), py(recta[0])); cg.lineTo(px(1), py(recta[N])); cg.stroke();
+    cg.setLineDash([]);
+
+    cg.lineWidth = 2.6; cg.strokeStyle = color("--conjA");
+    cg.beginPath();
+    for (var i = 0; i <= N; i++) {
+      var X = px(i / N), Y = py(curva[i]);
+      if (i === 0) cg.moveTo(X, Y); else cg.lineTo(X, Y);
+    }
+    cg.stroke();
+
+    var f = valorCurva(t), l = valorRecta(t);
+    cg.strokeStyle = color("--mag"); cg.lineWidth = 2;
+    cg.beginPath(); cg.moveTo(px(t), py(l)); cg.lineTo(px(t), py(f)); cg.stroke();
+    cg.fillStyle = color("--conjA");
+    cg.beginPath(); cg.arc(px(t), py(f), 4.6, 0, 2 * Math.PI); cg.fill();
+
+    cg.fillStyle = color("--gris"); cg.textAlign = "left"; cg.textBaseline = "alphabetic";
+    cg.fillText("(1−t)|A|¹ᐟ² + t|B|¹ᐟ²", px(0) + 6, py(recta[0]) + 16);
+    cg.fillStyle = color("--conjA");
+    cg.fillText("|(1−t)A + tB|¹ᐟ²", px(0) + 6, ar + 12);
+  }
+
+  function valorCurva(k) { var i = Math.round(k * N); return curva[Math.min(N, Math.max(0, i))]; }
+  function valorRecta(k) { var i = Math.round(k * N); return recta[Math.min(N, Math.max(0, i))]; }
+
+  function num(x, dec) {
+    return x.toFixed(dec === undefined ? 3 : dec).replace(".", ",");
+  }
+  function actualizarCifras() {
+    var f = valorCurva(t), l = valorRecta(t);
+    $("area").textContent = num(f * f);
+    $("raiz").textContent = num(f);
+    $("cota").textContent = num(l);
+    $("exceso").textContent = (l > 0 ? "+" + num(100 * (f / l - 1), 1) + " %" : "—");
+    $("tOut").textContent = num(t);
+  }
+  function comentar() {
+    var mx = 0, i;
+    for (i = 0; i <= N; i++) mx = Math.max(mx, curva[i] / recta[i] - 1);
+    var lados = suma(A, B, 0.5).length;
+    var txt;
+    if (mx < 1e-9) {
+      txt = "Acá hay igualdad para todo t: B es un homotético de A, que es exactamente el caso " +
+            "en que la desigualdad no es estricta. La curva se apoya sobre la recta.";
+    } else {
+      txt = "En el punto peor la curva supera a la cota en " + num(100 * mx, 1) +
+            " %. La suma tiene " + lados + " lados: las direcciones de las caras de A y las de B " +
+            "sobreviven las dos.";
+    }
+    $("comentario").textContent = txt;
+  }
+
+  function pintar() { dibujarConjuntos(); dibujarGrafico(); actualizarCifras(); }
+
+  /* ---------- interacción ---------- */
+  function rehacer() {
+    recalcular(); comentar(); pintar();
+  }
+  $("t").addEventListener("input", function () {
+    t = parseFloat(this.value); pintar();
+  });
+  $("ang").addEventListener("input", function () {
+    $("angOut").textContent = this.value + "°";
+    if (homotetico) { homotetico = false; $("homo").setAttribute("aria-pressed", "false"); }
+    B = rect(LADO_A, LADO_B, parseFloat(this.value));
+    rehacer();
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-ang]"), function (b) {
+    b.addEventListener("click", function () {
+      homotetico = false; $("homo").setAttribute("aria-pressed", "false");
+      $("ang").value = b.dataset.ang; $("angOut").textContent = b.dataset.ang + "°";
+      $("ang").disabled = false;
+      B = rect(LADO_A, LADO_B, parseFloat(b.dataset.ang));
+      rehacer();
+    });
+  });
+  $("homo").addEventListener("click", function () {
+    homotetico = !homotetico;
+    this.setAttribute("aria-pressed", homotetico ? "true" : "false");
+    $("ang").disabled = homotetico;
+    B = homotetico ? rect(LADO_A / 2, LADO_B / 2, 0) : rect(LADO_A, LADO_B, parseFloat($("ang").value));
+    rehacer();
+  });
+
+  function cuadro(ahora) {
+    if (!animando) return;
+    var dt = ultimo ? (ahora - ultimo) / 1000 : 0;
+    ultimo = ahora;
+    t += sentido * dt * 0.28;
+    if (t >= 1) { t = 1; sentido = -1; }
+    if (t <= 0) { t = 0; sentido = 1; }
+    $("t").value = t;
+    pintar();
+    requestAnimationFrame(cuadro);
+  }
+  $("play").addEventListener("click", function () {
+    animando = !animando;
+    this.setAttribute("aria-pressed", animando ? "true" : "false");
+    this.textContent = animando ? "❚❚ Pausa" : "▶ Animar";
+    ultimo = 0;
+    if (animando) requestAnimationFrame(cuadro);
+  });
+
+  window.addEventListener("resize", pintar);
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mq.addEventListener) mq.addEventListener("change", pintar);
+  }
+
+  rehacer();
+})();
+</script>
+
+</body>
+</html>

@@ -49,14 +49,22 @@ RESUMEN = {
 
 EXTRA_DIR = RAIZ / 'material-extra'
 
-# Material extra: notas autocontenidas escritas para alguna clase, sobre temas
-# que las notas usan pero no desarrollan. Una entrada por archivo:
-# (nombre sin extensión en material-extra/, título, descripción en HTML).
+# Material extra: cosas escritas para alguna clase en particular, sobre temas
+# que las notas usan pero no desarrollan o que conviene ver en movimiento. Una
+# entrada por archivo: (nombre sin extensión en material-extra/, extensión,
+# título, descripción en HTML). La extensión decide cómo se publica: 'pdf' se
+# enlaza con su cantidad de páginas y su fuente LaTeX; 'html' es una página que
+# se abre en el navegador.
 EXTRA = [
-    ('geodesicas', 'Introducción a las geodésicas en espacios métricos',
+    ('geodesicas', 'pdf', 'Introducción a las geodésicas en espacios métricos',
      'Longitud de curvas, espacios de longitud, reparametrización por longitud de arco y el '
      'teorema de Hopf–Rinow, con dos ejemplos sin compacidad local. Es el trasfondo métrico '
      'que supone la última sección del Capítulo 10.'),
+    ('brunn-minkowski', 'html', 'Brunn–Minkowski en el plano',
+     'La suma de Minkowski de dos rectángulos, uno rotado respecto del otro, con la curva '
+     '|(1−t)A+tB|<sup>1/2</sup> dibujándose al lado de la cota (1−t)|A|<sup>1/2</sup>+t|B|<sup>1/2</sup>. '
+     'Se puede animar o mover <i>t</i> a mano, y cambiar el ángulo: a 0°, o con <i>B</i> homotético '
+     'de <i>A</i>, la curva se apoya sobre la recta, que es el caso de igualdad.'),
 ]
 
 
@@ -89,26 +97,40 @@ def paginas_pdf(pdf=PDF_NOTAS):
 
 
 def tarjetas_extra():
-    """Las tarjetas del material extra, y un aviso por cada .tex sin entrada en EXTRA."""
-    listados = {n for n, _, _ in EXTRA}
-    for tex in sorted(EXTRA_DIR.glob('*.tex')) if EXTRA_DIR.is_dir() else []:
-        if tex.stem not in listados:
+    """Las tarjetas del material extra, y un aviso por cada fuente sin entrada en EXTRA."""
+    listados = {n for n, _, _, _ in EXTRA}
+    fuentes = []
+    if EXTRA_DIR.is_dir():
+        fuentes = sorted(EXTRA_DIR.glob('*.tex')) + sorted(EXTRA_DIR.glob('*.html'))
+    for f in fuentes:
+        if f.stem not in listados:
             print('aviso: material-extra/%s no figura en EXTRA (generar_sitio.py): '
-                  'no se publica en el sitio' % tex.name, file=sys.stderr)
+                  'no se publica en el sitio' % f.name, file=sys.stderr)
     tarjetas = []
-    for nombre, titulo, desc in EXTRA:
-        pdf = EXTRA_DIR / (nombre + '.pdf')
-        if not pdf.exists():
-            print('aviso: falta material-extra/%s.pdf (make extra): se saltea «%s»'
-                  % (nombre, titulo), file=sys.stderr)
+    for nombre, tipo, titulo, desc in EXTRA:
+        arch = EXTRA_DIR / ('%s.%s' % (nombre, tipo))
+        if not arch.exists():
+            print('aviso: falta material-extra/%s.%s%s: se saltea «%s»'
+                  % (nombre, tipo, ' (make extra)' if tipo == 'pdf' else '', titulo),
+                  file=sys.stderr)
             continue
-        rel = 'material-extra/%s.pdf' % nombre
+        rel = 'material-extra/%s.%s' % (nombre, tipo)
+        if tipo == 'pdf':
+            meta = 'PDF · %s páginas' % paginas_pdf(arch)
+            enlaces = ('<a class="boton" href="%s">Leer</a> '
+                       '<a class="nw" href="%s/blob/main/material-extra/%s.tex">fuente LaTeX</a>'
+                       % (rel, REPO, nombre))
+        else:
+            meta = 'Página interactiva'
+            enlaces = ('<a class="boton" href="%s">Abrir</a> '
+                       '<a class="nw" href="%s/blob/main/%s">ver el código</a>'
+                       % (rel, REPO, rel))
         tarjetas.append('''      <article class="cuaderno">
         <h3>%s</h3>
-        <p class="meta">PDF · %s páginas</p>
+        <p class="meta">%s</p>
         <p>%s</p>
-        <p class="enlaces"><a class="boton" href="%s">Leer</a> <a class="nw" href="%s/blob/main/material-extra/%s.tex">fuente LaTeX</a></p>
-      </article>''' % (html.escape(titulo), paginas_pdf(pdf), desc, rel, REPO, nombre))
+        <p class="enlaces">%s</p>
+      </article>''' % (html.escape(titulo), meta, desc, enlaces))
     return tarjetas
 
 
