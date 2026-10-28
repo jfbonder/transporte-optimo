@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Promediar pronósticos de lluvia</title>
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Mismo formato por pasos que la página de cromatografía: cada paso agrega un
+     panel y el texto que lo justifica. Paleta del sitio del curso. */
+  :root {
+    --tinta:#1d1d1f; --gris:#5b5b60; --linea:#e3e3e6;
+    --fondo:#fbfbf9; --tarjeta:#ffffff; --panel:#f4f4f1;
+    --navy:#013274; --cyan:#029BDF; --mag:#E2017B;
+    --lluvia:1,50,116; --fuerte:226,1,123;
+    --serif: Georgia, "Times New Roman", Times, serif;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --tinta:#ececec; --gris:#a8a8ae; --linea:#33333a;
+      --fondo:#141416; --tarjeta:#1c1c20; --panel:#202026;
+      --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0;
+      --lluvia:127,179,255; --fuerte:255,107,176;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --tinta:#ececec; --gris:#a8a8ae; --linea:#33333a;
+    --fondo:#141416; --tarjeta:#1c1c20; --panel:#202026;
+    --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0;
+    --lluvia:127,179,255; --fuerte:255,107,176;
+    color-scheme: dark;
+  }
+
+  body { background: var(--fondo); color: var(--tinta);
+    font-family: var(--serif); font-size: 16px; line-height: 1.55; }
+  .hoja { max-width: 960px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 28px 48px; }
+  h1 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem); font-weight: normal;
+    margin: 0 0 2px; text-wrap: balance; }
+  h2 { font-size: clamp(1.1rem, 1rem + .6vw, 1.3rem); font-weight: normal;
+    margin: 0 0 6px; text-wrap: balance; }
+  .sub { color: var(--gris); font-size: .95rem; margin: 0 0 20px; }
+  p { margin: 0 0 12px; max-width: 68ch; }
+  .guia { font-family: var(--sans); font-size: .76rem; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--mag); margin: 0 0 6px; }
+
+  .relato { background: var(--tarjeta); border: 1px solid var(--linea);
+    border-radius: 10px; padding: 16px 18px; margin: 0 0 16px; }
+  .pasos { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    font-family: var(--sans); font-size: .9rem; margin-top: 14px; }
+  .puntos { display: flex; gap: 6px; margin-left: auto; }
+  .punto { width: 10px; height: 10px; border-radius: 50%; background: var(--linea);
+    border: none; padding: 0; cursor: pointer; }
+  .punto[aria-current="true"] { background: var(--mag); }
+
+  button { font: inherit; font-family: var(--sans); cursor: pointer;
+    background: var(--tarjeta); color: var(--navy);
+    border: 1px solid var(--navy); border-radius: 6px; padding: 6px 13px; }
+  button:hover:not(:disabled) { background: color-mix(in srgb, var(--navy) 10%, transparent); }
+  button:disabled { color: var(--gris); border-color: var(--linea); cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  #siguiente:not(:disabled) { background: var(--navy); color: var(--fondo); }
+
+  .mandos { display: flex; flex-wrap: wrap; align-items: center; gap: 11px 16px;
+    background: var(--tarjeta); border: 1px solid var(--linea);
+    border-radius: 10px; padding: 12px 14px; margin: 0 0 16px;
+    font-family: var(--sans); font-size: .9rem; }
+  .campo { display: flex; align-items: center; gap: 9px; flex: 1 1 210px; min-width: 0; }
+  .campo label { color: var(--gris); white-space: nowrap; }
+  .campo input[type="range"] { flex: 1 1 auto; min-width: 0; accent-color: var(--navy); }
+  .campo output { font-variant-numeric: tabular-nums; min-width: 3.1em; text-align: right; }
+
+  .panel { background: var(--tarjeta); border: 1px solid var(--linea);
+    border-radius: 10px; padding: 12px; min-width: 0; margin: 0 0 16px; }
+  .panel h3 { font-family: var(--sans); font-size: .84rem; font-weight: 600;
+    color: var(--gris); margin: 0 0 8px; }
+  .miembros { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+  .miembro { position: relative; }
+  .miembro span { position: absolute; left: 6px; top: 4px; font-family: var(--sans);
+    font-size: .7rem; color: var(--gris); }
+  .dos { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 620px) { .dos { grid-template-columns: 1fr; } }
+  canvas { display: block; width: 100%; max-width: 100%; aspect-ratio: 1; height: auto;
+    border-radius: 6px; background: var(--panel); }
+
+  .cifras { margin: 0 0 16px; display: grid; gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); font-family: var(--sans); }
+  .cifra { background: var(--panel); border-radius: 8px; padding: 9px 12px;
+    border-left: 3px solid var(--linea); }
+  .cifra .k { display: block; font-size: .78rem; color: var(--gris); }
+  .cifra .v { font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+  .cifra.destacada { border-left-color: var(--mag); }
+  .cifra.destacada .v { color: var(--mag); }
+  .nota { color: var(--gris); font-size: .93rem; }
+  .leyenda { font-family: var(--sans); font-size: .82rem; color: var(--gris);
+    display: flex; flex-wrap: wrap; gap: 14px; margin: 10px 0 0; align-items: center; }
+  .muestra { width: 14px; height: 14px; border-radius: 3px; display: inline-block;
+    vertical-align: -2px; margin-right: 5px; }
+</style>
+
+<div class="hoja">
+  <h1>Promediar pronósticos de lluvia</h1>
+  <p class="sub">Teoría de Transporte Óptimo · FCEN–UBA · Capítulo 12</p>
+
+  <div class="relato">
+    <p class="guia" id="rotulo">Paso 1 de 5</p>
+    <h2 id="titulo">El problema</h2>
+    <div id="texto"></div>
+    <div class="pasos">
+      <button type="button" id="atras">◀ Atrás</button>
+      <button type="button" id="siguiente">Siguiente ▶</button>
+      <span class="nota" id="queSigue"></span>
+      <span class="puntos">
+        <button class="punto" type="button" data-paso="0" aria-label="Paso 1"></button>
+        <button class="punto" type="button" data-paso="1" aria-label="Paso 2"></button>
+        <button class="punto" type="button" data-paso="2" aria-label="Paso 3"></button>
+        <button class="punto" type="button" data-paso="3" aria-label="Paso 4"></button>
+        <button class="punto" type="button" data-paso="4" aria-label="Paso 5"></button>
+      </span>
+    </div>
+  </div>
+
+  <div class="mandos">
+    <div class="campo">
+      <label for="disp">dispersión del ensemble</label>
+      <input type="range" id="disp" min="0" max="75" step="1" value="42">
+      <output for="disp" id="dispOut">42 km</output>
+    </div>
+    <div class="campo">
+      <label for="ene">miembros</label>
+      <input type="range" id="ene" min="2" max="9" step="1" value="6">
+      <output for="ene" id="eneOut">6</output>
+    </div>
+    <div class="campo" id="campoReal" hidden>
+      <label for="real">corridas distintas</label>
+      <input type="range" id="real" min="0" max="1" step="0.02" value="0.6">
+      <output for="real" id="realOut">0,60</output>
+    </div>
+    <button type="button" id="remuestrear">Otro ensemble</button>
+  </div>
+
+  <div class="panel">
+    <h3 id="tituloMiembros">Los miembros del ensemble</h3>
+    <div class="miembros" id="miembros"></div>
+    <div class="leyenda" id="escala"></div>
+  </div>
+
+  <div class="dos">
+    <div class="panel" id="panelMedia" hidden>
+      <h3>Media del ensemble (promedio punto a punto)</h3>
+      <canvas id="cMedia" width="320" height="320" role="img"
+        aria-label="La media del ensemble: una mancha ancha y débil."></canvas>
+    </div>
+    <div class="panel" id="panelBar" hidden>
+      <h3>Baricentro de Wasserstein</h3>
+      <canvas id="cBar" width="320" height="320" role="img"
+        aria-label="El baricentro: una tormenta con la intensidad de los miembros."></canvas>
+    </div>
+  </div>
+
+  <div class="cifras" id="cifras" hidden>
+    <div class="cifra"><span class="k">pico de un miembro típico</span><span class="v" id="pMiembro">—</span></div>
+    <div class="cifra"><span class="k">pico de la media</span><span class="v" id="pMedia">—</span></div>
+    <div class="cifra destacada"><span class="k">pico del baricentro</span><span class="v" id="pBar">—</span></div>
+    <div class="cifra"><span class="k">área con lluvia: miembro / media / baricentro</span><span class="v" id="areaBaja">—</span></div>
+    <div class="cifra"><span class="k">área con más de 10 mm</span><span class="v" id="areas">—</span></div>
+  </div>
+
+  <p class="nota" id="pie"></p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  function color(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+  function num(x, d) { return x.toFixed(d === undefined ? 1 : d).replace(".", ","); }
+
+  var G = 96, NG = G * G, KM = 240, dkm = KM / G, UMBRAL = 10;
+  var paso = 0, semilla = 11, miembros = [], medias = [], acum = [];
+
+  function azar() { semilla = (semilla * 1103515245 + 12345) & 0x7fffffff; return semilla / 0x7fffffff; }
+
+  /* un frente de lluvia: banda alargada con un núcleo más intenso */
+  function campo(dx, dy, giro, ancho, intens) {
+    var f = new Float64Array(NG), x, y, i, co = Math.cos(giro), si = Math.sin(giro), su = 0;
+    for (y = 0; y < G; y++) for (x = 0; x < G; x++) {
+      var px = (x + 0.5) * dkm - KM / 2 - dx, py = (y + 0.5) * dkm - KM / 2 - dy;
+      var u = co * px + si * py, v = -si * px + co * py;
+      var banda = Math.exp(-0.5 * Math.pow(v / (17 * ancho), 2) - 0.5 * Math.pow(u / (34 * ancho), 2));
+      var nucleo = Math.exp(-0.5 * Math.pow((u - 11) / (12 * ancho), 2) - 0.5 * Math.pow((v + 5) / (9 * ancho), 2));
+      i = y * G + x;
+      f[i] = 30 * intens * (0.55 * banda + 0.95 * nucleo);   // mm acumulados en 6 h
+      su += f[i];
+    }
+    return f;
+  }
+
+  function generar() {
+    var n = parseInt($("ene").value, 10), sd = parseFloat($("disp").value),
+        re = paso >= 4 ? parseFloat($("real").value) : 0, k;
+    miembros = []; acum = [];
+    var s0 = semilla;
+    for (k = 0; k < n; k++) {
+      var dx = sd * (2 * azar() - 1), dy = 0.7 * sd * (2 * azar() - 1);
+      var giro = 0.5 + re * 0.55 * (2 * azar() - 1);
+      var ancho = 1 + re * 0.35 * (2 * azar() - 1);
+      var intens = 1 + re * 0.5 * (2 * azar() - 1);
+      var f = campo(dx, dy, giro, ancho, intens);
+      if (re > 0 && azar() < 0.45 * re) {      // una segunda celda en algunas corridas
+        var g = campo(dx - 60 - 40 * azar(), dy + 50 * (2 * azar() - 1), giro + 0.6, 0.6, 0.5 * re);
+        for (var j = 0; j < NG; j++) f[j] += g[j];
+      }
+      miembros.push(f);
+    }
+    semilla = s0;          // mismo ensemble mientras no se pida otro
+    /* acumulado de cada corrida y su versión normalizada: el transporte óptimo
+       compara distribuciones de igual masa, así que la intensidad va aparte */
+    probas = [];
+    for (k = 0; k < miembros.length; k++) {
+      var su = 0, p = new Float64Array(NG), j2;
+      for (j2 = 0; j2 < NG; j2++) su += miembros[k][j2];
+      for (j2 = 0; j2 < NG; j2++) p[j2] = miembros[k][j2] / su + 1e-12;
+      acum.push(su); probas.push(p);
+    }
+  }
+  var probas = [];
+
+  function media() {
+    var m = new Float64Array(NG), k, j;
+    for (k = 0; k < miembros.length; k++) for (j = 0; j < NG; j++) m[j] += miembros[k][j] / miembros.length;
+    return m;
+  }
+
+  /* --------- Sinkhorn convolucional (Capítulo 13) --------- */
+  function desenfoque(u, sig) {
+    var r = Math.max(1, Math.ceil(3 * sig)), nk = 2 * r + 1, ker = new Float64Array(nk), s = 0, j, x, y, q, acc;
+    for (j = -r; j <= r; j++) { ker[j + r] = Math.exp(-j * j / (2 * sig * sig)); s += ker[j + r]; }
+    for (j = 0; j < nk; j++) ker[j] /= s;
+    var t = new Float64Array(NG), o = new Float64Array(NG);
+    for (y = 0; y < G; y++) for (x = 0; x < G; x++) {
+      acc = 0;
+      for (j = -r; j <= r; j++) { q = x + j; if (q < 0) q = 0; else if (q >= G) q = G - 1; acc += ker[j + r] * u[y * G + q]; }
+      t[y * G + x] = acc;
+    }
+    for (y = 0; y < G; y++) for (x = 0; x < G; x++) {
+      acc = 0;
+      for (j = -r; j <= r; j++) { q = y + j; if (q < 0) q = 0; else if (q >= G) q = G - 1; acc += ker[j + r] * t[q * G + x]; }
+      o[y * G + x] = acc;
+    }
+    return o;
+  }
+  function baricentro(ps, sig, iter) {
+    var n = ps.length, v = [], w = [], dd = [], mu = new Float64Array(NG), k, j, it, lg, lam = 1 / n;
+    for (k = 0; k < n; k++) { v.push(new Float64Array(NG).fill(1)); w.push(null); dd.push(null); }
+    for (it = 0; it < iter; it++) {
+      lg = new Float64Array(NG);
+      for (k = 0; k < n; k++) {
+        var hv = desenfoque(v[k], sig);
+        w[k] = new Float64Array(NG);
+        for (j = 0; j < NG; j++) w[k][j] = ps[k][j] / Math.max(hv[j], 1e-30);
+        var hw = desenfoque(w[k], sig);
+        dd[k] = new Float64Array(NG);
+        for (j = 0; j < NG; j++) { dd[k][j] = Math.max(v[k][j] * hw[j], 1e-30); lg[j] += lam * Math.log(dd[k][j]); }
+      }
+      for (j = 0; j < NG; j++) mu[j] = Math.exp(lg[j]);
+      for (k = 0; k < n; k++) for (j = 0; j < NG; j++) v[k][j] = v[k][j] * mu[j] / dd[k][j];
+    }
+    var su = 0;
+    for (j = 0; j < NG; j++) su += mu[j];
+    for (j = 0; j < NG; j++) mu[j] /= su;
+    return mu;
+  }
+
+  /* --------- dibujo --------- */
+  /* bandas como las de un mapa de precipitación: 1, 5, 10, 20 y 30 mm */
+  var CORTES = [1, 5, 10, 20, 30];
+  var BANDAS_CLARO = [[186, 222, 241], [120, 190, 226], [45, 136, 199], [12, 71, 140], [226, 1, 123]];
+  var BANDAS_OSCURO = [[46, 76, 104], [57, 120, 170], [78, 168, 224], [150, 198, 245], [255, 107, 176]];
+  function bandas() {
+    var oscuro = (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches)
+      || document.documentElement.getAttribute("data-theme") === "dark";
+    return oscuro ? BANDAS_OSCURO : BANDAS_CLARO;
+  }
+  function pintar(cv, f, escala) {
+    var ct = cv.getContext("2d"), r = window.devicePixelRatio || 1;
+    var w = Math.round((cv.clientWidth || 300) * r);
+    if (cv.width !== w) { cv.width = cv.height = w; }
+    ct.setTransform(1, 0, 0, 1, 0, 0); ct.clearRect(0, 0, cv.width, cv.height);
+    var off = document.createElement("canvas"); off.width = off.height = G;
+    var oc = off.getContext("2d"), im = oc.createImageData(G, G), k, j, B = bandas();
+    for (k = 0; k < NG; k++) {
+      var val = f[k] * escala, b = -1;
+      for (j = CORTES.length - 1; j >= 0; j--) if (val >= CORTES[j]) { b = j; break; }
+      if (b < 0) { im.data[4 * k + 3] = 0; continue; }
+      im.data[4 * k] = B[b][0]; im.data[4 * k + 1] = B[b][1]; im.data[4 * k + 2] = B[b][2];
+      im.data[4 * k + 3] = 255;
+    }
+    oc.putImageData(im, 0, 0);
+    ct.imageSmoothingEnabled = false;
+    ct.drawImage(off, 0, 0, cv.width, cv.height);
+  }
+  function pintarLeyenda() {
+    var B = bandas(), i, h = "";
+    for (i = 0; i < CORTES.length; i++) {
+      h += '<span><i class="muestra" style="background:rgb(' + B[i].join(",") + ')"></i>'
+        + (i === CORTES.length - 1 ? "más de " + CORTES[i] : CORTES[i] + "–" + CORTES[i + 1]) + "</span>";
+    }
+    $("escala").innerHTML = h + '<span>mm en 6 h · 240 × 240 km</span>';
+  }
+  function pico(f, escala) { var m = 0, k; for (k = 0; k < NG; k++) m = Math.max(m, f[k] * escala); return m; }
+  function area(f, escala, umbral) {
+    var c = 0, k, u = umbral === undefined ? UMBRAL : umbral;
+    for (k = 0; k < NG; k++) if (f[k] * escala >= u) c++;
+    return c * dkm * dkm;
+  }
+  function mil(a) { return Math.round(a / 100) * 100; }
+
+  var barCache = null;
+  function dibujar(recalcular) {
+    generar();
+    pintarLeyenda();
+    var cont = $("miembros"), k;
+    cont.innerHTML = "";
+    for (k = 0; k < miembros.length; k++) {
+      var d = document.createElement("div"); d.className = "miembro";
+      var cv = document.createElement("canvas"); cv.width = cv.height = 220;
+      var et = document.createElement("span"); et.textContent = "#" + (k + 1);
+      d.appendChild(cv); d.appendChild(et); cont.appendChild(d);
+      cv.dataset.idx = String(k);
+    }
+    /* el ancho real recién se conoce después del layout */
+    requestAnimationFrame(function () {
+      Array.prototype.forEach.call(cont.querySelectorAll("canvas"), function (c) {
+        pintar(c, miembros[parseInt(c.dataset.idx, 10)], 1);
+      });
+    });
+    var m = media(), acumMedio = 0;
+    for (k = 0; k < acum.length; k++) acumMedio += acum[k] / acum.length;
+
+    if (paso >= 1) pintar($("cMedia"), m, 1);
+    if (paso >= 2) {
+      if (recalcular || !barCache) barCache = baricentro(probas, 0.85, 48);
+      pintar($("cBar"), barCache, acumMedio);
+    }
+
+    var picos = [];
+    for (k = 0; k < miembros.length; k++) picos.push(pico(miembros[k], 1));
+    picos.sort(function (a, b) { return a - b; });
+    var picoTip = picos[Math.floor(picos.length / 2)];
+    var tip = miembros[Math.floor(miembros.length / 2)];
+    var areaTip = area(tip, 1), bajaTip = area(tip, 1, 1);
+    $("pMiembro").textContent = num(picoTip) + " mm";
+    $("pMedia").textContent = num(pico(m, 1)) + " mm";
+    $("pBar").textContent = barCache ? num(pico(barCache, acumMedio)) + " mm" : "—";
+    $("areas").textContent = mil(areaTip) + " / " + mil(area(m, 1))
+      + " / " + (barCache ? mil(area(barCache, acumMedio)) : "—") + " km²";
+    $("areaBaja").textContent = mil(bajaTip) + " / " + mil(area(m, 1, 1))
+      + " / " + (barCache ? mil(area(barCache, acumMedio, 1)) : "—") + " km²";
+
+    PIES[1] = "La media llega a " + num(pico(m, 1)) + " mm donde un miembro típico llega a "
+      + num(picoTip) + ": pierde el " + Math.round(100 * (1 - pico(m, 1) / picoTip)) + " % del pico. Y "
+      + "reparte la lluvia sobre " + mil(area(m, 1, 1)) + " km² contra " + mil(bajaTip)
+      + " de un miembro. Llueve poco en todos lados en vez de mucho en algún lado.";
+    PIES[2] = barCache
+      ? ("El baricentro llega a " + num(pico(barCache, acumMedio)) + " mm contra los " + num(picoTip)
+         + " de un miembro y los " + num(pico(m, 1)) + " de la media, y reparte la lluvia sobre "
+         + mil(area(barCache, acumMedio, 1)) + " km², del orden de los " + mil(bajaTip) + " de un miembro. "
+         + "Lo que falta para llegar al pico del miembro es el difuminado de Sinkhorn, no el método.")
+      : "";
+    PIES[4] = "Con las corridas distintas entre sí el baricentro ya no es una traslación de ninguna: "
+      + "promedia también las orientaciones, los anchos y las celdas secundarias. Sigue teniendo la "
+      + "intensidad de una tormenta y no la de un promedio, que es lo que se le pedía.";
+    $("pie").textContent = PIES[paso] || "";
+  }
+
+  var PIES = ["", "", "", "", ""];
+  var ETAPAS = [
+    { titulo: "El problema", miembros: "Los miembros del ensemble", sigue: "sigue: la media del ensemble",
+      texto: '<p>Un centro meteorológico no corre su modelo una vez: lo corre varias, cada una con una '
+        + 'perturbación mínima en las condiciones iniciales. Eso es un <i>ensemble</i>, y sirve para ver '
+        + 'cuánto depende el pronóstico de lo que no se midió bien. Abajo, cada miembro predice el agua '
+        + 'acumulada en las próximas seis horas sobre una región de 240 por 240 km.</p>'
+        + '<p>Todos pronostican la misma tormenta. Difieren en dónde la ponen. Y hay que emitir un solo '
+        + 'pronóstico.</p>' },
+    { titulo: "La media del ensemble", miembros: "Los miembros del ensemble", sigue: "sigue: el baricentro",
+      texto: '<p>Lo que se publica es el promedio punto a punto de los miembros: en cada punto del mapa, el '
+        + 'promedio de lo que pronosticó cada corrida. Es la media del ensemble, a la izquierda.</p>'
+        + '<p>El resultado no se parece a ninguna de las corridas. La tormenta se desparrama sobre toda la '
+        + 'región y el pico baja, porque donde una corrida pone el núcleo las otras ponen poco. El '
+        + 'pronóstico pasa a ser «lluvia débil generalizada», que es una situación meteorológica distinta de '
+        + 'la que todas las corridas anuncian. En esa comunidad el fenómeno tiene nombre, <i>double '
+        + 'penalty</i>: un pronóstico corrido de lugar paga dos veces, una donde llovió y no lo dijo y otra '
+        + 'donde lo dijo y no llovió, de modo que suavizar mejora el puntaje y empeora el pronóstico.</p>' },
+    { titulo: "El baricentro", miembros: "Los miembros del ensemble", sigue: "sigue: por qué funciona",
+      texto: '<p>A la derecha, el baricentro de Wasserstein de los miembros. Es una tormenta: tiene núcleo, '
+        + 'tiene bordes y tiene la intensidad de las corridas, puesta en la posición promedio.</p>'
+        + '<p>Dos aclaraciones sobre cómo está calculado, porque ninguna es gratis. Primero, el transporte '
+        + 'óptimo compara distribuciones de igual masa, así que se normaliza cada corrida, se promedian como '
+        + 'distribuciones y se le devuelve al baricentro el acumulado promedio: el baricentro decide dónde '
+        + 'cae el agua y el promedio de los acumulados decide cuánta. Segundo, en el plano no hay fórmula '
+        + 'como la de la recta: esto se calcula con el algoritmo de Sinkhorn del Capítulo 13, de modo que es '
+        + 'el baricentro del problema entrópico y sale algo difuminado.</p>' },
+    { titulo: "Por qué funciona", miembros: "Los miembros del ensemble", sigue: "sigue: corridas de verdad",
+      texto: '<p>Mientras los miembros sean traslaciones de un mismo campo, '
+        + '<i>μ<sub>i</sub> = (x + v<sub>i</sub>)<sub>#</sub>μ</i>, el baricentro es la traslación por el '
+        + 'promedio de los corrimientos, <i>(x + v̄)<sub>#</sub>μ</i>. Sale del mismo argumento que en la '
+        + 'recta: trasladar es un mapa afín, el funcional se minimiza en el promedio de los vectores, y la '
+        + 'forma del campo no interviene. Es el Ejercicio 12.7.1 de las notas.</p>'
+        + '<p>Es exactamente el mismo enunciado que el del cromatógrafo, con <i>a<sub>i</sub> = 1</i> y en dos '
+        + 'dimensiones: el promedio en el sentido de Wasserstein mueve la masa y conserva la forma, mientras '
+        + 'que el promedio punto a punto conserva la posición y destruye la forma. Movés la dispersión del '
+        + 'ensemble y se ve: la media se desparrama y el baricentro solo se corre.</p>' },
+    { titulo: "Corridas de verdad", miembros: "Los miembros del ensemble (ya no son traslaciones)",
+      sigue: "",
+      texto: '<p>Hasta acá los miembros diferían solo en dónde ponían la tormenta, que es la hipótesis que '
+        + 'hace exacta la cuenta del paso anterior. Un ensemble real no es así: las corridas difieren '
+        + 'también en cuánto llueve, en la orientación del frente, en el ancho de la banda, y algunas '
+        + 'generan una celda secundaria que otras no tienen.</p>'
+        + '<p>El deslizador <i>corridas distintas</i> lo activa. El cálculo no cambia en nada; lo que cambia '
+        + 'es que el baricentro ya no es una traslación de ningún miembro, porque no hay un campo común del '
+        + 'cual todos sean traslaciones. Lo que sí conserva es lo que se le pedía: intensidad de tormenta en '
+        + 'vez de intensidad de promedio.</p>'
+        + '<p>Y conviene decir qué queda afuera. Cuando una corrida tiene una celda que otras no tienen, '
+        + 'el baricentro no puede representar esa incertidumbre: devuelve un pronóstico, y la pregunta de '
+        + 'si va a llover en dos lugares o en uno no la contesta promediando. Para eso están los demás '
+        + 'productos del ensemble, como las probabilidades por umbral.</p>' }
+  ];
+
+  function mostrar() {
+    var et = ETAPAS[paso];
+    $("rotulo").textContent = "Paso " + (paso + 1) + " de " + ETAPAS.length;
+    $("titulo").textContent = et.titulo;
+    $("texto").innerHTML = et.texto;
+    $("tituloMiembros").textContent = et.miembros;
+    $("queSigue").textContent = et.sigue;
+    $("atras").disabled = paso === 0;
+    $("siguiente").disabled = paso === ETAPAS.length - 1;
+    $("panelMedia").hidden = paso < 1;
+    $("panelBar").hidden = paso < 2;
+    $("cifras").hidden = paso < 1;
+    $("campoReal").hidden = paso < 4;
+    Array.prototype.forEach.call(document.querySelectorAll(".punto"), function (b) {
+      b.setAttribute("aria-current", String(parseInt(b.dataset.paso, 10) === paso));
+    });
+    dibujar(true);
+  }
+  function ir(p) { paso = Math.min(ETAPAS.length - 1, Math.max(0, p)); mostrar(); }
+  $("siguiente").addEventListener("click", function () { ir(paso + 1); });
+  $("atras").addEventListener("click", function () { ir(paso - 1); });
+  Array.prototype.forEach.call(document.querySelectorAll(".punto"), function (b) {
+    b.addEventListener("click", function () { ir(parseInt(b.dataset.paso, 10)); });
+  });
+
+  var pendiente = null;
+  function pedir() {
+    if (pendiente) clearTimeout(pendiente);
+    pendiente = setTimeout(function () { pendiente = null; dibujar(true); }, 140);
+  }
+  $("disp").addEventListener("input", function () { $("dispOut").textContent = this.value + " km"; pedir(); });
+  $("ene").addEventListener("input", function () { $("eneOut").textContent = this.value; pedir(); });
+  $("real").addEventListener("input", function () {
+    $("realOut").textContent = num(parseFloat(this.value), 2); pedir();
+  });
+  $("remuestrear").addEventListener("click", function () { semilla = (Date.now() % 90000) | 1; dibujar(true); });
+  window.addEventListener("resize", function () { dibujar(false); });
+  if (window.matchMedia) {
+    var mq = matchMedia("(prefers-color-scheme: dark)");
+    if (mq.addEventListener) mq.addEventListener("change", function () { dibujar(false); });
+  }
+
+  mostrar();
+})();
+</script>
+
+</body>
+</html>

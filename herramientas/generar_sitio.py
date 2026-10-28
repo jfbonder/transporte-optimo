@@ -67,6 +67,13 @@ EXTRA = [
      'devuelve el perfil intacto. Después lo explica en coordenadas de cuantiles, donde el '
      'baricentro es literalmente el promedio de las corridas (Proposición 12.6.1), y termina '
      'rompiendo el modelo afín con una perturbación para ver qué queda en pie.'),
+    ('meteorologia', 'html', 'Promediar pronósticos de lluvia',
+     'Un centro meteorológico corre su modelo varias veces y obtiene N campos de lluvia con la '
+     'tormenta en lugares algo distintos. El promedio punto a punto la desparrama y le saca casi '
+     'la mitad del pico —el <i>double penalty</i> de esa comunidad— y el baricentro devuelve una '
+     'tormenta con la intensidad de las corridas en la posición promedio. Por pasos, con el '
+     'cálculo hecho con el Sinkhorn convolucional del Capítulo 13 y un paso final donde las '
+     'corridas dejan de ser traslaciones unas de otras.'),
     ('brunn-minkowski', 'html', 'Brunn–Minkowski en el plano',
      'La suma de Minkowski de dos rectángulos, uno rotado respecto del otro, con la curva '
      '|(1−t)A+tB|<sup>1/2</sup> dibujándose al lado de la cota (1−t)|A|<sup>1/2</sup>+t|B|<sup>1/2</sup>. '
