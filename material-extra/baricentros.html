@@ -143,6 +143,17 @@
       nueva. El segundo panel es ese enunciado dibujado — ahí el baricentro es, literalmente,
       el promedio punto a punto de las observaciones.
     </p>
+    <p>
+      Conviene comparar las dos curvas sabiendo qué es cada una. La mezcla no es un promedio
+      ingenuo: es el baricentro de Fréchet para la distancia <i>L²</i> entre densidades, igual
+      que el de Wasserstein lo es para <i>W₂</i>. Promediar densidades punto a punto es el
+      promedio correcto en una geometría donde mover masa de un lugar a otro no cuesta
+      distancia: cuesta borrarla de un lado y crearla del otro. Las dos curvas son promedios,
+      y la pregunta es cuál de las dos geometrías describe lo que pasó en la columna. Lo que
+      pasó fue que el pico se movió. Las cifras de abajo miden eso: a qué distancia queda cada
+      una del perfil verdadero, y cuánto vale en cada una el funcional
+      <i>F(ν) = Σ λ<sub>i</sub> W₂²(ν, μ<sub>i</sub>)</i> que el baricentro minimiza.
+    </p>
 
     <div class="mandos">
       <button id="play1" aria-pressed="false">▶ Animar deriva</button>
@@ -189,6 +200,12 @@
       <div class="cifra"><span class="k">del baricentro</span><span class="v" id="sdBar">—</span></div>
       <div class="cifra"><span class="k">de la mezcla</span><span class="v" id="sdMez">—</span></div>
       <div class="cifra destacada"><span class="k">la mezcla ensancha</span><span class="v" id="factor">—</span></div>
+    </div>
+    <div class="cifras" style="margin-top:10px">
+      <div class="cifra"><span class="k">W₂(baricentro, μ)</span><span class="v" id="wBar">—</span></div>
+      <div class="cifra"><span class="k">W₂(mezcla, μ)</span><span class="v" id="wMez">—</span></div>
+      <div class="cifra"><span class="k">F en el baricentro</span><span class="v" id="fBar">—</span></div>
+      <div class="cifra destacada"><span class="k">F en la mezcla</span><span class="v" id="fMez">—</span></div>
     </div>
     <p class="nota" id="nota1" style="margin-top:14px"></p>
     <p class="nota" id="nota2"></p>
@@ -404,6 +421,21 @@
     c2.fillText("F⁻¹(s)", 38, 14);
 
     /* --- cifras y comentario --- */
+    function w2c(q1, q2) {
+      var su = 0, r, z;
+      for (z = 0; z < NS; z++) { r = q1[z] - q2[z]; su += r * r; }
+      return su / NS;
+    }
+    function funcional(q) {
+      var su = 0, z;
+      for (z = 0; z < e.n; z++) su += w2c(q, e.qObs[z]) / e.n;
+      return su;
+    }
+    var fB = funcional(e.qBar), fM = funcional(qMez);
+    $("wBar").textContent = num(Math.sqrt(w2c(e.qBar, qPatron)), 3);
+    $("wMez").textContent = num(Math.sqrt(w2c(qMez, qPatron)), 3);
+    $("fBar").textContent = num(fB, 3);
+    $("fMez").textContent = num(fM, 3) + " (+" + num(100 * (fM / fB - 1), 0) + " %)";
     var mB = momentos(e.bar), mM = momentos(e.mez);
     $("sdPat").textContent = num(momPatron.desvio);
     $("sdBar").textContent = num(mB.desvio);
