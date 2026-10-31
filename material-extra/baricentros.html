@@ -235,7 +235,7 @@
   la medición de hidrocarburos en refinerías<sup>[1]</sup>. Y es un terreno donde el transporte óptimo ya se usa: el
   método Alignstein empareja los picos de distintas corridas de LC-MS con una distancia de Wasserstein generalizada, y se
   probó con mejillones expuestos a benzo[<i>a</i>]pireno<sup>[2]</sup>. Lo que sigue es la versión más simple de esa
-  idea, con un solo pico y la recta como espacio de tiempos.</p>
+  idea, con dos picos que derivan juntos y la recta como espacio de tiempos.</p>
 
 <h3>De dónde sale la deriva</h3>
 <p>Los factores que se citan son la temperatura ambiente y el programa de temperatura de la columna, el caudal del gas
@@ -247,7 +247,7 @@
   que no interactúa con ella, que es inversamente proporcional al caudal, multiplicado por un factor que depende de
   cuánto se pega. Si el caudal cambia un poco, todos los tiempos se estiran en la misma proporción,
   que es el factor <i>a</i>. Un retraso en la inyección o un volumen muerto en las conexiones suma una constante, que es
-  <i>b</i>. Por eso la corrección estándar es afín. Pero es una aproximación: la temperatura afecta de manera distinta a cada
+  <i>b</i>. Por eso la corrección estándar es afín, y vale para todos los picos a la vez, que es lo que supone la primera simulación. Pero es una aproximación: la temperatura afecta de manera distinta a cada
   compuesto, y los autores que miden estas derivas las describen como «a menudo no lineales e impredecibles»<sup>[3]</sup>.
   El último paso de esta página muestra qué pasa con el baricentro cuando el modelo afín deja de valer.</p>
 
@@ -257,8 +257,8 @@
   <i>Σ λ<sub>i</sub> d(x, x<sub>i</sub>)²</i>. Acá los «puntos» son las corridas, que son distribuciones de masa sobre
   el eje del tiempo. Si la distancia es <i>W₂</i>, el costo mínimo de transportar una distribución en la otra, el
   minimizador es el baricentro de Wasserstein. Si la distancia es la <i>L²</i> entre densidades, el minimizador es el
-  promedio punto a punto de siempre. Con dos picos idénticos, uno en 0 y otro en 4, el promedio punto a punto da dos
-  jorobas bajas, y el baricentro da un solo pico, igual a los originales, en 2. Esa diferencia es la que se ve en los pasos
+  promedio punto a punto de siempre. Con dos corridas que son el mismo pico, una centrada en 0 y otra en 4, el promedio punto a punto da dos
+  jorobas bajas, y el baricentro da un solo pico, igual a los originales, centrado en 2. Esa diferencia es la que se ve en los pasos
   que siguen.</p>
 
 <ol class="refs">
@@ -289,7 +289,7 @@
   var malla = new Float64Array(M), patron = new Float64Array(M), i;
   for (i = 0; i < M; i++) malla[i] = X0 + i * dx;
   function gauss(x, m, s) { return Math.exp(-0.5 * Math.pow((x - m) / s, 2)) / (s * Math.sqrt(2 * Math.PI)); }
-  function fPatron(x) { return 0.72 * gauss(x, -0.18, 0.2) + 0.28 * gauss(x, 0.42, 0.4); }
+  function fPatron(x) { return 0.6 * gauss(x, -0.85, 0.2) + 0.4 * gauss(x, 0.75, 0.3); }
   for (i = 0; i < M; i++) patron[i] = fPatron(malla[i]);
 
   var NS = 400, ese = new Float64Array(NS);
@@ -567,17 +567,19 @@
         + '<i>t ↦ a t + b</i> — una hipótesis sobre el instrumento, no un hecho. O sea que la corrida '
         + '<i>i</i>-ésima es '
         + '<i>μ<sub>i</sub> = (a<sub>i</sub>t + b<sub>i</sub>)<sub>#</sub>μ</i>, con <i>μ</i> el perfil '
-        + 'verdadero del compuesto.</p>'
+        + 'verdadero de la muestra, que acá tiene dos compuestos y por eso dos picos. Es una primera aproximación: '
+        + 'supone que la deriva mueve todo el cromatograma por igual, con los mismos <i>a<sub>i</sub></i> y '
+        + '<i>b<sub>i</sub></i> para los dos picos.</p>'
         + '<p>Abajo están las <i>N</i> corridas. Lo que se quiere es inferir <i>μ</i>.</p>' },
     { titulo: "El promedio que se hace siempre",
       panel: "Las N corridas y su mezcla",
       sigue: "sigue: el baricentro",
       texto: '<p>Lo natural es promediar las curvas punto a punto: en cada instante, el promedio de lo que '
         + 'marcaron las <i>N</i> corridas. Eso es la mezcla <i>Σ λ<sub>i</sub> μ<sub>i</sub></i>, en gris.</p>'
-        + '<p>Y no sirve, por una razón que está a la vista: es más ancha y más baja que cualquiera de las '
-        + 'corridas, y le aparecen jorobas que ninguna corrida tiene. El ensanchamiento no es del compuesto, '
+        + '<p>Y no sirve, por una razón que está a la vista: cada pico queda más ancho y más bajo que en '
+        + 'cualquiera de las corridas, y le aparecen jorobas que ninguna corrida tiene. El ensanchamiento no es de los compuestos, '
         + 'es del desalineado; las jorobas son grupos de corridas que cayeron cerca. Un informe con esa curva '
-        + 'diría que el compuesto sale lento y disperso, o que hay dos compuestos donde hay uno. Y no es '
+        + 'diría que los compuestos salen lentos y dispersos, o que hay más compuestos de los que hay. Y no es '
         + 'cuestión de medir más: subí la deriva y miralo empeorar, que con cualquier <i>N</i> la mezcla '
         + 'sigue sin parecerse al perfil.</p>' },
     { titulo: "El baricentro",
@@ -585,7 +587,8 @@
       sigue: "sigue: por qué funciona",
       texto: '<p>En azul, el baricentro de Wasserstein de las <i>N</i> corridas: el minimizador de '
         + '<i>F(ν) = Σ λ<sub>i</sub> W₂²(ν, μ<sub>i</sub>)</i>. Y en punteado, recién ahora, el perfil '
-        + 'verdadero <i>μ</i>, que la simulación conoce y el laboratorio no. Se superponen.</p>'
+        + 'verdadero <i>μ</i>, que la simulación conoce y el laboratorio no. Casi se superponen: difieren solo en el estiramiento y el '
+        + 'corrimiento promedio de las corridas, <i>ā</i> y <i>b̄</i>, que aparecen en la fórmula de abajo.</p>'
         + '<p>No es casualidad ni es numérico. La Proposición 12.6.1 dice que en la recta el baricentro sale '
         + 'promediando pseudoinversas, y la de una imagen afín es '
         + '<i>a<sub>i</sub>F<sub>μ</sub><sup>−1</sup> + b<sub>i</sub></i>, de modo que promediarlas solo '
@@ -609,10 +612,10 @@
         + 'pregunta es cuál describe lo que pasó en la columna. Lo que pasó fue que el pico se movió.</p>'
         + '<p>El panel de abajo lo muestra. El eje horizontal ya no es tiempo sino <i>s</i>, la fracción de la '
         + 'masa; el vertical sí es tiempo. La curva <i>F<sup>−1</sup>(s)</i> contesta «¿a qué tiempo ya salió '
-        + 'el <i>s</i> por ciento del compuesto?»: el mismo cromatograma visto desde el lado de la masa, plano '
+        + 'el <i>s</i> por ciento de la muestra?»: el mismo cromatograma visto desde el lado de la masa, plano '
         + 'donde la densidad es alta y empinado donde es baja. Las corridas, que son '
         + '<i>a<sub>i</sub>F<sub>μ</sub><sup>−1</sup> + b<sub>i</sub></i>, forman un abanico de copias estiradas '
-        + 'y corridas de una sola curva.</p>'
+        + 'y corridas de una sola curva. Con dos picos se nota: cada pico es un tramo plano, y entre los dos hay un salto.</p>'
         + '<p>Y como en la recta <i>W₂</i> es la distancia <i>L²</i> entre pseudoinversas, el baricentro es el '
         + 'promedio en estas coordenadas: para cada <i>s</i>, el punto azul está en el promedio de los celestes. '
         + 'El de la mezcla, no — esa promedia las <i>F</i>, no las <i>F<sup>−1</sup></i>.</p>' },
@@ -630,7 +633,15 @@
         + 'deformación del eje sino otra cosa. Las corridas dejan de ser imágenes afines de <i>μ</i>, y ni '
         + 'siquiera imágenes de <i>μ</i>.</p>'
         + '<p>El cálculo no cambia en nada: se promedian las pseudoinversas de lo que se observa. Lo que '
-        + 'cambia es qué significa el resultado. Mirá las cifras y el pie.</p>' }
+        + 'cambia es qué significa el resultado. Mirá las cifras y el pie.</p>'
+        + '<p>Que el baricentro le gane a la mezcla no quiere decir que sea lo mejor que se puede hacer. Acá los dos '
+        + 'picos derivan juntos; en un cromatograma real cada compuesto puede derivar distinto, y los métodos que se '
+        + 'usan en la práctica alinean pico por pico (por ejemplo <i>correlation optimized warping</i>, que menciona '
+        + '<a href="https://www.chromatographyonline.com/view/controlling-retention-time-drift-in-industrial-chromatography">este artículo</a>). '
+        + 'Hay también trabajos que usan transporte óptimo para eso: '
+        + '<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9633278/">Alignstein</a> (Skoraczyński, Gambin y '
+        + 'Miasojedow, <i>GigaScience</i>, 2022) empareja los picos de distintas corridas con una distancia de '
+        + 'Wasserstein generalizada. Un baricentro de todo el cromatograma es el punto de partida más simple, no el final.</p>' }
   ];
 
   function mostrar() {
