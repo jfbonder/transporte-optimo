@@ -104,6 +104,19 @@
   .cifra.destacada { border-left-color: var(--mag); }
   .cifra.destacada .v { color: var(--mag); }
   .nota { color: var(--gris); font-size: .93rem; }
+
+  /* paso 0: contexto (foto, ejemplo real, de dónde sale la deriva, qué es un baricentro) */
+  #texto h3 { font-family: var(--sans); font-size: .9rem; font-weight: 600;
+    color: var(--navy); margin: 18px 0 4px; }
+  #texto a { color: var(--navy); }
+  .fig { margin: 0 0 14px; }
+  .fig img { display: block; width: 100%; max-width: 560px; height: auto;
+    border-radius: 6px; background: var(--panel); }
+  .fig figcaption { font-family: var(--sans); font-size: .8rem; color: var(--gris);
+    margin-top: 6px; max-width: 68ch; }
+  .refs { font-family: var(--sans); font-size: .82rem; color: var(--gris);
+    margin: 14px 0 0; padding-left: 1.2em; max-width: 72ch; }
+  .refs li { margin: 0 0 4px; }
 </style>
 
 <div class="hoja">
@@ -111,7 +124,7 @@
   <p class="sub">Teoría de Transporte Óptimo · FCEN–UBA · Capítulo 12</p>
 
   <div class="relato">
-    <p class="guia" id="rotulo">Paso 1 de 4</p>
+    <p class="guia" id="rotulo">Paso 1 de 6</p>
     <h2 id="titulo">El problema</h2>
     <div id="texto"></div>
     <div class="pasos">
@@ -124,11 +137,12 @@
         <button class="punto" type="button" data-paso="2" aria-label="Paso 3"></button>
         <button class="punto" type="button" data-paso="3" aria-label="Paso 4"></button>
         <button class="punto" type="button" data-paso="4" aria-label="Paso 5"></button>
+        <button class="punto" type="button" data-paso="5" aria-label="Paso 6"></button>
       </span>
     </div>
   </div>
 
-  <div class="mandos">
+  <div class="mandos" id="mandos">
     <button id="play1" aria-pressed="false">▶ Animar la deriva</button>
     <div class="campo">
       <label for="disp">deriva de b<sub>i</sub></label>
@@ -154,7 +168,7 @@
     <button type="button" id="remuestrear">Otra muestra</button>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="panel1">
     <h3 id="tituloPanel">Las N corridas</h3>
     <canvas id="g1" width="820" height="430" role="img" aria-label="Las curvas observadas."></canvas>
     <div class="leyenda">
@@ -186,6 +200,73 @@
 
   <p class="nota" id="pie"></p>
 </div>
+
+
+<template id="intro">
+<figure class="fig">
+  <img src="gcms-open.jpg" width="900" height="491"
+    alt="Un cromatógrafo de gases con espectrómetro de masas, con la puerta del horno abierta, en un laboratorio." loading="lazy">
+  <figcaption>Un cromatógrafo de gases acoplado a un espectrómetro de masas (ThermoQuest Trace 200), con la puerta
+    del horno abierta: ahí adentro está la columna. Foto: Polimerek,
+    <a href="https://commons.wikimedia.org/wiki/File:GCMS_open.jpg">Wikimedia Commons</a>,
+    <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a> (reducida de tamaño).</figcaption>
+</figure>
+
+<h3>Qué hace un cromatógrafo</h3>
+<p>Separa los componentes de una mezcla. La muestra se inyecta en un extremo de una columna, un tubo largo y fino
+  (de decenas de metros en cromatografía de gases, de unos pocos centímetros en la líquida). Un flujo constante de gas
+  o de líquido la arrastra, y cada compuesto avanza más rápido o más lento según cuánto se «pega» a las paredes o al
+  relleno de la columna. A la salida, un detector mide cuánta masa pasa en cada instante. Cada compuesto sale como un
+  pico, y el tiempo en que sale, su <i>tiempo de retención</i>, es lo que permite identificarlo.</p>
+
+<figure class="fig">
+  <img src="columna.gif" width="720" height="368"
+    alt="Animación: dos compuestos, uno celeste y otro magenta, avanzan por una columna a distinta velocidad y se ensanchan; abajo se dibuja el cromatograma, con el pico celeste primero, alto y angosto, y el magenta después, más bajo y más ancho.">
+  <figcaption>Animación esquemática (original, con datos simulados). Los dos compuestos entran juntos, el celeste avanza más
+    rápido y el magenta más lento, y ambos se ensanchan en el camino. El cromatograma de abajo es lo que mide el detector.
+    Una versión interactiva, donde se puede cambiar la velocidad, es
+    <a href="https://biomodel.uah.es/tecnicas/crom/anim/separ_anim_en.htm">la de Ángel Herráez (Universidad de Alcalá)</a>.</figcaption>
+</figure>
+
+<h3>Dónde aparece este problema</h3>
+<p>Es el problema de rutina de cualquier laboratorio que repite mediciones: la misma muestra, corrida muchas veces
+  o durante años, da picos que no caen siempre en el mismo instante. En la industria se lo llama <i>alineación de
+  cromatogramas</i> y se lo enfrenta, por ejemplo, en análisis clínicos, en investigaciones de fraude alimentario y en
+  la medición de hidrocarburos en refinerías<sup>[1]</sup>. Y es un terreno donde el transporte óptimo ya se usa: el
+  método Alignstein empareja los picos de distintas corridas de LC-MS con una distancia de Wasserstein generalizada, y se
+  probó con mejillones expuestos a benzo[<i>a</i>]pireno<sup>[2]</sup>. Lo que sigue es la versión más simple de esa
+  idea, con un solo pico y la recta como espacio de tiempos.</p>
+
+<h3>De dónde sale la deriva</h3>
+<p>Los factores que se citan son la temperatura ambiente y el programa de temperatura de la columna, el caudal del gas
+  portador<sup>[3]</sup>, una fase móvil inestable, el desgaste o el cambio de la columna, y un armado experimental
+  imperfecto<sup>[2]</sup>. En corridas largas de líquidos el corrimiento puede llegar a 5–10 minutos<sup>[2]</sup>.</p>
+
+<h3>Por qué el modelo <i>t ↦ at + b</i> es razonable (y hasta dónde)</h3>
+<p>A primer orden, el tiempo que tarda un compuesto en salir es el tiempo que tarda en cruzar la columna una molécula
+  que no interactúa con ella, que es inversamente proporcional al caudal, multiplicado por un factor que depende de
+  cuánto se pega. Si el caudal cambia un poco, todos los tiempos se estiran en la misma proporción,
+  que es el factor <i>a</i>. Un retraso en la inyección o un volumen muerto en las conexiones suma una constante, que es
+  <i>b</i>. Por eso la corrección estándar es afín. Pero es una aproximación: la temperatura afecta de manera distinta a cada
+  compuesto, y los autores que miden estas derivas las describen como «a menudo no lineales e impredecibles»<sup>[3]</sup>.
+  El último paso de esta página muestra qué pasa con el baricentro cuando el modelo afín deja de valer.</p>
+
+<h3>Qué es un baricentro</h3>
+<p>El promedio de números es el punto que minimiza la suma de los cuadrados de las distancias a los datos. Un
+  <i>baricentro</i> es lo mismo en cualquier espacio con una distancia: el punto que minimiza
+  <i>Σ λ<sub>i</sub> d(x, x<sub>i</sub>)²</i>. Acá los «puntos» son las corridas, que son distribuciones de masa sobre
+  el eje del tiempo. Si la distancia es <i>W₂</i>, el costo mínimo de transportar una distribución en la otra, el
+  minimizador es el baricentro de Wasserstein. Si la distancia es la <i>L²</i> entre densidades, el minimizador es el
+  promedio punto a punto de siempre. Con dos picos idénticos, uno en 0 y otro en 4, el promedio punto a punto da dos
+  jorobas bajas, y el baricentro da un solo pico, igual a los originales, en 2. Esa diferencia es la que se ve en los pasos
+  que siguen.</p>
+
+<ol class="refs">
+  <li>The LCGC Blog, <a href="https://www.chromatographyonline.com/view/controlling-retention-time-drift-in-industrial-chromatography">«Controlling Retention Time Drift in Industrial Chromatography»</a>, 2021.</li>
+  <li>G. Skoraczyński, A. Gambin, B. Miasojedow, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9633278/">«Alignstein: Optimal transport for improved LC-MS retention time alignment»</a>, <i>GigaScience</i> 11 (2022), giac101.</li>
+  <li>W. Zang, R. Sharma, M. W.-H. Li, X. Fan, <a href="https://arxiv.org/abs/2107.07658">«Retention time trajectory matching for target compound peak identification in chromatographic analysis»</a>, arXiv:2107.07658.</li>
+</ol>
+</template>
 
 <script>
 (function () {
@@ -270,7 +351,7 @@
     var n = parseInt($("ene").value, 10),
         sb = parseFloat($("disp").value),
         sa = soloCorrimientos ? 0 : parseFloat($("esc").value),
-        sc = paso >= 4 ? parseFloat($("desaj").value) : 0;
+        sc = paso >= 5 ? parseFloat($("desaj").value) : 0;
     if (As.length !== n) muestrear(n);
     var obs = [], qObs = [], aa = [], bb = [], aMed = 0, bMed = 0, a2 = 0, k, j;
     for (k = 0; k < n; k++) {
@@ -362,6 +443,7 @@
   var PIES = ["", "", "", ""];
 
   function dibujar() {
+    if (paso === 0) return;
     var e = estado(), j, k;
     var cv = $("g1"), ct = cv.getContext("2d"), d = preparar(cv, ct, 430 / 820);
     var ymax = 0;
@@ -370,10 +452,10 @@
     ymax *= 1.08;
     var A = ejes(ct, d, 14, 12, 12, 30, X0, X1, 0, ymax,
       [[-4, "−4"], [-2, "−2"], [0, "0"], [2, "2"], [4, "4"]], []);
-    var alfa = paso === 0 ? Math.max(0.3, 0.95 / Math.sqrt(e.n)) : Math.max(0.13, 0.5 / Math.sqrt(e.n));
+    var alfa = paso === 1 ? Math.max(0.3, 0.95 / Math.sqrt(e.n)) : Math.max(0.13, 0.5 / Math.sqrt(e.n));
     for (k = 0; k < e.n; k++) curva(ct, malla, e.obs[k], A.px, A.py, color("--obs"), 1.3, null, alfa);
-    if (paso >= 1) curva(ct, malla, e.mez, A.px, A.py, color("--mez"), 2.8);
-    if (paso >= 2) {
+    if (paso >= 2) curva(ct, malla, e.mez, A.px, A.py, color("--mez"), 2.8);
+    if (paso >= 3) {
       curva(ct, malla, e.bar, A.px, A.py, color("--bar"), 2.8);
       curva(ct, malla, patron, A.px, A.py, color("--patron"), 1.6, [6, 4]);
     }
@@ -382,7 +464,7 @@
     ct.fillText("tiempo de retención", d.w - 14, d.h - 42);
 
     var qMez = cuantiles(e.mez);
-    if (paso >= 3) {
+    if (paso >= 4) {
       var cv2 = $("g2"), c2 = cv2.getContext("2d"), d2 = preparar(cv2, c2, 430 / 820);
       var lo = Infinity, hi = -Infinity;
       for (j = 0; j < NS; j++) {
@@ -466,11 +548,15 @@
          + "—está a W₂ = " + num(Math.sqrt(w2c(e.qBar, qPatron)), 3) + " de él— pero sigue mucho más cerca "
          + "que la mezcla, que está a " + num(Math.sqrt(w2c(qMez, qPatron)), 3) + ". El baricentro no usa "
          + "el modelo para calcularse; el modelo es lo que permitía decir que recupera μ exactamente.");
-    $("pie").textContent = PIES[paso] || "";
+    $("pie").textContent = PIES[paso - 1] || "";
   }
 
   /* ---------------- el relato ---------------- */
   var ETAPAS = [
+    { titulo: "Antes del problema: qué mide un cromatógrafo y qué es un baricentro",
+      panel: "",
+      sigue: "sigue: el problema",
+      texto: $("intro").innerHTML },
     { titulo: "El problema",
       panel: "Las N corridas",
       sigue: "sigue: el promedio de siempre",
@@ -556,13 +642,16 @@
     $("queSigue").textContent = et.sigue;
     $("atras").disabled = paso === 0;
     $("siguiente").disabled = paso === ETAPAS.length - 1;
-    $("llaveMez").hidden = paso < 1;
-    $("llaveBar").hidden = paso < 2;
-    $("llavePat").hidden = paso < 2;
-    $("cifras1").hidden = paso < 1;
-    $("cifras2").hidden = paso < 2;
-    $("panelQ").hidden = paso < 3;
-    $("campoDesaj").hidden = paso < 4;
+    $("mandos").hidden = paso < 1;
+    $("panel1").hidden = paso < 1;
+    $("pie").hidden = paso < 1;
+    $("llaveMez").hidden = paso < 2;
+    $("llaveBar").hidden = paso < 3;
+    $("llavePat").hidden = paso < 3;
+    $("cifras1").hidden = paso < 2;
+    $("cifras2").hidden = paso < 3;
+    $("panelQ").hidden = paso < 4;
+    $("campoDesaj").hidden = paso < 5;
     Array.prototype.forEach.call(document.querySelectorAll(".punto"), function (b) {
       b.setAttribute("aria-current", String(parseInt(b.dataset.paso, 10) === paso));
     });
