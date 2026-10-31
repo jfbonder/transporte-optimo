@@ -60,10 +60,11 @@ EXTRA = [
      'Longitud de curvas, espacios de longitud, reparametrización por longitud de arco y el '
      'teorema de Hopf–Rinow, con dos ejemplos sin compacidad local. Es el trasfondo métrico '
      'que supone la última sección del Capítulo 10.'),
-    ('baricentros', 'html', 'Un pico que el promedio parte en dos',
-     'N corridas de cromatografía del mismo compuesto, cada una con su deriva del tiempo de '
-     'retención. La página avanza por pasos: primero las corridas, después el promedio punto a '
-     'punto —que ensancha el pico y puede partirlo en dos— y recién entonces el baricentro, que '
+    ('baricentros', 'html', 'Alinear cromatogramas con un baricentro',
+     'N corridas de cromatografía de la misma muestra, con dos compuestos, cada una con su deriva '
+     'del tiempo de retención. La página avanza por pasos: primero qué mide un cromatógrafo, después '
+     'las corridas, el promedio punto a punto —que ensancha los picos y los funde— y recién entonces '
+     'el baricentro, que '
      'devuelve el perfil intacto. Después lo explica en coordenadas de cuantiles, donde el '
      'baricentro es literalmente el promedio de las corridas (Proposición 12.6.1), y termina '
      'rompiendo el modelo afín con una perturbación para ver qué queda en pie.'),
