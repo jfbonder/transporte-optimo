@@ -105,7 +105,7 @@
   .cifra.destacada .v { color: var(--mag); }
   .nota { color: var(--gris); font-size: .93rem; }
 
-  /* paso 0: contexto (foto, ejemplo real, de dónde sale la deriva, qué es un baricentro) */
+  /* paso 0: contexto (foto, ejemplo real, de dónde sale la deriva, por qué el modelo afín) */
   #texto h3 { font-family: var(--sans); font-size: .9rem; font-weight: 600;
     color: var(--navy); margin: 18px 0 4px; }
   #texto a { color: var(--navy); }
@@ -250,16 +250,6 @@
   <i>b</i>. Por eso la corrección estándar es afín, y vale para todos los picos a la vez, que es lo que supone la primera simulación. Pero es una aproximación: la temperatura afecta de manera distinta a cada
   compuesto, y los autores que miden estas derivas las describen como «a menudo no lineales e impredecibles»<sup>[3]</sup>.
   El último paso de esta página muestra qué pasa con el baricentro cuando el modelo afín deja de valer.</p>
-
-<h3>Qué es un baricentro</h3>
-<p>El promedio de números es el punto que minimiza la suma de los cuadrados de las distancias a los datos. Un
-  <i>baricentro</i> es lo mismo en cualquier espacio con una distancia: el punto que minimiza
-  <i>Σ λ<sub>i</sub> d(x, x<sub>i</sub>)²</i>. Acá los «puntos» son las corridas, que son distribuciones de masa sobre
-  el eje del tiempo. Si la distancia es <i>W₂</i>, el costo mínimo de transportar una distribución en la otra, el
-  minimizador es el baricentro de Wasserstein. Si la distancia es la <i>L²</i> entre densidades, el minimizador es el
-  promedio punto a punto de siempre. Con dos corridas que son el mismo pico, una centrada en 0 y otra en 4, el promedio punto a punto da dos
-  jorobas bajas, y el baricentro da un solo pico, igual a los originales, centrado en 2. Esa diferencia es la que se ve en los pasos
-  que siguen.</p>
 
 <ol class="refs">
   <li>The LCGC Blog, <a href="https://www.chromatographyonline.com/view/controlling-retention-time-drift-in-industrial-chromatography">«Controlling Retention Time Drift in Industrial Chromatography»</a>, 2021.</li>
@@ -553,7 +543,7 @@
 
   /* ---------------- el relato ---------------- */
   var ETAPAS = [
-    { titulo: "Antes del problema: qué mide un cromatógrafo y qué es un baricentro",
+    { titulo: "Antes del problema: qué mide un cromatógrafo",
       panel: "",
       sigue: "sigue: el problema",
       texto: $("intro").innerHTML },
