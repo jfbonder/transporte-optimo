@@ -12059,11 +12059,15 @@ en las aplicaciones actuales $n$ es del orden de $10^4$ o más.
 
 La idea que cambió el panorama computacional del transporte óptimo, propuesta
 por Cuturi~\cite{Cuturi2013} a partir de trabajos mucho más antiguos de
-Schrödinger y de Sinkhorn, consiste en \emph{regularizar} el problema
-agregando un término entrópico. El problema regularizado tiene una solución
-única de forma explícita —exponencial en los potenciales duales—, y sus
-condiciones de optimalidad se resuelven por un algoritmo de punto fijo de
-una simplicidad extraordinaria: alternar dos normalizaciones de una matriz.
+Schrödinger y de Sinkhorn, consiste en \emph{regularizar} el problema:
+agregarle al costo un término de penalización que castiga a los planes que
+concentran la masa y favorece a los que la reparten
+(Sección~\ref{sec.entropico}). El problema regularizado tiene una solución
+única y explícita —una exponencial en los potenciales duales—, y sus
+condiciones de optimalidad se resuelven por un algoritmo de punto fijo de una
+simplicidad extraordinaria: reescalar alternadamente las filas y las columnas
+de una matriz, las filas para que sumen las masas que salen y las columnas
+para que sumen las que llegan.
 El precio es que se resuelve un problema aproximado; pero la aproximación
 mejora cuando el parámetro de regularización tiende a cero, y en ese límite
 se recupera exactamente la teoría de los Capítulos~\ref{cap.PL}
