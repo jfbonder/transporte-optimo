@@ -16,7 +16,7 @@ Generadas automáticamente desde `notas/Notas-TO.tex` con `herramientas/generar_
 | `practica-10.pdf` | Práctica 10 | Distancias de Wasserstein | 18 |
 | `practica-11.pdf` | Práctica 11 | La desigualdad de Brunn–Minkowski | 6 |
 | `practica-12.pdf` | Práctica 12 | Baricentros de Wasserstein | 13 |
-| `practica-13.pdf` | Práctica 13 | Transporte entrópico y el algoritmo de Sinkhorn | 14 |
+| `practica-13.pdf` | Práctica 13 | Transporte entrópico y el algoritmo de Sinkhorn | 15 |
 | `apendice-A.pdf` | Apéndice A | Complementos de teoría de la medida | 4 |
 | `apendice-B.pdf` | Apéndice B | El teorema de Fenchel–Rockafellar | 5 |
 | `apendice-C.pdf` | Apéndice C | Factorización polar de matrices inversibles | 3 |
