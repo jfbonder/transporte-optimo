@@ -12135,7 +12135,7 @@ estrictamente convexa, no negativa, y se anula únicamente en $\pi=a\otimes b$.
 Escribiendo $\mathrm{KL}(\pi\,|\,a\otimes b)=\sum_{ij}a_ib_j\,h\bigl(\pi_{ij}/(a_ib_j)\bigr)$
 con $h(s)=s\log s$, la continuidad y la estricta convexidad se heredan de
 $h$, que es continua en $[0,\infty)$ y estrictamente convexa por tener
-$h''(s)=1/s>0$. Para la no negatividad usamos la desigualdad de Jensen para
+$h''(s)=1/s>0$ (Figura~\ref{fig.ent.h}). Para la no negatividad usamos la desigualdad de Jensen para
 la función convexa $h$ y la medida de probabilidad $a\otimes b$:
 \[
 \sum_{ij}a_ib_j\,h\Bigl(\frac{\pi_{ij}}{a_ib_j}\Bigr)
@@ -12191,6 +12191,7 @@ con $h(s)=s\log s$, lo decisivo es que
 \[
 h'(s)=1+\log s\longrightarrow-\infty\qquad\text{cuando }s\to0^+ .
 \]
+(Figura~\ref{fig.ent.h}, panel derecho.)
 En una entrada nula, mover masa hacia ella hace bajar la penalización a
 velocidad infinita, y ningún costo lineal puede compensar eso: el borde del
 ortante queda fuera del alcance del minimizador. El término
@@ -12217,6 +12218,113 @@ de las dos restricciones de marginales en una estructura
 Eso es lo que hace la Sección~\ref{sec.dual.entropico}, y de ahí sale el
 algoritmo de Sinkhorn. Con la penalización cuadrática no hay nada de eso.
 \end{obs}
+
+Las tres propiedades de $h(s)=s\log s$ que usamos —la convexidad, el hecho de
+que su gráfico quede por encima de cada una de sus tangentes y la pendiente
+infinita en el origen— se ven de un vistazo en la Figura~\ref{fig.ent.h}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig]
+  % ---------- panel izquierdo: convexidad y brecha respecto de la tangente ----------
+  \begin{scope}
+    \draw[eje] (-0.35,0) -- (5.15,0);
+    \draw[eje] (0,-1.95) -- (0,2.35);
+    % la tangente en theta=1,3: r(s)=h(theta)+h'(theta)(s-theta)
+    \draw[soporte] (0.810,-1.843) -- (4.860,1.945);
+    % el gráfico de h en (0 , 1,8], muestreado denso cerca de 0
+    \draw[graf]
+    (0.004,-0.020) -- (0.005,-0.023) -- (0.007,-0.031) -- (0.011,-0.044) --
+    (0.016,-0.061) -- (0.023,-0.081) -- (0.031,-0.104) -- (0.041,-0.128) --
+    (0.053,-0.153) -- (0.066,-0.180) -- (0.080,-0.208) -- (0.096,-0.237) --
+    (0.113,-0.266) -- (0.132,-0.296) -- (0.153,-0.325) -- (0.175,-0.354) --
+    (0.198,-0.384) -- (0.223,-0.412) -- (0.250,-0.441) -- (0.278,-0.468) --
+    (0.308,-0.495) -- (0.339,-0.521) -- (0.371,-0.546) -- (0.405,-0.569) --
+    (0.441,-0.592) -- (0.478,-0.613) -- (0.517,-0.633) -- (0.557,-0.651) --
+    (0.599,-0.668) -- (0.642,-0.683) -- (0.687,-0.696) -- (0.733,-0.708) --
+    (0.781,-0.718) -- (0.830,-0.725) -- (0.881,-0.731) -- (0.934,-0.734) --
+    (0.987,-0.736) -- (1.043,-0.735) -- (1.100,-0.732) -- (1.158,-0.726) --
+    (1.218,-0.718) -- (1.279,-0.708) -- (1.342,-0.695) -- (1.407,-0.679) --
+    (1.473,-0.661) -- (1.541,-0.640) -- (1.610,-0.617) -- (1.680,-0.590) --
+    (1.752,-0.561) -- (1.826,-0.529) -- (1.901,-0.494) -- (1.978,-0.456) --
+    (2.056,-0.415) -- (2.135,-0.371) -- (2.217,-0.324) -- (2.299,-0.274) --
+    (2.383,-0.220) -- (2.469,-0.163) -- (2.556,-0.103) -- (2.645,-0.040) --
+    (2.736,0.026) -- (2.827,0.097) -- (2.921,0.170) -- (3.015,0.247) --
+    (3.112,0.327) -- (3.210,0.411) -- (3.309,0.499) -- (3.410,0.590) --
+    (3.512,0.684) -- (3.616,0.783) -- (3.722,0.885) -- (3.829,0.991) --
+    (3.937,1.100) -- (4.047,1.214) -- (4.159,1.331) -- (4.272,1.452) --
+    (4.387,1.577) -- (4.503,1.706) -- (4.620,1.838) -- (4.739,1.975) --
+    (4.860,2.116);
+    % la brecha en s=0,45 entre el gráfico y la tangente
+    \draw[aux] (1.215,0) -- (1.215,-0.719);
+    \draw[destaca, {Bar[width=5pt]}-{Bar[width=5pt]}] (1.215,-1.464) -- (1.215,-0.719);
+    \draw[aux] (3.510,0) -- (3.510,0.682);
+    \node[pt, figacc] at (3.510,0.682) {};
+    \node[rotulo, anchor=south] at (1.215,0.04) {$s$};
+    \node[rotulo, anchor=north] at (3.510,-0.06) {$\theta$};
+    \node[rotulo, figmain, anchor=south east] at (3.95,1.52) {$h(s)=s\log s$};
+    \node[rotulo, figacc, anchor=north] at (2.60,-0.42) {$r_\theta$};
+    \node[rotulo,below=6pt] at (2.4,-2.05) {la brecha vale $s\log\frac{s}{\theta}-s+\theta$};
+  \end{scope}
+  % ---------- panel derecho: la barrera en el origen ----------
+  \begin{scope}[xshift=\figpanelsep]
+    \draw[eje] (-0.35,0) -- (4.55,0);
+    \draw[eje] (0,-1.80) -- (0,0.95);
+    \draw[grafalt, dashed]
+    (0.000,0.000) -- (0.105,0.000) -- (0.210,0.002) -- (0.315,0.004) --
+    (0.420,0.007) -- (0.525,0.011) -- (0.630,0.015) -- (0.735,0.021) --
+    (0.840,0.027) -- (0.945,0.034) -- (1.050,0.042) -- (1.155,0.051) --
+    (1.260,0.060) -- (1.365,0.071) -- (1.470,0.082) -- (1.575,0.095) --
+    (1.680,0.108) -- (1.785,0.121) -- (1.890,0.136) -- (1.995,0.152) --
+    (2.100,0.168) -- (2.205,0.185) -- (2.310,0.203) -- (2.415,0.222) --
+    (2.520,0.242) -- (2.625,0.263) -- (2.730,0.284) -- (2.835,0.306) --
+    (2.940,0.329) -- (3.045,0.353) -- (3.150,0.378) -- (3.255,0.404) --
+    (3.360,0.430) -- (3.465,0.457) -- (3.570,0.486) -- (3.675,0.514) --
+    (3.780,0.544) -- (3.885,0.575) -- (3.990,0.606) -- (4.095,0.639) --
+    (4.200,0.672);
+    \draw[graf]
+    (0.013,-0.034) -- (0.013,-0.036) -- (0.016,-0.042) -- (0.020,-0.051) --
+    (0.026,-0.063) -- (0.034,-0.078) -- (0.043,-0.095) -- (0.054,-0.115) --
+    (0.067,-0.136) -- (0.082,-0.159) -- (0.098,-0.183) -- (0.116,-0.209) --
+    (0.136,-0.236) -- (0.157,-0.264) -- (0.180,-0.293) -- (0.205,-0.323) --
+    (0.231,-0.353) -- (0.260,-0.384) -- (0.289,-0.416) -- (0.321,-0.448) --
+    (0.354,-0.480) -- (0.389,-0.513) -- (0.426,-0.546) -- (0.465,-0.579) --
+    (0.505,-0.613) -- (0.547,-0.646) -- (0.590,-0.680) -- (0.636,-0.713) --
+    (0.683,-0.746) -- (0.731,-0.779) -- (0.782,-0.812) -- (0.834,-0.845) --
+    (0.888,-0.877) -- (0.943,-0.909) -- (1.000,-0.941) -- (1.059,-0.972) --
+    (1.120,-1.003) -- (1.183,-1.033) -- (1.247,-1.063) -- (1.312,-1.092) --
+    (1.380,-1.120) -- (1.449,-1.148) -- (1.520,-1.175) -- (1.593,-1.201) --
+    (1.667,-1.227) -- (1.743,-1.252) -- (1.821,-1.276) -- (1.900,-1.299) --
+    (1.982,-1.322) -- (2.064,-1.343) -- (2.149,-1.364) -- (2.235,-1.383) --
+    (2.323,-1.402) -- (2.413,-1.419) -- (2.505,-1.436) -- (2.598,-1.451) --
+    (2.693,-1.466) -- (2.789,-1.479) -- (2.887,-1.491) -- (2.987,-1.502) --
+    (3.089,-1.512) -- (3.192,-1.520) -- (3.298,-1.528) -- (3.404,-1.534) --
+    (3.513,-1.539) -- (3.623,-1.542) -- (3.735,-1.544) -- (3.849,-1.545) --
+    (3.964,-1.545) -- (4.081,-1.543) -- (4.200,-1.539);
+    \node[pt, figmain] at (0,0) {};
+    \node[rotulo, figmain, anchor=west] at (1.45,-0.72) {$h(s)=s\log s$};
+    \node[rotulo, figalt, anchor=south west] at (3.45,0.47) {$s^2$};
+    \node[rotulo,below=6pt] at (2.1,-1.90) {$h'(0^+)=-\infty$ frente a $(s^2)'(0)=0$};
+  \end{scope}
+\end{tikzpicture}
+\caption{Las propiedades de $h(s)=s\log s$ que usan las demostraciones de
+este capítulo. A la izquierda, $h$ en $(0,1{,}8]$ junto con su recta tangente
+en $\theta=1{,}3$, $r_\theta(s)=h(\theta)+h'(\theta)(s-\theta)$: como
+$h''(s)=1/s>0$, el gráfico queda por encima de la tangente, y la brecha
+vertical entre ambos, marcada en $s=0{,}45$, vale exactamente
+$h(s)-r_\theta(s)=s\log\frac{s}{\theta}-s+\theta\ge0$, con igualdad solo si
+$s=\theta$. Esa brecha es la que aparece en el Paso~2 de la demostración del
+Teorema~\ref{teo.dual.entropico} y la que, promediada contra
+$a\otimes b$, da la no negatividad y el caso de igualdad del
+Lema~\ref{lema.KL}. A la derecha, un acercamiento al origen: $h$ llega a
+$0$ con pendiente $h'(0^+)=-\infty$, mientras que una penalización
+estrictamente convexa pero con derivada finita en $0$, como $s^2$, llega con
+pendiente nula. Es esa tangente vertical, y no la convexidad, la que impide
+que el plan entrópico tenga entradas nulas
+(Proposición~\ref{prop.OTeps.existencia} y
+Observación~\ref{obs.por.que.KL}).}
+\label{fig.ent.h}
+\end{figure}
 
 Comparemos con el problema sin regularizar. El mínimo de un funcional lineal
 sobre un politopo se alcanza en un vértice, y los vértices de $\Pi(a,b)$ son
@@ -12334,7 +12442,9 @@ de modo que
 \]
 Cada sumando es no negativo, pues $s\log(s/\theta)-s+\theta\ge0$ para
 $s\ge0$, $\theta>0$, con igualdad solo si $s=\theta$ (es la desigualdad
-$\log r\le r-1$ con $r=\theta/s$, o la convexidad de $s\log s$). Esto prueba
+$\log r\le r-1$ con $r=\theta/s$, o la convexidad de $s\log s$: es la brecha
+entre el gráfico de $h$ y su tangente en $\theta$, marcada en la
+Figura~\ref{fig.ent.h}). Esto prueba
 \eqref{eq:dual.debil.entropico} y la caracterización de la igualdad.
 
 \medskip
