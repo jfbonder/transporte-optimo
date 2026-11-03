@@ -12106,6 +12106,15 @@ descartan— y evita casos degenerados en todo lo que sigue.
 
 \subsection*{Entropía relativa}
 
+Buscamos un término que premie a los planes repartidos, y para eso conviene
+preguntarse primero cuál es el plan más repartido que las marginales
+permiten. Es el \emph{plan producto} $a\otimes b$, dado por
+$(a\otimes b)_{ij}=a_ib_j$: el que distribuye la masa que sale de cada $x_i$
+entre todos los destinos en la proporción $b_j$, sin mirar el costo. El
+término que agregaremos mide cuánto se aparta $\pi$ de ese plan y se anula
+exactamente en él, de modo que penalizarlo es penalizar el alejamiento del
+reparto. La medida que usamos es la siguiente.
+
 \begin{defi}[Entropía relativa]\label{def.KL}
 Sea $\pi\in\Pi(a,b)$. La \emph{entropía relativa} (o \emph{divergencia de
 Kullback--Leibler}) de $\pi$ respecto del plan producto $a\otimes b$,
@@ -12173,6 +12182,41 @@ $\pi^\varepsilon_{ij}=0$ vale $-\infty$. Luego el funcional decrece estrictament
 de $\pi^\varepsilon$ hacia $a\otimes b$ para $t$ pequeño, contradiciendo la
 minimalidad.
 \end{proof}
+
+\begin{obs}[Por qué la entropía relativa y no cualquier penalización]\label{obs.por.que.KL}
+Conviene aislar qué hizo trabajar a la demostración anterior, porque no fue
+la convexidad. Escribiendo
+$\mathrm{KL}(\pi\,|\,a\otimes b)=\sum_{ij}a_ib_j\,h\bigl(\pi_{ij}/(a_ib_j)\bigr)$
+con $h(s)=s\log s$, lo decisivo es que
+\[
+h'(s)=1+\log s\longrightarrow-\infty\qquad\text{cuando }s\to0^+ .
+\]
+En una entrada nula, mover masa hacia ella hace bajar la penalización a
+velocidad infinita, y ningún costo lineal puede compensar eso: el borde del
+ortante queda fuera del alcance del minimizador. El término
+$\varepsilon\,\mathrm{KL}$ actúa, entonces, como una \emph{barrera
+logarítmica} para las restricciones $\pi_{ij}\ge0$, igual que en los métodos
+de punto interior, y el problema entrópico es el de Kantorovich con esa
+barrera y parámetro $\varepsilon$.
+
+Que el efecto venga del logaritmo y no de la convexidad se ve comparando con
+otra penalización estrictamente convexa, $\sum_{ij}\pi_{ij}^2$: ahí
+$\frac{d}{ds}s^2=0$ en $s=0$, no hay barrera, y el minimizador puede tener
+—y en general tiene— entradas nulas. El transporte con regularización
+cuadrática produce justamente planes ralos; véase
+\cite{BlondelSeguyRolet2018}.
+
+Hay un segundo motivo para elegir esta penalización, y es que la misma
+propiedad que prohíbe los ceros es la que da el algoritmo. Como $h'$ es un
+logaritmo, la condición de primer orden queda, llamando $\alpha$ y $\beta$ a
+los multiplicadores de las dos restricciones de marginales,
+$\log\bigl(\pi_{ij}/(a_ib_j)\bigr)=(\alpha_i+\beta_j-c_{ij})/\varepsilon-1$,
+y el logaritmo convierte la estructura \emph{aditiva} de los multiplicadores
+de las dos restricciones de marginales en una estructura
+\emph{multiplicativa}: una matriz fija reescalada por filas y por columnas.
+Eso es lo que hace la Sección~\ref{sec.dual.entropico}, y de ahí sale el
+algoritmo de Sinkhorn. Con la penalización cuadrática no hay nada de eso.
+\end{obs}
 
 Comparemos con el problema sin regularizar. El mínimo de un funcional lineal
 sobre un politopo se alcanza en un vértice, y los vértices de $\Pi(a,b)$ son
