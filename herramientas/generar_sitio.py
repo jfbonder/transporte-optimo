@@ -60,14 +60,15 @@ EXTRA = [
      'Longitud de curvas, espacios de longitud, reparametrización por longitud de arco y el '
      'teorema de Hopf–Rinow, con dos ejemplos sin compacidad local. Es el trasfondo métrico '
      'que supone la última sección del Capítulo 10.'),
-    ('baricentros', 'html', 'Alinear cromatogramas con un baricentro',
-     'N corridas de cromatografía de la misma muestra, con dos compuestos, cada una con su deriva '
-     'del tiempo de retención. La página avanza por pasos: primero qué mide un cromatógrafo, después '
-     'las corridas, el promedio punto a punto —que ensancha los picos y los funde— y recién entonces '
-     'el baricentro, que '
-     'devuelve el perfil intacto. Después lo explica en coordenadas de cuantiles, donde el '
-     'baricentro es literalmente el promedio de las corridas (Proposición 12.6.1), y termina '
-     'rompiendo el modelo afín con una perturbación para ver qué queda en pie.'),
+    ('baricentros', 'html', 'Alinear cromatogramas: cuándo alcanza con normalizar',
+     'N corridas de cromatografía de la misma muestra, con tres compuestos, cada una con su deriva '
+     'del tiempo de retención. La página avanza por pasos: qué mide un cromatógrafo, las corridas, '
+     'el promedio punto a punto —que ensancha los picos y los funde— y después el método que se usa '
+     'de verdad, normalizar cada corrida y promediar, que bajo el modelo afín es exacto y deja al '
+     'baricentro sin nada que agregar. Recién cuando cada compuesto deriva por su cuenta la '
+     'normalización se rompe, y ahí entra el baricentro, que recupera el pico que la otra parte en '
+     'dos. Termina explicándolo en coordenadas de cuantiles, donde el baricentro es literalmente el '
+     'promedio de las corridas (Proposición 12.6.1).'),
     ('meteorologia', 'html', 'Promediar pronósticos de lluvia',
      'Un centro meteorológico corre su modelo varias veces y obtiene N campos de lluvia con la '
      'tormenta en lugares algo distintos. El promedio punto a punto la desparrama y le saca casi '

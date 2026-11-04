@@ -17,7 +17,7 @@
     --tinta:#1d1d1f; --gris:#5b5b60; --linea:#e3e3e6;
     --fondo:#fbfbf9; --tarjeta:#ffffff; --panel:#f4f4f1;
     --navy:#013274; --cyan:#029BDF; --mag:#E2017B;
-    --bar:#013274; --mez:#8a8a90; --patron:#E2017B; --obs:#029BDF;
+    --bar:#013274; --mez:#8a8a90; --patron:#E2017B; --obs:#029BDF; --nor:#C2410C;
     --serif: Georgia, "Times New Roman", Times, serif;
     --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   }
@@ -26,7 +26,7 @@
       --tinta:#ececec; --gris:#a8a8ae; --linea:#33333a;
       --fondo:#141416; --tarjeta:#1c1c20; --panel:#202026;
       --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0;
-      --bar:#7fb3ff; --mez:#94949c; --patron:#ff6bb0; --obs:#56c7f5;
+      --bar:#7fb3ff; --mez:#94949c; --patron:#ff6bb0; --obs:#56c7f5; --nor:#ff9b6a;
       color-scheme: dark;
     }
   }
@@ -34,7 +34,7 @@
     --tinta:#ececec; --gris:#a8a8ae; --linea:#33333a;
     --fondo:#141416; --tarjeta:#1c1c20; --panel:#202026;
     --navy:#7fb3ff; --cyan:#56c7f5; --mag:#ff6bb0;
-    --bar:#7fb3ff; --mez:#94949c; --patron:#ff6bb0; --obs:#56c7f5;
+    --bar:#7fb3ff; --mez:#94949c; --patron:#ff6bb0; --obs:#56c7f5; --nor:#ff9b6a;
     color-scheme: dark;
   }
 
@@ -120,11 +120,11 @@
 </style>
 
 <div class="hoja">
-  <h1>Alinear cromatogramas con un baricentro</h1>
+  <h1>Alinear cromatogramas: cuándo alcanza con normalizar</h1>
   <p class="sub">Teoría de Transporte Óptimo · FCEN–UBA · Capítulo 12</p>
 
   <div class="relato">
-    <p class="guia" id="rotulo">Paso 1 de 6</p>
+    <p class="guia" id="rotulo">Paso 1 de 7</p>
     <h2 id="titulo">El problema</h2>
     <div id="texto"></div>
     <div class="pasos">
@@ -138,6 +138,7 @@
         <button class="punto" type="button" data-paso="3" aria-label="Paso 4"></button>
         <button class="punto" type="button" data-paso="4" aria-label="Paso 5"></button>
         <button class="punto" type="button" data-paso="5" aria-label="Paso 6"></button>
+        <button class="punto" type="button" data-paso="6" aria-label="Paso 7"></button>
       </span>
     </div>
   </div>
@@ -146,8 +147,8 @@
     <button id="play1" aria-pressed="false">▶ Animar la deriva</button>
     <div class="campo">
       <label for="disp">deriva de b<sub>i</sub></label>
-      <input type="range" id="disp" min="0" max="1.6" step="0.01" value="0.75">
-      <output for="disp" id="dispOut">0,75</output>
+      <input type="range" id="disp" min="0" max="1.6" step="0.01" value="1.1">
+      <output for="disp" id="dispOut">1,10</output>
     </div>
     <div class="campo">
       <label for="esc">deriva de a<sub>i</sub></label>
@@ -160,9 +161,9 @@
       <output for="ene" id="eneOut">12</output>
     </div>
     <div class="campo" id="campoDesaj" hidden>
-      <label for="desaj">perturbación</label>
-      <input type="range" id="desaj" min="0" max="0.5" step="0.01" value="0.3">
-      <output for="desaj" id="desajOut">0,30</output>
+      <label for="desaj">deriva por compuesto</label>
+      <input type="range" id="desaj" min="0" max="0.7" step="0.01" value="0.45">
+      <output for="desaj" id="desajOut">0,45</output>
     </div>
     <button type="button" id="soloCorr" aria-pressed="false">Solo corrimientos</button>
     <button type="button" id="remuestrear">Otra muestra</button>
@@ -174,6 +175,7 @@
     <div class="leyenda">
       <span><i class="llave" style="background:var(--obs)"></i> las N corridas</span>
       <span id="llaveMez" hidden><i class="llave" style="background:var(--mez)"></i> mezcla</span>
+      <span id="llaveNor" hidden><i class="llave" style="background:var(--nor)"></i> normalizado y promediado</span>
       <span id="llaveBar" hidden><i class="llave" style="background:var(--bar)"></i> baricentro</span>
       <span id="llavePat" hidden><i class="llave" style="background:var(--patron); height:0; border-top:3px dashed var(--patron)"></i> perfil verdadero μ</span>
     </div>
@@ -182,14 +184,20 @@
   <div class="cifras" id="cifras1" hidden>
     <div class="cifra"><span class="k">desvío de una corrida</span><span class="v" id="sdPat">—</span></div>
     <div class="cifra"><span class="k">desvío de la mezcla</span><span class="v" id="sdMez">—</span></div>
-    <div class="cifra destacada"><span class="k">la mezcla ensancha</span><span class="v" id="factor">—</span></div>
+    <div class="cifra"><span class="k">la mezcla ensancha</span><span class="v" id="factor">—</span></div>
+    <div class="cifra destacada"><span class="k">alto de los picos: corrida → mezcla</span><span class="v" id="altos">—</span></div>
   </div>
 
   <div class="cifras" id="cifras2" hidden>
     <div class="cifra"><span class="k">W₂(mezcla, μ)</span><span class="v" id="wMez">—</span></div>
-    <div class="cifra"><span class="k">W₂(baricentro, μ)</span><span class="v" id="wBar">—</span></div>
-    <div class="cifra"><span class="k">F en la mezcla</span><span class="v" id="fMez">—</span></div>
-    <div class="cifra destacada"><span class="k">F en el baricentro</span><span class="v" id="fBar">—</span></div>
+    <div class="cifra"><span class="k">W₂(normalizado, μ)</span><span class="v" id="wNor">—</span></div>
+    <div class="cifra destacada" id="cWBar" hidden><span class="k">W₂(baricentro, μ)</span><span class="v" id="wBar">—</span></div>
+  </div>
+
+  <div class="cifras" id="cifras3" hidden>
+    <div class="cifra"><span class="k">alto del pico del medio, verdadero</span><span class="v" id="aPat">—</span></div>
+    <div class="cifra"><span class="k">en el normalizado</span><span class="v" id="aNor">—</span></div>
+    <div class="cifra destacada" id="cABar" hidden><span class="k">en el baricentro</span><span class="v" id="aBar">—</span></div>
   </div>
 
   <div class="panel" id="panelQ" hidden>
@@ -221,9 +229,11 @@
 
 <figure class="fig">
   <img src="columna.gif" width="720" height="368"
-    alt="Animación: dos compuestos, uno celeste y otro magenta, avanzan por una columna a distinta velocidad y se ensanchan; abajo se dibuja el cromatograma, con el pico celeste primero, alto y angosto, y el magenta después, más bajo y más ancho.">
-  <figcaption>Animación esquemática (original, con datos simulados). Los dos compuestos entran juntos, el celeste avanza más
-    rápido y el magenta más lento, y ambos se ensanchan en el camino. El cromatograma de abajo es lo que mide el detector.</figcaption>
+    alt="Animación: tres compuestos, uno celeste, uno magenta y uno rojo, avanzan por una columna a distinta velocidad y se ensanchan; abajo se dibuja el cromatograma, con el pico celeste primero, alto y angosto, el magenta después y el rojo al final, cada vez más bajos y más anchos.">
+  <figcaption>Animación esquemática (original, con datos simulados). Los tres compuestos entran juntos; el celeste avanza
+    más rápido, el rojo más lento, y los tres se ensanchan en el camino, por lo que el que sale último sale también más
+    bajo y más ancho. El cromatograma de abajo es lo que mide el detector. Son los tres picos con los que trabaja el
+    resto de la página.</figcaption>
 </figure>
 
 <h3>Dónde aparece este problema</h3>
@@ -233,7 +243,7 @@
   la medición de hidrocarburos en refinerías<sup>[1]</sup>. Y es un terreno donde el transporte óptimo ya se usa: el
   método Alignstein empareja los picos de distintas corridas de LC-MS con una distancia de Wasserstein generalizada, y se
   probó con mejillones expuestos a benzo[<i>a</i>]pireno<sup>[2]</sup>. Lo que sigue es la versión más simple de esa
-  idea, con dos picos que derivan juntos y la recta como espacio de tiempos.</p>
+  idea, con tres picos y la recta como espacio de tiempos.</p>
 
 <h3>De dónde sale la deriva</h3>
 <p>Los factores que se citan son la temperatura ambiente y el programa de temperatura de la columna, el caudal del gas
@@ -247,7 +257,9 @@
   que es el factor <i>a</i>. Un retraso en la inyección o un volumen muerto en las conexiones suma una constante, que es
   <i>b</i>. Por eso la corrección estándar es afín, y vale para todos los picos a la vez, que es lo que supone la primera simulación. Pero es una aproximación: la temperatura afecta de manera distinta a cada
   compuesto, y los autores que miden estas derivas las describen como «a menudo no lineales e impredecibles»<sup>[3]</sup>.
-  El último paso de esta página muestra qué pasa con el baricentro cuando el modelo afín deja de valer.</p>
+  Esa es la bisagra de esta página: mientras la deriva sea común a todos los picos, el método estándar —normalizar
+  cada corrida y promediar— es exacto y no hace falta nada más. Cuando cada compuesto deriva por su cuenta, deja de
+  alcanzar, y ahí entra el baricentro.</p>
 
 <ol class="refs">
   <li>The LCGC Blog, <a href="https://www.chromatographyonline.com/view/controlling-retention-time-drift-in-industrial-chromatography">«Controlling Retention Time Drift in Industrial Chromatography»</a>, 2021.</li>
@@ -277,7 +289,16 @@
   var malla = new Float64Array(M), patron = new Float64Array(M), i;
   for (i = 0; i < M; i++) malla[i] = X0 + i * dx;
   function gauss(x, m, s) { return Math.exp(-0.5 * Math.pow((x - m) / s, 2)) / (s * Math.sqrt(2 * Math.PI)); }
-  function fPatron(x) { return 0.6 * gauss(x, -0.85, 0.2) + 0.4 * gauss(x, 0.75, 0.3); }
+  /* tres compuestos: los picos de los extremos fijan la escala, el del medio es
+     el que va a derivar por su cuenta en el paso 5. */
+  function fPatron(x) { return 0.33 * gauss(x, -1.2, 0.16) + 0.34 * gauss(x, 0, 0.16) + 0.33 * gauss(x, 1.2, 0.16); }
+  function psi(t) { return Math.exp(-Math.pow(t / 0.75, 2)); }   // bache centrado en el pico del medio
+  function interp(y, x) {
+    if (x <= X0 || x >= X1) return 0;
+    var u = (x - X0) / dx, i0 = Math.floor(u), t = u - i0;
+    if (i0 < 0 || i0 >= M - 1) return 0;
+    return y[i0] + t * (y[i0 + 1] - y[i0]);
+  }
   for (i = 0; i < M; i++) patron[i] = fPatron(malla[i]);
 
   var NS = 400, ese = new Float64Array(NS);
@@ -325,6 +346,29 @@
   }
   var qPatron = cuantiles(patron), momPatron = momentos(patron);
 
+  /* El método estándar: a cada corrida se le resta su media y se la divide por su
+     desvío, se promedian punto a punto las densidades así normalizadas, y se vuelve
+     a la escala promedio de las corridas. Bajo el modelo afín esto es exacto. */
+  function normalizar(obs) {
+    var n = obs.length, ms = [], ss = [], k, j, mo,
+        acc = new Float64Array(M), y = new Float64Array(M), mBar = 0, sBar = 0, su = 0;
+    for (k = 0; k < n; k++) { mo = momentos(obs[k]); ms.push(mo.media); ss.push(mo.desvio); }
+    for (k = 0; k < n; k++) { mBar += ms[k] / n; sBar += ss[k] / n; }
+    for (k = 0; k < n; k++)
+      for (j = 0; j < M; j++)
+        acc[j] += interp(obs[k], ms[k] + ss[k] * malla[j]) * ss[k] / n;
+    for (j = 0; j < M; j++) y[j] = interp(acc, (malla[j] - mBar) / sBar) / sBar;
+    for (j = 0; j < M; j++) su += y[j] * dx;
+    for (j = 0; j < M; j++) y[j] /= su;
+    return y;
+  }
+  /* el alto del pico del medio: lo que se ve a ojo cuando un método lo parte */
+  function altoCentro(y) {
+    var j, m = 0;
+    for (j = 0; j < M; j++) if (malla[j] > -0.5 && malla[j] < 0.5) m = Math.max(m, y[j]);
+    return m;
+  }
+
   var semilla = 7, soloCorrimientos = false, sGuia = 0.5, paso = 0;
   function azar() { semilla = (semilla * 1103515245 + 12345) & 0x7fffffff; return semilla / 0x7fffffff; }
   var As = [], Bs = [], Cs = [];
@@ -339,11 +383,11 @@
     var n = parseInt($("ene").value, 10),
         sb = parseFloat($("disp").value),
         sa = soloCorrimientos ? 0 : parseFloat($("esc").value),
-        sc = paso >= 5 ? parseFloat($("desaj").value) : 0;
+        sc = paso >= 4 ? parseFloat($("desaj").value) : 0;
     if (As.length !== n) muestrear(n);
     var obs = [], qObs = [], aa = [], bb = [], aMed = 0, bMed = 0, a2 = 0, k, j;
     for (k = 0; k < n; k++) {
-      var a = 1 + sa * As[k], b = sb * Bs[k], c = sc * (0.55 + 0.45 * Cs[k]);
+      var a = 1 + sa * As[k], b = sb * Bs[k], c = sc * Cs[k];
       aa.push(a); bb.push(b); aMed += a / n; bMed += b / n; a2 += a * a / n;
       var y;
       if (c === 0) {
@@ -351,22 +395,17 @@
         y = new Float64Array(M);
         for (j = 0; j < M; j++) y[j] = fPatron((malla[j] - b) / a) / a;
       } else {
-        /* la corrida es T_i # mu con T_i(t) = a t + b + c sen(...), que ya no es afín.
-           Como T_i es creciente, su pseudoinversa es T_i compuesta con la de mu. */
-        var qw = new Float64Array(NS), w = 0.35;
+        /* deriva propia del compuesto del medio: T_i(t) = a (t + c psi(t)) + b, que
+           es creciente pero no afín. Como T_i crece, la pseudoinversa de T_i # mu es
+           T_i compuesta con la de mu. El c_i está centrado en cero: la deriva de cada
+           corrida es al azar y sin sesgo, que es lo que el baricentro puede promediar
+           y la normalización no. */
+        var qw = new Float64Array(NS);
         for (j = 0; j < NS; j++) {
           var t0 = qPatron[j];
-          qw[j] = a * t0 + b + c * w * Math.log(1 + Math.exp((t0 + 0.1) / w));
+          qw[j] = a * (t0 + c * psi(t0)) + b;
         }
         y = densidadDeCuantiles(qw);
-        /* ruido del detector: rompe hasta la estructura de imagen directa */
-        var f1 = 1.7 + 2 * Cs[k], f2 = 3.3 + 2 * As[k], su0 = 0;
-        for (j = 0; j < M; j++) {
-          var eta = 0.22 * sc * (Math.sin(f1 * malla[j] + 3 * Bs[k]) + Math.sin(f2 * malla[j])) / 2;
-          y[j] = Math.max(0, y[j] * (1 + eta));
-          su0 += y[j] * dx;
-        }
-        for (j = 0; j < M; j++) y[j] /= su0;
       }
       obs.push(y); qObs.push(cuantiles(y));
     }
@@ -384,6 +423,7 @@
       qBar[j] = sq / n;
     }
     var bar = densidadDeCuantiles(qBar);
+    var nor = normalizar(obs), qNor = cuantiles(nor);
     var brecha = 0;
     for (j = 0; j < NS; j++) brecha = Math.max(brecha, Math.abs(qBar[j] - (aMed * qPatron[j] + bMed)));
     var desajuste = sc;
@@ -391,6 +431,7 @@
     for (k = 0; k < n; k++) mm += (aa[k] * momPatron.media + bb[k]) / n;
     for (k = 0; k < n; k++) mediasVar += Math.pow(aa[k] * momPatron.media + bb[k] - mm, 2) / n;
     return { n: n, obs: obs, qObs: qObs, mez: mez, bar: bar, qBar: qBar, brecha: brecha,
+             nor: nor, qNor: qNor,
              desajuste: desajuste,
              aMed: aMed, bMed: bMed, a2: a2, mediasVar: mediasVar };
   }
@@ -435,7 +476,7 @@
     var e = estado(), j, k;
     var cv = $("g1"), ct = cv.getContext("2d"), d = preparar(cv, ct, 430 / 820);
     var ymax = 0;
-    for (j = 0; j < M; j++) ymax = Math.max(ymax, e.mez[j], patron[j], e.bar[j]);
+    for (j = 0; j < M; j++) ymax = Math.max(ymax, e.mez[j], patron[j], e.bar[j], e.nor[j]);
     for (k = 0; k < e.n; k++) for (j = 0; j < M; j++) ymax = Math.max(ymax, e.obs[k][j]);
     ymax *= 1.08;
     var A = ejes(ct, d, 14, 12, 12, 30, X0, X1, 0, ymax,
@@ -443,10 +484,9 @@
     var alfa = paso === 1 ? Math.max(0.3, 0.95 / Math.sqrt(e.n)) : Math.max(0.13, 0.5 / Math.sqrt(e.n));
     for (k = 0; k < e.n; k++) curva(ct, malla, e.obs[k], A.px, A.py, color("--obs"), 1.3, null, alfa);
     if (paso >= 2) curva(ct, malla, e.mez, A.px, A.py, color("--mez"), 2.8);
-    if (paso >= 3) {
-      curva(ct, malla, e.bar, A.px, A.py, color("--bar"), 2.8);
-      curva(ct, malla, patron, A.px, A.py, color("--patron"), 1.6, [6, 4]);
-    }
+    if (paso >= 3) curva(ct, malla, e.nor, A.px, A.py, color("--nor"), 2.8);
+    if (paso >= 5) curva(ct, malla, e.bar, A.px, A.py, color("--bar"), 2.8);
+    if (paso >= 3) curva(ct, malla, patron, A.px, A.py, color("--patron"), 1.6, [6, 4]);
     ct.fillStyle = color("--gris"); ct.font = "12px " + css.getPropertyValue("--sans");
     ct.textAlign = "right"; ct.textBaseline = "top";
     ct.fillText("tiempo de retención", d.w - 14, d.h - 42);
@@ -456,7 +496,7 @@
       var cv2 = $("g2"), c2 = cv2.getContext("2d"), d2 = preparar(cv2, c2, 430 / 820);
       var lo = Infinity, hi = -Infinity;
       for (j = 0; j < NS; j++) {
-        lo = Math.min(lo, e.qBar[j], qMez[j]); hi = Math.max(hi, e.qBar[j], qMez[j]);
+        lo = Math.min(lo, e.qBar[j], qMez[j], e.qNor[j]); hi = Math.max(hi, e.qBar[j], qMez[j], e.qNor[j]);
         for (k = 0; k < e.n; k++) { lo = Math.min(lo, e.qObs[k][j]); hi = Math.max(hi, e.qObs[k][j]); }
       }
       var pad = 0.08 * (hi - lo);
@@ -465,6 +505,7 @@
       for (k = 0; k < e.n; k++)
         curva(c2, ese, e.qObs[k], B.px, B.py, color("--obs"), 1.3, null, Math.max(0.22, alfa + 0.08));
       curva(c2, ese, qMez, B.px, B.py, color("--mez"), 2.6);
+      curva(c2, ese, e.qNor, B.px, B.py, color("--nor"), 2.6);
       curva(c2, ese, e.qBar, B.px, B.py, color("--bar"), 2.8);
       curva(c2, ese, qPatron, B.px, B.py, color("--patron"), 1.6, [6, 4]);
 
@@ -500,13 +541,23 @@
     $("sdPat").textContent = num(sdCorrida);
     $("sdMez").textContent = num(mM.desvio);
     $("factor").textContent = "×" + num(mM.desvio / sdCorrida);
-    var fB = funcional(e.qBar), fM = funcional(qMez);
+    var altoCorrida = 0, jj;
+    for (jj = 0; jj < M; jj++) altoCorrida = Math.max(altoCorrida, e.obs[0][jj]);
+    var altoMez = 0;
+    for (jj = 0; jj < M; jj++) altoMez = Math.max(altoMez, e.mez[jj]);
+    $("altos").textContent = num(altoCorrida) + " → " + num(altoMez);
     $("wMez").textContent = num(Math.sqrt(w2c(qMez, qPatron)), 3);
+    $("wNor").textContent = num(Math.sqrt(w2c(e.qNor, qPatron)), 3);
     $("wBar").textContent = num(Math.sqrt(w2c(e.qBar, qPatron)), 3);
-    $("fMez").textContent = num(fM, 3);
-    $("fBar").textContent = num(fB, 3) + " (−" + num(100 * (1 - fB / fM), 0) + " %)";
+    $("aPat").textContent = num(altoCentro(patron));
+    $("aNor").textContent = num(altoCentro(e.nor));
+    $("aBar").textContent = num(altoCentro(e.bar));
 
     var vDentro = e.a2 * momPatron.desvio * momPatron.desvio;
+    var wM = Math.sqrt(w2c(qMez, qPatron)), wN = Math.sqrt(w2c(e.qNor, qPatron)),
+        wB = Math.sqrt(w2c(e.qBar, qPatron)),
+        hP = altoCentro(patron), hN = altoCentro(e.nor), hB = altoCentro(e.bar),
+        hM = altoCentro(e.mez);
     PIES[1] = soloCorrimientos
       ? ("Con aᵢ = 1 la mezcla es exactamente la convolución del perfil con la ley de los "
          + "corrimientos: su varianza es la del perfil más la de los bᵢ, "
@@ -515,27 +566,29 @@
       : ("La varianza de la mezcla se parte en dos (varianza total): lo que aporta cada corrida, en "
          + "promedio, más la dispersión de sus centros: " + num(vDentro, 3) + " + " + num(e.mediasVar, 3)
          + " = " + num(vDentro + e.mediasVar, 3) + ". El segundo sumando es puro artefacto del desalineado.");
+    PIES[2] = "Bajo el modelo afín el promedio normalizado es exacto: devuelve μ estirada y corrida por "
+      + "los promedios ā y b̄. Está a W₂ = " + num(wN, 3) + " de μ contra " + num(wM, 3)
+      + " de la mezcla, y esa diferencia que le queda no es error del método: es la escala promedio de "
+      + "las corridas, que nadie puede recuperar sin saber cuánto estiró la columna. El pico del medio "
+      + "mide " + num(hN) + " contra " + num(hP) + " del perfil verdadero; en la mezcla mide " + num(hM) + ".";
+    PIES[3] = e.desajuste === 0
+      ? ("Con la deriva por compuesto en cero estamos todavía en el modelo afín y el promedio normalizado "
+         + "es exacto. Subí el deslizador para romperlo.")
+      : ("Con deriva " + num(e.desajuste) + ", el pico del medio del promedio normalizado mide " + num(hN)
+         + " contra " + num(hP) + " del perfil verdadero, y " + num(hM) + " de la mezcla: la normalización "
+         + "se le acercó. Los picos de los extremos, en cambio, siguen bien: lo que falla es "
+         + "exactamente el pico que se mueve respecto de los otros.");
     PIES[4] = e.desajuste === 0
-      ? "Con la perturbación en cero las corridas vuelven a cumplir el modelo exactamente, y el baricentro "
-        + "vuelve a caer sobre el perfil. Subila para ver qué pasa cuando no."
-      : ("Las corridas ya no son imágenes afines de μ, ni imágenes de μ. El baricentro ya no cae sobre el "
-         + "perfil: está a W₂ = " + num(Math.sqrt(w2c(e.qBar, qPatron)), 3) + " de él, contra "
-         + num(Math.sqrt(w2c(qMez, qPatron)), 3) + " de la mezcla. Pero el error que le queda no es "
-         + "desalineado sino la parte sistemática de la perturbación: el baricentro saca lo que varía al "
-         + "azar entre corridas y se queda con la deformación promedio, que ninguna cantidad de corridas "
-         + "va a cancelar. El método no usa el modelo para calcularse; el modelo es lo que permitía decir "
-         + "que recupera μ.");
-    PIES[2] = e.desajuste === 0
-      ? ("La curva azul se calcula solo con las N corridas: se promedian sus pseudoinversas y se vuelve "
-         + "a la densidad, sin usar a\u1d62, b\u1d62 ni μ, que el laboratorio no conoce. Da el perfil con "
-         + "ā = " + num(e.aMed) + " y b̄ = " + num(e.bMed) + ", como anuncia la proposición: la mayor "
-         + "diferencia entre la pseudoinversa calculada y ā F⁻¹ + b̄ es " + num(e.brecha, 4)
-         + ", que es error de la grilla.")
-      : ("Las corridas ya no son imágenes afines de μ: el desajuste les mete una deformación no lineal, "
-         + "y el modelo que justifica la fórmula deja de valer. El baricentro ya no cae sobre el perfil "
-         + "—está a W₂ = " + num(Math.sqrt(w2c(e.qBar, qPatron)), 3) + " de él— pero sigue mucho más cerca "
-         + "que la mezcla, que está a " + num(Math.sqrt(w2c(qMez, qPatron)), 3) + ". El baricentro no usa "
-         + "el modelo para calcularse; el modelo es lo que permitía decir que recupera μ exactamente.");
+      ? ("Con la deriva en cero los dos coinciden: W₂ = " + num(wN, 3) + " el normalizado y "
+         + num(wB, 3) + " el baricentro. Es el régimen donde el baricentro no agrega nada. "
+         + "Subí la deriva por compuesto.")
+      : ("Con deriva " + num(e.desajuste) + ": W₂ = " + num(wB, 3) + " el baricentro contra "
+         + num(wN, 3) + " el normalizado y " + num(wM, 3) + " la mezcla. En el pico del medio, "
+         + num(hB) + " contra " + num(hN) + ", con " + num(hP) + " de verdadero. Y en el funcional que "
+         + "el baricentro minimiza, F = " + num(funcional(e.qBar), 3) + " contra "
+         + num(funcional(e.qNor), 3) + " del normalizado: esa desigualdad vale siempre, por definición. "
+         + "El baricentro no usa el modelo para calcularse; el modelo es lo que permitiría decir que "
+         + "recupera μ exactamente.");
     $("pie").textContent = PIES[paso - 1] || "";
   }
 
@@ -547,89 +600,125 @@
       texto: $("intro").innerHTML },
     { titulo: "El problema",
       panel: "Las N corridas",
-      sigue: "sigue: el promedio de siempre",
+      sigue: "sigue: promediar las curvas",
       texto: '<p>Un laboratorio pasa <i>N</i> veces la misma muestra por el cromatógrafo. Cada corrida '
         + 'devuelve una curva: cuánta masa sale de la columna en cada instante. Debería ser siempre la '
         + 'misma, pero el tiempo de retención deriva de una corrida a la otra —la temperatura, el caudal, '
         + 'una columna que envejece—, y la corrección estándar para alinear dos corridas es afín, '
-        + '<i>t ↦ a t + b</i> — una hipótesis sobre el instrumento, no un hecho. O sea que la corrida '
-        + '<i>i</i>-ésima es '
-        + '<i>μ<sub>i</sub> = (a<sub>i</sub>t + b<sub>i</sub>)<sub>#</sub>μ</i>, con <i>μ</i> el perfil '
-        + 'verdadero de la muestra, que acá tiene dos compuestos y por eso dos picos. Es una primera aproximación: '
+        + '<i>t ↦ a t + b</i>: una hipótesis sobre el instrumento, no un hecho. O sea que la corrida '
+        + '<i>i</i>-ésima es <i>μ<sub>i</sub> = (a<sub>i</sub>t + b<sub>i</sub>)<sub>#</sub>μ</i>, con '
+        + '<i>μ</i> el perfil verdadero, que acá tiene tres compuestos y por eso tres picos. El modelo '
         + 'supone que la deriva mueve todo el cromatograma por igual, con los mismos <i>a<sub>i</sub></i> y '
-        + '<i>b<sub>i</sub></i> para los dos picos.</p>'
+        + '<i>b<sub>i</sub></i> para los tres picos. Más adelante vamos a romper eso.</p>'
         + '<p>Abajo están las <i>N</i> corridas. Lo que se quiere es inferir <i>μ</i>.</p>' },
-    { titulo: "El promedio que se hace siempre",
+    { titulo: "Promediar las curvas",
       panel: "Las N corridas y su mezcla",
-      sigue: "sigue: el baricentro",
-      texto: '<p>Lo natural es promediar las curvas punto a punto: en cada instante, el promedio de lo que '
-        + 'marcaron las <i>N</i> corridas. Eso es la mezcla <i>Σ λ<sub>i</sub> μ<sub>i</sub></i>, en gris.</p>'
+      sigue: "sigue: lo que se hace de verdad",
+      texto: '<p>Lo primero que uno escribe es el promedio punto a punto: en cada instante, el promedio de '
+        + 'lo que marcaron las <i>N</i> corridas. Eso es la mezcla <i>Σ λ<sub>i</sub> μ<sub>i</sub></i>, '
+        + 'en gris.</p>'
         + '<p>Y no sirve, por una razón que está a la vista: cada pico queda más ancho y más bajo que en '
-        + 'cualquiera de las corridas, y le aparecen jorobas que ninguna corrida tiene. El ensanchamiento no es de los compuestos, '
-        + 'es del desalineado; las jorobas son grupos de corridas que cayeron cerca. Un informe con esa curva '
-        + 'diría que los compuestos salen lentos y dispersos, o que hay más compuestos de los que hay. Y no es '
-        + 'cuestión de medir más: subí la deriva y miralo empeorar, que con cualquier <i>N</i> la mezcla '
-        + 'sigue sin parecerse al perfil.</p>' },
+        + 'cualquiera de las corridas, y le aparecen jorobas que ninguna corrida tiene. El ensanchamiento '
+        + 'no es de los compuestos, es del desalineado; las jorobas son grupos de corridas que cayeron '
+        + 'cerca. Un informe con esa curva diría que los compuestos salen lentos y dispersos, o que hay más '
+        + 'compuestos de los que hay. Y no es cuestión de medir más: subí la deriva y miralo empeorar, que '
+        + 'con cualquier <i>N</i> la mezcla sigue sin parecerse al perfil.</p>'
+        + '<p>Pero nadie hace esto. Veamos qué se hace.</p>' },
+    { titulo: "Lo que se hace de verdad: normalizar y promediar",
+      panel: "Las N corridas, su mezcla y el promedio normalizado",
+      sigue: "sigue: dónde se rompe",
+      texto: '<p>El método estándar no promedia las curvas crudas: primero las alinea. A cada corrida se le '
+        + 'resta su media y se la divide por su desvío, se promedian punto a punto las curvas ya '
+        + 'normalizadas, y se devuelve el resultado a la escala promedio. En naranja.</p>'
+        + '<p>Y anda muy bien. De hecho, bajo el modelo afín anda <i>exactamente</i>, y la cuenta son dos '
+        + 'líneas. Si <i>X ∼ μ</i> y la corrida es <i>X<sub>i</sub> = a<sub>i</sub>X + b<sub>i</sub></i>, '
+        + 'entonces su media es <i>a<sub>i</sub>m + b<sub>i</sub></i> y su desvío <i>a<sub>i</sub>s</i>, de '
+        + 'modo que</p>'
+        + '<p class="formula">(X<sub>i</sub> − m<sub>i</sub>) / s<sub>i</sub> = '
+        + 'a<sub>i</sub>(X − m) / (a<sub>i</sub>s) = (X − m) / s</p>'
+        + '<p>— la <i>misma</i> curva para todas las corridas. Normalizadas, las <i>N</i> coinciden, '
+        + 'promediarlas no borronea nada, y al volver a la escala sale <i>μ</i> con el estiramiento y el '
+        + 'corrimiento promedio. El desalineado desapareció.</p>'
+        + '<p>Lo que queda de diferencia contra la punteada es el estiramiento promedio: <i>ā</i> y '
+        + '<i>b̄</i> no son exactamente 1 y 0 porque las corridas son finitas. Subí <i>N</i> y miralo '
+        + 'desaparecer — con <i>N</i> = 40 la cifra <i>W₂(normalizado, μ)</i> baja a 0,015.</p>'
+        + '<p>Conviene detenerse acá, porque es el punto que suele faltar en las presentaciones de este '
+        + 'tema: contra la mezcla, cualquier cosa gana; el rival serio es éste, y es bueno. La pregunta '
+        + 'correcta no es si el baricentro le gana a la mezcla, sino si le agrega algo a esto.</p>' },
+    { titulo: "Dónde se rompe",
+      panel: "Corridas con deriva por compuesto, su mezcla y el promedio normalizado",
+      sigue: "sigue: el baricentro",
+      texto: '<p>La hipótesis fuerte del paso anterior es que un solo par <i>(a<sub>i</sub>, '
+        + 'b<sub>i</sub>)</i> alinea los tres picos a la vez. En una columna real eso no pasa: la '
+        + 'temperatura y el estado de la fase afectan a cada compuesto de manera distinta, y los autores que '
+        + 'miden estas derivas las describen como «a menudo no lineales e impredecibles». Cada pico deriva '
+        + 'por su cuenta.</p>'
+        + '<p>El deslizador <i>deriva por compuesto</i> agrega exactamente eso: además de la parte afín, el '
+        + 'pico del medio se corre respecto de los otros dos, una cantidad distinta y de signo distinto en '
+        + 'cada corrida. Los picos de los extremos siguen fijando la escala, así que normalizar sigue '
+        + 'alineándolos bien. Al del medio, no.</p>'
+        + '<p>Y ahí la normalización deja de servir. Subí el deslizador y mirá el pico del medio de la curva '
+        + 'naranja: se aplasta, se ensancha y termina al nivel de la mezcla. Es el mismo problema de antes, '
+        + 'intacto, porque restar la media y dividir por el desvío son dos números por corrida y no alcanzan '
+        + 'para describir una deformación que mueve cada pico distinto. Normalizar alinea el centro y la '
+        + 'escala del cromatograma; no alinea los picos entre sí.</p>'
+        + '<p>Y no es cuestión de medir más. En el paso anterior, subir <i>N</i> hacía desaparecer la '
+        + 'diferencia; acá no. Con <i>N</i> = 6 el pico del medio del normalizado mide 0,67; con '
+        + '<i>N</i> = 40, 0,58. Empeora. Lo que sobra no es ruido que se promedie, es sesgo: cada corrida '
+        + 'aporta su pico del medio en un lugar distinto, y promediar densidades los superpone, haya seis '
+        + 'corridas o cuarenta.</p>' },
     { titulo: "El baricentro",
-      panel: "Las N corridas, su mezcla y su baricentro",
+      panel: "Las mismas corridas, su mezcla, el promedio normalizado y el baricentro",
       sigue: "sigue: por qué funciona",
       texto: '<p>En azul, el baricentro de Wasserstein de las <i>N</i> corridas: el minimizador de '
-        + '<i>F(ν) = Σ λ<sub>i</sub> W₂²(ν, μ<sub>i</sub>)</i>. Y en punteado, recién ahora, el perfil '
-        + 'verdadero <i>μ</i>, que la simulación conoce y el laboratorio no. Casi se superponen: difieren solo en el estiramiento y el '
-        + 'corrimiento promedio de las corridas, <i>ā</i> y <i>b̄</i>, que aparecen en la fórmula de abajo.</p>'
-        + '<p>No es casualidad ni es numérico. La Proposición 12.6.1 dice que en la recta el baricentro sale '
-        + 'promediando pseudoinversas, y la de una imagen afín es '
-        + '<i>a<sub>i</sub>F<sub>μ</sub><sup>−1</sup> + b<sub>i</sub></i>, de modo que promediarlas solo '
-        + 'promedia <i>a</i> y <i>b</i>:</p>'
+        + '<i>F(ν) = Σ λ<sub>i</sub> W₂²(ν, μ<sub>i</sub>)</i>. Y en punteado, el perfil verdadero '
+        + '<i>μ</i>, que la simulación conoce y el laboratorio no.</p>'
+        + '<p>Dos cosas, y la primera es la honesta. Con la deriva por compuesto en cero, el baricentro y el '
+        + 'promedio normalizado dan lo mismo, hasta el último decimal de las cifras. No es casualidad: los '
+        + 'dos devuelven <i>(ā t + b̄)<sub>#</sub>μ</i>, y en ese régimen el baricentro no aporta nada que '
+        + 'no se consiga con dos momentos y una división. Si el modelo afín vale, normalizá y andate a casa.</p>'
+        + '<p>La segunda es que apenas la deriva deja de ser común a los tres picos, se separan. El '
+        + 'baricentro sigue recuperando el pico del medio con su alto correcto mientras el normalizado lo '
+        + 'parte. La razón es que la deriva de cada corrida es al azar y sin sesgo, y promediar '
+        + 'pseudoinversas la promedia a cero: el baricentro alinea <i>cada cuantil</i> por separado, que es '
+        + 'como decir que alinea cada pico por separado, sin que haya que decirle cuántos picos hay ni '
+        + 'cuáles se corresponden. Probá subir <i>N</i>: el pico del medio del baricentro se queda '
+        + 'donde está, en 0,85 o 0,86 contra 0,85 del verdadero, mientras el del normalizado baja a '
+        + '0,58.</p>'
+        + '<p>Tampoco hace falta conocer <i>a<sub>i</sub></i>, <i>b<sub>i</sub></i>, la deriva ni <i>μ</i>: '
+        + 'la curva azul sale de promediar las pseudoinversas de las corridas y volver a la densidad, que '
+        + 'es lo único que el laboratorio tiene. Y en la recta eso es exactamente la '
+        + 'Proposición 12.6.1:</p>'
         + '<p class="formula">F<sub>μ̄</sub><sup>−1</sup> = (1/N) Σ<sub>i</sub> '
-        + 'F<sub>μ<sub>i</sub></sub><sup>−1</sup> = ā F<sub>μ</sub><sup>−1</sup> + b̄ &nbsp;⟹&nbsp; '
-        + 'μ̄ = (ā t + b̄)<sub>#</sub> μ</p>'
-        + '<p>Y no hace falta conocer <i>a<sub>i</sub></i>, <i>b<sub>i</sub></i> ni <i>μ</i> para calcularlo: '
-        + 'la curva azul sale de promediar las pseudoinversas de las <i>N</i> corridas y volver a la densidad, '
-        + 'que es lo único que el laboratorio tiene. La igualdad de arriba es el resultado, no el método.</p>'
-        + '<p>Las cifras miden las dos curvas contra el perfil verdadero, y en el funcional que el baricentro '
-        + 'minimiza.</p>' },
+        + 'F<sub>μ<sub>i</sub></sub><sup>−1</sup></p>' },
     { titulo: "Por qué funciona",
-      panel: "Las N corridas, su mezcla y su baricentro",
-      sigue: "sigue: y si el modelo no vale",
-      texto: '<p>Conviene comparar las dos curvas sabiendo qué es cada una. La mezcla tampoco es un '
-        + 'promedio ingenuo: es el minimizador de '
-        + '<i>Σ λ<sub>i</sub> ‖ν − μ<sub>i</sub>‖²</i> en <i>L²</i>, es decir, el promedio que corresponde '
-        + 'a medir distancias entre densidades punto a punto, del mismo modo que el baricentro es el que '
-        + 'corresponde a medirlas con <i>W₂</i>. Las dos son promedios, cada uno en su geometría, y la '
-        + 'pregunta es cuál describe lo que pasó en la columna. Lo que pasó fue que el pico se movió.</p>'
-        + '<p>El panel de abajo lo muestra. El eje horizontal ya no es tiempo sino <i>s</i>, la fracción de la '
-        + 'masa; el vertical sí es tiempo. La curva <i>F<sup>−1</sup>(s)</i> contesta «¿a qué tiempo ya salió '
-        + 'el <i>s</i> por ciento de la muestra?»: el mismo cromatograma visto desde el lado de la masa, plano '
-        + 'donde la densidad es alta y empinado donde es baja. Las corridas, que son '
-        + '<i>a<sub>i</sub>F<sub>μ</sub><sup>−1</sup> + b<sub>i</sub></i>, forman un abanico de copias estiradas '
-        + 'y corridas de una sola curva. Con dos picos se nota: cada pico es un tramo plano, y entre los dos hay un salto.</p>'
-        + '<p>Y como en la recta <i>W₂</i> es la distancia <i>L²</i> entre pseudoinversas, el baricentro es el '
-        + 'promedio en estas coordenadas: para cada <i>s</i>, el punto azul está en el promedio de los celestes. '
-        + 'El de la mezcla, no — esa promedia las <i>F</i>, no las <i>F<sup>−1</sup></i>.</p>' },
-    { titulo: "Y si el modelo no vale",
-      panel: "Corridas perturbadas, su mezcla y su baricentro",
+      panel: "Las mismas corridas, su mezcla, el promedio normalizado y el baricentro",
       sigue: "",
-      texto: '<p>Hasta acá la simulación generaba las corridas exactamente como dice el modelo, '
-        + '<i>μ<sub>i</sub> = (a<sub>i</sub>t + b<sub>i</sub>)<sub>#</sub>μ</i>, y el baricentro caía sobre '
-        + '<i>μ</i> como anuncia la fórmula. Pero <i>t ↦ a t + b</i> es una hipótesis sobre el instrumento, '
-        + 'y en una columna real no se cumple: la deriva no es exactamente afín y el detector tiene '
-        + 'ruido.</p>'
-        + '<p>El deslizador <i>perturbación</i> lo rompe. A cada corrida se le aplica, además de la parte '
-        + 'afín, un estiramiento creciente hacia la derecha —la cola que aparece a medida que la columna se '
-        + 'usa— de magnitud distinta en cada una, y se le suma ruido multiplicativo, que ya no es una '
-        + 'deformación del eje sino otra cosa. Las corridas dejan de ser imágenes afines de <i>μ</i>, y ni '
-        + 'siquiera imágenes de <i>μ</i>.</p>'
-        + '<p>El cálculo no cambia en nada: se promedian las pseudoinversas de lo que se observa. Lo que '
-        + 'cambia es qué significa el resultado. Mirá las cifras y el pie.</p>'
-        + '<p>Que el baricentro le gane a la mezcla no quiere decir que sea lo mejor que se puede hacer. Acá los dos '
-        + 'picos derivan juntos; en un cromatograma real cada compuesto puede derivar distinto, y los métodos que se '
-        + 'usan en la práctica alinean pico por pico (por ejemplo <i>correlation optimized warping</i>, que menciona '
-        + '<a href="https://www.chromatographyonline.com/view/controlling-retention-time-drift-in-industrial-chromatography">este artículo</a>). '
-        + 'Hay también trabajos que usan transporte óptimo para eso: '
-        + '<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9633278/">Alignstein</a> (Skoraczyński, Gambin y '
-        + 'Miasojedow, <i>GigaScience</i>, 2022) empareja los picos de distintas corridas con una distancia de '
-        + 'Wasserstein generalizada. Un baricentro de todo el cromatograma es el punto de partida más simple, no el final.</p>' }
+      texto: '<p>Conviene comparar las curvas sabiendo qué es cada una. La mezcla tampoco es un promedio '
+        + 'ingenuo: es el minimizador de <i>Σ λ<sub>i</sub> ‖ν − μ<sub>i</sub>‖²</i> en <i>L²</i>, es '
+        + 'decir, el promedio que corresponde a medir distancias entre densidades punto a punto, del mismo '
+        + 'modo que el baricentro es el que corresponde a medirlas con <i>W₂</i>. Las dos son promedios, '
+        + 'cada uno en su geometría, y la pregunta es cuál describe lo que pasó en la columna. Lo que pasó '
+        + 'fue que los picos se movieron. El promedio normalizado es un tercer punto intermedio: corrige el '
+        + 'movimiento con una transformación afín estimada de dos momentos, y después promedia en <i>L²</i> '
+        + 'igual que la mezcla.</p>'
+        + '<p>El panel de abajo lo muestra. El eje horizontal ya no es tiempo sino <i>s</i>, la fracción de '
+        + 'la masa; el vertical sí es tiempo. La curva <i>F<sup>−1</sup>(s)</i> contesta «¿a qué tiempo ya '
+        + 'salió el <i>s</i> por ciento de la muestra?»: el mismo cromatograma visto desde el lado de la '
+        + 'masa, plano donde la densidad es alta y empinado donde es baja. Con tres picos se nota: cada pico '
+        + 'es un tramo plano, y entre uno y otro hay un salto.</p>'
+        + '<p>Y como en la recta <i>W₂</i> es la distancia <i>L²</i> entre pseudoinversas, el baricentro es '
+        + 'el promedio en estas coordenadas: para cada <i>s</i>, el punto azul está en el promedio de los '
+        + 'celestes. Ahí se ve por qué la deriva de cada pico se cancela y por qué no hacía falta saber '
+        + 'cuántos picos había: cada <i>s</i> se promedia solo.</p>'
+        + '<p>Nada de esto quiere decir que el baricentro sea lo mejor que se puede hacer. Los métodos que '
+        + 'se usan en la práctica alinean pico por pico (por ejemplo <i>correlation optimized warping</i>, '
+        + 'que menciona <a href="https://www.chromatographyonline.com/view/controlling-retention-time-drift-in-industrial-chromatography">este artículo</a>), '
+        + 'y hay trabajos que usan transporte óptimo para eso: '
+        + '<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9633278/">Alignstein</a> (Skoraczyński, Gambin '
+        + 'y Miasojedow, <i>GigaScience</i>, 2022) empareja los picos de distintas corridas con una '
+        + 'distancia de Wasserstein generalizada. Un baricentro de todo el cromatograma es el punto de '
+        + 'partida más simple, no el final.</p>' }
   ];
 
   function mostrar() {
@@ -645,12 +734,16 @@
     $("panel1").hidden = paso < 1;
     $("pie").hidden = paso < 1;
     $("llaveMez").hidden = paso < 2;
-    $("llaveBar").hidden = paso < 3;
+    $("llaveNor").hidden = paso < 3;
+    $("llaveBar").hidden = paso < 5;
     $("llavePat").hidden = paso < 3;
     $("cifras1").hidden = paso < 2;
     $("cifras2").hidden = paso < 3;
-    $("panelQ").hidden = paso < 4;
-    $("campoDesaj").hidden = paso < 5;
+    $("cWBar").hidden = paso < 5;
+    $("cifras3").hidden = paso < 4;
+    $("cABar").hidden = paso < 5;
+    $("panelQ").hidden = paso < 6;
+    $("campoDesaj").hidden = paso < 4;
     Array.prototype.forEach.call(document.querySelectorAll(".punto"), function (b) {
       b.setAttribute("aria-current", String(parseInt(b.dataset.paso, 10) === paso));
     });
