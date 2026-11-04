@@ -11498,21 +11498,57 @@ convierte la igualdad en la convexidad —que solo dice que los dos planes
 $\pi_a,\pi_b$ se pueden mezclar sin perder optimalidad— en la igualdad de los
 planes mismos, porque el plan óptimo desde $\mu_1$ es un mapa y no puede
 dividir masa. Sin ninguna medida absolutamente continua la unicidad puede
-fallar en dimensión $d\ge2$. Por ejemplo, en $\R^2$, sean
-$\mu_1=\tfrac12(\delta_{(-1,0)}+\delta_{(1,0)})$ y
-$\mu_2=\tfrac12(\delta_{(0,-1)}+\delta_{(0,1)})$ con pesos iguales. Los dos
-emparejamientos posibles tienen el mismo costo cuadrático (cada punto se
-mueve a distancia $\sqrt2$, y $W_2^2(\mu_1,\mu_2)=2$), de modo que hay dos
-planes óptimos inducidos por mapas y, por la Proposición~\ref{prop.bar.dos},
-los puntos medios de las dos geodésicas correspondientes,
+fallar en dimensión $d\ge2$, y el ejemplo más chico cabe en cuatro puntos.
+
+En $\R^2$, sean
+\[
+\mu_1=\tfrac12\bigl(\delta_{(-1,0)}+\delta_{(1,0)}\bigr),
+\qquad
+\mu_2=\tfrac12\bigl(\delta_{(0,-1)}+\delta_{(0,1)}\bigr),
+\]
+con pesos $\lambda_1=\lambda_2=\tfrac12$, de modo que
+$\mathcal F(\nu)=\tfrac12W_2^2(\nu,\mu_1)+\tfrac12W_2^2(\nu,\mu_2)$.
+
+Primero, el valor del mínimo. Los cuatro átomos son los vértices de un
+cuadrado y cualquier diferencia $x_i-y_j$ tiene las dos coordenadas iguales a
+$\pm1$, de modo que los cuatro costos valen $|x_i-y_j|^2=2$. Entonces todo
+plan $\pi\in\Pi(\mu_1,\mu_2)$ cuesta $\langle C,\pi\rangle=2\sum_{ij}\pi_{ij}=2$:
+el costo es constante sobre $\Pi(\mu_1,\mu_2)$, todos los planes son óptimos
+y $W_2^2(\mu_1,\mu_2)=2$. Por la Proposición~\ref{prop.bar.dos} con
+$t=\tfrac12$, el mínimo de $\mathcal F$ vale
+$\tfrac14W_2^2(\mu_1,\mu_2)=\tfrac12$.
+
+Segundo, dos medidas que lo alcanzan. Sean
 \[
 \nu_a=\tfrac12\bigl(\delta_{(-\frac12,-\frac12)}+\delta_{(\frac12,\frac12)}\bigr)
 \qquad\text{y}\qquad
-\nu_b=\tfrac12\bigl(\delta_{(-\frac12,\frac12)}+\delta_{(\frac12,-\frac12)}\bigr),
+\nu_b=\tfrac12\bigl(\delta_{(-\frac12,\frac12)}+\delta_{(\frac12,-\frac12)}\bigr).
 \]
-son ambos baricentros, con valor mínimo
-$\frac14W_2^2(\mu_1,\mu_2)=\frac12$ (y, por el Lema~\ref{lema.W2.convexo},
-también lo es cualquier mezcla de los dos). En dimensión uno, en cambio, veremos en la
+Calculemos $\mathcal F(\nu_a)$. Cada átomo de $\nu_a$ está a distancia al
+cuadrado $\tfrac12$ del átomo de $\mu_1$ que tiene de su lado y a $\tfrac52$
+del otro: por ejemplo
+$|(-\tfrac12,-\tfrac12)-(-1,0)|^2=\tfrac14+\tfrac14=\tfrac12$ y
+$|(-\tfrac12,-\tfrac12)-(1,0)|^2=\tfrac94+\tfrac14=\tfrac52$. Como ambas
+medidas tienen dos átomos de masa $\tfrac12$, un plan queda determinado por
+la masa $t\in[0,1]$ que va por los dos pares baratos, y su costo es
+$t\cdot\tfrac12+(1-t)\cdot\tfrac52=\tfrac52-2t$, mínimo en $t=1$. Luego
+$W_2^2(\nu_a,\mu_1)=\tfrac12$, y la misma cuenta mirando arriba y abajo en
+lugar de izquierda y derecha da $W_2^2(\nu_a,\mu_2)=\tfrac12$. Por lo tanto
+$\mathcal F(\nu_a)=\tfrac12$ y $\nu_a$ es un baricentro.
+
+Para $\nu_b$ no hace falta repetir nada. La reflexión $R(x,y)=(x,-y)$ deja
+fija a $\mu_1$, porque no mueve a $(\pm1,0)$, y deja fija a $\mu_2$, porque
+intercambia sus dos átomos, que tienen la misma masa; como $W_2$ es
+invariante al aplicar una isometría a los dos argumentos, $\mathcal F(R_\#\nu)=\mathcal F(\nu)$
+para toda $\nu$. Y $R_\#\nu_a=\nu_b$, de modo que $\mathcal F(\nu_b)=\tfrac12$
+y $\nu_b$ también es un baricentro. Como $\nu_a\neq\nu_b$, no hay unicidad.
+(Por el Lema~\ref{lema.W2.convexo}, cualquier mezcla de los dos lo es
+también.)
+
+Vale la pena mirar qué fue lo que falló. Los datos tienen una simetría, $R$,
+que ninguno de los dos minimizadores respeta: la no unicidad es aquí una
+ruptura de simetría, y $\nu_a$ y $\nu_b$ son las dos mitades intercambiadas
+por $R$. En dimensión uno, en cambio, veremos en la
 Proposición~\ref{prop.bar.1D} que el baricentro es siempre único.
 \end{obs}
 
