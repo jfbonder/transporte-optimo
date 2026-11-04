@@ -446,4 +446,42 @@ Capítulo~\ref{N-cap.Sinkhorn} se ve la versión entrópica, que escala mucho
 mejor.
 \end{ejercicio}
 
+\begin{ejercicio}[La iteración de punto fijo para gaussianas]\label{ejc.bar.gauss.iteracion}
+Implementar la iteración
+$\Sigma_{k+1}=\sum_i\lambda_i(\Sigma_k^{1/2}\Sigma_i\Sigma_k^{1/2})^{1/2}$ que
+resuelve \eqref{N-eq:bar.gauss.puntofijo}, usando una raíz cuadrada matricial
+obtenida por diagonalización (las matrices en juego son simétricas definidas
+positivas).
+\begin{enumerate}[label=(\alph*)]
+\item Probarla primero con tres covarianzas $2\times2$ \emph{diagonales}, donde
+el Ejercicio~\ref{ejer.bar.gauss.conmutan} da la respuesta exacta
+$\bar\Sigma=(\sum_i\lambda_i\Sigma_i^{1/2})^2$, y verificar que la iteración
+converge a ella.
+\item Repetir con las tres covarianzas de la Figura~\ref{N-fig.bar.gauss}, que
+no conmutan: desvíos $0{,}48$ y $0{,}15$ con direcciones largas a $0^\circ$,
+$30^\circ$ y $60^\circ$. Comprobar que el límite tiene semiejes $0{,}437$ y
+$0{,}188$ en la dirección $30^\circ$. Verificar que esa dirección está forzada
+por la simetría de la configuración respecto de ese eje, cambiando los tres
+ángulos a $\alpha$, $\alpha+30^\circ$, $\alpha+60^\circ$ y observando que el
+baricentro rota con ellos. Romper después la simetría (mover un solo ángulo, o
+desbalancear los $\lambda_i$) y ver que la dirección del baricentro deja de
+ser la del medio.
+\item Girar las tres direcciones a $0^\circ$, $120^\circ$ y $240^\circ$ y
+comprobar que ahí el límite \emph{sí} es isótropo, $\bar\Sigma=\bar\sigma^2I$
+con $\bar\sigma=\tfrac12(\sigma_{\text{largo}}+\sigma_{\text{corto}})$, como
+predice la simetría de rotación de $120^\circ$. Es el único caso de esta
+familia en que la respuesta se escribe a mano.
+\item Arrancar de varios $\Sigma_0$ distintos y verificar que el límite no
+depende del punto inicial. Graficar $\|\Sigma_{k+1}-\Sigma_k\|$ en escala
+logarítmica y estimar si la convergencia es lineal o más rápida.
+\item En el límite, calcular
+$A_i=\bar\Sigma^{-1/2}(\bar\Sigma^{1/2}\Sigma_i\bar\Sigma^{1/2})^{1/2}\bar\Sigma^{-1/2}$
+y verificar numéricamente que $\sum_i\lambda_iA_i=I$, que es la condición de
+primer orden de la Proposición~\ref{N-prop.bar.criterio}.
+\item Comparar el resultado con el que da el algoritmo de soporte libre de la
+Sección~4 del cuaderno aplicado a muestras de las tres gaussianas: estimar la
+covarianza empírica del baricentro calculado y contrastarla con $\bar\Sigma$.
+\end{enumerate}
+\end{ejercicio}
+
 \end{document}

@@ -11907,7 +11907,73 @@ cálculo en una base común de autovectores da
 $\Sigma^{1/2}=\sum_i\lambda_i\Sigma_i^{1/2}$. En general, sin embargo, la
 solución de \eqref{eq:bar.gauss.puntofijo} no admite fórmula cerrada, y el
 baricentro de gaussianas es ya un objeto que hay que calcular numéricamente.
+La Figura~\ref{fig.bar.gauss} muestra un ejemplo de ese caso general.
 \end{obs}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig, scale=1.3]
+  \draw[aux, black!22] (0.000,2.400) -- (-2.078,-1.200) -- (2.078,-1.200) -- cycle;
+  % $\mu_1$
+  \begin{scope}[shift={(0.000,2.400)}, rotate=30]
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (1.056 and 0.330);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.864 and 0.270);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.672 and 0.210);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.480 and 0.150);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.288 and 0.090);
+  \end{scope}
+  % $\mu_2$
+  \begin{scope}[shift={(-2.078,-1.200)}, rotate=0]
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (1.056 and 0.330);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.864 and 0.270);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.672 and 0.210);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.480 and 0.150);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.288 and 0.090);
+  \end{scope}
+  % $\mu_3$
+  \begin{scope}[shift={(2.078,-1.200)}, rotate=60]
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (1.056 and 0.330);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.864 and 0.270);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.672 and 0.210);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.480 and 0.150);
+    \fill[figwarn, fill opacity=0.17] (0,0) ellipse (0.288 and 0.090);
+  \end{scope}
+  % el baricentro, calculado con la iteración de punto fijo
+  \begin{scope}[rotate=30.0]
+    \fill[figmain, fill opacity=0.17] (0,0) ellipse (0.961 and 0.413);
+    \fill[figmain, fill opacity=0.17] (0,0) ellipse (0.786 and 0.338);
+    \fill[figmain, fill opacity=0.17] (0,0) ellipse (0.612 and 0.263);
+    \fill[figmain, fill opacity=0.17] (0,0) ellipse (0.437 and 0.188);
+    \fill[figmain, fill opacity=0.17] (0,0) ellipse (0.262 and 0.113);
+  \end{scope}
+  \node[pt, figwarn] at (0.000,2.400) {};
+  \node[pt, figwarn] at (-2.078,-1.200) {};
+  \node[pt, figwarn] at (2.078,-1.200) {};
+  \node[pt, figmain] at (0,0) {};
+  \node[rotulo, figwarn, anchor=south] at (0.000,2.820) {$\mu_1$};
+  \node[rotulo, figwarn, anchor=north east] at (-2.578,-1.450) {$\mu_2$};
+  \node[rotulo, figwarn, anchor=north west] at (2.278,-1.650) {$\mu_3$};
+  \node[rotulo, figmain, anchor=north] at (0,-0.62) {$\bar\mu$};\end{tikzpicture}
+\caption{Tres gaussianas en el plano, en rojo, y su baricentro con pesos
+iguales, en azul; el sombreado marca curvas de nivel de cada densidad, que
+para una gaussiana son elipses. Las medias están en los vértices de un
+triángulo equilátero, y las tres covarianzas son iguales salvo rotación, con
+desvíos $0{,}48$ y $0{,}15$ y direcciones largas a $0^\circ$, $30^\circ$ y
+$60^\circ$. La figura exhibe por separado las dos mitades de la
+Proposición~\ref{prop.bar.gauss}. La media del baricentro es
+$\bar m=\sum_i\lambda_im_i$, el baricentro del triángulo. Y su covarianza
+depende \emph{solo} de las $\Sigma_i$, no de cuán separadas estén las medias:
+por eso $\bar\mu$ queda más concentrada que cualquiera de las $\mu_i$, mientras
+que la mezcla $\tfrac13(\mu_1+\mu_2+\mu_3)$ sería trimodal y ocuparía todo el
+triángulo. El baricentro promedia las formas; la mezcla superpone las
+densidades. Como las $\Sigma_i$ no conmutan, $\bar\Sigma$ no tiene fórmula
+cerrada y está calculada con la iteración de punto fijo
+(Ejercicio~\ref{ejc.bar.gauss.iteracion}): sus semiejes son $0{,}437$ y
+$0{,}188$. La dirección $30^\circ$, en cambio, sí es gratis: la configuración
+es simétrica respecto de ese eje, de modo que $\bar\Sigma$ también tiene que
+serlo.}
+\label{fig.bar.gauss}
+\end{figure}
 
 %──────────────────────────────────────────────────────────────────────────────
 
@@ -12118,6 +12184,44 @@ coinciden. Explicar por qué el multimarginal no se puede usar sobre la grilla
 de las formas: ¿cuántas variables tendría? En el
 Capítulo~\ref{cap.Sinkhorn} se ve la versión entrópica, que escala mucho
 mejor.
+\end{ejercicio}
+
+\begin{ejercicio}[La iteración de punto fijo para gaussianas]\label{ejc.bar.gauss.iteracion}
+Implementar la iteración
+$\Sigma_{k+1}=\sum_i\lambda_i(\Sigma_k^{1/2}\Sigma_i\Sigma_k^{1/2})^{1/2}$ que
+resuelve \eqref{eq:bar.gauss.puntofijo}, usando una raíz cuadrada matricial
+obtenida por diagonalización (las matrices en juego son simétricas definidas
+positivas).
+\begin{enumerate}[label=(\alph*)]
+\item Probarla primero con tres covarianzas $2\times2$ \emph{diagonales}, donde
+el Ejercicio~\ref{ejer.bar.gauss.conmutan} da la respuesta exacta
+$\bar\Sigma=(\sum_i\lambda_i\Sigma_i^{1/2})^2$, y verificar que la iteración
+converge a ella.
+\item Repetir con las tres covarianzas de la Figura~\ref{fig.bar.gauss}, que
+no conmutan: desvíos $0{,}48$ y $0{,}15$ con direcciones largas a $0^\circ$,
+$30^\circ$ y $60^\circ$. Comprobar que el límite tiene semiejes $0{,}437$ y
+$0{,}188$ en la dirección $30^\circ$. Verificar que esa dirección está forzada
+por la simetría de la configuración respecto de ese eje, cambiando los tres
+ángulos a $\alpha$, $\alpha+30^\circ$, $\alpha+60^\circ$ y observando que el
+baricentro rota con ellos. Romper después la simetría (mover un solo ángulo, o
+desbalancear los $\lambda_i$) y ver que la dirección del baricentro deja de
+ser la del medio.
+\item Girar las tres direcciones a $0^\circ$, $120^\circ$ y $240^\circ$ y
+comprobar que ahí el límite \emph{sí} es isótropo, $\bar\Sigma=\bar\sigma^2I$
+con $\bar\sigma=\tfrac12(\sigma_{\text{largo}}+\sigma_{\text{corto}})$, como
+predice la simetría de rotación de $120^\circ$. Es el único caso de esta
+familia en que la respuesta se escribe a mano.
+\item Arrancar de varios $\Sigma_0$ distintos y verificar que el límite no
+depende del punto inicial. Graficar $\|\Sigma_{k+1}-\Sigma_k\|$ en escala
+logarítmica y estimar si la convergencia es lineal o más rápida.
+\item En el límite, calcular
+$A_i=\bar\Sigma^{-1/2}(\bar\Sigma^{1/2}\Sigma_i\bar\Sigma^{1/2})^{1/2}\bar\Sigma^{-1/2}$
+y verificar numéricamente que $\sum_i\lambda_iA_i=I$, que es la condición de
+primer orden de la Proposición~\ref{prop.bar.criterio}.
+\item Comparar el resultado con el que da el algoritmo de soporte libre de la
+Sección~4 del cuaderno aplicado a muestras de las tres gaussianas: estimar la
+covarianza empírica del baricentro calculado y contrastarla con $\bar\Sigma$.
+\end{enumerate}
 \end{ejercicio}
 
 \chapter{Transporte entrópico y el algoritmo de Sinkhorn}\label{cap.Sinkhorn}
