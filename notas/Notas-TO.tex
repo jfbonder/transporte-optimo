@@ -11536,7 +11536,8 @@ $W_2^2(\nu_a,\mu_1)=\tfrac12$, y la misma cuenta mirando arriba y abajo en
 lugar de izquierda y derecha da $W_2^2(\nu_a,\mu_2)=\tfrac12$. Por lo tanto
 $\mathcal F(\nu_a)=\tfrac12$ y $\nu_a$ es un baricentro.
 
-Para $\nu_b$ no hace falta repetir nada. La reflexión $R(x,y)=(x,-y)$ deja
+Para $\nu_b$ no hace falta repetir nada (Figura~\ref{fig.bar.reflexion}).
+La reflexión $R(x,y)=(x,-y)$ deja
 fija a $\mu_1$, porque no mueve a $(\pm1,0)$, y deja fija a $\mu_2$, porque
 intercambia sus dos átomos, que tienen la misma masa; como $W_2$ es
 invariante al aplicar una isometría a los dos argumentos, $\mathcal F(R_\#\nu)=\mathcal F(\nu)$
@@ -11551,6 +11552,44 @@ ruptura de simetría, y $\nu_a$ y $\nu_b$ son las dos mitades intercambiadas
 por $R$. En dimensión uno, en cambio, veremos en la
 Proposición~\ref{prop.bar.1D} que el baricentro es siempre único.
 \end{obs}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[fig, scale=1.9]
+  \draw[eje] (0,-1.5) -- (0,1.5);
+  \draw[aux, black!20] (-1,0) -- (0,1) -- (1,0) -- (0,-1) -- cycle;
+  % el eje de la reflexión es el eje horizontal
+  \draw[dashed, semithick, figgrey] (-1.75,0) -- (1.9,0);
+  \node[anota, anchor=south east] at (1.9,0.06) {eje de $R$};
+  % qué intercambia R
+  \draw[<->, thin, figgrey] (-0.62,0.40) to[bend right=22] (-0.62,-0.40);
+  \draw[<->, thin, figgrey] (0.62,0.40) to[bend left=22] (0.62,-0.40);
+  \draw[<->, thin, figgrey] (-0.16,0.88) -- (-0.16,-0.88);
+  \node[pt, figmain] at (-1,0) {};  \node[pt, figmain] at (1,0) {};
+  \node[pt, figalt] at (0,-1) {};   \node[pt, figalt] at (0,1) {};
+  \node[pt, figacc] at (-0.5,-0.5) {};  \node[pt, figacc] at (0.5,0.5) {};
+  \node[ptvacio, draw=figacc] at (-0.5,0.5) {};
+  \node[ptvacio, draw=figacc] at (0.5,-0.5) {};
+  \node[rotulo, figmain, anchor=north] at (-1,-0.08) {$\mu_1$};
+  \node[rotulo, figmain, anchor=north] at (1,-0.08) {$\mu_1$};
+  \node[rotulo, figalt, anchor=south west] at (0.06,1.02) {$\mu_2$};
+  \node[rotulo, figalt, anchor=north west] at (0.06,-1.02) {$\mu_2$};
+  \node[rotulo, figacc, anchor=south west] at (0.55,0.53) {$\nu_a$};
+  \node[rotulo, figacc, anchor=south east] at (-0.55,0.53) {$\nu_b$};
+  \node[rotulo, figacc, anchor=north east] at (-0.55,-0.53) {$\nu_a$};
+  \node[rotulo, figacc, anchor=north west] at (0.55,-0.53) {$\nu_b$};
+\end{tikzpicture}
+\caption{Los ocho átomos de la Observación~\ref{obs.bar.no.unicidad}, todos
+de masa $\tfrac12$ dentro de su medida: $\mu_1$ en $(\pm1,0)$, $\mu_2$ en
+$(0,\pm1)$ y los dos baricentros $\nu_a$ (lleno) y $\nu_b$ (hueco) en los
+cuatro puntos $(\pm\tfrac12,\pm\tfrac12)$, que son los puntos medios de los
+lados del cuadrado. La reflexión $R(x,y)=(x,-y)$ tiene por eje la recta
+horizontal: no mueve a los átomos de $\mu_1$, que están sobre el eje, e
+intercambia los dos átomos de $\mu_2$, que tienen la misma masa, de modo que
+deja fijas a las dos medidas del problema. Pero intercambia $\nu_a$ con
+$\nu_b$, y por eso ninguno de los dos puede ser el único baricentro.}
+\label{fig.bar.reflexion}
+\end{figure}
 
 %──────────────────────────────────────────────────────────────────────────────
 \section{Un criterio de optimalidad}\label{sec.bar.criterio}
