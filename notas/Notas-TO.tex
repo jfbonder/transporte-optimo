@@ -12389,8 +12389,8 @@ h'(s)=1+\log s\longrightarrow-\infty\qquad\text{cuando }s\to0^+ .
 \]
 (Figura~\ref{fig.ent.h}, panel derecho.)
 En una entrada nula, mover masa hacia ella hace bajar la penalización a
-velocidad infinita, y ningún costo lineal puede compensar eso: el borde del
-ortante queda fuera del alcance del minimizador. El término
+velocidad infinita, y ningún costo lineal puede compensar eso: ningún plan
+con una entrada nula puede ser óptimo. El término
 $\varepsilon\,\mathrm{KL}$ actúa, entonces, como una \emph{barrera
 logarítmica} para las restricciones $\pi_{ij}\ge0$, igual que en los métodos
 de punto interior, y el problema entrópico es el de Kantorovich con esa
@@ -12592,7 +12592,8 @@ cualificación estándar falla tal como se la enuncia habitualmente. Para
 evitarlo, descartamos una restricción —digamos la de la última columna—: las
 $n+m-1$ restantes sí tienen gradientes linealmente independientes, y el
 conjunto factible no cambia, porque la restricción descartada se deduce de
-las otras. Como además $\pi^\varepsilon$ es un punto interior del ortante, el
+las otras. Como además $\pi^\varepsilon$ tiene todas sus entradas
+estrictamente positivas (Proposición~\ref{prop.OTeps.existencia}), el
 teorema de los multiplicadores de Lagrange da la existencia de $\alpha\in\R^n$ y $\beta\in\R^m$ tales
 que
 \[
