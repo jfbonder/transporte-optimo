@@ -12595,15 +12595,21 @@ diferenciable en un entorno de $\pi^\varepsilon$, con
 \[
 \frac{\partial G}{\partial\pi_{ij}}(\pi)=c_{ij}+\varepsilon\Bigl(1+\log\frac{\pi_{ij}}{a_ib_j}\Bigr).
 \]
-Las $n+m$ restricciones de marginales son lineales, pero no independientes:
-la suma de todas las filas y la de todas las columnas dan ambas $1$, de modo
-que una cualquiera de ellas es consecuencia de las demás y la condición de
-cualificación estándar falla tal como se la enuncia habitualmente. Para
-evitarlo, descartamos una restricción —digamos la de la última columna—: las
-$n+m-1$ restantes sí tienen gradientes linealmente independientes, y el
-conjunto factible no cambia, porque la restricción descartada se deduce de
-las otras. Como además $\pi^\varepsilon$ tiene todas sus entradas
-estrictamente positivas (Proposición~\ref{prop.OTeps.existencia}), el
+Las restricciones de marginales,
+\[
+\sum_j\pi_{ij}=a_i\quad(i=1,\dots,n),
+\qquad
+\sum_i\pi_{ij}=b_j\quad(j=1,\dots,m),
+\]
+son $n+m$ ecuaciones lineales, pero no independientes: sumando las primeras
+$n$ queda $\sum_{ij}\pi_{ij}=\sum_ia_i=1$, y sumando las otras $m$ queda
+$\sum_{ij}\pi_{ij}=\sum_jb_j=1$, que es la misma ecuación. Por eso cada una
+de las $n+m$ se deduce de las restantes y sus gradientes no pueden ser
+linealmente independientes. Para evitarlo descartamos una —digamos la de la
+última columna—: las $n+m-1$ restantes sí tienen gradientes linealmente
+independientes, y el conjunto factible no cambia, porque la descartada se
+deduce de ellas. Como además $\pi^\varepsilon$ tiene todas sus entradas
+estrictamente positivas, el
 teorema de los multiplicadores de Lagrange da la existencia de $\alpha\in\R^n$ y $\beta\in\R^m$ tales
 que
 \[
