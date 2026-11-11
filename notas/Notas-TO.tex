@@ -12733,8 +12733,18 @@ entrópicos son $c$-transformadas suavizadas uno del otro:
 \varphi^\varepsilon=(\psi^\varepsilon)^{\bar c,\varepsilon},
 \end{equation}
 exactamente como los potenciales de Kantorovich satisfacen $\psi=\varphi^c$,
-$\varphi=\psi^{\bar c}$ (Capítulo~\ref{cap.dual}). El nombre se justifica por
-el siguiente lema.
+$\varphi=\psi^{\bar c}$ (Capítulo~\ref{cap.dual}).
+
+El nombre «suavizada» viene de la operación que está detrás. Escribiendo
+$z_i=c_{ij}-\varphi_i$, la definición de $(\varphi)^{c,\varepsilon}_j$ es
+\[
+-\varepsilon\log\sum_{i=1}^na_i\,e^{-z_i/\varepsilon},
+\]
+que es un \emph{mínimo suavizado}, o \emph{soft-min}, de los números $z_i$:
+para $\varepsilon$ grande promedia los $z_i$, y para $\varepsilon$ pequeño
+selecciona el menor, que es $\varphi^c_j$. La razón es que el término más
+chico domina la suma de exponenciales cuando $\varepsilon\to0^+$. El lema
+siguiente lo precisa y cuantifica el error.
 
 \begin{figure}[ht]
 \centering
@@ -12805,10 +12815,7 @@ por ejemplo, para $a=(\frac12,\frac12)$, $z=(0,1)$ y $\varepsilon=1$ vale
 $-\log(\frac12+\frac12e^{-1})\approx0{,}38>0$.)
 \end{proof}
 
-La operación $-\varepsilon\log\sum a_ie^{-z_i/\varepsilon}$ es un
-\emph{mínimo suavizado} (\emph{soft-min}) de los números $z_i=c_{ij}-\varphi_i$:
-para $\varepsilon$ grande promedia, para $\varepsilon$ pequeño selecciona el
-menor. Así, la iteración \eqref{eq:ctransf.eps} es la versión suavizada de
+Así, la iteración \eqref{eq:ctransf.eps} es la versión suavizada de
 la mejora de potenciales $\varphi\mapsto\varphi^{c\bar c}$ de la
 Proposición~\ref{prop:mejora-potenciales}, y el funcional dual entrópico
 \eqref{eq:dual.entropico} es la versión suavizada del dual de programación
