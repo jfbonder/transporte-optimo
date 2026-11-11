@@ -12684,8 +12684,8 @@ obtiene $\varphi_i-\varphi^\varepsilon_i=\varphi_{i_0}-\varphi^\varepsilon_{i_0}
 para todo $i$, y entonces $\psi_j-\psi^\varepsilon_j=-s$ para todo $j$.
 \end{proof}
 
-\begin{obs}[La notación de Peyré--Cuturi]\label{obs.notacion.peyre}
-En la literatura computacional es habitual escribir el plan entrópico como
+\begin{obs}[Forma matricial: el núcleo de Gibbs]\label{obs.notacion.peyre}
+La fórmula \eqref{eq:plan.entropico} se escribe matricialmente como
 \[
 \pi^\varepsilon=\operatorname{diag}(u^\varepsilon)\,K^\varepsilon\,\operatorname{diag}(v^\varepsilon),
 \qquad
@@ -12693,19 +12693,13 @@ K^\varepsilon_{ij}=e^{-c_{ij}/\varepsilon},
 \qquad
 u^\varepsilon_i=a_ie^{\varphi^\varepsilon_i/\varepsilon},
 \quad
-v^\varepsilon_j=b_je^{\psi^\varepsilon_j/\varepsilon},
+v^\varepsilon_j=b_je^{\psi^\varepsilon_j/\varepsilon}:
 \]
-que es \eqref{eq:plan.entropico} escrita matricialmente: el plan es la matriz
-$K^\varepsilon$ —el \emph{núcleo de Gibbs} del costo— reescalada por filas y
-por columnas. Los vectores $u^\varepsilon,v^\varepsilon$ se llaman
-\emph{escalamientos}. Peyré y Cuturi~\cite{PeyreCuturi2019} usan el
-regularizador $-\varepsilon H(\pi)$ con $H(\pi)=-\sum\pi_{ij}(\log\pi_{ij}-1)$
-en lugar de $\varepsilon\mathrm{KL}(\pi\,|\,a\otimes b)$; ambos difieren en
-una función afín de $\pi$ que es constante sobre $\Pi(a,b)$
-(pues $\sum\pi_{ij}\log(a_ib_j)=\sum a_i\log a_i+\sum b_j\log b_j$ para todo
-plan), de modo que tienen el mismo minimizador $\pi^\varepsilon$ y los mismos
-escalamientos, salvo por los factores $a_i,b_j$ que en su convención se
-absorben en $u,v$.
+el plan es la matriz $K^\varepsilon$ —el \emph{núcleo de Gibbs} del costo—
+reescalada por filas y por columnas. Los vectores
+$u^\varepsilon,v^\varepsilon$ se llaman \emph{escalamientos}. Es la forma
+habitual en la literatura computacional, y la que hace transparente el
+algoritmo de Sinkhorn.
 \end{obs}
 
 \subsection*{La lectura vía la $c$-transformada}
@@ -13524,8 +13518,7 @@ y el costo es la matriz $C_{ij}=|z_i-z_j|^2$.
 Cuando la marginal $a$ es una incógnita hay que elegir con cuidado la
 regularización. Para $a$ y $b$ fijas, $\varepsilon\mathrm{KL}(\pi\,|\,a\otimes b)$
 y el regularizador $\varepsilon\sum_{ij}\pi_{ij}(\log\pi_{ij}-1)$ de
-Peyré--Cuturi difieren en una constante
-(Observación~\ref{obs.notacion.peyre}), pero esa constante depende de $a$:
+Peyré--Cuturi difieren en una constante, pero esa constante depende de $a$:
 si $H(a)=-\sum_ia_i\log a_i$ denota la entropía de Shannon de $a$, para todo
 $\pi\in\Pi(a,b)$,
 \[
@@ -13685,8 +13678,9 @@ Sean $a\in\R^n$, $b\in\R^m$ con entradas positivas y $\pi\in\Pi(a,b)$.
 \item Probar que $\mathrm{KL}(\pi\,|\,a\otimes b)=\sum_{ij}\pi_{ij}\log\pi_{ij}-\sum_ia_i\log a_i-\sum_jb_j\log b_j$;
 es decir, sobre $\Pi(a,b)$ la entropía relativa difiere de la entropía
 negativa $\sum\pi_{ij}\log\pi_{ij}$ en una constante. Deducir que el
-regularizador de Peyré--Cuturi de la Observación~\ref{obs.notacion.peyre}
-produce el mismo minimizador $\pi^\ve$.
+regularizador $\ve\sum_{ij}\pi_{ij}(\log\pi_{ij}-1)$, que es el que usan
+Peyré y Cuturi~\cite{PeyreCuturi2019}, produce el mismo minimizador
+$\pi^\ve$.
 \item (Desigualdad de Pinsker.) Probar que
 $\|\pi-a\otimes b\|_1^2\le2\,\mathrm{KL}(\pi\,|\,a\otimes b)$.
 \emph{Sugerencia:} reducirlo al caso de dos puntos (agrupar según el signo

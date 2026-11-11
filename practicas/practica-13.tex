@@ -245,8 +245,9 @@ Sean $a\in\R^n$, $b\in\R^m$ con entradas positivas y $\pi\in\Pi(a,b)$.
 \item Probar que $\mathrm{KL}(\pi\,|\,a\otimes b)=\sum_{ij}\pi_{ij}\log\pi_{ij}-\sum_ia_i\log a_i-\sum_jb_j\log b_j$;
 es decir, sobre $\Pi(a,b)$ la entropía relativa difiere de la entropía
 negativa $\sum\pi_{ij}\log\pi_{ij}$ en una constante. Deducir que el
-regularizador de Peyré--Cuturi de la Observación~\ref{N-obs.notacion.peyre}
-produce el mismo minimizador $\pi^\ve$.
+regularizador $\ve\sum_{ij}\pi_{ij}(\log\pi_{ij}-1)$, que es el que usan
+Peyré y Cuturi~\cite{PeyreCuturi2019}, produce el mismo minimizador
+$\pi^\ve$.
 \item (Desigualdad de Pinsker.) Probar que
 $\|\pi-a\otimes b\|_1^2\le2\,\mathrm{KL}(\pi\,|\,a\otimes b)$.
 \emph{Sugerencia:} reducirlo al caso de dos puntos (agrupar según el signo
