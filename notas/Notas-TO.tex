@@ -12276,10 +12276,23 @@ y los planes de transporte con matrices:
 \Pi(a,b)=\Bigl\{\pi\in\R^{n\times m}:\ \pi_{ij}\ge0,\ \sum_j\pi_{ij}=a_i,\ \sum_i\pi_{ij}=b_j\Bigr\}.
 \]
 Escribimos $\langle C,\pi\rangle=\sum_{ij}c_{ij}\pi_{ij}$ para el costo de un
-plan, de modo que el problema de Kantorovich es
+plan. No es un objeto nuevo: es el funcional de Kantorovich
+\eqref{Funcional.Kantorovich} escrito en coordenadas, porque para
+$\pi=\sum_{ij}\pi_{ij}\,\delta_{(x_i,y_j)}$ se tiene
 \[
-\mathrm{OT}(a,b)=\min_{\pi\in\Pi(a,b)}\langle C,\pi\rangle.
+\mathcal K(\pi)=\int c\,d\pi=\sum_{ij}c_{ij}\pi_{ij}=\langle C,\pi\rangle,
 \]
+de modo que el problema de Kantorovich es
+\begin{equation}\label{eq:OT.discreto}
+\mathrm{OT}(a,b)=\min_{\pi\in\Pi(a,b)}\mathcal K(\pi)=\min_{\pi\in\Pi(a,b)}\langle C,\pi\rangle.
+\end{equation}
+Conviene distinguir los dos símbolos, que denotan cosas de distinto tipo:
+$\mathcal K$ es el \emph{funcional}, definido sobre planes, mientras que
+$\mathrm{OT}$ es su \emph{valor óptimo}, una función de las marginales
+(la notación $\mathrm{OT}_c$ para el costo óptimo ya apareció en el
+Ejercicio~\ref{ejer.discretizacion.estabilidad}). En lo que sigue escribimos
+casi siempre $\langle C,\pi\rangle$, que es la forma en que se manipula.
+
 La hipótesis $a_i,b_j>0$ no quita generalidad —los puntos con peso nulo se
 descartan— y evita casos degenerados en todo lo que sigue.
 
@@ -12339,8 +12352,12 @@ $\pi^\varepsilon\in\Pi(a,b)$, y todas sus entradas son estrictamente positivas.
 \end{prop}
 
 \begin{proof}
-El conjunto $\Pi(a,b)$ es un politopo compacto y no vacío (contiene a
-$a\otimes b$), y el funcional es continuo (Lema~\ref{lema.KL}), luego alcanza
+El conjunto $\Pi(a,b)$ es un politopo compacto y no vacío (un \emph{politopo}
+es un subconjunto acotado de $\R^N$ definido por finitas igualdades y
+desigualdades lineales; acá las desigualdades son $\pi_{ij}\ge0$, las
+igualdades son las de las marginales, y la acotación es inmediata porque
+$0\le\pi_{ij}\le a_i\le1$. Es no vacío porque contiene a
+$a\otimes b$.) El funcional es continuo (Lema~\ref{lema.KL}), luego alcanza
 su mínimo. Es además estrictamente convexo, por ser suma de la función lineal
 $\pi\mapsto\langle C,\pi\rangle$ y de $\varepsilon$ veces una función
 estrictamente convexa, y un funcional estrictamente convexo en un conjunto
