@@ -12623,19 +12623,8 @@ obtenemos \eqref{eq:plan.entropico}.
 
 \medskip
 \textbf{Paso 2: verificación directa y dualidad débil.}
-El Paso 1 da la \emph{existencia} de potenciales con los que el plan tiene la
-forma \eqref{eq:plan.entropico}; es el único lugar donde se usa el teorema de
-los multiplicadores de Lagrange. Conviene subrayar que el resto de la
-demostración es autosuficiente y no lo usa, de modo que el lector que
-prefiera evitar la cuestión de la cualificación de restricciones puede
-reemplazar el Paso 1 por el argumento del paréntesis siguiente y seguir
-leyendo sin pérdida. (Otra demostración de esa existencia, sin
-Lagrange, la da la convergencia del algoritmo de Sinkhorn: el
-Teorema~\ref{teo.sinkhorn.convergencia} produce un par $(\bar\varphi,\bar\psi)$
-cuyo plan asociado está en $\Pi(a,b)$, y por el Paso 2 ese plan es el
-minimizador.) Para identificar el valor óptimo y caracterizar los
-maximizadores no hace falta nada más: verificamos ahora
-directamente que si $(\varphi,\psi)$ es un par cualquiera y
+Para identificar el valor óptimo y caracterizar los maximizadores no hace
+falta nada más que lo ya probado: verificamos directamente que si $(\varphi,\psi)$ es un par cualquiera y
 $\pi\in\Pi(a,b)$ es cualquier plan, entonces
 \begin{equation}\label{eq:dual.debil.entropico}
 \mathcal D_\varepsilon(\varphi,\psi)\le\langle C,\pi\rangle+\varepsilon\,\mathrm{KL}(\pi\,|\,a\otimes b),
