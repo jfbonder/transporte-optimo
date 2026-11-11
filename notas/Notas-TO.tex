@@ -12623,15 +12623,28 @@ obtenemos \eqref{eq:plan.entropico}.
 
 \medskip
 \textbf{Paso 2: verificación directa y dualidad débil.}
-Para identificar el valor óptimo y caracterizar los maximizadores no hace
-falta nada más que lo ya probado: verificamos directamente que si $(\varphi,\psi)$ es un par cualquiera y
-$\pi\in\Pi(a,b)$ es cualquier plan, entonces
+Dado un par $(\varphi,\psi)\in\R^n\times\R^m$, escribamos
+\begin{equation}\label{eq:theta.par}
+\theta_{ij}=\theta_{ij}(\varphi,\psi)=a_ib_j\exp\bigl((\varphi_i+\psi_j-c_{ij})/\varepsilon\bigr)>0
+\end{equation}
+para la matriz que el par determina. Probamos que para todo par
+$(\varphi,\psi)$ y todo plan $\pi\in\Pi(a,b)$,
 \begin{equation}\label{eq:dual.debil.entropico}
 \mathcal D_\varepsilon(\varphi,\psi)\le\langle C,\pi\rangle+\varepsilon\,\mathrm{KL}(\pi\,|\,a\otimes b),
 \end{equation}
-con igualdad si y solo si $\pi_{ij}=a_ib_j\exp((\varphi_i+\psi_j-c_{ij})/\varepsilon)$
-para todo $i,j$. En efecto, escribamos
-$\theta_{ij}=a_ib_j\exp((\varphi_i+\psi_j-c_{ij})/\varepsilon)>0$. Usando que
+con igualdad si y solo si $\pi=\theta$.
+
+Conviene leer con cuidado qué dice eso. La desigualdad vale sea quien sea el
+par, sin ninguna relación con el Paso 1; lo que la igualdad hace es
+\emph{determinar} $\pi$ a partir del par. Y $\theta$ está definida para
+cualquier $(\varphi,\psi)$, pero no tiene por qué tener marginales $a$ y $b$:
+si $\theta\notin\Pi(a,b)$, ningún plan alcanza la igualdad y
+\eqref{eq:dual.debil.entropico} es estricta para ese par. El Paso 1 produce
+justamente un par para el cual $\theta$ sí está en $\Pi(a,b)$ —es
+\eqref{eq:plan.entropico}, con $\theta=\pi^\varepsilon$— y eso es todo lo que
+va a usar el Paso 3.
+
+Probemos entonces la afirmación. Usando que
 $\pi$ tiene marginales $a$ y $b$,
 \[
 \sum_ia_i\varphi_i+\sum_jb_j\psi_j=\sum_{ij}\pi_{ij}(\varphi_i+\psi_j)
@@ -12647,7 +12660,8 @@ $s\ge0$, $\theta>0$, con igualdad solo si $s=\theta$ (es la desigualdad
 $\log r\le r-1$ con $r=\theta/s$, o la convexidad de $s\log s$: es la brecha
 entre el gráfico de $h$ y su tangente en $\theta$, marcada en la
 Figura~\ref{fig.ent.h}). Esto prueba
-\eqref{eq:dual.debil.entropico} y la caracterización de la igualdad.
+\eqref{eq:dual.debil.entropico}, y la igualdad vale si y solo si todos los
+sumandos se anulan, es decir, si y solo si $\pi=\theta$.
 
 \medskip
 \textbf{Paso 3: dualidad fuerte.}
