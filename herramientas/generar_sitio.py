@@ -48,13 +48,14 @@ RESUMEN = {
 }
 
 EXTRA_DIR = RAIZ / 'material-extra'
+COLAB_EXTRA = COLAB.replace('/cuadernos/', '/material-extra/')
 
 # Material extra: cosas escritas para alguna clase en particular, sobre temas
 # que las notas usan pero no desarrollan o que conviene ver en movimiento. Una
 # entrada por archivo: (nombre sin extensión en material-extra/, extensión,
 # título, descripción en HTML). La extensión decide cómo se publica: 'pdf' se
 # enlaza con su cantidad de páginas y su fuente LaTeX; 'html' es una página que
-# se abre en el navegador.
+# se abre en el navegador; 'ipynb' es un cuaderno, que se abre en Colab.
 EXTRA = [
     ('geodesicas', 'pdf', 'Introducción a las geodésicas en espacios métricos',
      'Longitud de curvas, espacios de longitud, reparametrización por longitud de arco y el '
@@ -81,6 +82,13 @@ EXTRA = [
      '|(1−t)A+tB|<sup>1/2</sup> dibujándose al lado de la cota (1−t)|A|<sup>1/2</sup>+t|B|<sup>1/2</sup>. '
      'Se puede animar o mover <i>t</i> a mano, y cambiar el ángulo: a 0°, o con <i>B</i> homotético '
      'de <i>A</i>, la curva se apoya sobre la recta, que es el caso de igualdad.'),
+    ('sinkhorn-vs-emd', 'ipynb', 'Transporte óptimo vía Sinkhorn: cuándo conviene y cuánto cuesta',
+     'Un laboratorio para ver por qué se usa Sinkhorn y no directamente <code>ot.emd</code>. En una '
+     'dimensión, donde la respuesta exacta se conoce, se mira cómo el plan entrópico se parece al '
+     'óptimo a medida que ε→0, cuánto error se comete y cuántas iteraciones y cuánto tiempo cuesta; '
+     'después, cómo escalan los dos métodos con el número de puntos y con la memoria. Cierra con una '
+     'aplicación concreta, la transferencia de color entre dos fotos, donde un plan entrópico no es un '
+     'mapa y se usa la proyección baricéntrica. Complementa el cuaderno del Capítulo 13.'),
 ]
 
 
@@ -117,7 +125,7 @@ def tarjetas_extra():
     listados = {n for n, _, _, _ in EXTRA}
     fuentes = []
     if EXTRA_DIR.is_dir():
-        fuentes = sorted(EXTRA_DIR.glob('*.tex')) + sorted(EXTRA_DIR.glob('*.html'))
+        fuentes = sorted(EXTRA_DIR.glob('*.tex')) + sorted(EXTRA_DIR.glob('*.html')) + sorted(EXTRA_DIR.glob('*.ipynb'))
     for f in fuentes:
         if f.stem not in listados:
             print('aviso: material-extra/%s no figura en EXTRA (generar_sitio.py): '
@@ -136,6 +144,11 @@ def tarjetas_extra():
             enlaces = ('<a class="boton" href="%s">Leer</a> '
                        '<a class="nw" href="%s/blob/main/material-extra/%s.tex">fuente LaTeX</a>'
                        % (rel, REPO, nombre))
+        elif tipo == 'ipynb':
+            meta = 'Cuaderno de Colab'
+            enlaces = ('<a class="boton" href="%s%s.ipynb">Abrir en Colab</a> '
+                       '<a class="nw" href="%s/blob/main/%s">ver en GitHub</a>'
+                       % (COLAB_EXTRA, nombre, REPO, rel))
         else:
             meta = 'Página interactiva'
             enlaces = ('<a class="boton" href="%s">Abrir</a> '
